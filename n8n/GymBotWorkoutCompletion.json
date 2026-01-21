@@ -1,0 +1,260 @@
+{
+  "name": "GymBotWorkoutCompletion",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "9dcf671e-7cee-43fa-b9ff-a61b968dbf9c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Procesa el seguimiento para el usuario {{ $json.user_id }} que tiene programada la sesión: {{ $json.session_name }}.\n\nInformación de la sesión:\nuser_id: {{ $json.user_id }}\nsession_name: {{ $json.session_name }}\nsession_id: {{ $json.day_routine_id }}",
+        "options": {
+          "systemMessage": "=FITBOT FOLLOW-UP\n\n## 🤖 ROL Y OBJETIVO\nEres \"FitBot\", un asistente de seguimiento fitness. Tu misión es contactar a los usuarios que tienen un entrenamiento programado para hoy y preguntarles si ya lo completaron. Debes actuar de forma proactiva utilizando las herramientas conectadas.\n\n## 📥 DATOS DE ENTRADA\nRecibirás una lista de usuarios (ej: Camilo, Lulu) con los siguientes campos:\n- user_id: Correo electrónico del usuario.\n- session_name: Nombre de la rutina del día (ej: \"Full Body A\" o \"Pull\").\n\n## ⚙️ INSTRUCCIONES OPERATIVAS (PASO A PASO)\n1. EXTRAER: Toma el 'user_id' del ítem que estás procesando actualmente.\n2. CONSULTAR: Ejecuta la herramienta 'Tool_Get_User_Info' usando ese 'user_id' para obtener el campo 'full_phone_number'.\n3. REDACTAR: Crea un mensaje corto y motivador. \n   - Estructura: Saludo + Pregunta sobre la sesión específica + Emojis.\n   - Ejemplo: \"¡Hola! ⚡ ¿Cómo va ese lunes? ¿Ya lograste completar tu entrenamiento de [session_name] hoy? 🏋️\"\n4. ENVIAR: Usa la herramienta 'Send message in WhatsApp Business...' enviando el texto redactado al 'full_phone_number' obtenido en el paso 2.\n\n## 🚨 REGLAS CRÍTICAS\n- NO inventes números de teléfono. Usa solo el que devuelva 'Tool_Get_User_Info'.\n- PERSONALIZACIÓN: Menciona siempre el nombre de la sesión ('session_name') en el mensaje.\n- TONO: Amigable, energético y profesional.\n- FLUJO: Procesa cada ítem de entrada de forma individual.\n\n## 🧠 MEMORIA Y PERSISTENCIA\n- Antes de enviar el mensaje, guarda en tu memoria interna que estás gestionando el registro asociado al day_routine_id: {{ $json.day_routine_id }}, junto al session_name: {{ $json.session_name }} y la intención CONFIRMAR_RUTINA(esto es muy importante!!).\n- Esto es CRÍTICO: Si el usuario responde confirmando que terminó, deberás usar este day_routine_id con la herramienta de actualización correspondiente."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "287e76da-de56-472c-9d15-ef076c953e34",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        208
+      ],
+      "id": "18e76f21-5bd2-412b-866e-e57a5840831a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=914510145083991",
+        "recipientPhoneNumber": "={{ $fromAI('full_phone_number', 'this is obtained by Tool_Get_user_Info', 'string') }}",
+        "textBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text_Body', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTool",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        208
+      ],
+      "id": "8874a4a4-de61-417a-9f33-a60afb547fc6",
+      "name": "SendMessage",
+      "webhookId": "32cfcd64-c0ba-4b37-a480-b1b74cc8dac4",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "user_weekly_schedule",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "planned_day",
+              "keyValue": "={{ $now.format('yyyy-MM-dd') }}"
+            },
+            {
+              "keyName": "Completed",
+              "keyValue": "false"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        144,
+        0
+      ],
+      "id": "84cd6137-6115-4d53-94d6-25554d6dba09",
+      "name": "Get_Today_Planned_Workouts",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $fromAI('user_id', 'The user_id got from Get_Today_Planned_Workouts', 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        720,
+        208
+      ],
+      "id": "c3e4646b-943e-4787-8979-50d3a4af6dce",
+      "name": "Tool_Get_User_Info",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Get_Today_Planned_Workouts').item.json.user_id }}_{{ $now.year }}_confirmation",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        208
+      ],
+      "id": "c07a8022-3fcf-4724-93f7-396bdbeb102c",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get_Today_Planned_Workouts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendMessage": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Today_Planned_Workouts": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool_Get_User_Info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "259900a4-2e63-41fe-b2a8-6a9d923eb7b0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "bohKnXiqKqziF8_Qf_68W",
+  "tags": [
+    {
+      "updatedAt": "2026-01-12T17:40:14.959Z",
+      "createdAt": "2026-01-12T17:40:14.959Z",
+      "id": "TUr1XJVoKGmfIrDX",
+      "name": "gym-bot"
+    }
+  ]
+}

@@ -1,0 +1,781 @@
+{
+  "name": "GymRatForm Supabase",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Genera la rutina semanal para el usuario:\n\n- **Nombre**: {{ $('FORM').item.json['Nombre completo'] }}\n- **Objetivo**: {{ $('FORM').item.json['¿Cuál es tu objetivo principal?'] }}\n- **Nivel**: {{ $('FORM').item.json['¿Cómo te consideras?'] }}\n- **Días**: {{ $('FORM').item.json['¿Cuántos días a la semana puedes entrenar?'] }}\n- **Prioridades**: {{ $('FORM').item.json['¿Qué partes del cuerpo te gustaría priorizar?'] }}",
+        "options": {
+          "systemMessage": "=Eres un Entrenador Personal de Élite y Experto en Ciencia del Ejercicio. Tu misión es construir una rutina de entrenamiento completa procesando el requerimiento de forma exhaustiva y técnica.\n\n### 🚨 PROTOCOLO DE EJECUCIÓN OBLIGATORIO (PASO A PASO)\nPara cumplir con tu misión, DEBES seguir este orden exacto sin saltarte ningún paso:\n\n1. PASO 1 (Mapeo de Requerimientos): Analiza el \"DAY REQUIREMENT\".\n\n2. PASO 2 Busqueda:\n   - Debes escoger 1 o más ejercicios de la lista \"AVAILABLE_EXERCISES\".\n   - REGLA DE NIVEL: Prioriza nivel {{ $items('LoadProfile')[0].json.level }}. Si no hay resultados, usa los demás niveles automáticamente. \n   - REGLA DE VOLUMEN CRÍTICA: Si el 'min_sets' del patrón es mayor a 4 (ej: 6 u 8), DEBES seleccionar al menos 2 ejercicios diferentes para ese patrón para no exceder las 4 series por ejercicio.\n\n3. PASO 3 (Enriquecimiento de Carga): Una vez seleccionados los ejercicios de la rutina, aplica los datos de \"CARGA SEMANA\" (sets, reps, rir, rest, tempo) cruzando el 'role' del ejercicio (compound, isolation o core) con el perfil de carga correspondiente.\n\n4. PASO 4 (Consolidación y Salida): Genera el JSON final solo cuando el 100% del requerimiento haya sido satisfecho.\n---\n\n### ⚙️ REGLAS DE ORO DE AUTONOMÍA\n- PROHIBIDO EL \"MODO RESUMEN\": El JSON de salida debe reflejar los ejercicios necesarios para cubrir el requerimiento.\n- PROHIBIDO PREGUNTAR: Tienes todas las herramientas. Si algo falta, búscalo o soluciónalo usando la información dada.\n- FIDELIDAD A LAS HERRAMIENTAS: No inventes nombres de ejercicios. Usa solo los que está en AVAILABLE_EXERCISES.\n\n---\n\n📋 ESPECIFICACIONES TÉCNICAS DE ENTRADA\n\nDAY REQUIREMENT:\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => i.json), null, 2) }}\n\nCARGA SEMANA (Perfiles de carga): \n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n### 📋 ESPECIFICACIONES DE FORMATO (JSON ESTRICTO)\nTu respuesta debe ser EXCLUSIVAMENTE un JSON Array válido. Prohibido incluir texto, introducciones o comentarios.\n\nESTRUCTURA POR OBJETO:\n{\n  \"user_id\": {{ $items('GetUser')[0].json.user_id}},\n  \"goal\": {{ $('LoadProfile').item.json.goal }},\n  \"level\": {{ $('LoadProfile').item.json.level }},\n  \"role\": \"compound/isolation/core\",\n  \"week_number\": 1,\n  \"day_name\": {{ $('Loop Over Items').item.json.day_name }},\n  \"exercise_id\": \"exercise_id (obtener de AVAILABLE_EXERCISES)\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1040,
+        48
+      ],
+      "id": "da21332a-c083-400b-b987-696f3711767b",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        288
+      ],
+      "id": "4b6fa192-dfc0-41b7-8d95-569a114c0d9e",
+      "name": "OpenAI Chat Model",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const week1Exercises = $(\"Code in JavaScript\").all().map(item => item.json);\nconst allProfiles = $input.all().map(item => item.json);\n\nlet full4WeekPlan = [];\n\nfor (const ex of week1Exercises) {\n  for (let w = 1; w <= 4; w++) {\n    // Buscamos el perfil comparando texto limpio\n    const profile = allProfiles.find(p => \n      p.goal?.toString().trim().toLowerCase() === ex.goal?.toString().trim().toLowerCase() &&\n      p.level?.toString().trim().toLowerCase() === ex.level?.toString().trim().toLowerCase() &&\n      p.role?.toString().trim().toLowerCase() === ex.role?.toString().trim().toLowerCase() &&\n      p.week?.toString() === w.toString()\n    );\n\n    if (profile) {\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        sets: profile.sets,\n        reps: profile.reps,\n        rir: profile.rir,\n        rest_seconds: profile.rest_sec,\n        tempo: profile.tempo,\n        notes: profile.notes || \"\"\n      });\n    } else {\n      // Diagnóstico: Te dirá qué intentó buscar\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        notes: `No match para: ${ex.goal} | ${ex.level} | ${ex.role} | Sem:${w}`\n      });\n    }\n  }\n}\n\nreturn full4WeekPlan;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        -80
+      ],
+      "id": "307cdbe1-5442-426b-a6df-a847dc98640b",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        528,
+        -96
+      ],
+      "id": "654c79a7-4f62-4719-b4a8-4a5f7450dd14",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "instructions": "Unify all the items in a single Json strucutured array,",
+        "codeGeneratedForPrompt": "Unify all the items in a single Json strucutured array,",
+        "jsCode": "const items = $input.all();\nconst unifiedArray = items.map((item) => item.json);\nreturn [{ json: { unifiedArray }, pairedItem: items.map((_, index) => index) }];\n"
+      },
+      "type": "n8n-nodes-base.aiTransform",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -224
+      ],
+      "id": "dd494f65-2461-41fb-9bbd-53df0d4198e8",
+      "name": "AI Transform"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        // Parseamos el string de 'output' para convertirlo en lista de objetos\n        const exercises = JSON.parse(entry.output);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        -128
+      ],
+      "id": "736edb89-0486-435d-b84e-7a44d6254c89",
+      "name": "Code in JavaScript",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select day_req.*, rt.template_id ,rt.goal, rt.level, rt.week_schedule\nfrom routine_templates rt\njoin template_days using(week_schedule)\njoin day_requirements as day_req using (template_day_id)  \nwhere days_per_week = {{ $items('FORM')[0].json['¿Cuántos días a la semana puedes entrenar?'] }}\nand goal = '{{ $items('FORM')[0].json['¿Cuál es tu objetivo principal?'] }}'\nand level = '{{ $items('FORM')[0].json['¿Cómo te consideras?'] }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -400,
+        -80
+      ],
+      "id": "68b2054d-6823-40ae-b85d-48a0d2015ad4",
+      "name": "Get_Day_Requirements",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "get",
+        "tableId": "set_profiles",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "goal",
+              "keyValue": "={{ $('FORM').item.json[\"¿Cuál es tu objetivo principal?\"] }}"
+            },
+            {
+              "keyName": "level",
+              "keyValue": "={{ $('FORM').item.json[\"¿Cómo te consideras?\"] }}"
+            },
+            {
+              "keyName": "week",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -80
+      ],
+      "id": "d01c666a-440f-4ca3-91a5-c9d6f428227a",
+      "name": "LoadProfile",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "exercises",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "pattern",
+              "keyValue": "={{ $json.pattern }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        768,
+        16
+      ],
+      "id": "1b03389e-9973-48da-8b14-040090c2316c",
+      "name": "GetExercisesByPattern",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "users",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "full_name",
+              "fieldValue": "={{ $('FORM').item.json['Nombre completo']}}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $('FORM').item.json['Correo electrónico']}}"
+            },
+            {
+              "fieldId": "cel_number",
+              "fieldValue": "={{ $('FORM').item.json['Número de whatsapp']}}"
+            },
+            {
+              "fieldId": "timezone",
+              "fieldValue": "America/Bogota"
+            },
+            {
+              "fieldId": "country_indicative",
+              "fieldValue": "57"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        128,
+        256
+      ],
+      "id": "4f3fe133-5247-4b8b-bb81-50338527beb6",
+      "name": "CreateUser",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e9d29053-b9ff-4043-aeac-b10df4a3ca6f",
+              "leftValue": "={{$items(\"GetUser\")}}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -48,
+        128
+      ],
+      "id": "a49f1161-3a87-45f7-995d-ac23a34d8fe7",
+      "name": "UserExists"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "email",
+              "keyValue": "={{ $('FORM').item.json[\"Dirección de correo electrónico\"] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        32
+      ],
+      "id": "264bb7e0-4951-443f-ae28-ce2804ae8349",
+      "name": "GetUser",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "users_plans",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_id",
+              "fieldValue": "={{ $json.user_id }}"
+            },
+            {
+              "fieldId": "template_id",
+              "fieldValue": "={{ $items('Get_Day_Requirements')[0].json.template_id }}"
+            },
+            {
+              "fieldId": "start_date",
+              "fieldValue": "={{$now}}"
+            },
+            {
+              "fieldId": "goal",
+              "fieldValue": "={{ $items('Get_Day_Requirements')[0].json.goal }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "active"
+            },
+            {
+              "fieldId": "week_schedule",
+              "fieldValue": "={{ $items('Get_Day_Requirements')[0].json.week_schedule }}"
+            },
+            {
+              "fieldId": "level",
+              "fieldValue": "={{ $items('Get_Day_Requirements')[0].json.level }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        176,
+        80
+      ],
+      "id": "d0531c4a-9a62-4b33-a241-e8e06f816612",
+      "name": "CreatePlan",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        304,
+        -96
+      ],
+      "id": "84f6413a-5cd1-4d8d-988b-6bd4a341fc02",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "workouts",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_id",
+              "fieldValue": "={{ $json.user_id }}"
+            },
+            {
+              "fieldId": "week",
+              "fieldValue": "={{ $json.week_number }}"
+            },
+            {
+              "fieldId": "day_name",
+              "fieldValue": "={{ $json.day_name }}"
+            },
+            {
+              "fieldId": "exercise_id",
+              "fieldValue": "={{ $json.exercise_id }}"
+            },
+            {
+              "fieldId": "tempo",
+              "fieldValue": "={{ $json.tempo }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "sets",
+              "fieldValue": "={{ $json.sets }}"
+            },
+            {
+              "fieldId": "reps",
+              "fieldValue": "={{ $json.reps }}"
+            },
+            {
+              "fieldId": "rir",
+              "fieldValue": "={{ $json.rir }}"
+            },
+            {
+              "fieldId": "rest-seconds",
+              "fieldValue": "={{ $json.rest_seconds }}"
+            },
+            {
+              "fieldId": "notes",
+              "fieldValue": "={{ $json.notes }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -80
+      ],
+      "id": "4cdaf574-3d01-4c75-b4b7-47b68ed5adb0",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "get",
+        "tableId": "set_profiles",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "level",
+              "keyValue": "={{ $json.level }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        -80
+      ],
+      "id": "b10f925a-8c61-42a9-bf29-495246791f95",
+      "name": "Get a row",
+      "alwaysOutputData": false,
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "whatsapp_id",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1056,
+        -80
+      ],
+      "id": "808ae635-a994-4dc2-b66c-de05776f009a",
+      "name": "input",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users_gym_profile",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_id",
+              "keyValue": "={{ $items(\"input\")[0].json.whatsapp_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        -80
+      ],
+      "id": "85ff6d69-ffab-4839-b0a8-433d7a0a6597",
+      "name": "GetUserProfile",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "input": [
+      {
+        "json": {
+          "whatsapp_id": 573506267523
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "GetUserProfile": [
+      {
+        "json": {
+          "submission_date": "2026-01-19T19:18:02.45",
+          "whatsapp_id": 573506267523,
+          "full_name": "Camilo Díaz",
+          "email": "Camilodiazjaimes@gmail.com",
+          "age": 27,
+          "biological_sex": "M",
+          "height_cm": 171,
+          "weight_kg": 68,
+          "primary_goal": "Ganar masa muscular",
+          "secondary_goal": "Ninguna",
+          "training_experience": "Más de 3 años",
+          "current_frequency": "1-2 días por semana",
+          "fitness_level": "Intermedio",
+          "health_status": "A",
+          "days_available": 3,
+          "session_duration_mins": "60-75 minutos",
+          "preferred_schedule": "Mañana",
+          "training_style": "Mixto",
+          "priority_muscles": "Abdomen",
+          "disliked_exercises": "Pantorrillas",
+          "cardio_type": "Bicicleta",
+          "cardio_frequency": "1-2"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "AI Transform",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetExercisesByPattern",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Transform": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Day_Requirements": {
+      "main": [
+        [
+          {
+            "node": "GetUser",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LoadProfile": {
+      "main": [
+        [
+          {
+            "node": "Get_Day_Requirements",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetExercisesByPattern": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateUser": {
+      "main": [
+        [
+          {
+            "node": "GetUser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UserExists": {
+      "main": [
+        [
+          {
+            "node": "CreatePlan",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CreateUser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetUser": {
+      "main": [
+        [
+          {
+            "node": "UserExists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreatePlan": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "input": {
+      "main": [
+        [
+          {
+            "node": "GetUserProfile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetUserProfile": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "71958964-16b6-4dea-bce7-74d868740a0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "56TDVpPWb8DafTyq",
+  "tags": [
+    {
+      "updatedAt": "2026-01-12T17:40:14.959Z",
+      "createdAt": "2026-01-12T17:40:14.959Z",
+      "id": "TUr1XJVoKGmfIrDX",
+      "name": "gym-bot"
+    }
+  ]
+}
