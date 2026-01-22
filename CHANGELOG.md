@@ -2,6 +2,18 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [1.3.0] - 2026-01-21
+
+### Fixed - Workout Confirmation Flow
+
+- **Fixed routine completion update**: Changed `Tool_Update_User_Weekly_Schedule1` query to use `user_id` + `planned_day` instead of `$fromAI("day_routine_id")` which caused the LLM to invent random IDs
+- **Simplified CONFIRMATION AGENT prompt**: Removed dependency on remembering `day_routine_id` from memory
+
+### Changed
+
+- **Memory session key**: Changed from `year` to `weekNumber` for confirmation memory in both `GymRatFlow_Supabase` and `GymBotWorkoutCompletion` workflows
+- **Memory context window**: Reduced `contextWindowLength` from 50 to 10 for confirmation memory in both workflows
+
 ## [1.2.0] - 2026-01-21
 
 ### Added - GymRatForm Supabase Workflow

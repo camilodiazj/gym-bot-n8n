@@ -397,8 +397,8 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('GetUser').item.json.user_id }}_{{ $now.year }}_confirmation",
-        "contextWindowLength": 50
+        "sessionKey": "={{ $('GetUser').item.json.user_id }}_{{ $now.weekNumber }}_confirmation",
+        "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
@@ -418,7 +418,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE day_routine_id = '{{$fromAI(\"day_routine_id\")}}';\n",
+        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day = '{{ $now.format('yyyy-MM-dd') }}'\nAND \"Completed\" = false;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
@@ -806,7 +806,7 @@
         "promptType": "define",
         "text": "={{ $('WhatsApp_Trigger1').item.json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "Eres un GYM_BOT encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó la rutina debes usar el \"day_routine_id\" que tienes en Memoria en \"Tool_Update_User_Weekly_Schedule1\" para ejecutar la actualización.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así."
+          "systemMessage": "Eres un GYM_BOT encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó que completó su rutina de hoy, usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
