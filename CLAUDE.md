@@ -14,12 +14,13 @@ GymBot is an AI-powered fitness coaching platform built on n8n workflows. It pro
 
 ## Architecture
 
-The system consists of 4 n8n workflows in the `/n8n/` directory:
+The system consists of 5 n8n workflows in the `/n8n/` directory:
 
 | Workflow | Purpose |
 |----------|---------|
-| `GymRatFlow_Supabase.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
-| `GymRatForm Supabase.json` | Routine generation engine - creates personalized 4-week workout plans based on user profiles |
+| `GymRatFlow_Supabase.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, RENOVAR_MESOCICLO, CHAT), mesocycle completion detection, and routine display |
+| `GymRatForm Supabase.json` | Routine generation engine - creates personalized 4-week workout plans based on user profiles. Supports `is_renewal` flag for mesocycle renewals |
+| `GymBotMesocycleRenewal.json` | Mesocycle renewal subflow - handles end-of-4-week-cycle options (maintain routine, change days, rotate exercises) |
 | `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status |
 | `RoutineMorningReminder (2).json` | Morning motivation (5 AM) - sends daily workout reminders |
 
@@ -28,14 +29,16 @@ The system consists of 4 n8n workflows in the `/n8n/` directory:
 1. **User Onboarding**: WhatsApp → KYC Agent → Form submission → Profile creation → Routine generation
 2. **Daily Routine**: User message → Intention detection → Routine retrieval → Formatted WhatsApp delivery
 3. **Completion Tracking**: 8 PM trigger → Query uncompleted workouts → AI follow-up → Status update
+4. **Mesocycle Renewal**: Week 4 completed → Detect completion → Offer options (maintain/change) → Update plan/workouts
 
 ### Multi-Agent Architecture
 
 Each workflow uses specialized AI agents with Spanish system prompts:
 - **KYC Agent**: Collects user profile information
-- **Intention Agent**: Classifies user messages
+- **Intention Agent**: Classifies user messages (including RENOVAR_MESOCICLO)
 - **Confirmation Agent**: Handles schedule confirmations
 - **Workout Display Agent**: Formats and presents routines
+- **Renewal Agent**: Handles mesocycle renewal conversation (maintain routine, change days, rotate exercises)
 
 Agents use Postgres-based chat memory for conversation context persistence.
 
@@ -47,7 +50,7 @@ Agents use Postgres-based chat memory for conversation context persistence.
 |-------|---------|-------------|
 | `users` | Core user identity | `user_id` (UUID PK), `full_name`, `email`, `cel_number`, `full_phone_number`, `timezone` |
 | `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (PK), fitness metrics, goals, preferences (22 columns) |
-| `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status` |
+| `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status`, `mesocycle_number`, `last_renewal_date` |
 
 ### Routine Template System
 

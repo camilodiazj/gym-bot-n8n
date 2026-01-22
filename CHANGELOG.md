@@ -2,6 +2,38 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [1.4.0] - 2026-01-22
+
+### Added - Mesocycle Renewal Feature
+
+- **New subflow `GymBotMesocycleRenewal.json`**: Handles end-of-mesocycle (4-week cycle) options
+  - `Renewal_Agent`: AI agent that guides users through renewal options
+  - Option 1 - **Mantener rutina**: Keeps same exercises, resets schedule for new cycle
+  - Option 2a - **Cambiar días**: Regenerates routine with different days per week
+  - Option 2b - **Rotar ejercicios**: Selects alternative exercises by movement pattern
+  - Postgres-based conversation memory with automatic cleanup
+
+- **Mesocycle detection in `GymRatFlow_Supabase.json`**:
+  - `Check_Mesocycle_Complete` node: Detects when user has completed all week 4 sessions
+  - `If_Mesocycle_Complete` node: Routes to renewal subflow when mesocycle is done
+  - New intention `RENOVAR_MESOCICLO` added to `Intention_Agent`
+  - New Switch output for manual renewal requests
+
+- **Renewal support in `GymRatForm Supabase.json`**:
+  - New input parameters: `is_renewal`, `override_days_available`
+  - `If_Is_Renewal` node: Skips user/plan creation for renewals
+  - `Clear_Old_Workouts` node: Cleans existing workouts before regenerating
+
+- **Database migration**: Added columns to `users_plans` table
+  - `mesocycle_number` (INTEGER, default 1): Tracks current mesocycle count
+  - `last_renewal_date` (TIMESTAMP): Records last renewal date
+
+- **Documentation**: Created `docs/MESOCYCLE_RENEWAL.md` with flow diagrams, SQL queries, and testing scenarios
+
+### Changed
+
+- Updated `CLAUDE.md` with new workflow documentation and database schema changes
+
 ## [1.3.0] - 2026-01-21
 
 ### Fixed - Workout Confirmation Flow

@@ -243,7 +243,7 @@
         "promptType": "define",
         "text": "={{ $('WhatsApp_Trigger1').item.json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario segùn el mensaje que recibes de él y los datos que tienes en memoria.\n\nINTENCIONES:\nCONFIRMAR_RUTINA\nVER_RUTINA_DE_HOY\nCHAT\n\nCONFIRMAR_RUTINA: Aplica si ves en Memoria que estás gestionando el registro asociado a un \"day_routine_id\", un \"session_name\" y además ves la intención \"CONFIRMAR_RUTINA\".\n\nCHAT: Comportamiento por defecto.\n\nUna vez identifiques la intenciòn debes retornar la INTENCION respectiva (SOLO UNA OPCION ES VALIDA).\n\nY también debes verificar que si el usuario ya confirmó su rutina, la intención ahora es CHAT."
+          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario segùn el mensaje que recibes de él y los datos que tienes en memoria.\n\nINTENCIONES:\nCONFIRMAR_RUTINA\nVER_RUTINA_DE_HOY\nRENOVAR_MESOCICLO\nCHAT\n\nCONFIRMAR_RUTINA: Aplica si ves en Memoria que estás gestionando el registro asociado a un \"day_routine_id\", un \"session_name\" y además ves la intención \"CONFIRMAR_RUTINA\".\n\nRENOVAR_MESOCICLO: Aplica si el usuario menciona \"renovar\", \"nuevo ciclo\", \"cambiar rutina\", \"siguiente mes\", \"terminar mesociclo\", o preguntas sobre qué hacer después de completar las 4 semanas de entrenamiento.\n\nCHAT: Comportamiento por defecto.\n\nUna vez identifiques la intenciòn debes retornar la INTENCION respectiva (SOLO UNA OPCION ES VALIDA).\n\nY también debes verificar que si el usuario ya confirmó su rutina, la intención ahora es CHAT."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -356,6 +356,30 @@
               },
               "renameOutput": true,
               "outputKey": "VER_RUTINA_DE_HOY"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "mesocycle-renewal-condition",
+                    "leftValue": "={{ $json.output.trim() }}",
+                    "rightValue": "RENOVAR_MESOCICLO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RENOVAR_MESOCICLO"
             }
           ]
         },
@@ -1003,6 +1027,142 @@
       "id": "a1b2c3d4-filter-today-routine",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Verificar si el mesociclo está completo (semana 4 completada)\nconst finishedWorkouts = $('User_Finished_Workouts').all();\nconst planInfo = $('Week_Schedule').first()?.json || {};\nconst userData = $('GetUser').first()?.json || {};\nconst triggerData = $('WhatsApp_Trigger1').first()?.json || {};\n\nconst daysPerWeek = planInfo.days_per_week || 3;\n\n// Contar sesiones completadas de semana 4\nconst week4Completed = finishedWorkouts.filter(\n  w => w.json.week === 4 && w.json.Completed === true\n).length;\n\nconst mesocycleComplete = week4Completed >= daysPerWeek;\n\nreturn [{\n  json: {\n    mesocycleComplete,\n    week4Completed,\n    daysPerWeek,\n    user_id: userData.user_id,\n    user_name: userData.full_name,\n    whatsapp_id: triggerData.contacts?.[0]?.wa_id,\n    phone_number_id: triggerData.metadata?.phone_number_id,\n    current_mesocycle: planInfo.mesocycle_number || 1,\n    current_days_per_week: daysPerWeek,\n    user_message: triggerData.messages?.[0]?.text?.body || ''\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        384
+      ],
+      "id": "check-mesocycle-complete",
+      "name": "Check_Mesocycle_Complete"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "mesocycle-complete-condition",
+              "leftValue": "={{ $json.mesocycleComplete }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1536,
+        384
+      ],
+      "id": "if-mesocycle-complete",
+      "name": "If_Mesocycle_Complete"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.user_id }}",
+            "whatsapp_id": "={{ $json.whatsapp_id }}",
+            "phone_number_id": "={{ $json.phone_number_id }}",
+            "current_mesocycle": "={{ $json.current_mesocycle }}",
+            "current_days_per_week": "={{ $json.current_days_per_week }}",
+            "user_name": "={{ $json.user_name }}",
+            "user_message": "={{ $json.user_message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string"
+            },
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string"
+            },
+            {
+              "id": "phone_number_id",
+              "displayName": "phone_number_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string"
+            },
+            {
+              "id": "current_mesocycle",
+              "displayName": "current_mesocycle",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number"
+            },
+            {
+              "id": "current_days_per_week",
+              "displayName": "current_days_per_week",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number"
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string"
+            },
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1776,
+        320
+      ],
+      "id": "execute-mesocycle-renewal",
+      "name": "Execute_Mesocycle_Renewal",
+      "notes": "Llama al subflow GymBotMesocycleRenewal cuando el mesociclo está completo"
     }
   ],
   "pinData": {
@@ -1168,6 +1328,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1290,6 +1457,35 @@
     },
     "Merge": {
       "main": [
+        [
+          {
+            "node": "Check_Mesocycle_Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check_Mesocycle_Complete": {
+      "main": [
+        [
+          {
+            "node": "If_Mesocycle_Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Mesocycle_Complete": {
+      "main": [
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "AI Agent1",
