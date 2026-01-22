@@ -6,7 +6,7 @@
         "promptType": "define",
         "text": "={{ $items('WhatsApp_Trigger1')[0].json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "=# System Prompt: FitBot – Gestor de Flujos y Progreso (V7)\n\nEres \"FitBot\", un asistente de entrenamiento inteligente.\n\nSESION_ENTRENAMIENTO_PARA_HOY: \n{{ JSON.stringify($('userHasRoutineForToday').all().map(i => i.json), null, 2) }}\n\nDebes seguir los siguientes pasos:\n\n1. ACCIÓN:\n   - Usa 'Tool_Get_Workout' ingresando el session_name y la week obtenida en 'SESION_ENTRENAMIENTO_PARA_HOY', presenta la rutina con el FORMATO VISUAL.\n---\n\n## 📋 FORMATO VISUAL (WhatsApp)\nSaluda al usuario. Estructura el mensaje así para facilitar la lectura:\n\n*¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:\n\n🏋️ **RUTINA:** [session_name]\n📅 **SEMANA:** [week]\n────────────────────\n\n(Por cada ejercicio devuelto por Tool_Get_Workout):\n🔹 **[spanish_name]**\n( [main_muscle] )\n\n• 🔢 **Series/Reps:** [sets] x [reps]\n• 📈 **RIR:** [rir] | ⏳ **Descanso:** [rest-seconds] seg.\n• 🎥 **Técnica:** [video_link]\n\n────────────────────\n*¡Dale con toda! 🚀*\n\n---\n\n## 🚨 REGLAS INQUEBRANTABLES\n4. DISEÑO: Usa estrictamente la línea ──────────────────── para separar los bloques de ejercicios.\n5. IDIOMA: Todo el contenido enviado al usuario debe ser en español.\n6. Al entregar la rutina NO preguntes al usuario si terminó el entrenamiento.\n\nFecha actual (HOY): {{ $now }}"
+          "systemMessage": "=# System Prompt: FitBot – Gestor de Flujos y Progreso (V7)\n\nEres \"FitBot\", un asistente de entrenamiento inteligente.\n\nUSER_ID: {{ $items('GetUser')[0].json.user_id }}\n\nSESION_ENTRENAMIENTO_PARA_HOY: \n{{ JSON.stringify($('Filter_Today_Routine').all().map(i => i.json), null, 2) }}\n\nDebes seguir los siguientes pasos:\n\n1. ACCIÓN:\n   - Usa 'Tool_Get_Workout' pasando los parámetros: user_id (el USER_ID de arriba), session_name y week (obtenidos de SESION_ENTRENAMIENTO_PARA_HOY).\n   - Presenta la rutina con el FORMATO VISUAL.\n---\n\n## 📋 FORMATO VISUAL (WhatsApp)\nSaluda al usuario. Estructura el mensaje así para facilitar la lectura:\n\n*¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:\n\n🏋️ **RUTINA:** [session_name]\n📅 **SEMANA:** [week]\n────────────────────\n\n(Por cada ejercicio devuelto por Tool_Get_Workout):\n🔹 **[spanish_name]**\n( [main_muscle] )\n\n• 🔢 **Series/Reps:** [sets] x [reps]\n• 📈 **RIR:** [rir] | ⏳ **Descanso:** [rest-seconds] seg.\n• 🎥 **Técnica:** [video_link]\n\n────────────────────\n*¡Dale con toda! 🚀*\n\n---\n\n## 🚨 REGLAS INQUEBRANTABLES\n4. DISEÑO: Usa estrictamente la línea ──────────────────── para separar los bloques de ejercicios.\n5. IDIOMA: Todo el contenido enviado al usuario debe ser en español.\n6. Al entregar la rutina NO preguntes al usuario si terminó el entrenamiento.\n\nFecha actual (HOY): {{ $now }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -220,7 +220,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "select day_name as session_name, week, spanish_name, main_muscle, reps, sets, rir, link, \"rest-seconds\" from workouts\njoin exercises using(exercise_id)\nwhere user_id = '{{ $items('GetUser')[0].json.user_id }}'\nand day_name = '{{ $items('userHasRoutineForToday')[0].json.session_name }}'\nand week = {{ $items('userHasRoutineForToday')[0].json.week }}",
+        "query": "select day_name as session_name, week, spanish_name, main_muscle, reps, sets, rir, link, \"rest-seconds\" from workouts\njoin exercises using(exercise_id)\nwhere user_id = '{{ $fromAI('user_id', 'UUID del usuario', 'string') }}'\nand day_name = '{{ $fromAI('session_name', 'Nombre de la sesión del día, ejemplo: Día 1 - Pecho y Tríceps', 'string') }}'\nand week = {{ $fromAI('week', 'Número de semana', 'number') }}",
         "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
@@ -468,8 +468,8 @@
           "conditions": [
             {
               "id": "4c90932f-00a5-4cca-ba7f-e19c20959661",
-              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => item.json.planned_day.includes($now.toFormat('yyyy-MM-dd'))) }}",
-              "rightValue": "={{ $now.format('yyyy-MM-dd') }}",
+              "leftValue": "={{ $input.all().length > 0 }}",
+              "rightValue": "",
               "operator": {
                 "type": "boolean",
                 "operation": "true",
@@ -560,7 +560,6 @@
       ],
       "id": "709f48b8-efb7-40c3-b135-d0cb0da39fb5",
       "name": "has_planned_workouts1",
-      "executeOnce": true,
       "alwaysOutputData": false
     },
     {
@@ -990,6 +989,20 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtrar solo la rutina de hoy que NO esté completada\nconst today = $now.toFormat('yyyy-MM-dd');\nconst items = $input.all();\n\nconst todayRoutine = items.filter(item => {\n  // Comparar fecha (puede venir con o sin hora)\n  const plannedDay = String(item.json.planned_day).substring(0, 10);\n  const isToday = plannedDay === today;\n  \n  // Completed puede ser booleano false o string 'false'\n  const isNotCompleted = item.json.Completed === false || item.json.Completed === 'false';\n  \n  return isToday && isNotCompleted;\n});\n\n// Si no hay rutina para hoy sin completar, retornar array vacío\nreturn todayRoutine.length > 0 ? todayRoutine : [];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -176
+      ],
+      "id": "a1b2c3d4-filter-today-routine",
+      "name": "Filter_Today_Routine",
+      "alwaysOutputData": true
     }
   ],
   "pinData": {
@@ -1229,7 +1242,7 @@
       "main": [
         [
           {
-            "node": "userHasRoutineForToday",
+            "node": "Filter_Today_Routine",
             "type": "main",
             "index": 0
           }
@@ -1260,6 +1273,17 @@
             "node": "Merge",
             "type": "main",
             "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter_Today_Routine": {
+      "main": [
+        [
+          {
+            "node": "userHasRoutineForToday",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
