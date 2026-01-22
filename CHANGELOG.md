@@ -2,6 +2,15 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [1.2.0] - 2026-01-21
+
+### Added - GymRatForm Supabase Workflow
+
+- **WhatsApp notification on routine creation**: Added `NotifyRoutineCreated` node that sends a confirmation message to the user via WhatsApp after their 4-week workout plan has been generated
+  - Displays personalized summary with user's name, goal, fitness level, and days per week
+  - Connected after `Create a row` node to trigger once all workouts are saved
+  - Uses `String()` conversion for `whatsapp_id` to ensure compatibility with WhatsApp API
+
 ## [1.1.0] - 2026-01-21
 
 ### Fixed - GymRatForm Supabase Workflow
