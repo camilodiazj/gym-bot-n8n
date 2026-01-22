@@ -4,7 +4,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Genera la rutina semanal para el usuario:\n\n- **Nombre**: {{ $('FORM').item.json['Nombre completo'] }}\n- **Objetivo**: {{ $('FORM').item.json['¿Cuál es tu objetivo principal?'] }}\n- **Nivel**: {{ $('FORM').item.json['¿Cómo te consideras?'] }}\n- **Días**: {{ $('FORM').item.json['¿Cuántos días a la semana puedes entrenar?'] }}\n- **Prioridades**: {{ $('FORM').item.json['¿Qué partes del cuerpo te gustaría priorizar?'] }}",
+        "text": "=Genera la rutina semanal para el usuario:\n\n- **Nombre**: {{ $('GetUserProfile').item.json.full_name }}\n- **Objetivo**: {{ $('GetUserProfile').item.json.primary_goal }}\n- **Nivel**: {{ $('GetUserProfile').item.json.fitness_level }}\n- **Días**: {{ $('GetUserProfile').item.json.days_available }}\n- **Prioridades**: {{ $('GetUserProfile').item.json.priority_muscles }}",
         "options": {
           "systemMessage": "=Eres un Entrenador Personal de Élite y Experto en Ciencia del Ejercicio. Tu misión es construir una rutina de entrenamiento completa procesando el requerimiento de forma exhaustiva y técnica.\n\n### 🚨 PROTOCOLO DE EJECUCIÓN OBLIGATORIO (PASO A PASO)\nPara cumplir con tu misión, DEBES seguir este orden exacto sin saltarte ningún paso:\n\n1. PASO 1 (Mapeo de Requerimientos): Analiza el \"DAY REQUIREMENT\".\n\n2. PASO 2 Busqueda:\n   - Debes escoger 1 o más ejercicios de la lista \"AVAILABLE_EXERCISES\".\n   - REGLA DE NIVEL: Prioriza nivel {{ $items('LoadProfile')[0].json.level }}. Si no hay resultados, usa los demás niveles automáticamente. \n   - REGLA DE VOLUMEN CRÍTICA: Si el 'min_sets' del patrón es mayor a 4 (ej: 6 u 8), DEBES seleccionar al menos 2 ejercicios diferentes para ese patrón para no exceder las 4 series por ejercicio.\n\n3. PASO 3 (Enriquecimiento de Carga): Una vez seleccionados los ejercicios de la rutina, aplica los datos de \"CARGA SEMANA\" (sets, reps, rir, rest, tempo) cruzando el 'role' del ejercicio (compound, isolation o core) con el perfil de carga correspondiente.\n\n4. PASO 4 (Consolidación y Salida): Genera el JSON final solo cuando el 100% del requerimiento haya sido satisfecho.\n---\n\n### ⚙️ REGLAS DE ORO DE AUTONOMÍA\n- PROHIBIDO EL \"MODO RESUMEN\": El JSON de salida debe reflejar los ejercicios necesarios para cubrir el requerimiento.\n- PROHIBIDO PREGUNTAR: Tienes todas las herramientas. Si algo falta, búscalo o soluciónalo usando la información dada.\n- FIDELIDAD A LAS HERRAMIENTAS: No inventes nombres de ejercicios. Usa solo los que está en AVAILABLE_EXERCISES.\n\n---\n\n📋 ESPECIFICACIONES TÉCNICAS DE ENTRADA\n\nDAY REQUIREMENT:\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => i.json), null, 2) }}\n\nCARGA SEMANA (Perfiles de carga): \n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n### 📋 ESPECIFICACIONES DE FORMATO (JSON ESTRICTO)\nTu respuesta debe ser EXCLUSIVAMENTE un JSON Array válido. Prohibido incluir texto, introducciones o comentarios.\n\nESTRUCTURA POR OBJETO:\n{\n  \"user_id\": {{ $items('GetUser')[0].json.user_id}},\n  \"goal\": {{ $('LoadProfile').item.json.goal }},\n  \"level\": {{ $('LoadProfile').item.json.level }},\n  \"role\": \"compound/isolation/core\",\n  \"week_number\": 1,\n  \"day_name\": {{ $('Loop Over Items').item.json.day_name }},\n  \"exercise_id\": \"exercise_id (obtener de AVAILABLE_EXERCISES)\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
         }
@@ -105,7 +105,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "select day_req.*, rt.template_id ,rt.goal, rt.level, rt.week_schedule\nfrom routine_templates rt\njoin template_days using(week_schedule)\njoin day_requirements as day_req using (template_day_id)  \nwhere days_per_week = {{ $items('FORM')[0].json['¿Cuántos días a la semana puedes entrenar?'] }}\nand goal = '{{ $items('FORM')[0].json['¿Cuál es tu objetivo principal?'] }}'\nand level = '{{ $items('FORM')[0].json['¿Cómo te consideras?'] }}';",
+        "query": "select day_req.*, rt.template_id ,rt.goal, rt.level, rt.week_schedule\nfrom routine_templates rt\njoin template_days using(week_schedule)\njoin day_requirements as day_req using (template_day_id)  \nwhere days_per_week = {{ $items('GetUserProfile')[0].json.days_available }}\nand goal = '{{ $items('GetUserProfile')[0].json.primary_goal }}'\nand level = '{{ $items('GetUserProfile')[0].json.fitness_level }}';",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
@@ -133,11 +133,11 @@
           "conditions": [
             {
               "keyName": "goal",
-              "keyValue": "={{ $('FORM').item.json[\"¿Cuál es tu objetivo principal?\"] }}"
+              "keyValue": "={{ $('GetUserProfile').item.json.primary_goal }}"
             },
             {
               "keyName": "level",
-              "keyValue": "={{ $('FORM').item.json[\"¿Cómo te consideras?\"] }}"
+              "keyValue": "={{ $('GetUserProfile').item.json.fitness_level }}"
             },
             {
               "keyName": "week",
@@ -197,15 +197,15 @@
           "fieldValues": [
             {
               "fieldId": "full_name",
-              "fieldValue": "={{ $('FORM').item.json['Nombre completo']}}"
+              "fieldValue": "={{ $('GetUserProfile').item.json.full_name }}"
             },
             {
               "fieldId": "email",
-              "fieldValue": "={{ $('FORM').item.json['Correo electrónico']}}"
+              "fieldValue": "={{ $('GetUserProfile').item.json.email }}"
             },
             {
               "fieldId": "cel_number",
-              "fieldValue": "={{ $('FORM').item.json['Número de whatsapp']}}"
+              "fieldValue": "={{ $('GetUserProfile').item.json.whatsapp_id }}"
             },
             {
               "fieldId": "timezone",
@@ -218,6 +218,10 @@
             {
               "fieldId": "created_at",
               "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "full_phone_number",
+              "fieldValue": "={{ $('GetUserProfile').item.json.whatsapp_id }}"
             }
           ]
         }
@@ -250,11 +254,11 @@
           "conditions": [
             {
               "id": "e9d29053-b9ff-4043-aeac-b10df4a3ca6f",
-              "leftValue": "={{$items(\"GetUser\")}}",
+              "leftValue": "={{$items(\"GetUser\")[0].json.user_id}}",
               "rightValue": "",
               "operator": {
-                "type": "array",
-                "operation": "notEmpty",
+                "type": "string",
+                "operation": "exists",
                 "singleValue": true
               }
             }
@@ -280,7 +284,7 @@
           "conditions": [
             {
               "keyName": "email",
-              "keyValue": "={{ $('FORM').item.json[\"Dirección de correo electrónico\"] }}"
+              "keyValue": "={{ $('GetUserProfile').item.json.email }}"
             }
           ]
         }
@@ -294,6 +298,7 @@
       "id": "264bb7e0-4951-443f-ae28-ce2804ae8349",
       "name": "GetUser",
       "executeOnce": true,
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "SkVWOQLDNqQulhao",
@@ -755,7 +760,13 @@
     },
     "GetUserProfile": {
       "main": [
-        []
+        [
+          {
+            "node": "LoadProfile",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
