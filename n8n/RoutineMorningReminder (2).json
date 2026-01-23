@@ -6,7 +6,7 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 5
+              "triggerAtHour": 6
             }
           ]
         }
@@ -66,8 +66,8 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "=914510145083991",
-        "recipientPhoneNumber": "={{ $('User_Today_Routine1').item.json.full_phone_number }}",
+        "phoneNumberId": "914510145083991",
+        "recipientPhoneNumber": "={{ $items('User_Today_Routine1')[0].json.full_phone_number }}",
         "textBody": "={{ $json.output }}",
         "additionalFields": {}
       },
@@ -137,7 +137,28 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Schedule Trigger1": [
+      {
+        "json": {
+          "timestamp": "2026-01-23T06:00:38.008-05:00",
+          "Readable date": "January 23rd 2026, 6:00:38 am",
+          "Readable time": "6:00:38 am",
+          "Day of week": "Friday",
+          "Year": "2026",
+          "Month": "January",
+          "Day of month": "23",
+          "Hour": "06",
+          "Minute": "00",
+          "Second": "38",
+          "Timezone": "America/Bogota (UTC-05:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "connections": {
     "Schedule Trigger1": {
       "main": [
@@ -200,7 +221,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "caf20536-fa3d-40b4-83a3-0abcdf870447",
+  "versionId": "2078c9ae-9e3c-47c5-a452-e6bc3af85f38",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
