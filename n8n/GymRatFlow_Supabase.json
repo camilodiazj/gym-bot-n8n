@@ -1140,6 +1140,19 @@
           "name": "Supabase Memory"
         }
       }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        3632,
+        18832
+      ],
+      "id": "b2cf4958-5866-4c0b-be7e-e12701efd712",
+      "name": "When Executed by Another Workflow"
     }
   ],
   "pinData": {
@@ -1612,6 +1625,18 @@
             "type": "main",
             "index": 0
           }
+        ],
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     }
@@ -1621,7 +1646,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "5e2aab02-169a-4754-bad9-95e6a7fff913",
+  "versionId": "c26b2e34-9b9b-4916-9856-2440075aa8ed",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

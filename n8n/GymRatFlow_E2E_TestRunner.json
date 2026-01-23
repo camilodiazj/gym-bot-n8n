@@ -1,0 +1,357 @@
+{
+  "name": "GymRatFlow_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        7760,
+        4544
+      ],
+      "id": "d6572b83-4634-466c-a887-2a62190f1d73",
+      "name": "Run All Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Test Cases E2E para GymRatFlow\n// Filtra los tests activos (no DEPRECATED/SKIP)\n\nconst testCases = [\n  {\n    id: \"TC001\",\n    name: \"Bloqueo de Ruido - Status Update\",\n    priority: \"CRITICAL\",\n    category: \"FILTRO_RUIDO\",\n    metrics: {\n      rule: \"output === undefined || output === null || output === ''\",\n      description: \"No debe generar respuesta\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"statuses\": [{ \"id\": \"wamid.test\", \"status\": \"sent\", \"timestamp\": \"1769084739\", \"recipient_id\": \"573208780020\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC002\",\n    name: \"Usuario Nuevo - Onboarding KYC\",\n    priority: \"HIGH\",\n    category: \"ONBOARDING\",\n    metrics: {\n      rule: \"output.includes('conocerte') || output.includes('nombre') || output.includes('Coach')\",\n      description: \"Debe iniciar KYC\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NewUser\" }, \"wa_id\": \"570000000009\" }],\n      \"messages\": [{ \"from\": \"570000000009\", \"id\": \"wamid.E2E-TC002\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Hola, quiero empezar a entrenar\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC003\",\n    name: \"Usuario sin Workouts - Flujo Agendar\",\n    priority: \"HIGH\",\n    category: \"AGENDAR\",\n    metrics: {\n      rule: \"output.includes('dias') || output.includes('días') || output.includes('semana')\",\n      description: \"Debe ofrecer agendar semana\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NoSchedule\" }, \"wa_id\": \"570000000001\" }],\n      \"messages\": [{ \"from\": \"570000000001\", \"id\": \"wamid.E2E-TC003\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Quiero agendar mi semana\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC004\",\n    name: \"Dia de Descanso\",\n    priority: \"MEDIUM\",\n    category: \"DESCANSO\",\n    metrics: {\n      rule: \"output.includes('no tienes sesión') || output.includes('no tienes sesion') || output.includes('descansar') || output.includes('descanso')\",\n      description: \"Debe indicar día de descanso\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test RestDay\" }, \"wa_id\": \"570000000002\" }],\n      \"messages\": [{ \"from\": \"570000000002\", \"id\": \"wamid.E2E-TC004\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que hay para hoy?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC006\",\n    name: \"VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"VER_RUTINA\",\n    metrics: {\n      rule: \"(output.includes('RUTINA') || output.includes('rutina')) && (output.includes('Series') || output.includes('series') || output.includes('ejercicio'))\",\n      description: \"Debe mostrar rutina formateada\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC006\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Muestrame mi rutina de hoy\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC007\",\n    name: \"CHAT - Pregunta General\",\n    priority: \"MEDIUM\",\n    category: \"CHAT\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 50\",\n      description: \"Debe responder pregunta fitness\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC007\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que ejercicio es mejor para biceps?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC011\",\n    name: \"Confirmacion via Pending Task\",\n    priority: \"CRITICAL\",\n    category: \"PENDING_TASK\",\n    metrics: {\n      rule: \"output.includes('felicit') || output.includes('excelente') || output.includes('increíble') || output.includes('genial') || output.includes('Completada')\",\n      description: \"Debe confirmar rutina completada\"\n    },\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND planned_day = CURRENT_DATE;\",\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC011\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Si, ya terminé mi rutina\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    id: \"TC012\",\n    name: \"Pending Task - No confirma\",\n    priority: \"HIGH\",\n    category: \"PENDING_TASK\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 30\",\n      description: \"Debe manejar no-confirmación\"\n    },\n    cleanup: [\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC012\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"No pude hoy, me senti mal\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  }\n];\n\n// Inicializar estado global del test run\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', testCases.length);\n$execution.customData.set('testResults', '[]');\n\nreturn testCases.map(tc => ({ json: tc }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7984,
+        4544
+      ],
+      "id": "6242ffab-0d44-4a94-a309-d5ef749ce14e",
+      "name": "Load Test Cases"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        8192,
+        4544
+      ],
+      "id": "668c763e-246e-4af7-98a7-e7b3d3cc96ea",
+      "name": "Loop Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pre-process: preparar el test case actual\nconst testCase = $input.first().json;\n\nconsole.log(`\\n========================================`);\nconsole.log(`🧪 Ejecutando: ${testCase.id} - ${testCase.name}`);\nconsole.log(`   Categoria: ${testCase.category}`);\nconsole.log(`   Prioridad: ${testCase.priority}`);\nconsole.log(`========================================`);\n\nreturn [{ json: testCase }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8464,
+        4720
+      ],
+      "id": "01e63e9b-0b3b-4c1b-aa61-eb26498a5e72",
+      "name": "Pre-Test Log"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.cleanup ? $json.cleanup.join('; ') : 'SELECT 1;' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        8640,
+        4720
+      ],
+      "id": "ca0cc8ec-75b5-44c4-a134-880c72393054",
+      "name": "Run Cleanup SQL",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer solo el input del test case para pasarlo al sub-workflow\nconst testCase = $('Pre-Test Log').first().json;\nconst whatsappInput = testCase.input[0];\n\n// Retornar el objeto WhatsApp directamente\nreturn [{ json: whatsappInput }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8800,
+        4720
+      ],
+      "id": "2b105dd6-c9ca-487d-bf08-96c8e4cc0cd1",
+      "name": "Extract Test Input"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "KOrUQ4fNOepmjimF",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/KOrUQ4fNOepmjimF",
+          "cachedResultName": "Learning Project — GymRatFlow_Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        8976,
+        4720
+      ],
+      "id": "d31069b7-132b-473b-a1c9-e295504c29db",
+      "name": "Execute GymRatFlow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Evaluar resultado del test\nconst testCase = $('Pre-Test Log').first().json;\nconst workflowResult = $input.first().json;\n\n// Extraer el output del workflow\nlet output = '';\ntry {\n  if (workflowResult.output) {\n    output = workflowResult.output;\n  } else if (workflowResult.text) {\n    output = workflowResult.text;\n  } else if (typeof workflowResult === 'string') {\n    output = workflowResult;\n  } else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) {\n  output = '';\n}\n\n// Evaluar la métrica\nlet passed = false;\nlet error = null;\n\ntry {\n  const rule = testCase.metrics.rule;\n  passed = eval(rule);\n} catch (e) {\n  error = e.message;\n  passed = false;\n}\n\nconst result = {\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: passed,\n  output: output ? output.substring(0, 500) : '(empty)',\n  expectedRule: testCase.metrics.rule,\n  ruleDescription: testCase.metrics.description,\n  error: error,\n  executedAt: new Date().toISOString()\n};\n\n// Guardar resultado en customData para agregarlo al final\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nconsole.log(`${passed ? '✅ PASSED' : '❌ FAILED'}: ${testCase.id} - ${testCase.name}`);\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9168,
+        4720
+      ],
+      "id": "0e30417a-3541-41ad-9a2c-b07ef5934d01",
+      "name": "Evaluate Result"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        9520,
+        4544
+      ],
+      "id": "53d17ad2-7026-4e3f-b6b5-c42f5dc493f5",
+      "name": "Collect Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generar reporte final - leer de customData\nlet results = [];\ntry {\n  const stored = $execution.customData.get('testResults');\n  if (stored) results = JSON.parse(stored);\n} catch(e) {\n  results = [];\n}\n\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\n\nconst report = {\n  summary: {\n    totalTests: results.length,\n    passed: passed.length,\n    failed: failed.length,\n    passRate: results.length > 0 ? ((passed.length / results.length) * 100).toFixed(1) + '%' : '0%',\n    executedAt: new Date().toISOString()\n  },\n  byPriority: {\n    CRITICAL: {\n      total: results.filter(r => r.priority === 'CRITICAL').length,\n      passed: results.filter(r => r.priority === 'CRITICAL' && r.passed).length,\n      failed: results.filter(r => r.priority === 'CRITICAL' && !r.passed).map(r => r.testId)\n    },\n    HIGH: {\n      total: results.filter(r => r.priority === 'HIGH').length,\n      passed: results.filter(r => r.priority === 'HIGH' && r.passed).length,\n      failed: results.filter(r => r.priority === 'HIGH' && !r.passed).map(r => r.testId)\n    },\n    MEDIUM: {\n      total: results.filter(r => r.priority === 'MEDIUM').length,\n      passed: results.filter(r => r.priority === 'MEDIUM' && r.passed).length,\n      failed: results.filter(r => r.priority === 'MEDIUM' && !r.passed).map(r => r.testId)\n    }\n  },\n  failedTests: failed.map(r => ({\n    id: r.testId,\n    name: r.testName,\n    category: r.category,\n    priority: r.priority,\n    expected: r.ruleDescription,\n    actualOutput: (r.output || '(empty)').substring(0, 300)\n  })),\n  allResults: results\n};\n\n// Log del reporte\nconsole.log('\\n');\nconsole.log('╔════════════════════════════════════════════════════════════╗');\nconsole.log('║           📊 REPORTE E2E - GymRatFlow                      ║');\nconsole.log('╠════════════════════════════════════════════════════════════╣');\nconsole.log(`║  Total Tests:  ${report.summary.totalTests.toString().padEnd(42)}║`);\nconsole.log(`║  ✅ Passed:    ${report.summary.passed.toString().padEnd(42)}║`);\nconsole.log(`║  ❌ Failed:    ${report.summary.failed.toString().padEnd(42)}║`);\nconsole.log(`║  Pass Rate:    ${report.summary.passRate.padEnd(42)}║`);\nconsole.log('╠════════════════════════════════════════════════════════════╣');\nconsole.log('║  Por Prioridad:                                            ║');\nconsole.log(`║    CRITICAL: ${report.byPriority.CRITICAL.passed}/${report.byPriority.CRITICAL.total}`.padEnd(61) + '║');\nconsole.log(`║    HIGH:     ${report.byPriority.HIGH.passed}/${report.byPriority.HIGH.total}`.padEnd(61) + '║');\nconsole.log(`║    MEDIUM:   ${report.byPriority.MEDIUM.passed}/${report.byPriority.MEDIUM.total}`.padEnd(61) + '║');\nconsole.log('╚════════════════════════════════════════════════════════════╝');\n\nif (failed.length > 0) {\n  console.log('\\n❌ Tests Fallidos:');\n  failed.forEach(f => {\n    console.log(`   - ${f.testId}: ${f.testName}`);\n  });\n}\n\nreturn [{ json: report }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9744,
+        4544
+      ],
+      "id": "37fb2037-c0a3-4c9b-a41c-29485ef79261",
+      "name": "Generate Report"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-failed",
+              "leftValue": "={{ $json.summary.failed }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        9952,
+        4544
+      ],
+      "id": "0a0a64f5-6f55-4ad8-a05e-c3daafcc9425",
+      "name": "Has Failures?"
+    },
+    {
+      "parameters": {
+        "content": "## 🧪 E2E Test Runner - GymRatFlow\n\n### Uso:\n1. **Configurar credenciales**: Actualiza el nodo \"Run Cleanup SQL\" con tu credencial de Postgres\n2. **Configurar workflow**: En \"Execute GymRatFlow\", selecciona el workflow `GymRatFlow_Supabase`\n3. **Ejecutar**: Click en \"Test Workflow\" o activa para correr automáticamente\n\n### Tests incluidos:\n- TC001: Bloqueo de ruido (status updates)\n- TC002: Usuario nuevo -> KYC\n- TC003: Sin workouts -> Agendar\n- TC004: Día de descanso\n- TC006: Ver rutina de hoy\n- TC007: Chat general\n- TC011: Confirmación via pending task\n- TC012: No confirma pending task\n\n### Output:\nEl nodo \"Generate Report\" produce un JSON con:\n- `summary`: totales y pass rate\n- `byPriority`: desglose por prioridad\n- `failedTests`: detalle de fallos\n- `allResults`: todos los resultados",
+        "height": 520,
+        "width": 400,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        7568,
+        3872
+      ],
+      "id": "04927f4c-18df-4320-bba4-993c5ce936a4",
+      "name": "Instructions"
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ Configuración Requerida\n\n1. **Postgres Credential**: Actualiza el nodo `Run Cleanup SQL`\n2. **Workflow ID**: En `Execute GymRatFlow`, selecciona `GymRatFlow_Supabase`\n3. **Test Data**: Ejecuta `test_data_setup.sql` antes de correr",
+        "width": 340,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        8560,
+        4064
+      ],
+      "id": "b69b01c6-6b73-4882-acf2-a2bf48597693",
+      "name": "Config Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [
+        [
+          {
+            "node": "Load Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Tests": {
+      "main": [
+        [
+          {
+            "node": "Collect Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre-Test Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [
+        [
+          {
+            "node": "Run Cleanup SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Cleanup SQL": {
+      "main": [
+        [
+          {
+            "node": "Extract Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Test Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Result": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Has Failures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "4a124268-ad99-40e2-b9e7-b3f4f93feff7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "e75fxJpo-czH3SuVsiqg3",
+  "tags": []
+}
