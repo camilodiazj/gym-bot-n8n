@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -64,
-        0
+        2032,
+        896
       ],
-      "id": "9dcf671e-7cee-43fa-b9ff-a61b968dbf9c",
+      "id": "2217d427-563c-4c2d-857a-3e3acf122417",
       "name": "Schedule Trigger"
     },
     {
@@ -31,10 +31,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        400,
-        0
+        2496,
+        896
       ],
-      "id": "287e76da-de56-472c-9d15-ef076c953e34",
+      "id": "940b24a2-a492-4fbd-b6b0-a23da03ef583",
       "name": "AI Agent"
     },
     {
@@ -51,10 +51,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        272,
-        208
+        2368,
+        1104
       ],
-      "id": "18e76f21-5bd2-412b-866e-e57a5840831a",
+      "id": "1006ad0b-11fd-4fd3-94e5-7731a9a6195e",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -74,10 +74,10 @@
       "type": "n8n-nodes-base.whatsAppTool",
       "typeVersion": 1.1,
       "position": [
-        560,
-        208
+        2656,
+        1104
       ],
-      "id": "8874a4a4-de61-417a-9f33-a60afb547fc6",
+      "id": "22b19ac2-fe05-474c-8395-d2686bd5046a",
       "name": "SendMessage",
       "webhookId": "32cfcd64-c0ba-4b37-a480-b1b74cc8dac4",
       "credentials": {
@@ -107,10 +107,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        144,
-        0
+        2240,
+        896
       ],
-      "id": "84cd6137-6115-4d53-94d6-25554d6dba09",
+      "id": "c51c54d3-22f8-4135-b688-7eb4812b0e6c",
       "name": "Get_Today_Planned_Workouts",
       "credentials": {
         "supabaseApi": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        720,
-        208
+        2816,
+        1104
       ],
-      "id": "c3e4646b-943e-4787-8979-50d3a4af6dce",
+      "id": "5a73335d-4716-4784-855f-942e13e3a971",
       "name": "Tool_Get_User_Info",
       "credentials": {
         "supabaseApi": {
@@ -156,10 +156,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        432,
-        208
+        2528,
+        1104
       ],
-      "id": "c07a8022-3fcf-4724-93f7-396bdbeb102c",
+      "id": "9f0043eb-9a27-4c82-bec3-27bc76724f37",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -203,10 +203,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        640,
-        0
+        2800,
+        896
       ],
-      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "id": "39af6728-77e2-47ad-a84f-b1fab8b2aacb",
       "name": "Create_Pending_Task",
       "credentials": {
         "supabaseApi": {
@@ -301,7 +301,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "259900a4-2e63-41fe-b2a8-6a9d923eb7b0",
+  "versionId": "07676417-45b3-4cff-b7d9-9aedafc093fc",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
