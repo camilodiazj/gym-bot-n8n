@@ -167,6 +167,53 @@
           "name": "Supabase Memory"
         }
       }
+    },
+    {
+      "parameters": {
+        "tableId": "pending_tasks",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_id",
+              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.user_id }}"
+            },
+            {
+              "fieldId": "task_type",
+              "fieldValue": "CONFIRMAR_RUTINA"
+            },
+            {
+              "fieldId": "related_id",
+              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.day_routine_id }}"
+            },
+            {
+              "fieldId": "session_name",
+              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.session_name }}"
+            },
+            {
+              "fieldId": "week",
+              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.week }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "pending"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        640,
+        0
+      ],
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Create_Pending_Task",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -232,6 +279,17 @@
           {
             "node": "AI Agent",
             "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create_Pending_Task",
+            "type": "main",
             "index": 0
           }
         ]

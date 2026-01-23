@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        2864,
-        -320
+        7088,
+        18080
       ],
-      "id": "5aaa6de3-40b2-47e5-b5d6-425b258a9ade",
+      "id": "bb6782f9-7bb3-41c9-a770-b4fb256a7dcb",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        3264,
-        -320
+        7488,
+        18080
       ],
-      "id": "a447db34-7edc-43d3-a071-4f52112779e5",
+      "id": "bdf2fa0e-f8f9-412d-9536-c7a9138bab03",
       "name": "Send message",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        1776,
-        320
+        6000,
+        18720
       ],
-      "id": "1837b454-8280-4c98-9774-8d7a6ae0b860",
+      "id": "a2a5067b-09a1-464e-971f-6a48d1a3a6fd",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1568,
-        528
+        5792,
+        18928
       ],
-      "id": "5533ebc6-2f80-4cf1-859a-6518304c6073",
+      "id": "974d5126-f330-4dcc-8e31-534a65d2d8a3",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        2160,
-        288
+        6384,
+        18688
       ],
-      "id": "773b1999-15ba-4e2e-bd4b-0a8f0780185d",
+      "id": "3a72a488-39ad-45be-a6a3-01f213a7796c",
       "name": "Send message2",
       "webhookId": "80b28ff0-78d5-41e7-bf8d-7bf326244ace",
       "credentials": {
@@ -121,10 +121,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -336,
-        256
+        3632,
+        18656
       ],
-      "id": "a955547b-7ed5-46ed-bbff-de74be89b0df",
+      "id": "985a48f0-98ea-4a4a-8811-e68fbb6a394f",
       "name": "WhatsApp_Trigger1",
       "webhookId": "e86b8ccb-ce0e-441e-b37f-5f6637ba5eca",
       "credentials": {
@@ -150,10 +150,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -128,
-        256
+        4096,
+        18656
       ],
-      "id": "f57818e1-b15a-4726-8c3f-fd6702523580",
+      "id": "c347c1b5-f5c9-46b6-a96d-d23423b74fbb",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -180,11 +180,12 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        368,
-        224
+        4592,
+        18624
       ],
-      "id": "f8c46358-b9e9-4ea0-b3f0-5c12dd35af8f",
+      "id": "5e10b84b-3fab-49d1-9893-65c321db4d97",
       "name": "GetWeeklySchedule",
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "SkVWOQLDNqQulhao",
@@ -203,10 +204,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        2080,
-        0
+        6304,
+        18400
       ],
-      "id": "91030513-06a9-475e-851a-c0c81454fec7",
+      "id": "5375a5c0-4e33-45d8-b38a-603b147c5d42",
       "name": "Send message1",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "executeOnce": true,
@@ -226,10 +227,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        3072,
-        -80
+        7296,
+        18320
       ],
-      "id": "58ea75dd-ee51-4e0e-b034-ddbd78d5339c",
+      "id": "9fe772e4-17bb-4163-b91e-14258ce2dbf3",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -243,16 +244,16 @@
         "promptType": "define",
         "text": "={{ $('WhatsApp_Trigger1').item.json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario segùn el mensaje que recibes de él y los datos que tienes en memoria.\n\nINTENCIONES:\nCONFIRMAR_RUTINA\nVER_RUTINA_DE_HOY\nCHAT\n\nCONFIRMAR_RUTINA: Aplica si ves en Memoria que estás gestionando el registro asociado a un \"day_routine_id\", un \"session_name\" y además ves la intención \"CONFIRMAR_RUTINA\".\n\nCHAT: Comportamiento por defecto.\n\nUna vez identifiques la intenciòn debes retornar la INTENCION respectiva (SOLO UNA OPCION ES VALIDA).\n\nY también debes verificar que si el usuario ya confirmó su rutina, la intención ahora es CHAT."
+          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY o CHAT), sin explicación adicional."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        2080,
-        -720
+        6304,
+        17680
       ],
-      "id": "308cdda3-bd33-4a06-bd33-f2a6419ad01a",
+      "id": "c4f9976a-947f-4b34-a795-21ac2bfe0997",
       "name": "Intention_Agent"
     },
     {
@@ -268,10 +269,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2048,
-        -416
+        6272,
+        17984
       ],
-      "id": "bda33568-f843-45dd-9f60-a78ffe6aac97",
+      "id": "844bef00-60bb-4f07-b7ae-f36786086d28",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -364,10 +365,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        2448,
-        -784
+        6672,
+        17616
       ],
-      "id": "eaa0e1f5-af9f-4950-bfa3-022e00a53cb3",
+      "id": "ca70e4c4-d156-48d1-a226-33a9788a4582",
       "name": "Switch"
     },
     {
@@ -375,16 +376,16 @@
         "operation": "send",
         "phoneNumberId": "={{$items(\"WhatsApp_Trigger1\")[0].json.metadata.phone_number_id}}",
         "recipientPhoneNumber": "={{ $('WhatsApp_Trigger1').item.json.contacts[0].wa_id }}",
-        "textBody": "={{ $json.output }}",
+        "textBody": "={{ $('CONFIRMATION AGENT').item.json.output }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        3088,
-        -816
+        7312,
+        17584
       ],
-      "id": "caedfa61-7450-4114-b1d6-aa1a802a343a",
+      "id": "8f738b55-5295-4e2b-9cb8-e85b1bca296e",
       "name": "Send message3",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "credentials": {
@@ -403,10 +404,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2208,
-        -432
+        6432,
+        17968
       ],
-      "id": "62f2d35b-9a0f-4c8f-941a-b3ead3a45f45",
+      "id": "576bee7d-4f65-4d50-b863-5d7e44247e62",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -424,10 +425,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        2896,
-        -624
+        7120,
+        17776
       ],
-      "id": "49c4ae86-b987-4b9c-97ce-b0477481dc6e",
+      "id": "ef5d277f-bedd-4c72-b9c6-f6523220f204",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -444,10 +445,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2928,
-        -80
+        7152,
+        18320
       ],
-      "id": "ab9b390c-010c-4b70-9c3e-8fc877782576",
+      "id": "9239b3c8-aae2-4180-9cc2-7614e0d32e9e",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -468,7 +469,7 @@
           "conditions": [
             {
               "id": "4c90932f-00a5-4cca-ba7f-e19c20959661",
-              "leftValue": "={{ $input.all().length > 0 }}",
+              "leftValue": "={{ Object.keys($input.first().json).length > 0 }}",
               "rightValue": "",
               "operator": {
                 "type": "boolean",
@@ -484,10 +485,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1504,
-        -176
+        5728,
+        18224
       ],
-      "id": "0a070b65-8d94-4dab-8f95-ca414f58ce5e",
+      "id": "41f569cb-7f23-4f2b-bc99-58a55aeaeb39",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -500,10 +501,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1104,
-        384
+        5328,
+        18784
       ],
-      "id": "1725866e-ff0e-4a37-8766-51f1d30e154e",
+      "id": "2ee79ca3-94bc-4a21-a15f-879af0d0451a",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -521,10 +522,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        1312,
-        480
+        5536,
+        18880
       ],
-      "id": "37f5e14f-01ec-4219-beaa-64e3d6251bbe",
+      "id": "d6db4b36-3cd8-415a-bba2-70eff0432a24",
       "name": "Merge"
     },
     {
@@ -555,11 +556,12 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        704,
-        224
+        4928,
+        18624
       ],
-      "id": "709f48b8-efb7-40c3-b135-d0cb0da39fb5",
+      "id": "ec39bb93-47f6-4f48-9541-9867e9e855bd",
       "name": "has_planned_workouts1",
+      "executeOnce": false,
       "alwaysOutputData": false
     },
     {
@@ -582,11 +584,12 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1088,
-        592
+        5312,
+        18992
       ],
-      "id": "8121d373-7a17-4b9c-8045-2a4251de2409",
+      "id": "2546f088-0de2-441e-b18f-d64252bf3633",
       "name": "User_Finished_Workouts",
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "SkVWOQLDNqQulhao",
@@ -603,10 +606,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1072,
-        800
+        5296,
+        19200
       ],
-      "id": "81099db9-769b-44e9-b82f-1d1acaab1854",
+      "id": "f7350f7a-3a82-4c2a-96bc-69c8df76f66d",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -624,10 +627,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1792,
-        528
+        6016,
+        18928
       ],
-      "id": "61ba86ae-f4c1-455d-b4df-241b21f38855",
+      "id": "23931469-599b-463e-bc63-769d0d2bfccc",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -671,10 +674,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        1936,
-        528
+        6160,
+        18928
       ],
-      "id": "35787a2c-b3e0-4c17-b1cc-577dd7a8b6fb",
+      "id": "8d06bba4-db9f-4cb5-8ba4-721ae24d481d",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -691,10 +694,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        128,
-        720
+        4352,
+        19120
       ],
-      "id": "b066b03c-224a-4ed2-8cdc-7b6ae51b8eea",
+      "id": "6f114c25-ec0a-45cd-80fa-2789d0d02179",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -712,10 +715,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        288,
-        720
+        4512,
+        19120
       ],
-      "id": "b30df02f-ee9e-45fc-9a34-a0f88f959d35",
+      "id": "92c899fb-d2f4-4e4c-8be3-a01c661f07d9",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -752,10 +755,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        80,
-        256
+        4304,
+        18656
       ],
-      "id": "d1585384-0e2c-4940-a0d0-ba10e070cae3",
+      "id": "2284b091-fe22-4fe5-b061-6b33d16ad738",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -770,10 +773,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        624,
-        464
+        4848,
+        18864
       ],
-      "id": "ea80b1ed-3deb-4ffd-956c-1d40d9e63e25",
+      "id": "f2fe5623-1943-4f25-8105-df7a2c9d5245",
       "name": "Send message4",
       "webhookId": "80b28ff0-78d5-41e7-bf8d-7bf326244ace",
       "credentials": {
@@ -794,10 +797,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        272,
-        464
+        4496,
+        18864
       ],
-      "id": "065fad1e-136d-4e0f-9f58-f4619f305e31",
+      "id": "5d137164-d1de-4f57-be0c-1e0f7138156e",
       "name": "KYC Agent"
     },
     {
@@ -805,16 +808,16 @@
         "promptType": "define",
         "text": "={{ $('WhatsApp_Trigger1').item.json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "Eres un GYM_BOT encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó que completó su rutina de hoy, usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así."
+          "systemMessage": "Eres un GYM_BOT encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó que completó su rutina de hoy, usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así. \nNo le preguntes nada al usuario."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        2752,
-        -816
+        6976,
+        17584
       ],
-      "id": "851801d7-0915-44a7-9250-581a97110e8d",
+      "id": "1e5b6e54-a4fa-4ae6-9351-4592388fd196",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -917,10 +920,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        448,
-        720
+        4672,
+        19120
       ],
-      "id": "53a0e96a-53cf-40f1-af72-2c793d4494f1",
+      "id": "525e5890-2799-4622-8b02-dfa4a3757251",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -965,10 +968,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        624,
-        720
+        4848,
+        19120
       ],
-      "id": "c75609f0-4a0f-460e-962c-7784a40b173b",
+      "id": "6d4b9dc0-411b-43bd-8c37-ba4958be4786",
       "name": "Tool_Create_Routine"
     },
     {
@@ -978,10 +981,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2736,
-        -112
+        6960,
+        18288
       ],
-      "id": "4f7f613e-906b-4ce4-b10b-3dbf2b60ecfe",
+      "id": "a3508c53-2447-40f1-9dca-3006da80ba9d",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -997,46 +1000,172 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1104,
-        -176
+        5328,
+        18224
       ],
-      "id": "a1b2c3d4-filter-today-routine",
+      "id": "08fef9c0-6cd4-40f3-8dfb-29f70cefcf03",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5d850c40-d3ac-48e8-8128-91a524c0a3fa",
+              "leftValue": "={{ $json.messages[0].from }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "edeebc27-df75-45af-8158-a6836ca8bf06",
+              "leftValue": "={{ $json.messages[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3840,
+        18656
+      ],
+      "id": "a93dc22b-abaa-453b-bbdc-7b77b3ab8377",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "pending_tasks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('GetUser').item.json.user_id }}"
+            },
+            {
+              "keyName": "status",
+              "keyValue": "pending"
+            },
+            {
+              "keyName": "task_type",
+              "keyValue": "CONFIRMAR_RUTINA"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4400,
+        18464
+      ],
+      "id": "3573c908-8c86-4220-ba9f-2229ecad91e3",
+      "name": "Check_Pending_Tasks",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "pending-task-check-001",
+              "leftValue": "={{ $json.task_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4592,
+        18464
+      ],
+      "id": "fff79452-f876-447c-8ae5-2a71821f7545",
+      "name": "Has_Pending_Task"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE pending_tasks\nSET status = 'completed', resolved_at = NOW()\nWHERE user_id = '{{ $('GetUser').item.json.user_id }}'\nAND task_type = 'CONFIRMAR_RUTINA'\nAND status = 'pending';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        7168,
+        17376
+      ],
+      "id": "509ef5e4-fb2b-42b1-811e-ec7e7fee44cc",
+      "name": "Update_Pending_Task_Completed",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
     }
   ],
   "pinData": {
     "WhatsApp_Trigger1": [
       {
         "json": {
-          "messaging_product": "whatsapp",
-          "metadata": {
-            "display_phone_number": "573213413664",
-            "phone_number_id": "914510145083991"
-          },
           "contacts": [
             {
               "profile": {
-                "name": "Helena Jaimes"
+                "name": "Test WithRoutine"
               },
-              "wa_id": "573208780020"
+              "wa_id": "570000000003"
             }
           ],
           "messages": [
             {
-              "from": "573208780020",
-              "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUNGQUNCQkE0NDg3RTdCODZDNTZCQ0Q2RUMwNEJGNEEA",
-              "timestamp": "1768905316",
-              "text": {
-                "body": "Rutina del día martes"
+              "from": "570000000003",
+              "id": "wamid.E2E-TC008-Audio",
+              "audio": {
+                "mime_type": "audio/ogg",
+                "id": "audio123"
               },
-              "type": "text"
+              "type": "audio"
             }
-          ],
-          "field": "messages"
-        },
-        "pairedItem": {
-          "item": 0
+          ]
         }
       }
     ]
@@ -1079,7 +1208,7 @@
       "main": [
         [
           {
-            "node": "GetUser",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -1358,7 +1487,7 @@
       "main": [
         [
           {
-            "node": "GetWeeklySchedule",
+            "node": "Check_Pending_Tasks",
             "type": "main",
             "index": 0
           }
@@ -1366,6 +1495,35 @@
         [
           {
             "node": "KYC Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check_Pending_Tasks": {
+      "main": [
+        [
+          {
+            "node": "Has_Pending_Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has_Pending_Task": {
+      "main": [
+        [
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetWeeklySchedule",
             "type": "main",
             "index": 0
           }
@@ -1384,6 +1542,17 @@
       ]
     },
     "CONFIRMATION AGENT": {
+      "main": [
+        [
+          {
+            "node": "Update_Pending_Task_Completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_Pending_Task_Completed": {
       "main": [
         [
           {
@@ -1426,6 +1595,17 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "GetUser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1433,7 +1613,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "4e6f056b-f186-45e3-a4c3-0db3f8db5e66",
+  "versionId": "777f47cf-efe1-48cc-822e-a1123792628d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
