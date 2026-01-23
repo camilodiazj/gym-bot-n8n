@@ -1,6 +1,11 @@
 # Changelog
 
 All notable changes to GymBot will be documented in this file.
+## [1.3.2] - 2026-01-22
+https://gym-rat.atlassian.net/browse/KAN-49
+Automated tests with "TestRunner"
+
+
 ## [1.3.1] - 2026-01-22
 https://gym-rat.atlassian.net/browse/KAN-49
 Added e2e tests for gym rat flow
