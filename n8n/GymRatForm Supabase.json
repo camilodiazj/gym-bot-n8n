@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        1040,
-        48
+        5776,
+        4352
       ],
-      "id": "da21332a-c083-400b-b987-696f3711767b",
+      "id": "082c558c-92dd-430e-977f-22b549e23310",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -33,10 +33,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1024,
-        288
+        5760,
+        4592
       ],
-      "id": "4b6fa192-dfc0-41b7-8d95-569a114c0d9e",
+      "id": "db3451f1-75c2-4833-a3fa-d45215c71534",
       "name": "OpenAI Chat Model",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
@@ -54,10 +54,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1680,
-        -80
+        6416,
+        4224
       ],
-      "id": "307cdbe1-5442-426b-a6df-a847dc98640b",
+      "id": "b830bbcf-996e-4ee3-93a1-3ecbe9fc3a33",
       "name": "Code in JavaScript1"
     },
     {
@@ -67,10 +67,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        528,
-        -96
+        5264,
+        4208
       ],
-      "id": "654c79a7-4f62-4719-b4a8-4a5f7450dd14",
+      "id": "1aec1020-0b34-4401-833d-070531dc387a",
       "name": "Loop Over Items"
     },
     {
@@ -82,10 +82,10 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        832,
-        -224
+        5568,
+        4080
       ],
-      "id": "dd494f65-2461-41fb-9bbd-53df0d4198e8",
+      "id": "cad4de07-6b31-4792-8746-705fd07b189d",
       "name": "AI Transform"
     },
     {
@@ -95,10 +95,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1152,
-        -128
+        5888,
+        4176
       ],
-      "id": "736edb89-0486-435d-b84e-7a44d6254c89",
+      "id": "3629a092-8a1b-4212-82e7-0a14d444cdf7",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -111,10 +111,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -400,
-        -80
+        4336,
+        4224
       ],
-      "id": "68b2054d-6823-40ae-b85d-48a0d2015ad4",
+      "id": "48c9005c-5107-474d-92ce-0dfdd28ec6e7",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -149,10 +149,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -656,
-        -80
+        4080,
+        4224
       ],
-      "id": "d01c666a-440f-4ca3-91a5-c9d6f428227a",
+      "id": "39dde255-52ae-40c7-b71c-e4e08712d7ce",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -177,10 +177,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        768,
-        16
+        5504,
+        4320
       ],
-      "id": "1b03389e-9973-48da-8b14-040090c2316c",
+      "id": "350a794e-1888-44da-8d54-deb85799cbb0",
       "name": "GetExercisesByPattern",
       "credentials": {
         "supabaseApi": {
@@ -229,10 +229,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        128,
-        256
+        4864,
+        4560
       ],
-      "id": "4f3fe133-5247-4b8b-bb81-50338527beb6",
+      "id": "e5336996-e3c3-4a55-b423-6b5c4d0f1049",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -270,10 +270,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -48,
-        128
+        4688,
+        4432
       ],
-      "id": "a49f1161-3a87-45f7-995d-ac23a34d8fe7",
+      "id": "ea16cd63-72ee-433d-9987-ccf2d3ae42b3",
       "name": "UserExists"
     },
     {
@@ -292,10 +292,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -208,
-        32
+        4528,
+        4336
       ],
-      "id": "264bb7e0-4951-443f-ae28-ce2804ae8349",
+      "id": "858d79f3-b287-40bf-9953-23c223e8a00e",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -345,10 +345,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        176,
-        80
+        4912,
+        4384
       ],
-      "id": "d0531c4a-9a62-4b33-a241-e8e06f816612",
+      "id": "e282589a-12a4-41c0-8002-dfd1fc65ff92",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -364,10 +364,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        304,
-        -96
+        5040,
+        4208
       ],
-      "id": "84f6413a-5cd1-4d8d-988b-6bd4a341fc02",
+      "id": "980b07bc-eaa4-4898-b12b-4bdb5b3c1083",
       "name": "Merge"
     },
     {
@@ -426,10 +426,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1920,
-        -80
+        6656,
+        4224
       ],
-      "id": "4cdaf574-3d01-4c75-b4b7-47b68ed5adb0",
+      "id": "b24d88d2-4f24-4c66-8669-64add6c3a069",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -455,10 +455,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1424,
-        -80
+        6160,
+        4224
       ],
-      "id": "b10f925a-8c61-42a9-bf29-495246791f95",
+      "id": "c85c06a5-79fe-4ebd-b168-1726109e03ce",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -483,10 +483,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -1056,
-        -80
+        3680,
+        4224
       ],
-      "id": "808ae635-a994-4dc2-b66c-de05776f009a",
+      "id": "4b20c784-41b4-4010-bc12-1c423b56495b",
       "name": "input",
       "executeOnce": true
     },
@@ -506,10 +506,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -880,
-        -80
+        3856,
+        4224
       ],
-      "id": "85ff6d69-ffab-4839-b0a8-433d7a0a6597",
+      "id": "28b75b80-9beb-4b1f-8daa-c328942d66fd",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -529,12 +529,13 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        2160,
-        -80
+        6896,
+        4224
       ],
-      "id": "f7a8b9c0-d1e2-4f56-a789-0123456789ab",
+      "id": "87c60b05-1aa1-4e9f-b76f-4b39928f23f7",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
+      "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -547,41 +548,7 @@
     "input": [
       {
         "json": {
-          "whatsapp_id": 573506267523
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
-    "GetUserProfile": [
-      {
-        "json": {
-          "submission_date": "2026-01-19T19:18:02.45",
-          "whatsapp_id": 573506267523,
-          "full_name": "Camilo Díaz",
-          "email": "Camilodiazjaimes@gmail.com",
-          "age": 27,
-          "biological_sex": "M",
-          "height_cm": 171,
-          "weight_kg": 68,
-          "primary_goal": "Ganar masa muscular",
-          "secondary_goal": "Ninguna",
-          "training_experience": "Más de 3 años",
-          "current_frequency": "1-2 días por semana",
-          "fitness_level": "Intermedio",
-          "health_status": "A",
-          "days_available": 3,
-          "session_duration_mins": "60-75 minutos",
-          "preferred_schedule": "Mañana",
-          "training_style": "Mixto",
-          "priority_muscles": "Abdomen",
-          "disliked_exercises": "Pantorrillas",
-          "cardio_type": "Bicicleta",
-          "cardio_frequency": "1-2"
-        },
-        "pairedItem": {
-          "item": 0
+          "whatsapp_id": 573153463086
         }
       }
     ]
@@ -810,12 +777,11 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "71958964-16b6-4dea-bce7-74d868740a0d",
+  "versionId": "e7f6307f-686e-4514-8922-ab596743883d",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "56TDVpPWb8DafTyq",
+  "id": "EyzkqFaL_O-WKwspAy6ud",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",
