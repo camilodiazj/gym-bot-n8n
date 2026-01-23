@@ -936,9 +936,9 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "56TDVpPWb8DafTyq",
+          "value": "EyzkqFaL_O-WKwspAy6ud",
           "mode": "list",
-          "cachedResultUrl": "/workflow/56TDVpPWb8DafTyq",
+          "cachedResultUrl": "/workflow/EyzkqFaL_O-WKwspAy6ud",
           "cachedResultName": "Learning Project — GymRatForm Supabase"
         },
         "workflowInputs": {
@@ -957,8 +957,7 @@
               "defaultMatch": false,
               "display": true,
               "canBeUsedToMatch": true,
-              "type": "number",
-              "removed": false
+              "type": "number"
             }
           ],
           "attemptToConvertTypes": false,
@@ -1147,25 +1146,34 @@
     "WhatsApp_Trigger1": [
       {
         "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "573213413664",
+            "phone_number_id": "914510145083991"
+          },
           "contacts": [
             {
               "profile": {
-                "name": "Test WithRoutine"
+                "name": "Felipe Contreras Rappi"
               },
-              "wa_id": "570000000003"
+              "wa_id": "573153463086"
             }
           ],
           "messages": [
             {
-              "from": "570000000003",
-              "id": "wamid.E2E-TC008-Audio",
-              "audio": {
-                "mime_type": "audio/ogg",
-                "id": "audio123"
+              "from": "573153463086",
+              "id": "wamid.HBgMNTczMTUzNDYzMDg2FQIAEhgUMkE2RTlBNTUzRTdEQTJEOUE4MTcA",
+              "timestamp": "1769171022",
+              "text": {
+                "body": "3"
               },
-              "type": "audio"
+              "type": "text"
             }
-          ]
+          ],
+          "field": "messages"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
@@ -1613,7 +1621,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "777f47cf-efe1-48cc-822e-a1123792628d",
+  "versionId": "5e2aab02-169a-4754-bad9-95e6a7fff913",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
