@@ -21,7 +21,8 @@ The system consists of 4 n8n workflows in the `/n8n/` directory:
 | `GymRatFlow_Supabase.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
 | `GymRatForm Supabase.json` | Routine generation engine - creates personalized 4-week workout plans based on user profiles |
 | `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status |
-| `RoutineMorningReminder (2).json` | Morning motivation (5 AM) - sends daily workout reminders |
+| `RoutineMorningReminder.json` | Morning motivation (5 AM) - sends daily workout reminders |
+| `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
 
 ### Data Flow Patterns
 
@@ -74,6 +75,14 @@ Agents use Postgres-based chat memory for conversation context persistence.
 | `workouts` | User-assigned exercises | `id` (UUID PK), `user_id`, `week`, `day_name`, `exercise_id`, `sets`, `reps`, `rir`, `rest-seconds`, `tempo` |
 | `set_profiles` | Loading parameters by goal/level/week | `profile_id` (PK), `goal`, `level`, `week`, `role`, `sets`, `reps`, `rir`, `rest_sec`, `tempo` |
 | `user_weekly_schedule` | Scheduled workout sessions | `day_routine_id` (UUID PK), `user_id`, `week`, `week_day` (enum), `session_name`, `planned_day`, `Completed` |
+
+### Pending Tasks (Confirmation Flow)
+
+| Table | Purpose | Key Columns |
+|-------|---------|-------------|
+| `pending_tasks` | Tracks pending user confirmations | `task_id` (UUID PK), `user_id`, `task_type`, `related_id`, `session_name`, `week`, `status`, `created_at`, `resolved_at` |
+
+Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 
 ### Reference/Lookup Tables
 
@@ -186,3 +195,48 @@ users_gym_profile ------------------------------>+
 - Conditional nodes check user existence and scheduled routines before proceeding
 - `alwaysOutputData: true` preserves data flow through false conditions
 - `executeOnce: true` prevents duplicate processing on loops
+
+## E2E Testing
+
+The `/e2e/` directory contains automated end-to-end tests:
+
+```
+e2e/
+├── GymRatFlow_test_plan.md   # Test documentation and execution guide
+└── test_data_setup.sql       # SQL to create fixture users (run once)
+```
+
+### Test Runner
+
+`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 9 test cases:
+
+| Test | Category | Description |
+|------|----------|-------------|
+| TC001 | FILTRO_RUIDO | Ignores WhatsApp status updates |
+| TC002 | ONBOARDING | New user triggers KYC flow |
+| TC002_FULL_KYC | ONBOARDING_FULL | AI-simulated user completes entire KYC |
+| TC003 | AGENDAR | User without schedule gets scheduling flow |
+| TC004 | DESCANSO | User with no workout today gets rest message |
+| TC006 | VER_RUTINA | User sees formatted routine |
+| TC007 | CHAT | General fitness questions answered |
+| TC011 | PENDING_TASK | User confirms workout completion |
+| TC012 | PENDING_TASK | User declines confirmation |
+
+### Running Tests
+
+1. **First time setup**: Run `e2e/test_data_setup.sql` in Supabase to create fixture users
+2. **Import workflow**: Import `GymRatFlow_E2E_TestRunner.json` into n8n
+3. **Configure credentials**: Postgres (Supabase), OpenAI API
+4. **Execute**: Click "Test Workflow" - results appear in "Generate Report" node
+
+### Test Users (Reserved Phones)
+
+| Phone | User | Purpose |
+|-------|------|---------|
+| `570000000001` | Test_NoSchedule | TC003 |
+| `570000000002` | Test_RestDay | TC004 |
+| `570000000003` | Test_WithRoutine | TC006, TC007 |
+| `570000000004` | Test_WithPendingTask | TC011, TC012 |
+| `570000000009` | Dynamic (created/deleted) | TC002, TC002_FULL_KYC |
+
+> **Important**: Phone numbers `57000000000X` are reserved for testing. Do not use for real users.
