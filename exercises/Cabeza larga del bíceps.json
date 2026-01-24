@@ -1,0 +1,2169 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/biceps/barbell-curl",
+            "female": "barbell/female/biceps/barbell-curl"
+        },
+        "name": "Curl con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-single-arm-bayesian-curl",
+            "female": "cables/female/biceps/cable-single-arm-bayesian-curl"
+        },
+        "name": "Curl Unilateral Con Polea Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-incline-hammer-curl",
+            "female": "dumbbells/female/biceps/dumbbell-incline-hammer-curl"
+        },
+        "name": "Curl Martillo en Banco Inclinado con Mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-incline-reverse-curl",
+            "female": "dumbbells/female/biceps/dumbbell-incline-reverse-curl"
+        },
+        "name": "Curl inverso con mancuernas en banco inclinado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-incline-zottman-curl",
+            "female": "dumbbells/female/biceps/dumbbell-incline-zottman-curl"
+        },
+        "name": "Curl Zottman Inclinado con Mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-bar-curl",
+            "female": "cables/female/biceps/cable-bar-curl"
+        },
+        "name": "Curl con barra en polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-bilateral-bayesian-curl",
+            "female": "cables/female/biceps/cable-bilateral-bayesian-curl"
+        },
+        "name": "Curl Bayesian en polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-rope-hammer-curl",
+            "female": "cables/female/biceps/cable-rope-hammer-curl"
+        },
+        "name": "Curl Martillo Con Cuerda En Polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-seated-bayesian-curl",
+            "female": "cables/female/biceps/cable-seated-bayesian-curl"
+        },
+        "name": "Curl de bíceps en polea sentado (Bayesian)"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-hammer-bayesian-curl",
+            "female": "cables/female/biceps/cable-hammer-bayesian-curl"
+        },
+        "name": "Curl Martillo en Polea Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/biceps/barbell-drag-curl",
+            "female": "barbell/female/biceps/barbell-drag-curl"
+        },
+        "name": "Curl de arrastre con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "smith-machine/male/biceps/smith-machine-drag-curl",
+            "female": "smith-machine/female/biceps/smith-machine-drag-curl"
+        },
+        "name": "Curl arrastrado en máquina Smith"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-high-bayesian-curl",
+            "female": "cables/female/biceps/cable-high-bayesian-curl"
+        },
+        "name": "Curl de Bíceps en Polea Alta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-incline-curl",
+            "female": "dumbbells/female/biceps/dumbbell-incline-curl"
+        },
+        "name": "Curl inclinado con mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-seated-bayesian-hammer-curl",
+            "female": "cables/female/biceps/cable-seated-bayesian-hammer-curl"
+        },
+        "name": "Curl Martillo Sentado en Polea Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 25,
+                "name": "Extensores de la muñeca",
+                "name_en_us": "Wrist Extensors",
+                "scientific_name": null,
+                "url_name": "wrist-extensors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-reverse-bayesian-curl",
+            "female": "cables/female/biceps/cable-reverse-bayesian-curl"
+        },
+        "name": "Curl inverso Bayesian con cable"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 25,
+                "name": "Extensores de la muñeca",
+                "name_en_us": "Wrist Extensors",
+                "scientific_name": null,
+                "url_name": "wrist-extensors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-seated-bayesian-reverse-curl",
+            "female": "cables/female/biceps/cable-seated-bayesian-reverse-curl"
+        },
+        "name": "Curl Invertido Sentado en Polea Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "band/male/biceps/band-bayesian-curl",
+            "female": "band/female/biceps/band-bayesian-curl"
+        },
+        "name": "Curl de bíceps con banda Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "band/male/biceps/band-bayesian-reverse-curl",
+            "female": "band/female/biceps/band-bayesian-reverse-curl"
+        },
+        "name": "Curl Invertido con Banda Bayesian"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-drag-curl",
+            "female": "dumbbells/female/biceps/dumbbell-drag-curl"
+        },
+        "name": "Dumbbell Drag Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-single-arm-incline-curl",
+            "female": "dumbbells/female/biceps/dumbbell-single-arm-incline-curl"
+        },
+        "name": "Dumbbell Single Arm Incline Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-single-arm-incline-reverse-curl",
+            "female": "dumbbells/female/biceps/dumbbell-single-arm-incline-reverse-curl"
+        },
+        "name": "Dumbbell Single Arm Incline Reverse Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-single-arm-incline-hammer-curl",
+            "female": "dumbbells/female/biceps/dumbbell-single-arm-incline-hammer-curl"
+        },
+        "name": "Dumbbell Single Arm Incline Hammer Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-standing-single-arm-curl",
+            "female": "dumbbells/female/biceps/dumbbell-standing-single-arm-curl"
+        },
+        "name": "Dumbbell Standing Single Arm Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-zottman-curl",
+            "female": "dumbbells/female/biceps/dumbbell-zottman-curl"
+        },
+        "name": "Dumbbell Zottman Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/biceps/kettlebell-drag-curl",
+            "female": "kettlebells/female/biceps/kettlebell-drag-curl"
+        },
+        "name": "Kettlebell Drag Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 17,
+                "name": "Cabeza corta del bíceps",
+                "name_en_us": "Short Head Bicep",
+                "scientific_name": null,
+                "url_name": "short-head-bicep",
+                "description": "\"Esta es para una aplicación de fitness experimentada:\"",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-high-single-arm-hammer-bayesian-curl",
+            "female": "cables/female/biceps/cable-high-single-arm-hammer-bayesian-curl"
+        },
+        "name": "Cable High Single Arm Hammer Bayesian Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-high-single-arm-hammer-rolling-curl",
+            "female": "cables/female/biceps/cable-high-single-arm-hammer-rolling-curl"
+        },
+        "name": "Cable High Single Arm Hammer Rolling Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 25,
+                "name": "Extensores de la muñeca",
+                "name_en_us": "Wrist Extensors",
+                "scientific_name": null,
+                "url_name": "wrist-extensors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-high-single-arm-reverse-bayesian-curl",
+            "female": "cables/female/biceps/cable-high-single-arm-reverse-bayesian-curl"
+        },
+        "name": "Cable High Single Arm Reverse Bayesian Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/biceps/cable-high-single-arm-rolling-curl",
+            "female": "cables/female/biceps/cable-high-single-arm-rolling-curl"
+        },
+        "name": "Cable High Single Arm Rolling Curl"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 16,
+                "name": "Cabeza larga del bíceps",
+                "name_en_us": "Long Head Bicep",
+                "scientific_name": null,
+                "url_name": "long-head-bicep",
+                "description": "You forgot to include the text within the quotes that you want to be translated into Spanish.",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 1,
+                "level": 1,
+                "parent": 1
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/biceps/dumbbell-seated-zottman-curl",
+            "female": "dumbbells/female/biceps/dumbbell-seated-zottman-curl"
+        },
+        "name": "Dumbbell Seated Zottman Curl"
+    }
+]

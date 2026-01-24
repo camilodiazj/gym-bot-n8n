@@ -1,0 +1,2662 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/hanging-knee-raises",
+            "female": "bodyweight/female/abdominals/hanging-knee-raises"
+        },
+        "name": "Elevaciones de rodillas colgando"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            { 
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/hand-plank",
+            "female": "bodyweight/female/abdominals/hand-plank"
+        },
+        "name": "Plancha alta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/long-lever-plank",
+            "female": "bodyweight/female/abdominals/long-lever-plank"
+        },
+        "name": "Plancha Larga"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/hollow-hold",
+            "female": "bodyweight/female/abdominals/hollow-hold"
+        },
+        "name": "Posición Hollow"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/laying-leg-raises",
+            "female": "bodyweight/female/abdominals/laying-leg-raises"
+        },
+        "name": "Elevaciones De Piernas Tumbado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "machine/male/abdominals/machine-roll-outs",
+            "female": "machine/female/abdominals/machine-roll-outs"
+        },
+        "name": "Extensiones abdominales en máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/mountain-climber",
+            "female": "bodyweight/female/abdominals/mountain-climber"
+        },
+        "name": "Escalador"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/abdominals/barbell-larsen-bench-press",
+            "female": "barbell/female/abdominals/barbell-larsen-bench-press"
+        },
+        "name": "Press de banca Larsen con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 12,
+            "name": "TRX",
+            "name_en_us": "TRX",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 12,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "trx/male/abdominals/trx-knee-tuck",
+            "female": "trx/female/abdominals/trx-knee-tuck"
+        },
+        "name": "TRX Rodillas al pecho"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 12,
+            "name": "TRX",
+            "name_en_us": "TRX",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 12,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "trx/male/abdominals/trx-mountain-climber",
+            "female": "trx/female/abdominals/trx-mountain-climber"
+        },
+        "name": "TRX Escalador"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 12,
+            "name": "TRX",
+            "name_en_us": "TRX",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 12,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "trx/male/abdominals/trx-pike",
+            "female": "trx/female/abdominals/trx-pike"
+        },
+        "name": "Pike con TRX"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 27,
+            "name": "Cardio",
+            "name_en_us": "Cardio",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 21,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cardio/male/abdominals/toe-tap",
+            "female": "cardio/female/abdominals/toe-tap"
+        },
+        "name": "Toque con la punta del pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 6,
+            "name": "Balón Medicinal",
+            "name_en_us": "Medicine-Ball",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 13,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "medicine-ball/male/abdominals/plank",
+            "female": "medicine-ball/female/abdominals/plank"
+        },
+        "name": "Plancha con balón medicinal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/bicycle-crunch",
+            "female": "bodyweight/female/abdominals/bicycle-crunch"
+        },
+        "name": "Abdominales en bicicleta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/long-lever-forearm-plank",
+            "female": "bodyweight/female/abdominals/long-lever-forearm-plank"
+        },
+        "name": "Plancha en antebrazos con palanca larga"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/reverse-crunch",
+            "female": "bodyweight/female/abdominals/reverse-crunch"
+        },
+        "name": "Crunch Inverso"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "machine/male/abdominals/rower-knee-tuck",
+            "female": "machine/female/abdominals/rower-knee-tuck"
+        },
+        "name": "Encogimiento de Rodillas en Remo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "machine/male/abdominals/rower-pike",
+            "female": "machine/female/abdominals/rower-pike"
+        },
+        "name": "Remador Pica"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "smith-machine/male/abdominals/smith-machine-hanging-knee-tuck",
+            "female": "smith-machine/female/abdominals/smith-machine-hanging-knee-tuck"
+        },
+        "name": "Smith Machine Elevación de Rodillas Colgando"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "smith-machine/male/abdominals/smith-machine-reverse-crunch-hip-raise",
+            "female": "smith-machine/female/abdominals/smith-machine-reverse-crunch-hip-raise"
+        },
+        "name": "Levantamiento de Cadera con Encogimientos Invertidos en Máquina Smith"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 27,
+            "name": "Cardio",
+            "name_en_us": "Cardio",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 21,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cardio/male/abdominals/cardio-forward-scissor",
+            "female": "cardio/female/abdominals/cardio-forward-scissor"
+        },
+        "name": "Tijera Cardio hacia Delante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 27,
+            "name": "Cardio",
+            "name_en_us": "Cardio",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 21,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cardio/male/abdominals/cardio-in-and-out-forward",
+            "female": "cardio/female/abdominals/cardio-in-and-out-forward"
+        },
+        "name": "Cardio Adentro y Afuera Hacia Adelante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "recovery/male/lower-abdominals/bench-lift-off-active",
+            "female": "recovery/female/lower-abdominals/bench-lift-off-active"
+        },
+        "name": "Texto: Levantamiento Activo de Banca"
+    },
+    {
+        "muscles": [
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "recovery/male/lower-abdominals/bench-lift-off-static",
+            "female": "recovery/female/lower-abdominals/bench-lift-off-static"
+        },
+        "name": "Texto: Levantamiento Estático en Banco"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/abdominals/leg-lowers",
+            "female": "recovery/female/abdominals/leg-lowers"
+        },
+        "name": "Descensos de Pierna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/laying-alternating-leg-raise",
+            "female": "bodyweight/female/abdominals/laying-alternating-leg-raise"
+        },
+        "name": "Elevación alternada de piernas acostado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/laying-bent-leg-raise",
+            "female": "bodyweight/female/abdominals/laying-bent-leg-raise"
+        },
+        "name": "Elevación de piernas dobladas acostado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/bodyweight-hanging-knee-tuck",
+            "female": "bodyweight/female/abdominals/bodyweight-hanging-knee-tuck"
+        },
+        "name": "Elevación de rodillas en suspensión con el peso corporal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/bodyweight-hanging-l-sit",
+            "female": "bodyweight/female/abdominals/bodyweight-hanging-l-sit"
+        },
+        "name": "Sentadilla en L suspendida con peso corporal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/slow-tempo-mountain-climber",
+            "female": "bodyweight/female/abdominals/slow-tempo-mountain-climber"
+        },
+        "name": "Escalador de montaña a ritmo lento"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/stability-ball-knee-tuck",
+            "female": "bodyweight/female/abdominals/stability-ball-knee-tuck"
+        },
+        "name": "Flexión de rodillas con pelota de estabilidad"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/stability-ball-pike",
+            "female": "bodyweight/female/abdominals/stability-ball-pike"
+        },
+        "name": "Elevación de pelota de estabilidad"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 22,
+                "name": "Abdominales Superiores",
+                "name_en_us": "Upper Abdominals",
+                "scientific_name": null,
+                "url_name": "upper-abdominals",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/abdominals/barbell-roll-outs",
+            "female": "barbell/female/abdominals/barbell-roll-outs"
+        },
+        "name": "Rollouts con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/alternating-bent-leg-raise",
+            "female": "bodyweight/female/abdominals/alternating-bent-leg-raise"
+        },
+        "name": "Elevación alternada de piernas flexionadas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/elbow-plank-mountain-climber",
+            "female": "bodyweight/female/abdominals/elbow-plank-mountain-climber"
+        },
+        "name": "Plancha con escalador de codo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/frog-crunch",
+            "female": "bodyweight/female/abdominals/frog-crunch"
+        },
+        "name": "Crunch de rana"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/hanging-l-sit",
+            "female": "bodyweight/female/abdominals/hanging-l-sit"
+        },
+        "name": "Elevación en L colgante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/abdominals/jumping-mountain-climber",
+            "female": "bodyweight/female/abdominals/jumping-mountain-climber"
+        },
+        "name": "Escalador con salto"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/abdominals/dumbbell-larsen-press",
+            "female": "dumbbells/female/abdominals/dumbbell-larsen-press"
+        },
+        "name": "Dumbbell Larsen Press"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/abdominals/dumbbell-single-arm-larsen-press",
+            "female": "dumbbells/female/abdominals/dumbbell-single-arm-larsen-press"
+        },
+        "name": "Dumbbell Single Arm Larsen Press"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "kettlebells/male/abdominals/kettlebell-larsen-press",
+            "female": "kettlebells/female/abdominals/kettlebell-larsen-press"
+        },
+        "name": "Kettlebell Larsen Press"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "kettlebells/male/abdominals/kettlebell-single-arm-larsen-press",
+            "female": "kettlebells/female/abdominals/kettlebell-single-arm-larsen-press"
+        },
+        "name": "Kettlebell Single Arm Larsen Press"
+    }
+]

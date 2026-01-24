@@ -1,0 +1,412 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/ankles/alphabet",
+            "female": "recovery/female/ankles/alphabet"
+        },
+        "name": "Alfabeto"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/big-toe-abduction",
+            "female": "recovery/female/feet/big-toe-abduction"
+        },
+        "name": "Abducción del dedo gordo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/big-toe-dorsiflexion",
+            "female": "recovery/female/feet/big-toe-dorsiflexion"
+        },
+        "name": "Dorsiflexión del dedo gordo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/standing-doming",
+            "female": "recovery/female/feet/standing-doming"
+        },
+        "name": "Doming de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/seated-doming",
+            "female": "recovery/female/feet/seated-doming"
+        },
+        "name": "Sentado en cúpula"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/ankles/eversions",
+            "female": "recovery/female/ankles/eversions"
+        },
+        "name": "Eversiones"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/standing-inversions-hold",
+            "female": "recovery/female/feet/standing-inversions-hold"
+        },
+        "name": "Postura de Inversión de Pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/feet/band-seated-inversions",
+            "female": "recovery/female/feet/band-seated-inversions"
+        },
+        "name": "Inversiones sentado con banda"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "recovery/male/hips/balance-2-single-leg",
+            "female": "recovery/female/hips/balance-2-single-leg"
+        },
+        "name": "Equilibrio en una pierna 2"
+    },
+    {
+        "muscles": [
+            {
+                "id": 46,
+                "name": "Pies",
+                "name_en_us": "Feet",
+                "scientific_name": null,
+                "url_name": "feet",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 18,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "recovery/male/hips/single-leg-bosu-ball-balance-2",
+            "female": "recovery/female/hips/single-leg-bosu-ball-balance-2"
+        },
+        "name": "Equilibrio en Bosu Ball con una sola pierna 2"
+    }
+]
