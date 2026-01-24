@@ -1,0 +1,679 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/inner-thigh/machine-hip-adduction",
+            "female": "machine/female/inner-thigh/machine-hip-adduction"
+        },
+        "name": "Texto: Aducción de Cadera en Máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/inner-thigh/machine-hip-and-glute-adduction",
+            "female": "machine/female/inner-thigh/machine-hip-and-glute-adduction"
+        },
+        "name": "Texto: Máquina de Aducción de Cadera y Glúteo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/glutes/cable-standing-hip-adduction",
+            "female": "cables/female/glutes/cable-standing-hip-adduction"
+        },
+        "name": "Aducción de cadera en polea de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "band/male/glutes/band-hip-adduction",
+            "female": "band/female/glutes/band-hip-adduction"
+        },
+        "name": "Aducción de Cadera con Banda"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 38,
+                "name": "Glúteo mayor",
+                "name_en_us": "Gluteus Maximus",
+                "scientific_name": null,
+                "url_name": "gluteus-maximus",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 7,
+                "level": 1,
+                "parent": 9
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 28,
+                "name": "Parte interna del cuádriceps",
+                "name_en_us": "Inner Quadriceps",
+                "scientific_name": "Vastus Medialis",
+                "url_name": "inner-quadricep",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 29,
+                "name": "Parte externa del cuádriceps",
+                "name_en_us": "Outer Quadricep",
+                "scientific_name": "Vastus Lateralis",
+                "url_name": "outer-quadricep",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/glutes/barbell-squat",
+            "female": "barbell/female/glutes/barbell-squat"
+        },
+        "name": "Sentadilla con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/glutes/dumbbell-goblet-squat",
+            "female": "dumbbells/female/glutes/dumbbell-goblet-squat"
+        },
+        "name": "Sentadilla con mancuerna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/glutes/bodyweight-squat",
+            "female": "bodyweight/female/glutes/bodyweight-squat"
+        },
+        "name": "Sentadilla con peso corporal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "bodyweight/male/groin/bodyweight-butterfly-stretch",
+            "female": "bodyweight/female/groin/bodyweight-butterfly-stretch"
+        },
+        "name": "Estiramiento de mariposa con peso corporal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 38,
+                "name": "Glúteo mayor",
+                "name_en_us": "Gluteus Maximus",
+                "scientific_name": null,
+                "url_name": "gluteus-maximus",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 7,
+                "level": 1,
+                "parent": 9
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 27,
+                "name": "Aductores",
+                "name_en_us": "Inner Thigh",
+                "scientific_name": "Hip Adductors",
+                "url_name": "inner-thigh",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 28,
+                "name": "Parte interna del cuádriceps",
+                "name_en_us": "Inner Quadriceps",
+                "scientific_name": "Vastus Medialis",
+                "url_name": "inner-quadricep",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 29,
+                "name": "Parte externa del cuádriceps",
+                "name_en_us": "Outer Quadricep",
+                "scientific_name": "Vastus Lateralis",
+                "url_name": "outer-quadricep",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            },
+            {
+                "id": 50,
+                "name": "Ingle",
+                "name_en_us": "Groin",
+                "scientific_name": null,
+                "url_name": "groin",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 22,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/glutes/barbell-banded-back-squat",
+            "female": "barbell/female/glutes/barbell-banded-back-squat"
+        },
+        "name": "Barbell Banded Back Squat"
+    }
+]
