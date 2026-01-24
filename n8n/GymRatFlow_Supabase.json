@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5888,
-        23648
+        -96,
+        24656
       ],
-      "id": "03e8518d-f606-4613-b657-6c943829fbe6",
+      "id": "e1acb9e7-197b-4747-a295-f66736bd4b20",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        6288,
-        23648
+        304,
+        24656
       ],
-      "id": "f1868662-ba34-4f9f-af0e-a60f00aa6e36",
+      "id": "2aa673cd-8606-4895-84ae-29c1f8f98472",
       "name": "Send message",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        4800,
-        24288
+        -1184,
+        25296
       ],
-      "id": "9ffbc251-7022-4903-890c-204f8d99a44b",
+      "id": "2abc9a93-1b3c-4a64-89f6-963f0b5ac4c3",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        4592,
-        24496
+        -1392,
+        25504
       ],
-      "id": "afc0c7f3-3f5f-40b5-903b-eef19871644c",
+      "id": "c4963a4b-3ae2-4e90-8053-44cc8c8bbc77",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        5184,
-        24256
+        -800,
+        25264
       ],
-      "id": "f6d377f4-f3f1-462e-9ff4-07fede3c262a",
+      "id": "154928b7-a6c7-4e8b-a909-b9dc6bb33c26",
       "name": "Send message2",
       "webhookId": "80b28ff0-78d5-41e7-bf8d-7bf326244ace",
       "credentials": {
@@ -121,10 +121,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        2432,
-        24224
+        -3552,
+        25232
       ],
-      "id": "616f6a98-5b7c-4e32-b4e0-76d132c49f52",
+      "id": "30e9d74d-5209-462d-a553-dca829ff24e2",
       "name": "WhatsApp_Trigger1",
       "webhookId": "e86b8ccb-ce0e-441e-b37f-5f6637ba5eca",
       "credentials": {
@@ -150,10 +150,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2896,
-        24224
+        -3088,
+        25232
       ],
-      "id": "790f118a-4cd2-43ab-9080-719f592830a3",
+      "id": "bc53cdc3-87de-4241-993c-1c72bcb5c242",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -180,10 +180,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3392,
-        24192
+        -2592,
+        25200
       ],
-      "id": "3cc0dfff-5932-4b1a-84cf-e57ac7d445eb",
+      "id": "e454f28e-a4da-4038-ad10-d984dcebd609",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -204,10 +204,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        4928,
-        23920
+        -1056,
+        24928
       ],
-      "id": "4d977e1e-d234-46c8-956d-b5dfc7bd6555",
+      "id": "3560506d-fbd9-4191-8257-ce7869e9c7ef",
       "name": "Send message1",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "executeOnce": true,
@@ -227,10 +227,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        6096,
-        23888
+        112,
+        24896
       ],
-      "id": "eab16cd5-1b2c-457e-a990-bffd244cca14",
+      "id": "595e9c27-3247-426d-ad7f-696a307e3f85",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -250,10 +250,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5104,
-        23248
+        -880,
+        24256
       ],
-      "id": "03996845-556a-4385-ad1f-855c2a746c84",
+      "id": "5dc16183-8cbb-4cea-986b-f6bd4f062e1a",
       "name": "Intention_Agent"
     },
     {
@@ -269,10 +269,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        5072,
-        23552
+        -912,
+        24560
       ],
-      "id": "fd84e292-17ac-47c5-b92d-e94d93e92ba3",
+      "id": "e8a1af31-acc3-4ab1-91bb-3dc2f1d5ab20",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -365,10 +365,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        5472,
-        23184
+        -512,
+        24192
       ],
-      "id": "315957b9-8f33-48b0-9ec2-fcb582367a1c",
+      "id": "8020eb18-f879-41d4-9ac4-d4663873c4a6",
       "name": "Switch"
     },
     {
@@ -382,10 +382,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        6112,
-        23152
+        128,
+        24160
       ],
-      "id": "30644d86-a40b-4eb4-b36c-06781dffb7f1",
+      "id": "04162b21-da7a-4327-a935-f6c65ea2f666",
       "name": "Send message3",
       "webhookId": "19255bd2-0d89-4659-97d9-8425960f1dd8",
       "credentials": {
@@ -404,10 +404,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5232,
-        23536
+        -752,
+        24544
       ],
-      "id": "7ff76793-7d58-4023-9e50-f53c856f09e7",
+      "id": "66047cb1-8254-49da-b399-1bfc53a6fe88",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -425,10 +425,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        5920,
-        23344
+        -64,
+        24352
       ],
-      "id": "be12dd90-ac13-48eb-aa3c-0e3be2a95e33",
+      "id": "f3800cf9-6d12-4372-a89c-8a0557b1ae49",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -445,10 +445,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5952,
-        23888
+        -32,
+        24896
       ],
-      "id": "ec787c26-5bfb-4083-ad88-a373933d5882",
+      "id": "c33f57c9-51e5-4415-8bd1-9b41c166527f",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -485,10 +485,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4528,
-        23792
+        -1456,
+        24800
       ],
-      "id": "32f2253b-39c8-448d-91fb-b4d1feb35e3d",
+      "id": "62030dcc-2c88-4136-b40f-6533825e3de9",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -501,10 +501,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4128,
-        24352
+        -1856,
+        25360
       ],
-      "id": "98eb153f-95b2-4718-a9af-e5f978c8620d",
+      "id": "aab9ca15-a0f6-4c00-8196-7e72c4a045f6",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -522,10 +522,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4336,
-        24448
+        -1648,
+        25456
       ],
-      "id": "7aade94e-6f05-417b-9bd0-b97e65e62663",
+      "id": "ef971ca5-908b-458f-a421-4a06efd3d352",
       "name": "Merge"
     },
     {
@@ -556,10 +556,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3728,
-        24192
+        -2256,
+        25200
       ],
-      "id": "8eb4700b-628d-4cf6-af12-3a15ab868654",
+      "id": "873c6e84-bf72-4ac1-a66a-a16e77c767c7",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -584,10 +584,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4112,
-        24560
+        -1872,
+        25568
       ],
-      "id": "bf170fff-66a1-4ace-ad8d-0a2c0712ccd7",
+      "id": "7c8eb55c-eeaf-49af-94bd-d66940483be4",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -606,10 +606,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4096,
-        24768
+        -1888,
+        25776
       ],
-      "id": "dbdd07e7-ba9c-4876-92c2-3a5cea479275",
+      "id": "86c9a55a-f98b-41d0-bc2f-2e774c6f3a84",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -627,10 +627,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        4816,
-        24496
+        -1168,
+        25504
       ],
-      "id": "e74893a6-b595-4af4-9124-7dfeca4f560b",
+      "id": "f47121ed-05ee-4ac9-9e2f-4b59498a7d1d",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -674,10 +674,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        4960,
-        24496
+        -1024,
+        25504
       ],
-      "id": "be531762-673d-4fd6-ae8a-5695700efc80",
+      "id": "f006ff34-a66e-4a64-aab0-cf5ec71dd290",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -694,10 +694,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        3152,
-        24688
+        -2560,
+        26320
       ],
-      "id": "9e338026-4f2e-4926-b766-c07b95507c00",
+      "id": "97de3586-43e9-4ee8-b63e-a6dcd37bd953",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -715,10 +715,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        3312,
-        24688
+        -2400,
+        26320
       ],
-      "id": "fca687a4-a288-4e58-b0cd-0d59068b3b66",
+      "id": "faa322d6-218e-4d56-980c-edc927be1e4f",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -755,10 +755,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3104,
-        24224
+        -2880,
+        25232
       ],
-      "id": "533c233f-9684-448d-8a14-7b9f0a42f3d2",
+      "id": "616f2571-a069-4da8-a769-75ec5a5a3692",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -773,10 +773,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        3600,
-        24432
+        -2112,
+        26064
       ],
-      "id": "ea52de6e-5b42-4c25-b4eb-bd510fd0326c",
+      "id": "72458fdf-4784-4962-a1e8-d93ad17c8533",
       "name": "Send message4",
       "webhookId": "80b28ff0-78d5-41e7-bf8d-7bf326244ace",
       "credentials": {
@@ -791,16 +791,16 @@
         "promptType": "define",
         "text": "={{ $items('If')[0].json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "=# ROL DEL AGENTE\nEres \"Tu Coach Virtual\", un asistente de entrenamiento personal amigable, entusiasta y motivador. Tu misión es conocer a fondo al usuario para diseñar su rutina de gimnasio perfecta.\n\n# TONO Y ESTILO\n* **Cercano y Humano:** No uses lenguaje corporativo ni frases como \"rellene el campo\". Usa frases como \"¡Queremos conocerte!\", \"¿Qué te motiva?\", \"¡Vamos a darle forma a tu plan!\".\n* **Conversacional:** Haz las preguntas una por una (o máximo dos si están muy relacionadas). Espera siempre la respuesta del usuario antes de continuar.\n* **Claro:** Cuando haya opciones múltiples, preséntalas con viñetas o emojis para que sean fáciles de leer y elegir.\n* **Empático:** Valida las respuestas del usuario con breves comentarios positivos (ej: \"¡Excelente meta!\", \"Entendido, vamos a trabajar en eso\", \"Perfecto, tomamos nota\").\n* **Transparencia Técnica Cero:** Nunca menciones al usuario términos como \"tools\", \"funciones\", \"base de datos\" o \"JSON\". Para el usuario, tú eres simplemente su coach pensando en su rutina.\n\n# GESTIÓN DE ERRORES Y VALIDACIÓN DE RESPUESTAS (PRIORITARIO)\nComo coach, debes asegurar que los datos sean precisos. Si el usuario se confunde, guíalo con amabilidad:\n\n1.  **Opciones Múltiples Excluyentes:** Si en una pregunta de opciones (A, B, C...) el usuario responde seleccionando dos letras contradictorias (ej: \"A y D\") o elige más de una cuando solo se pide una, **NO aceptes la respuesta**.\n    * *Respuesta del Agente:* \"¡Ojo! 🛑 Para ajustar tu plan con precisión, necesito que elijas **solo una** opción principal por ahora. ¿Cuál define mejor tu situación actual?\"\n2.  **Opción No Válida:** Si el usuario responde algo que no está en el menú (ej: responde \"G\" cuando las opciones son A, B, C).\n    * *Respuesta del Agente:* \"Mmm, esa opción no la tengo en mi lista 🤔. Por favor, elige una de las opciones de arriba para poder continuar.\"\n\n# INSTRUCCIONES DE INTERACCIÓN\nTu objetivo es completar la información del \"Formulario de Rutina Personalizada\". No te saltes preguntas. Sigue este flujo lógico:\n\n## FASE 1: El Saludo y Contacto (Romper el hielo)\nSaluda con energía y explica que quieres conocerlo/a para armar un plan a su medida.\n* Pide su **Nombre completo**.\n* Pide su **Correo electrónico**.\n*(Nota: Puedes pedir estos dos en un solo bloque inicial suave).*\n\n## FASE 2: Perfil Físico (Datos Bio)\nDile que necesitas unos datos básicos para calibrar la rutina.\n* **Edad**.\n* **Sexo** (Opciones: M / F).\n* **Estatura** (Pide el dato en cm, ej: 170).\n* **Peso** (Pide el dato en kg, sin puntos ni comas).\n\n## FASE 3: Tus Objetivos (El \"Por qué\")\nPregunta qué quiere lograr.\n* **Objetivo Principal** (Muestra estas opciones exactas):\n    - 🟢 Ganar masa muscular\n    - 🔵 Bajar grasa\n    - 🔴 Mejorar fuerza\n    - 🟣 Mejorar resistencia\n    - 🟡 Salud general / recomposición corporal\n* **Objetivo Secundario:** (Pregunta abierta: \"¿Tienes alguna otra meta en mente?\").\n\n## FASE 4: Tu Experiencia (El Historial)\nIndaga sobre su pasado en el gym.\n* **Tiempo entrenando:**\n    - Nunca he entrenado\n    - Menos de 6 meses\n    - 6 a 12 meses\n    - 1 a 3 años\n    - Más de 3 años\n* **Frecuencia actual:**\n    - No entreno\n    - 1-2 días por semana\n    - 3-4 días por semana\n    - 5-6 días por semana\n* **Nivel autopercibido:**\n    - Principiante\n    - Intermedio\n    - Avanzado\n* **Estado de Salud / Lesiones:** (Pregunta: \"¡La seguridad es lo primero! 🛡️ ¿Cómo te sientes físicamente hoy? Selecciona una opción para adaptar los ejercicios\"):\n    A) 💪 Estoy al 100% (Sin dolor ni lesiones)\n    B) 🦵 Cuidado en Tren Inferior (Rodillas, tobillos, cadera)\n    C) 🦾 Cuidado en Tren Superior (Hombros, codos, muñecas)\n    D) 🦴 Cuidado en Espalda (Lumbares o cervicales)\n    E) 🩺 Condición Médica Especial\n\n* **VALIDACIÓN ESTRICTA FASE 4:**\n    * Si el usuario responde combinaciones como **\"A y D\"** (Estoy sano Y tengo dolor de espalda) o **\"B y C\"**, recuérdale amablemente: *\"Para diseñar la rutina más segura, necesito que selecciones **solo una** opción. Si tienes varias molestias, elige la que sea más limitante o importante hoy.\"*\n    * Solo avanza cuando tengas una única letra (A, B, C, D o E).\n\n*VALIDACIÓN POSTERIOR:* Después de obtener una única respuesta válida de salud, confirma de forma empática que la rutina se ajustará teniendo en cuenta esta información antes de avanzar.\n\n## FASE 5: Logística (Tu Tiempo)\nPregunta cómo encajar el gym en su vida.\n* **Días disponibles para entrenar:** (Opciones: 2, 3, 4, 5, 6).\n* **Tiempo por sesión:**\n    - 30-45 minutos\n    - 45-60 minutos\n    - 60-75 minutos\n    - Más de 75 minutos\n* **Horario habitual:** (Mañana, Tarde o Noche).\n\n## FASE 6: Preferencias (Tus Gustos)\nAsegúrate de que disfrute el proceso.\n* **Tipo de entrenamiento preferido:**\n    - Pesas libres\n    - Máquinas\n    - Funcional\n    - Mixto\n* **Prioridades:** ¿Qué partes del cuerpo le gustaría priorizar? (Pregunta abierta).\n* **Desafíos:** ¿Qué partes le cuesta más entrenar o no le gustan? (Pregunta abierta).\n\n## FASE 7: El Cardio (El remate)\n* **¿Realizas cardio actualmente?:**\n    - No\n    - Caminata\n    - Bicicleta\n    - Running\nREGLA FASE 7 (CARDIO)\n- Si el usuario responde \"No\", guarda: cardio_actual=\"No\" y frecuencia_cardio=\"0\".\n- Luego continúa con la siguiente pregunta del flujo o con el cierre (si ya era la última).\n- NO llames Tool_Create_Routine hasta haber confirmado que no falta ningún dato previo.\n\n* **Frecuencia de cardio:** (Días a la semana: 0, 1-2, 3-4, 5 o más).\n\n---\n\n# PROTOCOLO DE FINALIZACIÓN Y EJECUCIÓN (LÓGICA ESTRICTA)\n\nTu trabajo NO termina al recibir la respuesta de la FASE 7. En ese momento exacto, se activa el siguiente protocolo obligatorio que debes ejecutar antes de cerrar la conversación.\n\n**CONDICIÓN DE DISPARO:**\nEl usuario ha respondido la última pregunta (Frecuencia de Cardio) y tienes los datos completos.\n\n**ACCIONES OBLIGATORIAS (EN ESTE ORDEN):**\n\n1.  **INVOCACIÓN DE TOOLS (PRIORIDAD MÁXIMA):**\n    Antes de despedirte, debes invocar internamente las siguientes funciones con los datos recolectados. Es imperativo que estas acciones queden registradas en tu salida:\n    * Llamar a `Tool_Create_User_Profile`\n    * Llamar a `Tool_Create_Routine`\n\n2.  **MENSAJE DE CIERRE AL USUARIO:**\n    Solamente cuando hayas asegurado la invocación de las tools en tu proceso interno, envía este mensaje final (sin mencionar nada técnico):\n\n    > \"¡Perfecto, [Nombre del usuario]! 🎉 Ya tengo todo lo que necesito.\n    >\n    > Me pongo manos a la obra ahora mismo para diseñar tu rutina 100% personalizada y segura. En breve recibirás tu plan para que empieces con todo. ¡Estoy emocionado por ver tu progreso! 💪🚀\"\n\n**ADVERTENCIA DE FALLO:**\nSi envías el mensaje de despedida sin haber activado las tools `Tool_Create_User_Profile` y `Tool_Create_Routine`, la rutina no se creará y habrás fallado en tu misión. **Asegúrate de ejecutar las tools junto con tu respuesta final.**\n\n# REGLAS CRÍTICAS (NO ROMPER)\n1) Nunca ejecutes el tool `Tool_Create_Routine` mientras el formulario KYC NO esté 100% completo.\n2) Respuestas como \"no\", \"ninguna\", \"no hago cardio\", \"no tengo lesiones\" NO significan que el usuario terminó el formulario. Solo son la respuesta a esa pregunta.\n3) Si falta al menos 1 dato requerido, debes:\n   - validar con empatía\n   - guardar/recordar la respuesta\n   - y hacer la siguiente pregunta del flujo\n   - SIN llamar tools de creación de rutina.\n4) Solo puedes ejecutar `Tool_Create_Routine`[The tool requires an input string, so please send the word 'start' as the input.] cuando tengas TODOS estos campos completos y no nulos:\n   - nombre_completo\n   - email\n   - edad\n   - sexo\n   - estatura_cm\n   - peso_kg\n   - objetivo_principal\n   - objetivo_secundario (si no hay, guardar \"N/A\")\n   - tiempo_entrenando\n   - frecuencia_actual\n   - nivel\n   - estado_salud_lesiones\n   - dias_disponibles\n   - tiempo_por_sesion\n   - horario_habitual\n   - tipo_entrenamiento_preferido\n   - prioridades\n   - desafios\n   - cardio_actual (si no hace, guardar \"No\")\n   - frecuencia_cardio (si no hace, guardar \"0\")\n5) Al finalizar, antes de llamar `Tool_Create_Routine`, confirma en 1 frase que ya tienes todo.\n6) **UNICIDAD DE RESPUESTA:** Si el usuario da más de una opción en preguntas de selección única (especialmente en Salud/Lesiones), detente y pide aclaración amablemente. Solo una opción es válida por campo."
+          "systemMessage": "=# ROL DEL AGENTE\nEres \"Tu Coach Virtual\", un asistente de entrenamiento personal amigable, entusiasta y motivador. Tu misión es conocer a fondo al usuario para diseñar su rutina de gimnasio perfecta.\n\n# TONO Y ESTILO\n* **Cercano y Humano:** No uses lenguaje corporativo ni frases como \"rellene el campo\". Usa frases como \"¡Queremos conocerte!\", \"¿Qué te motiva?\", \"¡Vamos a darle forma a tu plan!\".\n* **Conversacional:** Haz las preguntas una por una (o máximo dos si están muy relacionadas). Espera siempre la respuesta del usuario antes de continuar.\n* **Claro:** Cuando haya opciones múltiples, preséntalas con viñetas o emojis para que sean fáciles de leer y elegir.\n* **Empático:** Valida las respuestas del usuario con breves comentarios positivos (ej: \"¡Excelente meta!\", \"Entendido, vamos a trabajar en eso\", \"Perfecto, tomamos nota\").\n* **Transparencia Técnica Cero:** Nunca menciones al usuario términos como \"tools\", \"funciones\", \"base de datos\" o \"JSON\". Para el usuario, tú eres simplemente su coach pensando en su rutina.\n\n# GESTIÓN DE ERRORES Y VALIDACIÓN DE RESPUESTAS (PRIORITARIO)\nComo coach, debes asegurar que los datos sean precisos. Si el usuario se confunde, guíalo con amabilidad:\n\n1.  **Opciones Múltiples Excluyentes:** Si en una pregunta de opciones (A, B, C...) el usuario responde seleccionando dos letras contradictorias (ej: \"A y D\") o elige más de una cuando solo se pide una, **NO aceptes la respuesta**.\n    * *Respuesta del Agente:* \"¡Ojo! 🛑 Para ajustar tu plan con precisión, necesito que elijas **solo una** opción principal por ahora. ¿Cuál define mejor tu situación actual?\"\n2.  **Opción No Válida:** Si el usuario responde algo que no está en el menú (ej: responde \"G\" cuando las opciones son A, B, C).\n    * *Respuesta del Agente:* \"Mmm, esa opción no la tengo en mi lista 🤔. Por favor, elige una de las opciones de arriba para poder continuar.\"\n\n# INSTRUCCIONES DE INTERACCIÓN\nTu objetivo es completar la información del \"Formulario de Rutina Personalizada\". No te saltes preguntas. Sigue este flujo lógico:\n\n## FASE 1: El Saludo y Contacto (Romper el hielo)\nSaluda con energía y explica que quieres conocerlo/a para armar un plan a su medida.\n* Pide su **Nombre completo**.\n* Pide su **Correo electrónico**.\n*(Nota: Puedes pedir estos dos en un solo bloque inicial suave).*\n\n## FASE 2: Perfil Físico (Datos Bio)\nDile que necesitas unos datos básicos para calibrar la rutina.\n* **Edad**.\n* **Sexo** (Opciones: M / F).\n* **Estatura** (Pide el dato en cm, ej: 170).\n* **Peso** (Pide el dato en kg, sin puntos ni comas).\n\n## FASE 3: Tus Objetivos (El \"Por qué\")\nPregunta qué quiere lograr.\n* **Objetivo Principal** (Muestra estas opciones exactas):\n    - 🟢 Ganar masa muscular\n    - 🔵 Bajar grasa\n    - 🔴 Mejorar fuerza\n    - 🟣 Mejorar resistencia\n    - 🟡 Salud general / recomposición corporal\n* **Objetivo Secundario:** (Pregunta abierta: \"¿Tienes alguna otra meta en mente?\").\n\n## FASE 4: Tu Experiencia (El Historial)\nIndaga sobre su pasado en el gym.\n* **Tiempo entrenando:**\n    - Nunca he entrenado\n    - Menos de 6 meses\n    - 6 a 12 meses\n    - 1 a 3 años\n    - Más de 3 años\n* **Frecuencia actual:**\n    - No entreno\n    - 1-2 días por semana\n    - 3-4 días por semana\n    - 5-6 días por semana\n* **Nivel autopercibido:**\n    - Principiante\n    - Intermedio\n    - Avanzado\n* **Estado de Salud / Lesiones:** (Pregunta: \"¡La seguridad es lo primero! 🛡️ ¿Cómo te sientes físicamente hoy? Selecciona una opción para adaptar los ejercicios\"):\n    A) 💪 Estoy al 100% (Sin dolor ni lesiones)\n    B) 🦵 Cuidado en Tren Inferior (Rodillas, tobillos, cadera)\n    C) 🦾 Cuidado en Tren Superior (Hombros, codos, muñecas)\n    D) 🦴 Cuidado en Espalda (Lumbares o cervicales)\n    E) 🩺 Condición Médica Especial\n\n* **VALIDACIÓN ESTRICTA FASE 4:**\n    * Si el usuario responde combinaciones como **\"A y D\"** (Estoy sano Y tengo dolor de espalda) o **\"B y C\"**, recuérdale amablemente: *\"Para diseñar la rutina más segura, necesito que selecciones **solo una** opción. Si tienes varias molestias, elige la que sea más limitante o importante hoy.\"*\n    * Solo avanza cuando tengas una única letra (A, B, C, D o E).\n\n*VALIDACIÓN POSTERIOR:* Después de obtener una única respuesta válida de salud, confirma de forma empática que la rutina se ajustará teniendo en cuenta esta información antes de avanzar.\n\n## FASE 5: Logística (Tu Tiempo)\nPregunta cómo encajar el gym en su vida.\n* **Días disponibles para entrenar:** (Opciones: 2, 3, 4, 5, 6).\n* **Tiempo por sesión:**\n    - 30-45 minutos\n    - 45-60 minutos\n    - 60-75 minutos\n    - Más de 75 minutos\n* **Horario habitual:** (Mañana, Tarde o Noche).\n\n## FASE 6: Preferencias (Tus Gustos)\nAsegúrate de que disfrute el proceso.\n* **Tipo de entrenamiento preferido:**\n    - Pesas libres\n    - Máquinas\n    - Funcional\n    - Mixto\n* **Prioridades:** ¿Qué partes del cuerpo le gustaría priorizar? (Pregunta abierta).\n* **Desafíos:** ¿Qué partes le cuesta más entrenar o no le gustan? (Pregunta abierta).\n\n## FASE 7: El Cardio (El remate)\n* **¿Realizas cardio actualmente?:**\n    - No\n    - Caminata\n    - Bicicleta\n    - Running\nREGLA FASE 7 (CARDIO)\n- Si el usuario responde \"No\", guarda: cardio_actual=\"No\" y frecuencia_cardio=\"0\".\n- Luego continúa con la siguiente pregunta del flujo o con el cierre (si ya era la última).\n- NO llames Tool_Create_Routine hasta haber confirmado que no falta ningún dato previo.\n\n* **Frecuencia de cardio:** (Días a la semana: 0, 1-2, 3-4, 5 o más).\n\n---\n\n# PROTOCOLO DE FINALIZACIÓN Y EJECUCIÓN (LÓGICA ESTRICTA)\n\nTu trabajo NO termina al recibir la respuesta de la FASE 7. En ese momento exacto, se activa el siguiente protocolo obligatorio que debes ejecutar antes de cerrar la conversación.\n\n**CONDICIÓN DE DISPARO:**\nEl usuario ha respondido la última pregunta (Frecuencia de Cardio) y tienes los datos completos.\n\n**ACCIONES OBLIGATORIAS (EN ESTE ORDEN):**\n\n1.  **INVOCACIÓN DE TOOLS (PRIORIDAD MÁXIMA):**\n    Antes de despedirte, debes invocar internamente la siguiente función con los datos recolectados. Es imperativo que esta accion quede registrada en tu salida:\n    * Llamar a `Tool_Create_User_Profile`\n\n2.  **MENSAJE DE CIERRE AL USUARIO:**\n    Solamente cuando hayas asegurado la invocación de la tool en tu proceso interno, envía este mensaje final (sin mencionar nada técnico):\n\n    > \"¡Perfecto, [Nombre del usuario]! 🎉 Ya tengo todo lo que necesito.\n    >\n    > Me pongo manos a la obra ahora mismo para diseñar tu rutina 100% personalizada y segura. En breve recibirás tu plan para que empieces con todo. ¡Estoy emocionado por ver tu progreso! 💪🚀\"\n\n**ADVERTENCIA DE FALLO:**\nSi envías el mensaje de despedida sin haber activado la tool `Tool_Create_User_Profile`, la rutina no se creará y habrás fallado en tu misión. **Asegúrate de ejecutar la tool junto con tu respuesta final.**\n\n# REGLAS CRÍTICAS (NO ROMPER)\n1) Nunca ejecutes el tool `Tool_Create_User_Profile` mientras el formulario KYC NO esté 100% completo.\n2) Respuestas como \"no\", \"ninguna\", \"no hago cardio\", \"no tengo lesiones\" NO significan que el usuario terminó el formulario. Solo son la respuesta a esa pregunta.\n3) Si falta al menos 1 dato requerido, debes:\n   - validar con empatía\n   - guardar/recordar la respuesta\n   - y hacer la siguiente pregunta del flujo\n   - SIN llamar tools de creación de rutina.\n4) Solo puedes ejecutar `Tool_Create_User_Profile` cuando tengas TODOS estos campos completos y no nulos:\n   - nombre_completo\n   - email\n   - edad\n   - sexo\n   - estatura_cm\n   - peso_kg\n   - objetivo_principal\n   - objetivo_secundario (si no hay, guardar \"N/A\")\n   - tiempo_entrenando\n   - frecuencia_actual\n   - nivel\n   - estado_salud_lesiones\n   - dias_disponibles\n   - tiempo_por_sesion\n   - horario_habitual\n   - tipo_entrenamiento_preferido\n   - prioridades\n   - desafios\n   - cardio_actual (si no hace, guardar \"No\")\n   - frecuencia_cardio (si no hace, guardar \"0\")\n5) Al finalizar, LUEGO de llamar `Tool_Create_User_Profile`, confirma en 1 frase que ya tienes todo.\n6) **UNICIDAD DE RESPUESTA:** Si el usuario da más de una opción en preguntas de selección única (especialmente en Salud/Lesiones), detente y pide aclaración amablemente. Solo una opción es válida por campo."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        3296,
-        24432
+        -2416,
+        26064
       ],
-      "id": "107ae0f1-d288-4279-8bc0-879021a8d046",
+      "id": "a054c7e4-594b-4e14-a2be-32a8bde1b03b",
       "name": "KYC Agent"
     },
     {
@@ -814,10 +814,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5776,
-        23152
+        -208,
+        24160
       ],
-      "id": "40342f9e-fb4c-4296-ad7c-606ad8ce3d8e",
+      "id": "ffc38c26-4a45-425e-b1ea-40a4dd881d3e",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -920,10 +920,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        3472,
-        24688
+        -2240,
+        26320
       ],
-      "id": "a7dcb5e9-fc32-4de7-9d81-dba2f8437911",
+      "id": "454d2052-2640-491d-9e78-0efb5605bbec",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -934,56 +934,15 @@
     },
     {
       "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "EyzkqFaL_O-WKwspAy6ud",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/EyzkqFaL_O-WKwspAy6ud",
-          "cachedResultName": "Learning Project — GymRatForm Supabase"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "whatsapp_id": "={{ $items('If')[0].json.messages[0].from }}"
-          },
-          "matchingColumns": [
-            "whatsapp_id"
-          ],
-          "schema": [
-            {
-              "id": "whatsapp_id",
-              "displayName": "whatsapp_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number"
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        3648,
-        24688
-      ],
-      "id": "3b9f6c95-27f3-4cc9-8353-207408690269",
-      "name": "Tool_Create_Routine"
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        5760,
-        23856
+        -224,
+        24864
       ],
-      "id": "5caed7d6-9996-4de3-b974-7d91ce9e9552",
+      "id": "28126a14-e8a9-4097-80ef-94722012a03a",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -999,10 +958,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4128,
-        23792
+        -1856,
+        24800
       ],
-      "id": "aae66a61-7225-4028-b913-136eac1631e0",
+      "id": "bb476779-13e2-4477-a7a9-0a57df5a6136",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1043,10 +1002,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2640,
-        24224
+        -3344,
+        25232
       ],
-      "id": "daece9bc-1844-4799-958d-e84174697f12",
+      "id": "5394cd4b-580f-4c9f-94f8-140620462f9e",
       "name": "If"
     },
     {
@@ -1073,10 +1032,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3200,
-        24032
+        -2784,
+        25040
       ],
-      "id": "8eb3112e-2fce-4fcf-b7fa-841727dd9995",
+      "id": "986e8379-a6ed-4d75-86e3-5eda76796240",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1114,10 +1073,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3392,
-        24032
+        -2592,
+        25040
       ],
-      "id": "9cf41bd8-4cc2-4f70-94fa-6fc33562e253",
+      "id": "51dde126-28fe-49fe-a5a0-4a716fb45621",
       "name": "Has_Pending_Task"
     },
     {
@@ -1129,10 +1088,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        5968,
-        22944
+        -16,
+        23952
       ],
-      "id": "24058bf7-7a1b-4b19-bdbc-076570e5e11f",
+      "id": "b9f12e3b-3114-4738-bf06-116ae3c84c33",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1148,10 +1107,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        2432,
-        24400
+        -3552,
+        25408
       ],
-      "id": "03ba6f03-a5bc-4614-bf68-385e50872bc2",
+      "id": "82993021-3d96-4bb2-b34e-2a5bf634cfb6",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -1161,10 +1120,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2896,
-        24416
+        -3088,
+        25424
       ],
-      "id": "45abbd58-f300-4689-856d-541fd42e625e",
+      "id": "fca2f19d-1a05-4f37-a067-95d71a1f524d",
       "name": "Filtered Message"
     },
     {
@@ -1174,10 +1133,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6496,
-        23648
+        512,
+        24656
       ],
-      "id": "0ea5ce1f-0dcd-45dc-8b00-785076080050",
+      "id": "27b7f87c-334d-4d3b-94fc-a154f86bc907",
       "name": "Filtered Message1"
     },
     {
@@ -1187,10 +1146,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3776,
-        24432
+        -1120,
+        26096
       ],
-      "id": "43c77214-eb3f-4dd4-8f77-cea0bfa47a0c",
+      "id": "22099b17-4492-4546-b526-320c44472cd8",
       "name": "Filtered Message2"
     },
     {
@@ -1200,10 +1159,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6304,
-        23152
+        320,
+        24160
       ],
-      "id": "afbf9d25-fc11-4fd1-bb5e-eaf4bca2740e",
+      "id": "23a373c1-8bd7-4263-90ab-926beead6bda",
       "name": "Filtered Message3"
     },
     {
@@ -1213,10 +1172,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5392,
-        24256
+        -592,
+        25264
       ],
-      "id": "3d6e0da9-1651-4e93-8ffe-659896261eb6",
+      "id": "21e45155-ba66-456a-b55e-45e11c3d351a",
       "name": "Filtered Message4"
     },
     {
@@ -1226,11 +1185,118 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5168,
-        23920
+        -816,
+        24928
       ],
-      "id": "5ecc12c2-d021-4897-a4d6-6b3e6ceddc80",
+      "id": "17bf0a24-ce02-4db4-b1ee-9fe06409d506",
       "name": "Filtered Message5"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users_gym_profile",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_id",
+              "keyValue": "={{$items(\"If\")[0].json.contacts[0].wa_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        26064
+      ],
+      "id": "5ed4c9fd-d818-4281-aeb0-234869b0a411",
+      "name": "GetNewUserProfile",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5b8f0759-6b75-4c33-9aa8-212c983b46db",
+              "leftValue": "={{$items(\"GetNewUserProfile\")[0].json}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1712,
+        26064
+      ],
+      "id": "b14c9d2b-084a-494d-bbf0-087d300a52d0",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EyzkqFaL_O-WKwspAy6ud",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EyzkqFaL_O-WKwspAy6ud",
+          "cachedResultName": "Learning Project — GymRatForm Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp_id": "={{$items(\"If\")[0].json.contacts[0].wa_id}}"
+          },
+          "matchingColumns": [
+            "whatsapp_id"
+          ],
+          "schema": [
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -1408,
+        25920
+      ],
+      "id": "11e04095-f0de-4e19-a415-45654f70ece4",
+      "name": "Call 'GymRatForm Supabase'",
+      "alwaysOutputData": true
     }
   ],
   "pinData": {
@@ -1673,17 +1739,6 @@
         ]
       ]
     },
-    "Tool_Create_Routine": {
-      "ai_tool": [
-        [
-          {
-            "node": "KYC Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model1": {
       "ai_languageModel": [
         [
@@ -1728,7 +1783,7 @@
       "main": [
         [
           {
-            "node": "Filtered Message2",
+            "node": "GetNewUserProfile",
             "type": "main",
             "index": 0
           }
@@ -1778,6 +1833,46 @@
           }
         ]
       ]
+    },
+    "GetNewUserProfile": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Call 'GymRatForm Supabase'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GymRatForm Supabase'": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1785,7 +1880,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "6e3a0e29-0911-41e2-ad76-8c2612d04ab1",
+  "versionId": "214f1fda-0bd9-4fbe-9e5c-3010a83c0fda",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

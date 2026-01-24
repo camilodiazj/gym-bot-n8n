@@ -12,40 +12,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5776,
-        4352
+        1456,
+        3888
       ],
-      "id": "082c558c-92dd-430e-977f-22b549e23310",
+      "id": "5aea426f-80b3-4030-9d35-63ed0057bed4",
       "name": "AI Agent",
       "executeOnce": true
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-5.2",
-          "mode": "list",
-          "cachedResultName": "gpt-5.2"
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        5760,
-        4592
-      ],
-      "id": "db3451f1-75c2-4833-a3fa-d45215c71534",
-      "name": "OpenAI Chat Model",
-      "retryOnFail": true,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "openAiApi": {
-          "id": "mwhZD1w0asX5zwKw",
-          "name": "OpenAi account"
-        }
-      }
     },
     {
       "parameters": {
@@ -54,10 +26,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6416,
-        4224
+        2096,
+        3760
       ],
-      "id": "b830bbcf-996e-4ee3-93a1-3ecbe9fc3a33",
+      "id": "a7a9a526-713c-4e07-b489-94ec6da3385a",
       "name": "Code in JavaScript1"
     },
     {
@@ -67,10 +39,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        5264,
-        4208
+        944,
+        3744
       ],
-      "id": "1aec1020-0b34-4401-833d-070531dc387a",
+      "id": "f2c411da-6588-4549-8e00-531fe97473b7",
       "name": "Loop Over Items"
     },
     {
@@ -82,10 +54,10 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        5568,
-        4080
+        1248,
+        3616
       ],
-      "id": "cad4de07-6b31-4792-8746-705fd07b189d",
+      "id": "81c802f9-f932-4abe-9f8b-5ee9292e110d",
       "name": "AI Transform"
     },
     {
@@ -95,10 +67,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5888,
-        4176
+        1568,
+        3712
       ],
-      "id": "3629a092-8a1b-4212-82e7-0a14d444cdf7",
+      "id": "7f55d073-b2fb-46f4-b0ed-d33025fa884b",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -111,10 +83,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4336,
-        4224
+        16,
+        3760
       ],
-      "id": "48c9005c-5107-474d-92ce-0dfdd28ec6e7",
+      "id": "ef527435-10f2-4214-80bd-d2b013634a38",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -149,10 +121,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4080,
-        4224
+        -240,
+        3760
       ],
-      "id": "39dde255-52ae-40c7-b71c-e4e08712d7ce",
+      "id": "c5792562-5b48-48cd-a92d-75123b9af812",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -177,10 +149,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5504,
-        4320
+        1184,
+        3856
       ],
-      "id": "350a794e-1888-44da-8d54-deb85799cbb0",
+      "id": "0d4b8856-851b-4b6c-94cf-bf927cd33e22",
       "name": "GetExercisesByPattern",
       "credentials": {
         "supabaseApi": {
@@ -229,10 +201,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4864,
-        4560
+        544,
+        4096
       ],
-      "id": "e5336996-e3c3-4a55-b423-6b5c4d0f1049",
+      "id": "ea01d204-1eb3-4733-9d2e-f17e70cccfff",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -270,10 +242,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4688,
-        4432
+        368,
+        3968
       ],
-      "id": "ea16cd63-72ee-433d-9987-ccf2d3ae42b3",
+      "id": "855b04dd-c5b8-40b0-a1bf-29bb625ccc19",
       "name": "UserExists"
     },
     {
@@ -292,10 +264,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4528,
-        4336
+        208,
+        3872
       ],
-      "id": "858d79f3-b287-40bf-9953-23c223e8a00e",
+      "id": "d5efd29f-23e5-4571-afcf-714182b5c568",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -345,10 +317,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4912,
-        4384
+        592,
+        3920
       ],
-      "id": "e282589a-12a4-41c0-8002-dfd1fc65ff92",
+      "id": "b7b54b80-9a32-4490-8f2a-aa0ee3b06af7",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -364,10 +336,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        5040,
-        4208
+        720,
+        3744
       ],
-      "id": "980b07bc-eaa4-4898-b12b-4bdb5b3c1083",
+      "id": "b5171148-e1c0-4f79-a6db-007abb676ea7",
       "name": "Merge"
     },
     {
@@ -426,10 +398,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6656,
-        4224
+        2336,
+        3760
       ],
-      "id": "b24d88d2-4f24-4c66-8669-64add6c3a069",
+      "id": "b543032c-f24f-45fa-a442-6c75a9b9a2f6",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -455,10 +427,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6160,
-        4224
+        1840,
+        3760
       ],
-      "id": "c85c06a5-79fe-4ebd-b168-1726109e03ce",
+      "id": "ad603741-0089-4ff7-b9a4-7939180a9f78",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -483,10 +455,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        3680,
-        4224
+        -640,
+        3760
       ],
-      "id": "4b20c784-41b4-4010-bc12-1c423b56495b",
+      "id": "a9b51323-1e98-4ca6-b543-36abda89aeb4",
       "name": "input",
       "executeOnce": true
     },
@@ -506,10 +478,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3856,
-        4224
+        -464,
+        3760
       ],
-      "id": "28b75b80-9beb-4b1f-8daa-c328942d66fd",
+      "id": "5c6d5e1f-7fe9-4b8b-8ff5-113f7beb5df6",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -529,10 +501,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        6896,
-        4224
+        2576,
+        3760
       ],
-      "id": "87c60b05-1aa1-4e9f-b76f-4b39928f23f7",
+      "id": "486413fd-cc54-4ebd-a262-3b2ccbc2a1a6",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -540,6 +512,38 @@
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
           "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: 'routine created'\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2784,
+        3776
+      ],
+      "id": "96c04c5a-161c-43d1-ac66-dd9c2979da19",
+      "name": "Filtered Message2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        4096
+      ],
+      "id": "6f0ffb68-f7a1-4adf-a04c-7907971ba171",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FGJvOXDfOTLntPLK",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     }
@@ -560,17 +564,6 @@
           {
             "node": "Loop Over Items",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -770,6 +763,28 @@
           }
         ]
       ]
+    },
+    "NotifyRoutineCreated": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -777,8 +792,9 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "e7f6307f-686e-4514-8922-ab596743883d",
+  "versionId": "4f62420e-5ccc-4758-8b03-e96f644e4cd3",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
   "id": "EyzkqFaL_O-WKwspAy6ud",
