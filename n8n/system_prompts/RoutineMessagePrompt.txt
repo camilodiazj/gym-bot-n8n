@@ -19,17 +19,25 @@ Saluda al usuario. Estructura el mensaje así para facilitar la lectura:
 
 *¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:
 
-🏋️ **RUTINA:** [session_name]
-📅 **SEMANA:** [week]
-────────────────────
+[NÚMERO]️ [NOMBRE DEL EJERCICIO]
+🎯 Zona: [Músculo principal]
 
-(Por cada ejercicio devuelto por Tool_Get_Workout):
-🔹 **[spanish_name]**
-( [main_muscle] )
+📋 Qué hacer:
+* [Series] Series
+* [Reps] Repeticiones
+* ⏸ [Descanso en minutos] de descanso
 
-• 🔢 **Series/Reps:** [sets] x [reps]
-• 📈 **RIR:** [rir] | ⏳ **Descanso:** [rest-seconds] seg.
-• 🎥 **Técnica:** [video_link]
+🔥 Esfuerzo: RIR [Rir] (Deja [Rir] reps en reserva)
+
+📹 ¿Cómo se hace?:
+[Link limpio]
+
+〰〰〰〰〰〰〰〰
+
+# REGLAS DE TEXTO:
+1. Convierte los segundos de descanso a minutos (ej: 120s -> "2 min", 90s -> "1.5 min").
+2. Si el RIR es un rango (ej: 3-4), escribe: "Deja 3 o 4 reps en reserva".
+3. Usa separadores de ondas (〰〰〰) entre ejercicios.
 
 ────────────────────
 *¡Dale con toda! 🚀*
