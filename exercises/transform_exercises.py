@@ -16,6 +16,7 @@ import os
 import re
 from pathlib import Path
 from typing import Optional
+from dataclasses import dataclass, field
 
 # Optional: OpenAI for LLM classification
 try:
@@ -40,26 +41,76 @@ BASE_URL = "https://musclewiki.com/es-es/exercise/"
 
 # Muscle name mapping: Spanish (JSON) -> English (DB)
 MUSCLE_SPANISH_TO_ENGLISH = {
+    # Arms
     "Tríceps": "Triceps",
     "Bíceps": "Biceps",
-    "Hombros": "Shoulders",
-    "Pecho": "Chest",
-    "Espalda": "Back",
-    "Dorsales": "Back",
-    "Cuádriceps": "Quads",
-    "Femorales": "Hamstrings",
-    "Isquiotibiales": "Hamstrings",
-    "Glúteos": "Glutes",
-    "Abdominales": "Abs",
-    "Oblicuos": "Abs",
-    "Pantorrillas": "Calfs",
-    "Gemelos": "Calfs",
     "Antebrazos": "Forearms",
-    "Trapecio": "Traps",
+    # Shoulders (consolidated)
+    "Hombros": "Shoulders",
     "Deltoides anterior": "Shoulders",
     "Deltoides lateral": "Shoulders",
     "Deltoides posterior": "Shoulders",
+    "Deltoides frontales": "Shoulders",
+    "Deltoides posteriores": "Shoulders",
     "Hombros frontales": "Shoulders",
+    # Chest
+    "Pecho": "Chest",
+    "Pectoral superior": "Chest",
+    "Pecho medio e inferior": "Chest",
+    # Back
+    "Espalda": "Back",
+    "Dorsales": "Back",
+    "Espalda baja": "Lower back",
+    # Traps
+    "Trapecio": "Traps",
+    "Trapecios": "Traps",
+    "Trapecios superiores": "Traps",
+    "Trapecios inferiores": "Traps (mid-back)",
+    "Trapecios Inferiores": "Traps (mid-back)",  # capital I variant
+    "Lower Traps": "Traps (mid-back)",
+    # Legs
+    "Cuádriceps": "Quads",
+    "Recto femoral": "Quads",
+    "Parte externa del cuádriceps": "Quads",
+    "Parte interna del cuádriceps": "Quads",
+    "Femorales": "Hamstrings",
+    "Isquiotibiales": "Hamstrings",
+    "Isquitibiales laterales": "Hamstrings",
+    "Isquitibiales mediales": "Hamstrings",
+    "Glúteos": "Glutes",
+    "Glúteo mayor": "Glutes",
+    "Glúteo medio": "Glutes",
+    # Lower legs
+    "Pantorrillas": "Calfs",
+    "Gemelos": "Calfs",
+    "Gemelo": "Calfs",
+    "Sóleo": "Calfs",
+    "Soleo": "Calfs",
+    # Core
+    "Abdominales": "Abs",
+    "Abdominales superiores": "Abs",
+    "Abdominales inferiores": "Abs",
+    "Oblicuos": "Abs",
+    # Other
+    "Cuello": "Neck",
+    "Pies": "Feet",
+    "Ingle": "Groin",
+    "Aductores": "Groin",
+    "Manos": "Forearms",
+    "Extensores de la muñeca": "Forearms",
+    "Flexores de la muñeca": "Forearms",
+    "Wrist Extensors": "Forearms",
+    "Wrist Flexors": "Forearms",
+    # English variants from name_en_us (for level 1 fallback)
+    "Gluteus Medius": "Glutes",
+    "Gluteus Maximus": "Glutes",
+    "Lower Abdominals": "Abs",
+    "Upper Abdominals": "Abs",
+    "Rectus Femoris": "Quads",
+    "Vastus Lateralis": "Quads",
+    "Vastus Medialis": "Quads",
+    "Inner Thigh": "Groin",
+    "Hip Adductors": "Groin",
 }
 
 # Equipment mapping: JSON category -> DB equipment
@@ -130,6 +181,26 @@ ISOLATION_OVERRIDE_KEYWORDS = [
 
 
 # =============================================================================
+# DEDUPLICATION TRACKING
+# =============================================================================
+
+@dataclass
+class DeduplicationStats:
+    """Track statistics for exercise deduplication across files."""
+    total_raw: int = 0
+    unique_slugs: int = 0
+    duplicates_removed: int = 0
+    files_processed: int = 0
+
+    def print_summary(self):
+        print(f"\n  Deduplication Summary:")
+        print(f"    Files processed: {self.files_processed}")
+        print(f"    Total raw exercises: {self.total_raw}")
+        print(f"    Unique exercises: {self.unique_slugs}")
+        print(f"    Duplicates removed: {self.duplicates_removed}")
+
+
+# =============================================================================
 # HELPER FUNCTIONS
 # =============================================================================
 
@@ -141,6 +212,15 @@ def kebab_to_title(s: str) -> str:
 def extract_exercise_slug(url_path: str) -> str:
     """Extract the exercise slug from the URL path"""
     return url_path.split('/')[-1]
+
+
+def extract_canonical_id(url_path: str) -> str:
+    """Generate canonical exercise_id from URL slug.
+
+    Example: 'barbell/male/biceps/barbell-curl' -> 'ex_barbell_curl'
+    """
+    slug = url_path.split('/')[-1]
+    return f"ex_{slug.replace('-', '_')}"
 
 
 def is_unilateral(name: str, url: str) -> str:
@@ -169,8 +249,20 @@ def extract_muscles(muscles_list: list) -> tuple[str, str, list[str]]:
     # Filter only level 0 muscles (main muscle groups, not sub-muscles)
     level_0_muscles = [m for m in muscles_list if m.get('level') == 0]
 
+    # If no level 0, fall back to level 1 muscles (sub-muscles)
     if not level_0_muscles:
-        return "", "", []
+        level_1_muscles = [m for m in muscles_list if m.get('level') == 1]
+        if not level_1_muscles:
+            return "", "", []
+        # Use the first level 1 muscle
+        main = level_1_muscles[0]
+        main_muscle_es = main.get('name', '')
+        main_muscle_en = MUSCLE_SPANISH_TO_ENGLISH.get(
+            main_muscle_es,
+            main.get('name_en_us', main_muscle_es)
+        )
+        secondary = [m.get('name', '') for m in level_1_muscles[1:] if m.get('name')]
+        return main_muscle_en, main_muscle_es, secondary
 
     # First level:0 = main_muscle
     main = level_0_muscles[0]
@@ -294,10 +386,52 @@ def format_secondary_muscles_for_postgres(muscles: list[str]) -> str:
 
 
 # =============================================================================
+# DEDUPLICATION LOGIC
+# =============================================================================
+
+def collect_unique_exercises(json_files: list) -> tuple[dict, DeduplicationStats]:
+    """Collect unique exercises across all files by URL slug.
+
+    Returns:
+        tuple of (seen_dict, stats) where seen_dict maps slug -> (exercise_data, source_file)
+    """
+    seen = {}  # slug -> (exercise_data, source_file)
+    stats = DeduplicationStats()
+
+    for json_file in json_files:
+        try:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                exercises = json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"  Warning: Skipping {json_file} - {e}")
+            continue
+
+        if not isinstance(exercises, list):
+            print(f"  Warning: Skipping {json_file} - not a list")
+            continue
+
+        stats.files_processed += 1
+        stats.total_raw += len(exercises)
+
+        for ex in exercises:
+            url_path = ex.get('target_url', {}).get('male', '')
+            if not url_path:
+                continue
+            slug = extract_exercise_slug(url_path)
+            if slug not in seen:
+                seen[slug] = (ex, json_file.name if hasattr(json_file, 'name') else str(json_file))
+            else:
+                stats.duplicates_removed += 1
+
+    stats.unique_slugs = len(seen)
+    return seen, stats
+
+
+# =============================================================================
 # MAIN TRANSFORMATION LOGIC
 # =============================================================================
 
-def transform_exercise(exercise: dict, index: int, muscle_prefix: str,
+def transform_exercise(exercise: dict, index: int = None, muscle_prefix: str = None,
                        pattern_override: str = None, role_override: str = None) -> dict:
     """Transform a single exercise from JSON to DB format"""
 
@@ -333,7 +467,7 @@ def transform_exercise(exercise: dict, index: int, muscle_prefix: str,
     level = exercise.get('difficulty', {}).get('name', 'Intermedio')
 
     return {
-        'exercise_id': f'ex_{muscle_prefix}_{index:03d}',
+        'exercise_id': extract_canonical_id(exercise['target_url']['male']),
         'name': kebab_to_title(slug),
         'spanish_name': name,
         'coloquial_name': None,  # NULL to avoid unique constraint violation
@@ -529,7 +663,11 @@ Examples:
     # Determine files to process
     if args.all:
         script_dir = Path(__file__).parent
-        json_files = list(script_dir.glob('*.json'))
+        raw_dir = script_dir / 'raw'
+        if raw_dir.exists():
+            json_files = list(raw_dir.glob('*.json'))
+        else:
+            json_files = list(script_dir.glob('*.json'))
         if not json_files:
             print("No JSON files found in directory")
             return
@@ -539,35 +677,75 @@ Examples:
         parser.print_help()
         return
 
-    # Process each file
-    all_exercises = []
+    print(f"\nCollecting exercises from {len(json_files)} files...")
 
-    for json_file in json_files:
-        print(f"\nProcessing: {json_file.name}")
+    # Pass 1: Collect unique exercises (deduplication)
+    unique_exercises, stats = collect_unique_exercises(json_files)
 
-        exercises = process_json_file(
-            str(json_file),
-            use_llm=not args.no_llm,
-            openai_key=args.openai_key
-        )
+    print(f"  Found {stats.unique_slugs} unique exercises (removed {stats.duplicates_removed} duplicates)")
 
-        all_exercises.extend(exercises)
+    # Pass 2: Transform unique exercises
+    print(f"\nTransforming exercises...")
+    transformed = []
+    needs_llm = []
 
-        if args.dry_run:
-            print_preview(exercises)
-        elif args.insert:
-            insert_to_supabase(exercises)
+    for slug, (exercise, source_file) in unique_exercises.items():
+        name = exercise.get('name', '')
+        pattern = classify_pattern_by_keywords(name, slug)
+
+        if pattern:
+            transformed.append(transform_exercise(exercise))
         else:
-            # Write to CSV
-            output_file = args.output or str(json_file.with_suffix('.csv'))
-            write_csv(exercises, output_file)
+            needs_llm.append({
+                'slug': slug,
+                'exercise': exercise,
+                'name': kebab_to_title(slug),
+                'spanish_name': name,
+            })
+
+    # LLM classification for unclassified exercises
+    if needs_llm and not args.no_llm:
+        print(f"  Classifying {len(needs_llm)} exercises with LLM...")
+        llm_results = classify_with_llm(needs_llm, args.openai_key)
+        llm_lookup = {r['name']: r for r in llm_results}
+
+        for item in needs_llm:
+            llm_result = llm_lookup.get(item['name'], {})
+            pattern = llm_result.get('pattern', 'accessory')
+            role = llm_result.get('role', 'isolation')
+            transformed.append(transform_exercise(
+                item['exercise'],
+                pattern_override=pattern,
+                role_override=role
+            ))
+    elif needs_llm:
+        # No LLM, use accessory as fallback
+        for item in needs_llm:
+            transformed.append(transform_exercise(
+                item['exercise'],
+                pattern_override='accessory',
+                role_override='isolation'
+            ))
+
+    # Sort by exercise_id
+    transformed.sort(key=lambda x: x['exercise_id'])
+
+    # Output based on flags
+    if args.dry_run:
+        print_preview(transformed)
+        stats.print_summary()
+    elif args.insert:
+        insert_to_supabase(transformed)
+        stats.print_summary()
+    else:
+        # Write to CSV
+        output_file = args.output or 'exercises_all.csv'
+        write_csv(transformed, output_file)
+        stats.print_summary()
 
     # Summary
     print(f"\n{'='*60}")
-    print(f"Total exercises processed: {len(all_exercises)}")
-
-    if args.dry_run:
-        print("(Dry run - no files written)")
+    print(f"Total unique exercises: {len(transformed)}")
 
 
 if __name__ == "__main__":
