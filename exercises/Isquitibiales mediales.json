@@ -1,0 +1,717 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/machine-hamstring-curl",
+            "female": "machine/female/hamstrings/machine-hamstring-curl"
+        },
+        "name": "Curl femoral en máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/hamstrings/nordic-hamstring-curl",
+            "female": "bodyweight/female/hamstrings/nordic-hamstring-curl"
+        },
+        "name": "Curl nórdico de isquiotibiales"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "cables/male/hamstrings/cable-hamstring-curl",
+            "female": "cables/female/hamstrings/cable-hamstring-curl"
+        },
+        "name": "Curl femoral en polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 12,
+            "name": "TRX",
+            "name_en_us": "TRX",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 12,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "trx/male/hamstrings/trx-hamstring-curl",
+            "female": "trx/female/hamstrings/trx-hamstring-curl"
+        },
+        "name": "Curl femoral en TRX"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/glute-ham-raise",
+            "female": "machine/female/hamstrings/glute-ham-raise"
+        },
+        "name": "Elevación glúteo-femoral"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/seated-leg-curl",
+            "female": "machine/female/hamstrings/seated-leg-curl"
+        },
+        "name": "Curl Femoral Sentado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "cables/male/hamstrings/cable-seated-leg-curl",
+            "female": "cables/female/hamstrings/cable-seated-leg-curl"
+        },
+        "name": "Curl femoral sentado en polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "cables/male/hamstrings/cable-single-leg-laying-leg-curl",
+            "female": "cables/female/hamstrings/cable-single-leg-laying-leg-curl"
+        },
+        "name": "Curl femoral tumbado con cable a una pierna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/machine-seated-leg-curl",
+            "female": "machine/female/hamstrings/machine-seated-leg-curl"
+        },
+        "name": "Curl femoral sentado en máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/machine-plate-loaded-kneeling-hamstring-curl",
+            "female": "machine/female/hamstrings/machine-plate-loaded-kneeling-hamstring-curl"
+        },
+        "name": "Máquina de carga por discos para curl de isquiotibiales en posición de rodillas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/machine-standing-hamstring-curl",
+            "female": "machine/female/hamstrings/machine-standing-hamstring-curl"
+        },
+        "name": "Curl de isquiotibiales en máquina de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/hamstrings/machine-seated-hamstring-curl",
+            "female": "machine/female/hamstrings/machine-seated-hamstring-curl"
+        },
+        "name": "Curl de isquiotibiales sentado en máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 39,
+                "name": "Isquiotibiales mediales",
+                "name_en_us": "Medial Hamstrings",
+                "scientific_name": null,
+                "url_name": "medial-hamstrings",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 8,
+                "level": 1,
+                "parent": 8
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/hamstrings/dumbbell-leg-curl",
+            "female": "dumbbells/female/hamstrings/dumbbell-leg-curl"
+        },
+        "name": "Curl femoral con mancuerna"
+    }
+]

@@ -1,0 +1,663 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/lats/machine-pulldown",
+            "female": "machine/female/lats/machine-pulldown"
+        },
+        "name": "Jalón en máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/biceps/underhand-pulldown",
+            "female": "machine/female/biceps/underhand-pulldown"
+        },
+        "name": "Jalón Con Agarre Supinado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 14,
+                "name": "Trapecios (zona media de la espalda)",
+                "name_en_us": "Traps (mid-back)",
+                "scientific_name": null,
+                "url_name": "traps-middle",
+                "description": "Hay mucho más en el trapecio de lo que parece. Los trapecios no son solo el músculo que está encima de los hombros. De hecho, los trapecios recorren gran parte de la columna vertebral. Cuando están bien desarrollados, los trapecios adquieren la apariencia de la capucha de una cobra.\n\nLos trapecios se dividen en tres porciones. Esas porciones se conocen como las fibras superiores, mediales e inferiores. Las tres partes cumplen funciones similares pero distintas.",
+                "description_en_us": "There is far more to the trapezius muscle than meets the eye. The traps are not just the muscle that sits on top of your shoulders. The traps actually travel a large portion of your spine. When well developed, the traps take on the look of a cobra hood.\r\n\r\nThe traps are divided into three portions. Those portions are referred to as the superior, medial, and inferior fibers. All three parts serve similar, but different functions.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 2,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/biceps/narrow-pulldown",
+            "female": "machine/female/biceps/narrow-pulldown"
+        },
+        "name": "Jalón con agarre estrecho"
+    },
+    {
+        "muscles": [
+            {
+                "id": 1,
+                "name": "Bíceps",
+                "name_en_us": "Biceps",
+                "scientific_name": null,
+                "url_name": "Biceps",
+                "description": "El bíceps braquial es uno de los músculos que más se entrena. Estereotípicamente, la mayoría de los hombres quiere bíceps grandes — y en la práctica suele ser así. Como es bien sabido, la función principal del bíceps braquial es la flexión del codo (lo que ocurre durante un curl de bíceps). Sin embargo, los bíceps tienen muchas más funciones que solo los curls.",
+                "description_en_us": "The biceps brachii is one of the most often trained muscles. stereotypically most guys want big biceps - and in practice, this is often true. As is commonly known, the main function of the biceps brachii is elbow flexion (what occurs during a curl exercise). However, the biceps have far more responsibilities than just curls.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 1,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 14,
+                "name": "Trapecios (zona media de la espalda)",
+                "name_en_us": "Traps (mid-back)",
+                "scientific_name": null,
+                "url_name": "traps-middle",
+                "description": "Hay mucho más en el trapecio de lo que parece. Los trapecios no son solo el músculo que está encima de los hombros. De hecho, los trapecios recorren gran parte de la columna vertebral. Cuando están bien desarrollados, los trapecios adquieren la apariencia de la capucha de una cobra.\n\nLos trapecios se dividen en tres porciones. Esas porciones se conocen como las fibras superiores, mediales e inferiores. Las tres partes cumplen funciones similares pero distintas.",
+                "description_en_us": "There is far more to the trapezius muscle than meets the eye. The traps are not just the muscle that sits on top of your shoulders. The traps actually travel a large portion of your spine. When well developed, the traps take on the look of a cobra hood.\r\n\r\nThe traps are divided into three portions. Those portions are referred to as the superior, medial, and inferior fibers. All three parts serve similar, but different functions.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 2,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/biceps/neutral-pulldown",
+            "female": "machine/female/biceps/neutral-pulldown"
+        },
+        "name": "Jalón con agarre neutro"
+    },
+    {
+        "muscles": [
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "recovery/male/lower-abdominals/bench-lift-off-active",
+            "female": "recovery/female/lower-abdominals/bench-lift-off-active"
+        },
+        "name": "Texto: Levantamiento Activo de Banca"
+    },
+    {
+        "muscles": [
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "recovery/male/lower-abdominals/bench-lift-off-static",
+            "female": "recovery/female/lower-abdominals/bench-lift-off-static"
+        },
+        "name": "Texto: Levantamiento Estático en Banco"
+    },
+    {
+        "muscles": [
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/scapula/scapular-depression",
+            "female": "recovery/female/scapula/scapular-depression"
+        },
+        "name": "Depresión escapular"
+    },
+    {
+        "muscles": [
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "band/male/lats/band-half-kneeling-single-arm-pulldown",
+            "female": "band/female/lats/band-half-kneeling-single-arm-pulldown"
+        },
+        "name": "Band Half Kneeling Single Arm Pulldown"
+    },
+    {
+        "muscles": [
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "band/male/lats/band-kneeling-pulldown",
+            "female": "band/female/lats/band-kneeling-pulldown"
+        },
+        "name": "Band Kneeling Pulldown"
+    },
+    {
+        "muscles": [
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "band/male/lats/band-seated-pulldown",
+            "female": "band/female/lats/band-seated-pulldown"
+        },
+        "name": "Band Seated Pulldown"
+    },
+    {
+        "muscles": [
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 42,
+                "name": "Trapecios Inferiores",
+                "name_en_us": "Lower Traps",
+                "scientific_name": "Inferior Traps",
+                "url_name": "lower-trapezius",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 12,
+                "level": 1,
+                "parent": 4
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "band/male/lats/band-seated-single-arm-pulldown",
+            "female": "band/female/lats/band-seated-single-arm-pulldown"
+        },
+        "name": "Band Seated Single Arm Pulldown"
+    }
+]

@@ -1,0 +1,1034 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/quads/barbell-landmine-sissy-squat",
+            "female": "barbell/female/quads/barbell-landmine-sissy-squat"
+        },
+        "name": "Sentadilla Sissy con Barra en Landmine"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "cables/male/quads/cable-standing-leg-extension",
+            "female": "cables/female/quads/cable-standing-leg-extension"
+        },
+        "name": "Extensión de pierna en polea de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "bodyweight/male/quads/bodyweight-reverse-step-up",
+            "female": "bodyweight/female/quads/bodyweight-reverse-step-up"
+        },
+        "name": "Step-up Inverso Con Peso Corporal"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "machine/male/quads/machine-goblet-sissy-squat",
+            "female": "machine/female/quads/machine-goblet-sissy-squat"
+        },
+        "name": "Sentadilla Sissy Goblet en Máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "machine/male/quads/machine-sissy-squat",
+            "female": "machine/female/quads/machine-sissy-squat"
+        },
+        "name": "Sissy Squat en Máquina"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "smith-machine/male/quads/smith-machine-sissy-squat",
+            "female": "smith-machine/female/quads/smith-machine-sissy-squat"
+        },
+        "name": "Sentadilla Sissy en Multipower"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 27,
+            "name": "Cardio",
+            "name_en_us": "Cardio",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 21,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cardio/male/abdominals/cardio-forward-scissor",
+            "female": "cardio/female/abdominals/cardio-forward-scissor"
+        },
+        "name": "Tijera Cardio hacia Delante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 12,
+                "name": "Abdominales",
+                "name_en_us": "Abdominals",
+                "scientific_name": null,
+                "url_name": "Abdominals",
+                "description": "Estéticamente, los abdominales se consideran uno de los músculos más deseables. Para la mayoría de la gente, los abdominales consisten solo en el “6 pack”; sin embargo, esto es solo una parte de los abdominales.",
+                "description_en_us": "Aesthetically, the abs are seen as one of the most desirable muscles to possess. To the majority of people, abs consist of only the “6 pack,” however, this is only one part of the abdominals.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 4,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 21,
+                "name": "Abdominales inferiores",
+                "name_en_us": "Lower Abdominals",
+                "scientific_name": null,
+                "url_name": "lower-abdominals",
+                "description": null,
+                "description_en_us": null,
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 4,
+                "level": 1,
+                "parent": 12
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 27,
+            "name": "Cardio",
+            "name_en_us": "Cardio",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 21,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cardio/male/abdominals/cardio-in-and-out-forward",
+            "female": "cardio/female/abdominals/cardio-in-and-out-forward"
+        },
+        "name": "Cardio Adentro y Afuera Hacia Adelante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/quads/hip-flexion-seated-bench-isometric",
+            "female": "recovery/female/quads/hip-flexion-seated-bench-isometric"
+        },
+        "name": "Sostén de Flexión de Cadera Sentado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/quads/hip-flexions-standing-resisted",
+            "female": "recovery/female/quads/hip-flexions-standing-resisted"
+        },
+        "name": "Flexión de Cadera en Mini-Banda de Pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/rectus-femoris/hip-flexions-straight-leg-standing-resisted",
+            "female": "recovery/female/rectus-femoris/hip-flexions-straight-leg-standing-resisted"
+        },
+        "name": "Texto: Flexiones de Cadera con Pierna Recta y Banda Elástica"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/quads/hip-flexor-stretch-kneeling-lunge-1",
+            "female": "recovery/female/quads/hip-flexor-stretch-kneeling-lunge-1"
+        },
+        "name": "Estiramiento de Flexores de Cadera en Zancada de Rodillas 1"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/quads/hip-flexor-stretch-kneeling-lunge-2",
+            "female": "recovery/female/quads/hip-flexor-stretch-kneeling-lunge-2"
+        },
+        "name": "Estiramiento de Flexores de Cadera en Postura de Lunge de Rodillas 2"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/quads/hip-flexor-stretch-kneeling-lunge-3",
+            "female": "recovery/female/quads/hip-flexor-stretch-kneeling-lunge-3"
+        },
+        "name": "Estiramiento de Flexores de Cadera en Zancada Arrodillado 3"
+    },
+    {
+        "muscles": [
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "recovery/male/glutes/infinity-loop-standing-hip-mobility",
+            "female": "recovery/female/glutes/infinity-loop-standing-hip-mobility"
+        },
+        "name": "Texto: Movilidad Infinita de Cadera en Posición de Pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/rectus-femoris/knee-raise-standing-unilateral",
+            "female": "recovery/female/rectus-femoris/knee-raise-standing-unilateral"
+        },
+        "name": "Sostenga la Elevación de Rodilla de Pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/rectus-femoris/leg-raise-straight-incline-seated",
+            "female": "recovery/female/rectus-femoris/leg-raise-straight-incline-seated"
+        },
+        "name": "Texto: Elevación de Piernas en Inclinación de Piso"
+    },
+    {
+        "muscles": [
+            {
+                "id": 3,
+                "name": "Cuádriceps",
+                "name_en_us": "Quads",
+                "scientific_name": null,
+                "url_name": "Quads",
+                "description": "Los cuádriceps constan de cuatro cabezas (de ahí el nombre cuádriceps). Las cabezas son: recto femoral, vasto lateral, vasto medial y vasto intermedio.\n\nExcepto el recto femoral, todas las cabezas del cuádriceps tienen una función: extender la rodilla.\n\nEso significa que los cuádriceps están activos cada vez que caminas o te levantas. Además, junto con los isquiotibiales, los cuádriceps estabilizan la rodilla.",
+                "description_en_us": "The quadriceps consist of four heads (hence the name quadriceps). The heads are: the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius.\r\n\r\nWith the exception of the rectus femoris, all of the heads of the quadriceps have one function, which is extending the knee.\r\n\r\nThat means that the quadriceps are active every time you walk or stand up. Additionally, and in conjunction with the hamstrings, the quadriceps stabilizes the knee.",
+                "lft": 1,
+                "rght": 10,
+                "tree_id": 13,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 30,
+                "name": "Recto femoral",
+                "name_en_us": "Rectus Femoris",
+                "scientific_name": null,
+                "url_name": "rectus-femoris",
+                "description": "",
+                "description_en_us": "",
+                "lft": 8,
+                "rght": 9,
+                "tree_id": 13,
+                "level": 1,
+                "parent": 3
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "bodyweight/male/quads/bodyweight-assisted-sissy-squat",
+            "female": "bodyweight/female/quads/bodyweight-assisted-sissy-squat"
+        },
+        "name": "Bodyweight Assisted Sissy Squat"
+    }
+]
