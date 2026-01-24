@@ -1,0 +1,198 @@
+exercise_id,name,spanish_name,coloquial_name,Músculo Principal,pattern,role,main_muscle,link,equipment,unilateral,level
+ex_042,Dumbbell Seated Overhead Tricep Extension,Extensión de tríceps con mancuerna por encima de la cabeza (sentado),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-seated-overhead-tricep-extension,dumbbell,No,Intermedio
+ex_043,Machine Cable V Bar Push Downs,Extensiones de tríceps en polea con barra en V,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-cable-v-bar-push-downs,machine,No,Principiante
+ex_044,Bench Dips,Fondos en banco,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bench-dips,bodyweight,No,Principiante
+ex_045,Barbell Laying Triceps Extensions,Press Francés con Barra,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-laying-triceps-extensions,barbell,No,Intermedio
+ex_046,Kettlebell Skull Crusher,Press francés con pesa rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-skull-crusher,machine,No,Intermedio
+ex_047,Kettlebell Standing Tricep Extension,Extensión de tríceps de pie con pesa rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-standing-tricep-extension,machine,No,Principiante
+ex_048,Kettlebell Decline Skull Crusher,Extensión De Tríceps Declinada Con Pesa Rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-decline-skull-crusher,machine,No,Avanzado
+ex_049,Kettlebell Tate Press,Tate press con kettlebell,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-tate-press,machine,No,Intermedio
+ex_050,Triceps Stretch Variation Three,Estiramiento De Tríceps Variación Tres,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/triceps-stretch-variation-three,machine,No,Principiante
+ex_051,Triceps Stretch Variation Two,Estiramiento de Tríceps Variación Dos,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/triceps-stretch-variation-two,machine,No,Principiante
+ex_052,Triceps Stretch Variation One,Estiramiento De Tríceps Variación Uno,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/triceps-stretch-variation-one,machine,No,Principiante
+ex_053,Diamond Push Ups,Flexiones en diamante,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/diamond-push-ups,bodyweight,No,Principiante
+ex_054,Barbell Close Grip Bench Press,Press de banca con agarre cerrado (barra),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-close-grip-bench-press,barbell,No,Intermedio
+ex_055,Cable Rope Pushdown,Extensión de Tríceps en Polea Alta con Cuerda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-rope-pushdown,cable,No,Principiante
+ex_056,Cable Cross Pushdown,Extensión de Tríceps en Polea Cruzada,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-cross-pushdown,cable,No,Avanzado
+ex_057,Cable Rope Skullcrusher,Extensión de tríceps en polea con cuerda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-rope-skullcrusher,cable,No,Principiante
+ex_058,Cable Rope Overhead Tricep Extension,Extensión de tríceps por encima de la cabeza con cuerda en polea,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-rope-overhead-tricep-extension,cable,No,Principiante
+ex_059,Band Overhead Tricep Extension,Extensión de tríceps por encima de la cabeza con banda elástica,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-overhead-tricep-extension,machine,No,Avanzado
+ex_060,Band Pushdown,Extensión de tríceps con banda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-pushdown,machine,No,Principiante
+ex_061,Band Skullcrusher,Extensión de tríceps con banda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-skullcrusher,machine,No,Avanzado
+ex_062,Dumbbell Skullcrusher,Extensión de tríceps con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-skullcrusher,dumbbell,No,Principiante
+ex_063,Barbell Skullcrusher,Press francés con barra,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-skullcrusher,barbell,No,Intermedio
+ex_064,Barbell Overhead Tricep Extension,Extensión de tríceps con barra por encima de la cabeza,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-overhead-tricep-extension,barbell,No,Avanzado
+ex_065,Dumbbell Decline Skullcrusher,Press francés declinado con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-skullcrusher,dumbbell,No,Principiante
+ex_066,Dumbbell Rolling Tricep Extension,Extensión de Tríceps con Mancuerna Rodante,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-rolling-tricep-extension,dumbbell,No,Avanzado
+ex_067,Dumbbell Overhead Tricep Extension,Extensión de tríceps por encima de la cabeza con mancuerna,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-overhead-tricep-extension,dumbbell,No,Principiante
+ex_068,Dumbbell Tricep Kickback,Patada de Tríceps con Mancuerna,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-tricep-kickback,dumbbell,No,Principiante
+ex_069,Plate Curl To Overhead Press To Tricep Extension,Curl con disco a press por encima de la cabeza a extensión de tríceps,,Bíceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-curl-to-overhead-press-to-tricep-extension,machine,No,Avanzado
+ex_070,Plate Overhead Tricep Extension,Extensión de tríceps por encima de la cabeza con disco,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-overhead-tricep-extension,machine,No,Principiante
+ex_071,Band Rapunzel Pushdown,Extensión de tríceps con banda (Rapunzel),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-rapunzel-pushdown,machine,No,Principiante
+ex_072,Plate Overhead Press To Tricep Extension,Press de hombros con disco a extensión de tríceps,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-overhead-press-to-tricep-extension,machine,No,Intermedio
+ex_073,Band Single Arm Pushdown,Jalón de tríceps con banda a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-single-arm-pushdown,machine,Yes,Principiante
+ex_074,Single Arm Rapunzel Pushdown,Extensión de tríceps en polea con un brazo (Rapunzel),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/single-arm-rapunzel-pushdown,machine,Yes,Principiante
+ex_075,Band Single Arm Skullcrusher,Press francés con banda a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-single-arm-skullcrusher,machine,Yes,Principiante
+ex_076,Dumbbell Single Arm Overhead Tricep Extension,Extensión De Tríceps Unilateral Con Mancuerna Por Encima De La Cabeza,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-overhead-tricep-extension,dumbbell,Yes,Principiante
+ex_077,Dumbbell Tate Press,Press Tate con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-tate-press,dumbbell,No,Intermedio
+ex_078,Trx Skullcrusher,Extensión de tríceps en TRX,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/trx-skullcrusher,machine,No,Principiante
+ex_079,Box Dips,Fondos en caja,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/box-dips,bodyweight,No,Intermedio
+ex_080,Band Pushup,Flexiones con banda de resistencia,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-pushup,machine,No,Intermedio
+ex_081,Barbell Floor Press,Press en el suelo con barra,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-floor-press,barbell,No,Avanzado
+ex_082,Barbell Hooklying Bench Press,Press de banca con barra en posición hook-lying,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-hooklying-bench-press,barbell,No,Avanzado
+ex_083,Barbell Larsen Bench Press,Press de banca Larsen con barra,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-larsen-bench-press,barbell,No,Avanzado
+ex_084,Barbell Spoto Press,Press Spoto con barra,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-spoto-press,barbell,No,Avanzado
+ex_085,Barbell Z Press,Z Press con barra,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-z-press,barbell,No,Avanzado
+ex_086,Dumbbell Alternating Single Arm Press,Press Alterno Con Mancuerna A Un Brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-alternating-single-arm-press,dumbbell,Yes,Intermedio
+ex_087,Dumbbell Bench Press,Press de banca con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-bench-press,dumbbell,No,Principiante
+ex_088,Dumbbell Decline Alternating Single Arm Press,"Press Declinado con Mancuernas, Alternando Brazos",,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-alternating-single-arm-press,dumbbell,Yes,Intermedio
+ex_089,Dumbbell Decline Bench Press,Press declinado con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-bench-press,dumbbell,No,Principiante
+ex_090,Dumbbell Decline Guillotine Bench Press,Press guillotina con mancuernas en banco declinado,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-guillotine-bench-press,dumbbell,No,Avanzado
+ex_091,Dumbbell Decline Neutral Bench Press,Press Declinado con Mancuernas (Agarre Neutro),,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-neutral-bench-press,dumbbell,No,Principiante
+ex_092,Dumbbell Decline Single Arm Bench Press,Press de Banca Declinado con Mancuerna a Un Brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-single-arm-bench-press,dumbbell,Yes,Intermedio
+ex_093,Dumbbell Decline Squeeze Press,Press Declinado Con Mancuernas Apretadas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-decline-squeeze-press,dumbbell,No,Intermedio
+ex_094,Dumbbell Guillotine Bench Press,Press Guillotina con Mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-guillotine-bench-press,dumbbell,No,Avanzado
+ex_095,Dumbbell Guillotine Incline Bench Press,Press Inclinado Guillotina con Mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-guillotine-incline-bench-press,dumbbell,No,Avanzado
+ex_096,Dumbbell Neutral Bench Press,Press de banca con mancuernas (agarre neutro),,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-bench-press,dumbbell,No,Principiante
+ex_097,Dumbbell Neutral Incline Bench Press,Press Inclinado con Mancuernas (Agarre Neutro),,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-incline-bench-press,dumbbell,No,Principiante
+ex_098,Dumbbell Neutral Seated Overhead Press,Press de Hombros Sentado con Mancuernas (Agarre Neutral),,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-seated-overhead-press,dumbbell,No,Principiante
+ex_099,Dumbbell Seated Arnold Press,Press Arnold con mancuernas sentado,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-seated-arnold-press,dumbbell,No,Intermedio
+ex_100,Dumbbell Squeeze Press,Press con mancuernas apretadas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-squeeze-press,dumbbell,No,Principiante
+ex_101,Dumbbell Single Arm Press,Press con mancuerna a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-press,dumbbell,Yes,Intermedio
+ex_102,Dumbbell Alternating Arnold Press,Press Arnold Alterno Con Mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-alternating-arnold-press,dumbbell,No,Avanzado
+ex_103,Dumbbell Alternating Overhead Press,Press militar alterno con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-alternating-overhead-press,dumbbell,No,Intermedio
+ex_104,Dumbbell Neutral Alternating Overhead Press,Press alterno con mancuernas (agarre neutro) por encima de la cabeza,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-alternating-overhead-press,dumbbell,No,Intermedio
+ex_105,Dumbbell Neutral Overhead Press,Press Militar con Mancuernas (Agarre Neutro),,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-overhead-press,dumbbell,No,Principiante
+ex_106,Dumbbell Overhead Press,Press militar con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-overhead-press,dumbbell,No,Principiante
+ex_107,Dumbbell Push Press,Push press con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-push-press,dumbbell,No,Intermedio
+ex_108,Dumbbell Single Arm Arnold Press,Press Arnold con mancuerna a un brazo,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-arnold-press,dumbbell,Yes,Intermedio
+ex_109,Dumbbell Single Arm Neutral Overhead Press,Press unilateral con mancuerna (agarre neutro) por encima de la cabeza,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-neutral-overhead-press,dumbbell,Yes,Principiante
+ex_110,Dumbbell Single Arm Overhead Press,Press militar con mancuerna a un brazo,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-overhead-press,dumbbell,Yes,Principiante
+ex_111,Plate Squat Hold Reach,Sentadilla estática con disco y alcance,,Glúteos,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-squat-hold-reach,machine,No,Intermedio
+ex_112,Plate Deficit Pushup,Flexión en déficit con discos,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-deficit-pushup,machine,No,Avanzado
+ex_113,Dumbbell Elevated Pushup,Flexión con mancuernas elevadas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-elevated-pushup,dumbbell,No,Intermedio
+ex_114,Trx Pushup,Flexión en TRX,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/trx-pushup,machine,No,Principiante
+ex_115,Child Pose Elbows On Block,Postura del niño — codos sobre bloque,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/child-pose-elbows-on-block,machine,No,Principiante
+ex_116,One Arm Cow Face Pose,Postura de la cara de vaca con un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/one-arm-cow-face-pose,machine,Yes,Principiante
+ex_117,Pyramid Prayer,Ritual de la Pirámide,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/pyramid-prayer,machine,No,Principiante
+ex_118,Landmine Lying Tricep Extension,Extensión de Tríceps Acostado con Landmine,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-lying-tricep-extension,barbell,No,Intermedio
+ex_119,Walkover Pushup,Flexión Con Paso Por Encima Del Balón Medicinal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/walkover-pushup,machine,No,Intermedio
+ex_120,Bosu Ball Pushup,Flexiones con Bosu Ball,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bosu-ball-pushup,machine,No,Intermedio
+ex_121,Vitruvian Push Up,Flexión Vitruviana,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/vitruvian-push-up,machine,No,Intermedio
+ex_122,Kettlebell Guillotine Bench Press,Press de Guillotina con Pesa Rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-guillotine-bench-press,machine,No,Intermedio
+ex_123,Cable Bar Pushdown,Extensión de tríceps en polea con barra,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-bar-pushdown,cable,No,Principiante
+ex_124,Cable Bar Reverse Grip Pushdown,Jalón de tríceps en polea con barra (agarre supinado),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-bar-reverse-grip-pushdown,cable,No,Principiante
+ex_125,Cable Tricep Kickback,Patada de tríceps en polea,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-tricep-kickback,cable,No,Principiante
+ex_126,Cable Single Arm Rope Pushdown,Extensión de tríceps en polea con cuerda a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-rope-pushdown,cable,Yes,Principiante
+ex_127,Cable Single Arm Cross Pushdown,Jalón de tríceps en polea a una mano (cruzado),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-cross-pushdown,cable,Yes,Principiante
+ex_128,Cable Single Arm Skullcrusher,Extensión de tríceps con cable a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-skullcrusher,cable,Yes,Principiante
+ex_129,Dumbbell Floor Press,Press de suelo con mancuernas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-floor-press,dumbbell,No,Principiante
+ex_130,Dumbbell Incline Skullover,Pullover inclinado con mancuerna,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-incline-skullover,dumbbell,No,Avanzado
+ex_131,Bodyweight Box Assisted Dips,Fondos Asistidos en Caja (Con Peso Corporal),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-box-assisted-dips,bodyweight,No,Principiante
+ex_132,Bodyweight Clapping Push Up,Flexión con palmada,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-clapping-push-up,bodyweight,No,Intermedio
+ex_133,Bodyweight Diamond Knee Push Ups,Flexiones Diamante Con Rodillas Apoyadas (Peso Corporal),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-diamond-knee-push-ups,bodyweight,No,Principiante
+ex_134,Bodyweight Elevated Push Up,Flexión con manos elevadas (peso corporal),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-elevated-push-up,bodyweight,No,Intermedio
+ex_135,Bodyweight Explosive Push Up,Flexión explosiva con peso corporal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-explosive-push-up,bodyweight,No,Avanzado
+ex_136,Bodyweight Incline Knee Push Up,Flexión inclinada con rodillas apoyadas (peso corporal),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-incline-knee-push-up,bodyweight,No,Principiante
+ex_137,Bodyweight Knee Push Ups,Flexiones De Rodillas (Peso Corporal),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-knee-push-ups,bodyweight,No,Principiante
+ex_138,Bodyweight Knee Tricep Extension,Extensión de Tríceps de Rodillas con Peso Corporal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-knee-tricep-extension,bodyweight,No,Principiante
+ex_139,Bodyweight Tricep Extension,Extensión de tríceps con peso corporal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/bodyweight-tricep-extension,bodyweight,No,Intermedio
+ex_140,Kettlebell Bottoms Up Overhead Press,Press Militar Bottoms Up Con Pesa Rusa,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-bottoms-up-overhead-press,machine,No,Avanzado
+ex_141,Kettlebell Bottoms Up Single Arm Overhead Press,Press de Hombro a una Mano con Kettlebell en Posición Invertida,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-bottoms-up-single-arm-overhead-press,machine,Yes,Avanzado
+ex_142,Kettlebell Floor Press,Press de Piso con Kettlebell,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-floor-press,machine,No,Principiante
+ex_143,Kettlebell Overhead Tricep Extension,Extensión de Tríceps por Encima de la Cabeza con Kettlebell,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-overhead-tricep-extension,machine,No,Intermedio
+ex_144,Kettlebell Single Arm Floor Press,Prensa de Suelo con Kettlebell a un Brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-floor-press,machine,Yes,Principiante
+ex_145,Smith Machine Bodyweight Skullcrusher,Press francés en Smith Machine con peso corporal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/smith-machine-bodyweight-skullcrusher,machine,No,Principiante
+ex_146,Smith Machine Close Grip Bench Press,Press de Banca con Agarre Estrecho en Smith Machine,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/smith-machine-close-grip-bench-press,machine,No,Principiante
+ex_147,Smith Machine Guillotine Bench Press,Press Guillotina de Banca en Máquina Smith,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/smith-machine-guillotine-bench-press,machine,No,Intermedio
+ex_148,Smith Machine Skullcrusher,Smith Machine Press Francés,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/smith-machine-skullcrusher,machine,No,Intermedio
+ex_149,Band Single Arm Chest Press,Press de pecho unilateral con banda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-single-arm-chest-press,machine,Yes,Principiante
+ex_150,Kettlebell Chest Press Single,Press de Pecho con Pesa Rusa (Unilateral),,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-chest-press-single,machine,Yes,Principiante
+ex_151,Kettlebell Single Arm Press,Press con kettlebell a un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-press,machine,Yes,Principiante
+ex_152,Kettlebell Walkover Pushup,Flexión con paso sobre la pesa rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-walkover-pushup,machine,No,Avanzado
+ex_153,Incline Push Up,Flexión inclinada,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/incline-push-up,bodyweight,No,Principiante
+ex_154,Decline Push Up,Flexión declinada,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/decline-push-up,bodyweight,No,Principiante
+ex_155,Landmine Alternating Single Arm Press,Press alterno a un brazo en landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-alternating-single-arm-press,barbell,Yes,Intermedio
+ex_156,Landmine Kneeling Alternating Overhead Press,Press Alterno Sobre La Cabeza Con Landmine De Rodillas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-kneeling-alternating-overhead-press,barbell,No,Intermedio
+ex_157,Landmine Kneeling Overhead Press,Press por encima de la cabeza arrodillado con landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-kneeling-overhead-press,barbell,No,Intermedio
+ex_158,Landmine Overhead Press,Press de hombros con landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-overhead-press,barbell,No,Intermedio
+ex_159,Landmine Seated Alternating Overhead Press,Press Alterno Sentado con Landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-seated-alternating-overhead-press,barbell,No,Intermedio
+ex_160,Landmine Seated Overhead Press,Press Militar Sentado en Landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-seated-overhead-press,barbell,No,Intermedio
+ex_161,Landmine Seated Single Arm Overhead Press,Press unilateral sentado con landmine por encima de la cabeza,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-seated-single-arm-overhead-press,barbell,Yes,Intermedio
+ex_162,Landmine Single Arm Chest Press,Press De Pecho Unilateral Con Landmine,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-single-arm-chest-press,barbell,Yes,Intermedio
+ex_163,Landmine Single Arm Overhead Press,Press con landmine a un brazo por encima de la cabeza,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-single-arm-overhead-press,barbell,Yes,Intermedio
+ex_164,Landmine Single Arm Push Press,Press unilateral con landmine,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-single-arm-push-press,barbell,Yes,Intermedio
+ex_165,Landmine Single Arm Staggered Overhead Press,Press Unilateral Con Landmine En Postura Escalonada,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/landmine-single-arm-staggered-overhead-press,barbell,Yes,Intermedio
+ex_166,Dumbbell Arnold Press,Press Arnold con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-arnold-press,dumbbell,No,Intermedio
+ex_167,Neutral Chest Press,Press De Pecho Con Agarre Neutro,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/neutral-chest-press,machine,No,Principiante
+ex_168,Chest Press Partner Toss,Press de pecho con balón medicinal — lanzamiento en pareja,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/chest-press-partner-toss,machine,No,Principiante
+ex_169,Medicine Ball Push Up,Flexión con balón medicinal,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/medicine-ball-push-up,machine,No,Intermedio
+ex_170,Kettlebell Bench Press,Press de banca con pesa rusa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-bench-press,machine,No,Principiante
+ex_171,Kettlebell High Incline Bench Press,Press Inclinado Alto con Pesa Rusa,,Deltoides Anterior,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-high-incline-bench-press,machine,No,Principiante
+ex_172,Kettlebell Incline Bench Press,Press Inclinado Con Kettlebells,,Deltoides Anterior,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-incline-bench-press,machine,No,Principiante
+ex_173,Kettlebell Push Press,Push Press con Pesa Rusa,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-push-press,machine,No,Principiante
+ex_174,Kettlebell Seated Overhead Press,Press Militar Sentado con Pesa Rusa,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-seated-overhead-press,machine,No,Principiante
+ex_175,Kettlebell Single Arm Clean And Press,Cargada y press con pesa rusa a un brazo,,Glúteos,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-clean-and-press,machine,Yes,Intermedio
+ex_176,Cable Single Arm Bench Press,Press de banca con cable a un brazo,,Deltoides Anterior,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-bench-press,cable,Yes,Principiante
+ex_177,Cable Single Arm Incline Bench Press,Press inclinado en polea con un brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-incline-bench-press,cable,Yes,Principiante
+ex_178,Band Chest Press,Press de pecho con banda elástica,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-chest-press,machine,No,Principiante
+ex_179,Band Overhead Press,Press militar con banda,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-overhead-press,machine,No,Principiante
+ex_180,Cardio Band Press Jacks,Saltos de Prensa con Banda de Cardio,,Glúteo medio,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cardio-band-press-jacks,machine,No,Principiante
+ex_181,Core Stability 2 Opposite Shoulder Tap 4pt Position,Texto: Estabilidad del Núcleo 2 - Toque en el Hombro Opuesto en Posición de 4 Puntos,,Bíceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/core-stability-2-opposite-shoulder-tap-4pt-position,machine,No,Principiante
+ex_182,Elbow Extensor Isometric Seated Overhead Dumbbell,Isométrico de tríceps sentado con mancuerna por encima de la cabeza,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/elbow-extensor-isometric-seated-overhead-dumbbell,machine,No,Principiante
+ex_183,Elbow Extensor Mobilisation Kneeling Lacrosse Ball,Movilización de los extensores del codo de rodillas con pelota de lacrosse,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/elbow-extensor-mobilisation-kneeling-lacrosse-ball,machine,No,Principiante
+ex_184,Cardio Ski Erg,Cardio Ergómetro de esquí,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cardio-ski-erg,machine,No,Principiante
+ex_185,Parralel Bar Dips,Fondos en Barras Paralelas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/parralel-bar-dips,bodyweight,No,Intermedio
+ex_186,Machine Assisted Parallel Bar Dips,Texto: Dips en Barras Paralelas Asistidas por Máquina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-assisted-parallel-bar-dips,machine,No,Principiante
+ex_187,Machine Chest Press,Prensa de Pecho en Máquina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-chest-press,machine,No,Principiante
+ex_188,Ring Standing Pushup,Flexión de pie con anillo,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/ring-standing-pushup,bodyweight,No,Principiante
+ex_189,Ring Skullcrusher,Extensión de tríceps en anillas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/ring-skullcrusher,bodyweight,No,Principiante
+ex_190,Ring Standing Archer Pushup,Flexión de arquero en posición de anillo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/ring-standing-archer-pushup,bodyweight,No,Intermedio
+ex_191,Kettlebell Incline Guillotine Bench Press,Press de banca inclinada con kettlebell en guillotina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-incline-guillotine-bench-press,machine,No,Intermedio
+ex_192,Weighted Diamond Push Ups,Flexiones diamante con peso,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/weighted-diamond-push-ups,machine,No,Intermedio
+ex_193,Weighted Knee Push Ups,Flexiones de rodilla con peso,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/weighted-knee-push-ups,machine,No,Principiante
+ex_194,Dumbbell Seated Single Arm Arnold Press,Press Arnold con mancuerna sentado con un solo brazo,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-seated-single-arm-arnold-press,dumbbell,Yes,Intermedio
+ex_195,Dumbbell Seated Y Press,Press de hombros sentado en Y con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-seated-y-press,dumbbell,No,Principiante
+ex_196,Dumbbell Weighted Dip,Fondos con pesas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-weighted-dip,dumbbell,No,Intermedio
+ex_197,Dumbbell Y Press,Press de Y con mancuernas,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-y-press,dumbbell,No,Principiante
+ex_198,Kettlebell Kneeling Bottoms Up Overhead Press,"Press de hombro con kettlebell en posición de rodillas, con el peso hacia arriba",,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-kneeling-bottoms-up-overhead-press,machine,No,Avanzado
+ex_199,Plate Weighted Dip,Dip con peso en placa,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/plate-weighted-dip,machine,No,Intermedio
+ex_200,Band Standing Chest Press,Prensa de pecho de pie con banda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-standing-chest-press,machine,No,Principiante
+ex_201,Band Tricep Kickback,Extensión de tríceps con banda,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-tricep-kickback,machine,No,Principiante
+ex_202,Machine Dips,Dips en máquina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-dips,machine,No,Principiante
+ex_203,Machine Overhead Tricep Extension,Extensión de tríceps en máquina por encima de la cabeza,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-overhead-tricep-extension,machine,No,Principiante
+ex_204,Machine Plate Loaded Decline Chest Press,Prensa de pecho en declive con carga de placas,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-plate-loaded-decline-chest-press,machine,No,Principiante
+ex_205,Machine Plate Loaded Incline Chest Press,Prensa inclinada para pecho con carga de discos,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-plate-loaded-incline-chest-press,machine,No,Principiante
+ex_206,Machine Plate Loaded Low Incline Bench Press,Press de banca inclinada baja con carga de discos,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-plate-loaded-low-incline-bench-press,machine,No,Principiante
+ex_207,Machine Tricep Pushdown,Empuje hacia abajo de tríceps en máquina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/machine-tricep-pushdown,machine,No,Principiante
+ex_208,Cable Overhead Tricep Press,Press de tríceps en polea alta,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-overhead-tricep-press,cable,No,Intermedio
+ex_209,Cable Single Arm Overhead Tricep Extension,Extensión de tríceps por encima de la cabeza con cable y un solo brazo,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-overhead-tricep-extension,cable,Yes,Principiante
+ex_210,Barbell Tricep Guillotine Press,Press de tríceps con barra estilo guillotina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-tricep-guillotine-press,barbell,No,Intermedio
+ex_211,Dumbbell Bench Braced Single Arm Overhead Tricep Extension,"Extensión de tríceps por encima de la cabeza con un solo brazo, apoyado en banco con mancuerna",,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-bench-braced-single-arm-overhead-tricep-extension,dumbbell,Yes,Principiante
+ex_212,Dumbbell Tricep Guillotine Press,Press de tríceps con mancuerna estilo guillotina,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-tricep-guillotine-press,dumbbell,No,Principiante
+ex_213,Barbell Guillotine High Incline Bench Press,Barbell Guillotine High Incline Bench Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-guillotine-high-incline-bench-press,barbell,No,Avanzado
+ex_214,Barbell Guillotine Incline Bench Press,Barbell Guillotine Incline Bench Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-guillotine-incline-bench-press,barbell,No,Avanzado
+ex_215,Barbell J M Press,Barbell J M Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/barbell-j-m-press,barbell,No,Intermedio
+ex_216,Dumbbell High Incline Skullover,Dumbbell High Incline Skullover,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-high-incline-skullover,dumbbell,No,Avanzado
+ex_217,Dumbbell Incline Skullcrusher,Dumbbell Incline Skullcrusher,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-incline-skullcrusher,dumbbell,No,Intermedio
+ex_218,Dumbbell Neutral High Incline Bench Press,Dumbbell Neutral High Incline Bench Press,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-neutral-high-incline-bench-press,dumbbell,No,Principiante
+ex_219,Dumbbell Single Arm Incline Skullcrusher,Dumbbell Single Arm Incline Skullcrusher,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-incline-skullcrusher,dumbbell,Yes,Intermedio
+ex_220,Dumbbell Single Arm Push Press,Dumbbell Single Arm Push Press,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-push-press,dumbbell,Yes,Intermedio
+ex_221,Dumbbell Single Arm Seated Overhead Tricep Extension,Dumbbell Single Arm Seated Overhead Tricep Extension,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-seated-overhead-tricep-extension,dumbbell,Yes,Intermedio
+ex_222,Dumbbell Single Arm Skullcrusher,Dumbbell Single Arm Skullcrusher,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-skullcrusher,dumbbell,Yes,Intermedio
+ex_223,Kettlebell Single Arm Push Press,Kettlebell Single Arm Push Press,,Hombros,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-push-press,machine,Yes,Intermedio
+ex_224,Cable Bar Skullcrusher,Cable Bar Skullcrusher,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-bar-skullcrusher,cable,No,Principiante
+ex_225,Cable Bent Over Single Arm Overhead Tricep Extension,Cable Bent Over Single Arm Overhead Tricep Extension,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-bent-over-single-arm-overhead-tricep-extension,cable,Yes,Principiante
+ex_226,Cable Leaning Single Arm Skullover,Cable Leaning Single Arm Skullover,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-leaning-single-arm-skullover,cable,Yes,Intermedio
+ex_227,Cable Single Arm Pushdown,Cable Single Arm Pushdown,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-pushdown,cable,Yes,Principiante
+ex_228,Band Floor Press,Band Floor Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/band-floor-press,machine,No,Principiante
+ex_229,Dumbbell Larsen Press,Dumbbell Larsen Press,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-larsen-press,dumbbell,No,Intermedio
+ex_230,Dumbbell Single Arm Larsen Press,Dumbbell Single Arm Larsen Press,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-larsen-press,dumbbell,Yes,Intermedio
+ex_231,Dumbbell Single Arm Tricep Guilotine Press,Dumbbell Single Arm Tricep Guilotine Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/dumbbell-single-arm-tricep-guilotine-press,dumbbell,Yes,Intermedio
+ex_232,Kettlebell Larsen Press,Kettlebell Larsen Press,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-larsen-press,machine,No,Intermedio
+ex_233,Kettlebell Single Arm Incline Chest Press,Kettlebell Single Arm Incline Chest Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-incline-chest-press,machine,Yes,Intermedio
+ex_234,Kettlebell Single Arm Larsen Press,Kettlebell Single Arm Larsen Press,,Abdominales,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-larsen-press,machine,Yes,Intermedio
+ex_235,Kettlebell Single Arm Tricep Guilotine Press,Kettlebell Single Arm Tricep Guilotine Press,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/kettlebell-single-arm-tricep-guilotine-press,machine,Yes,Principiante
+ex_236,Cable Bar Rolling Pushdown,Cable Bar Rolling Pushdown,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-bar-rolling-pushdown,cable,No,Principiante
+ex_237,Cable Rope Rolling Pushdown,Cable Rope Rolling Pushdown,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-rope-rolling-pushdown,cable,No,Principiante
+ex_238,Cable Single Arm Rolling Pushdown,Cable Single Arm Rolling Pushdown,,Tríceps,arm,isolation,Triceps,https://musclewiki.com/es-es/exercise/cable-single-arm-rolling-pushdown,cable,Yes,Principiante
