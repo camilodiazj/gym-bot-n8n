@@ -62,7 +62,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        // Parseamos el string de 'output' para convertirlo en lista de objetos\n        const exercises = JSON.parse(entry.output);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
+        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        let outputStr = entry.output;\n        \n        // Limpiar los bloques de código markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n        \n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -552,8 +552,93 @@
     "input": [
       {
         "json": {
-          "whatsapp_id": 573153463086
+          "whatsapp_id": 570000000009
+        },
+        "pairedItem": {
+          "item": 0
         }
+      }
+    ],
+    "AI Transform": [
+      {
+        "json": {
+          "unifiedArray": [
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_023\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_035\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_029\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_007\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_025\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_017\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_036\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_010\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_031\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_002\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_032\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_013\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_019\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_001\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_020\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_041\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_040\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_023\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_035\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_007\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_025\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_017\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_026\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_036\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_024\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_010\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_031\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_013\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_019\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_002\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_032\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_001\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_020\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_041\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_040\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  }\n]\n```"
+            }
+          ]
+        },
+        "pairedItem": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
       }
     ]
   },
@@ -792,7 +877,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "4f62420e-5ccc-4758-8b03-e96f644e4cd3",
+  "versionId": "b5f3a952-d8ed-49bd-afcd-8e1a929c1b76",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

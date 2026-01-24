@@ -1,6 +1,32 @@
 # Changelog
 
 All notable changes to GymBot will be documented in this file.
+
+## [1.4.0] - 2026-01-24
+
+### Added - E2E Test Suite v4.0
+
+- **TC002_FULL_KYC test**: AI-simulated user completes entire KYC flow using GPT-4o-mini
+- **DB verification as ground truth**: TC002_FULL_KYC validates user creation via database queries instead of turn tracking
+- **Automatic cleanup queries**: TC002, TC002_FULL_KYC, and TC003 now auto-clean data before each run
+
+### Fixed
+
+- **TC002 cleanup**: Added missing cleanup queries to delete user 570000000009 data before test
+- **TC003 cleanup**: Added cleanup to delete future scheduled workouts preventing false positives
+- **whatsapp_id data type**: Fixed cleanup queries using string instead of numeric for BIGINT column
+- **test_data_setup.sql FK error**: Added 570000000009 to all DELETE subqueries to prevent foreign key constraint violations
+
+### Changed
+
+- **Test cases embedded in workflow**: Removed external `GymRatFlow_test_cases.json`, tests now defined in `GymRatFlow_E2E_TestRunner.json`
+- **Deprecated tests removed**: Removed TC005, TC008, TC009, TC010 (obsolete confirmation flow tests)
+- **Documentation consolidated**: Removed `how_to_make.md`, updated `GymRatFlow_test_plan.md` with complete execution guide
+
+### Documentation
+
+- Updated `GymRatFlow_test_plan.md` to v4.0 with step-by-step execution guide, architecture diagram, and troubleshooting section
+
 ## [1.3.2] - 2026-01-22
 https://gym-rat.atlassian.net/browse/KAN-49
 Automated tests with "TestRunner"
