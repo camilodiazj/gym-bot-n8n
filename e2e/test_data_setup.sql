@@ -1,14 +1,14 @@
 -- ============================================
 -- SCRIPT DE DATOS DE PRUEBA E2E
--- GymRatFlow_Supabase v3.0
+-- GymRatFlow_Supabase v4.0
 -- ============================================
 --
--- USUARIOS DUMMY:
+-- USUARIOS DUMMY (Fixtures):
 -- 570000000001 - Test_NoSchedule (TC003)
 -- 570000000002 - Test_RestDay (TC004)
--- 570000000003 - Test_WithRoutine (TC005-TC010)
--- 570000000004 - Test_WithPendingTask (TC011-TC012) [NUEVO v3.0]
--- 570000000009 - NO EXISTE (TC002)
+-- 570000000003 - Test_WithRoutine (TC006, TC007)
+-- 570000000004 - Test_WithPendingTask (TC011, TC012)
+-- 570000000009 - DINAMICO (TC002, TC002_FULL_KYC) - creado/eliminado por tests
 --
 -- TABLAS AFECTADAS:
 -- users, users_plans, user_weekly_schedule, workouts,
@@ -19,43 +19,44 @@
 -- ============================================
 -- SECCION 1: TEARDOWN (Limpiar datos de prueba)
 -- Ejecutar PRIMERO para estado limpio
+-- IMPORTANTE: Incluye 570000000009 en TODAS las queries
 -- ============================================
 
--- Eliminar pending_tasks de usuarios dummy (NUEVO v3.0)
+-- Eliminar pending_tasks de usuarios dummy
 DELETE FROM pending_tasks
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004')
+    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
 );
 
 -- Eliminar workouts de usuarios dummy
 DELETE FROM workouts
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004')
+    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
 );
 
 -- Eliminar schedules de usuarios dummy
 DELETE FROM user_weekly_schedule
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004')
+    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
 );
 
 -- Eliminar planes de usuarios dummy
 DELETE FROM users_plans
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004')
+    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
 );
 
 -- Eliminar usuarios dummy
 DELETE FROM users
 WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009');
 
--- Eliminar perfiles gym de usuarios dummy
+-- Eliminar perfiles gym de usuarios dummy (whatsapp_id es BIGINT, no string)
 DELETE FROM users_gym_profile
-WHERE whatsapp_id IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009');
+WHERE whatsapp_id IN (570000000001, 570000000002, 570000000003, 570000000004, 570000000009);
 
 -- Limpiar memoria de chat de usuarios dummy
 DELETE FROM n8n_chat_histories
@@ -100,7 +101,7 @@ VALUES (
     NOW()
 );
 
--- Usuario 3: Test_WithRoutine (para TC005-TC010 - con rutina hoy)
+-- Usuario 3: Test_WithRoutine (para TC006, TC007 - con rutina hoy)
 INSERT INTO users (user_id, full_name, email, full_phone_number, cel_number, country_indicative, timezone, created_at)
 VALUES (
     'e2e00003-0000-0000-0000-000000000003',
@@ -384,16 +385,16 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 -- AND task_type = 'CONFIRMAR_RUTINA';
 
 -- ============================================
--- RESUMEN DE ESTADOS POST-SETUP
+-- RESUMEN DE ESTADOS POST-SETUP (v4.0)
 -- ============================================
 --
--- | Usuario             | Phone        | Plan | Schedule | Workouts | Pending Task | Para Tests |
--- |---------------------|--------------|------|----------|----------|--------------|------------|
--- | Test_NoSchedule     | 570000000001 | SI   | NO       | NO       | NO           | TC003      |
--- | Test_RestDay        | 570000000002 | SI   | MANANA   | NO       | NO           | TC004      |
--- | Test_WithRoutine    | 570000000003 | SI   | HOY      | SI       | NO           | TC005-010  |
--- | Test_WithPendingTask| 570000000004 | SI   | HOY      | SI       | SI           | TC011-012  |
--- | (no existe)         | 570000000009 | -    | -        | -        | -            | TC002      |
+-- | Usuario             | Phone        | Plan | Schedule | Workouts | Pending Task | Para Tests          |
+-- |---------------------|--------------|------|----------|----------|--------------|---------------------|
+-- | Test_NoSchedule     | 570000000001 | SI   | NO       | NO       | NO           | TC003               |
+-- | Test_RestDay        | 570000000002 | SI   | MANANA   | NO       | NO           | TC004               |
+-- | Test_WithRoutine    | 570000000003 | SI   | HOY      | SI       | NO           | TC006, TC007        |
+-- | Test_WithPendingTask| 570000000004 | SI   | HOY      | SI       | SI           | TC011, TC012        |
+-- | (dinamico)          | 570000000009 | -    | -        | -        | -            | TC002, TC002_FULL_KYC|
 --
 -- TC001 no necesita usuario (es status update sin messages[])
 -- ============================================
