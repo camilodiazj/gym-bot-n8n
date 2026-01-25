@@ -198,11 +198,12 @@ LIMIT 1;
 -- ============================================
 
 -- Usuario 2 (RestDay): Schedule para MANANA (no hoy)
+-- Usando timezone de Bogota para evitar desfase con UTC
 INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
 VALUES (
     'e2e00002-0000-0000-0000-000000000002',
     1,
-    (CASE EXTRACT(DOW FROM CURRENT_DATE + 1)
+    (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date + 1)
         WHEN 0 THEN 'Domingo'
         WHEN 1 THEN 'Lunes'
         WHEN 2 THEN 'Martes'
@@ -212,16 +213,17 @@ VALUES (
         WHEN 6 THEN 'Sabado'
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
-    (CURRENT_DATE + INTERVAL '1 day')::date::text,
+    ((NOW() AT TIME ZONE 'America/Bogota')::date + INTERVAL '1 day')::date::text,
     false
 );
 
 -- Usuario 3 (WithRoutine): Schedule para HOY
+-- Usando timezone de Bogota para evitar desfase con UTC
 INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
 VALUES (
     'e2e00003-0000-0000-0000-000000000003',
     1,
-    (CASE EXTRACT(DOW FROM CURRENT_DATE)
+    (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date)
         WHEN 0 THEN 'Domingo'
         WHEN 1 THEN 'Lunes'
         WHEN 2 THEN 'Martes'
@@ -231,16 +233,17 @@ VALUES (
         WHEN 6 THEN 'Sabado'
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
-    CURRENT_DATE::text,
+    (NOW() AT TIME ZONE 'America/Bogota')::date::text,
     false
 );
 
 -- Usuario 4 (WithPendingTask): Schedule para HOY [NUEVO v3.0]
+-- Usando timezone de Bogota para evitar desfase con UTC
 INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
 VALUES (
     'e2e00004-0000-0000-0000-000000000004',
     1,
-    (CASE EXTRACT(DOW FROM CURRENT_DATE)
+    (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date)
         WHEN 0 THEN 'Domingo'
         WHEN 1 THEN 'Lunes'
         WHEN 2 THEN 'Martes'
@@ -250,7 +253,7 @@ VALUES (
         WHEN 6 THEN 'Sabado'
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
-    CURRENT_DATE::text,
+    (NOW() AT TIME ZONE 'America/Bogota')::date::text,
     false
 );
 
@@ -273,7 +276,7 @@ SELECT
     NOW() - INTERVAL '2 hours'  -- Simula que se creo hace 2 horas (8 PM reminder)
 FROM user_weekly_schedule
 WHERE user_id = 'e2e00004-0000-0000-0000-000000000004'
-AND planned_day = CURRENT_DATE::text
+AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text
 LIMIT 1;
 
 -- ============================================
@@ -371,13 +374,13 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 -- UPDATE user_weekly_schedule
 -- SET "Completed" = false
 -- WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'
--- AND planned_day = CURRENT_DATE::text;
+-- AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text;
 
 -- Resetear Completed y pending_task para Usuario 4 [NUEVO v3.0]
 -- UPDATE user_weekly_schedule
 -- SET "Completed" = false
 -- WHERE user_id = 'e2e00004-0000-0000-0000-000000000004'
--- AND planned_day = CURRENT_DATE::text;
+-- AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text;
 
 -- UPDATE pending_tasks
 -- SET status = 'pending', resolved_at = NULL

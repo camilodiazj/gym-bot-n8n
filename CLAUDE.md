@@ -240,3 +240,14 @@ e2e/
 | `570000000009` | Dynamic (created/deleted) | TC002, TC002_FULL_KYC |
 
 > **Important**: Phone numbers `57000000000X` are reserved for testing. Do not use for real users.
+
+## Changelog
+
+### 2026-01-25
+- **Fix timezone en E2E tests**: Cambiado `CURRENT_DATE` a `(NOW() AT TIME ZONE 'America/Bogota')::date` en:
+  - `e2e/test_data_setup.sql` - Todas las queries de schedule y pending_tasks
+  - `n8n/GymRatFlow_E2E_TestRunner.json` - Queries de cleanup
+  - Esto evita el desfase de 5 horas entre UTC (Supabase) y hora local de Colombia
+- **Fix validación TC006**: Actualizada regla de validación para soportar nuevo formato de rutina:
+  - Antes: Buscaba "RUTINA" o "rutina"
+  - Ahora: Busca "plan para hoy", "rutina", o "RUTINA" + "Series", "series", o "Repeticiones"
