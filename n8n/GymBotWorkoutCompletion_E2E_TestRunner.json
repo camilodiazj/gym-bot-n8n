@@ -1,0 +1,187 @@
+{
+  "name": "GymBotWorkoutCompletion_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 320],
+      "id": "trigger-manual",
+      "name": "Run All Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCases = [\n  {\n    order: 1,\n    id: \"TC_WC_001\",\n    name: \"No crea pending_task duplicado\",\n    priority: \"CRITICAL\",\n    category: \"DUPLICATE_PREVENTION\",\n    description: \"Si ya existe un pending_task para el mismo user_id + related_id, NO debe crear otro\",\n    setup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false, planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\",\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\",\n      \"INSERT INTO pending_tasks (user_id, task_type, related_id, session_name, week, status) SELECT 'e2e00003-0000-0000-0000-000000000003', 'CONFIRMAR_RUTINA', day_routine_id, session_name, 1, 'pending' FROM user_weekly_schedule WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1 FETCH FIRST 1 ROW ONLY\"\n    ],\n    cleanup: [\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\"\n    ],\n    verification: {\n      description: \"Debe haber exactamente 1 pending_task (no duplicado)\",\n      query: \"SELECT COUNT(*) as cnt FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND task_type = 'CONFIRMAR_RUTINA'\",\n      expected: 1,\n      operator: \"equals\"\n    }\n  },\n  {\n    order: 2,\n    id: \"TC_WC_002\",\n    name: \"Crea pending_task cuando no existe\",\n    priority: \"CRITICAL\",\n    category: \"TASK_CREATION\",\n    description: \"Si NO existe pending_task previo, debe crear uno nuevo\",\n    setup: [\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\",\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false, planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\"\n    ],\n    cleanup: [\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\"\n    ],\n    verification: {\n      description: \"Debe existir exactamente 1 pending_task nuevo\",\n      query: \"SELECT COUNT(*) as cnt FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND task_type = 'CONFIRMAR_RUTINA'\",\n      expected: 1,\n      operator: \"equals\"\n    }\n  },\n  {\n    order: 3,\n    id: \"TC_WC_003\",\n    name: \"No procesa usuarios sin workout hoy\",\n    priority: \"HIGH\",\n    category: \"FILTER\",\n    description: \"Si el usuario no tiene workout programado para hoy, no debe crear pending_task\",\n    setup: [\n      \"UPDATE user_weekly_schedule SET planned_day = ((NOW() AT TIME ZONE 'America/Bogota')::date + INTERVAL '1 day')::date::text WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\",\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\"\n    ],\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\"\n    ],\n    verification: {\n      description: \"No debe existir pending_task\",\n      query: \"SELECT COUNT(*) as cnt FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\",\n      expected: 0,\n      operator: \"equals\"\n    }\n  },\n  {\n    order: 4,\n    id: \"TC_WC_004\",\n    name: \"No procesa workouts ya completados\",\n    priority: \"HIGH\",\n    category: \"FILTER\",\n    description: \"Si el workout ya está marcado como Completed=true, no debe crear pending_task\",\n    setup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = true, planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\",\n      \"DELETE FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\"\n    ],\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false WHERE user_id = 'e2e00003-0000-0000-0000-000000000003' AND week = 1\"\n    ],\n    verification: {\n      description: \"No debe existir pending_task para workout completado\",\n      query: \"SELECT COUNT(*) as cnt FROM pending_tasks WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'\",\n      expected: 0,\n      operator: \"equals\"\n    }\n  }\n];\n\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', sortedTests.length);\n$execution.customData.set('testResults', '[]');\nconsole.log('Tests cargados: ' + sortedTests.map(t => t.id).join(' -> '));\nreturn sortedTests.map(tc => ({ json: tc }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 320],
+      "id": "load-test-cases",
+      "name": "Load Test Cases"
+    },
+    {
+      "parameters": { "options": {} },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [680, 320],
+      "id": "loop-tests",
+      "name": "Loop Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $input.first().json;\nconsole.log('\\n========================================');\nconsole.log('[' + testCase.order + '/' + $execution.customData.get('totalTests') + '] ' + testCase.id);\nconsole.log('   ' + testCase.name);\nconsole.log('   Categoria: ' + testCase.category);\nconsole.log('========================================');\nreturn [{ json: testCase }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 480],
+      "id": "pre-test-log",
+      "name": "Pre-Test Log"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.setup ? $json.setup.join('; ') : 'SELECT 1' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1100, 480],
+      "id": "run-setup-sql",
+      "name": "Run Setup SQL",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "bohKnXiqKqziF8_Qf_68W",
+          "mode": "id"
+        },
+        "options": { "waitForSubWorkflow": true }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [1300, 480],
+      "id": "execute-workflow",
+      "name": "Execute GymBotWorkoutCompletion"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.verification.query }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1500, 480],
+      "id": "run-verification",
+      "name": "Run Verification Query",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst dbResult = $input.first().json;\nlet actualValue = 0;\nif (dbResult) {\n  actualValue = dbResult.cnt || dbResult.count || Object.values(dbResult)[0] || 0;\n}\nconst expected = testCase.verification.expected;\nconst operator = testCase.verification.operator || 'equals';\nlet passed = false;\nswitch(operator) {\n  case 'equals': passed = Number(actualValue) === expected; break;\n  case 'gte': passed = Number(actualValue) >= expected; break;\n  case 'lte': passed = Number(actualValue) <= expected; break;\n  default: passed = Number(actualValue) === expected;\n}\nconst result = {\n  order: testCase.order,\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: passed,\n  output: 'Expected: ' + expected + ', Got: ' + actualValue + ' (' + operator + ')',\n  expectedRule: testCase.verification.description,\n  ruleDescription: testCase.description,\n  error: passed ? null : 'Verification failed: expected ' + expected + ' ' + operator + ', got ' + actualValue,\n  executedAt: new Date().toISOString()\n};\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\nconsole.log((passed ? 'PASSED' : 'FAILED') + ': ' + testCase.id + ' - ' + testCase.name);\nconsole.log('   ' + testCase.verification.description);\nconsole.log('   Expected: ' + expected + ', Got: ' + actualValue);\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1700, 480],
+      "id": "evaluate-result",
+      "name": "Evaluate Result"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.cleanup ? $('Pre-Test Log').first().json.cleanup.join('; ') : 'SELECT 1' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [1900, 480],
+      "id": "run-cleanup-sql",
+      "name": "Run Cleanup SQL",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [1100, 320],
+      "id": "collect-results",
+      "name": "Collect Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Leer resultados directamente del nodo Evaluate Result\nlet results = [];\nlet source = 'None';\ntry {\n  const evaluateResultItems = $('Evaluate Result').all();\n  if (evaluateResultItems && evaluateResultItems.length > 0) {\n    results = evaluateResultItems.map(item => item.json);\n    source = '$(\\'Evaluate Result\\').all()';\n  }\n} catch(e) {\n  console.log('Error reading from Evaluate Result: ' + e.message);\n}\nconsole.log('DATA SOURCE: ' + source);\nconsole.log('RECORDS FOUND: ' + results.length);\nconst total = results.length;\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\nconst passRateRaw = total > 0 ? (passed.length / total) * 100 : 0;\nconst passRate = passRateRaw % 1 === 0 ? passRateRaw.toFixed(0) : passRateRaw.toFixed(1);\nconst byCategory = results.reduce((acc, curr) => {\n  const cat = curr.category || 'UNCATEGORIZED';\n  if (!acc[cat]) acc[cat] = { total: 0, passed: 0, failed: 0 };\n  acc[cat].total++;\n  curr.passed ? acc[cat].passed++ : acc[cat].failed++;\n  return acc;\n}, {});\nlet statusEmoji = failed.length === 0 ? 'PASS' : 'FAIL';\nif (total === 0) statusEmoji = 'WARN';\nlet mdReport = 'Test Report - GymBotWorkoutCompletion\\n';\nmdReport += '──────────────────────\\n';\nmdReport += 'Status: ' + statusEmoji + '\\n';\nmdReport += 'Score: ' + passRate + '% (' + passed.length + '/' + total + ')\\n';\nmdReport += 'Time: ' + new Date().toLocaleString('es-CO') + '\\n\\n';\nmdReport += 'Categorias:\\n';\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const icon = c.failed === 0 ? 'OK' : 'FAIL';\n  mdReport += icon + ' ' + cat + ': ' + c.passed + '/' + c.total + '\\n';\n});\nif (failed.length > 0) {\n  mdReport += '\\nFallos Detectados:\\n';\n  failed.forEach(f => {\n    mdReport += '- [' + f.priority + '] ' + f.testName + '\\n';\n    mdReport += '  Exp: ' + f.ruleDescription + '\\n';\n    mdReport += '  Got: ' + f.output + '\\n';\n  });\n}\nconsole.log('\\n' + mdReport);\nreturn [{\n  json: {\n    meta: { timestamp: new Date().toISOString(), totalTests: total, success: failed.length === 0, workflow: 'GymBotWorkoutCompletion' },\n    markdownReport: mdReport,\n    stats: { passed: passed.length, failed: failed.length, rate: parseFloat(passRate), byCategory },\n    failures: failed.map(r => ({ testId: r.testId, name: r.testName, category: r.category, reason: r.ruleDescription, output: r.output }))\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 320],
+      "id": "generate-report",
+      "name": "Generate Report"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [[{ "node": "Load Test Cases", "type": "main", "index": 0 }]]
+    },
+    "Load Test Cases": {
+      "main": [[{ "node": "Loop Tests", "type": "main", "index": 0 }]]
+    },
+    "Loop Tests": {
+      "main": [
+        [{ "node": "Collect Results", "type": "main", "index": 0 }],
+        [{ "node": "Pre-Test Log", "type": "main", "index": 0 }]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [[{ "node": "Run Setup SQL", "type": "main", "index": 0 }]]
+    },
+    "Run Setup SQL": {
+      "main": [[{ "node": "Execute GymBotWorkoutCompletion", "type": "main", "index": 0 }]]
+    },
+    "Execute GymBotWorkoutCompletion": {
+      "main": [[{ "node": "Run Verification Query", "type": "main", "index": 0 }]]
+    },
+    "Run Verification Query": {
+      "main": [[{ "node": "Evaluate Result", "type": "main", "index": 0 }]]
+    },
+    "Evaluate Result": {
+      "main": [[{ "node": "Run Cleanup SQL", "type": "main", "index": 0 }]]
+    },
+    "Run Cleanup SQL": {
+      "main": [[{ "node": "Loop Tests", "type": "main", "index": 0 }]]
+    },
+    "Collect Results": {
+      "main": [[{ "node": "Generate Report", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "2",
+  "meta": { "templateCredsSetupCompleted": true },
+  "id": "workout-completion-e2e-test",
+  "tags": []
+}

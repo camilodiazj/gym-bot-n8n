@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        2032,
-        896
+        -912,
+        48
       ],
-      "id": "2217d427-563c-4c2d-857a-3e3acf122417",
+      "id": "0a03b893-f7fd-4f93-ade5-163f1fea21de",
       "name": "Schedule Trigger"
     },
     {
@@ -31,10 +31,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        2496,
-        896
+        368,
+        0
       ],
-      "id": "940b24a2-a492-4fbd-b6b0-a23da03ef583",
+      "id": "00d884df-4ca8-45cb-96ff-791573b57f64",
       "name": "AI Agent"
     },
     {
@@ -51,10 +51,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2368,
-        1104
+        240,
+        208
       ],
-      "id": "1006ad0b-11fd-4fd3-94e5-7731a9a6195e",
+      "id": "097e180f-309b-4462-82fe-7ed47e376704",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -74,10 +74,10 @@
       "type": "n8n-nodes-base.whatsAppTool",
       "typeVersion": 1.1,
       "position": [
-        2656,
-        1104
+        528,
+        208
       ],
-      "id": "22b19ac2-fe05-474c-8395-d2686bd5046a",
+      "id": "a12b4eda-d466-448a-9cc5-1f4f983a529a",
       "name": "SendMessage",
       "webhookId": "32cfcd64-c0ba-4b37-a480-b1b74cc8dac4",
       "credentials": {
@@ -107,10 +107,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2240,
-        896
+        -608,
+        32
       ],
-      "id": "c51c54d3-22f8-4135-b688-7eb4812b0e6c",
+      "id": "fd8e847c-dfd2-46f8-b315-08c045838f0d",
       "name": "Get_Today_Planned_Workouts",
       "credentials": {
         "supabaseApi": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        2816,
-        1104
+        688,
+        208
       ],
-      "id": "5a73335d-4716-4784-855f-942e13e3a971",
+      "id": "1f4f0d87-bc58-4d69-803b-28f097992853",
       "name": "Tool_Get_User_Info",
       "credentials": {
         "supabaseApi": {
@@ -150,16 +150,16 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Get_Today_Planned_Workouts').item.json.user_id }}_{{ $now.weekNumber }}_confirmation",
+        "sessionKey": "={{ $json.user_id }}_{{ $now.weekNumber }}_confirmation",
         "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2528,
-        1104
+        400,
+        208
       ],
-      "id": "9f0043eb-9a27-4c82-bec3-27bc76724f37",
+      "id": "22420407-26ed-419e-a290-a604c5af8577",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -175,7 +175,7 @@
           "fieldValues": [
             {
               "fieldId": "user_id",
-              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.user_id }}"
+              "fieldValue": "={{ $('Merge').item.json.user_id }}"
             },
             {
               "fieldId": "task_type",
@@ -183,15 +183,15 @@
             },
             {
               "fieldId": "related_id",
-              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.day_routine_id }}"
+              "fieldValue": "={{ $('Merge').item.json.day_routine_id }}"
             },
             {
               "fieldId": "session_name",
-              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.session_name }}"
+              "fieldValue": "={{ $('Merge').item.json.session_name }}"
             },
             {
               "fieldId": "week",
-              "fieldValue": "={{ $('Get_Today_Planned_Workouts').item.json.week }}"
+              "fieldValue": "={{ $('Merge').item.json.week }}"
             },
             {
               "fieldId": "status",
@@ -203,10 +203,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2800,
-        896
+        704,
+        -16
       ],
-      "id": "39af6728-77e2-47ad-a84f-b1fab8b2aacb",
+      "id": "b42cc7e6-f5df-4d9b-a36d-d526507d2d31",
       "name": "Create_Pending_Task",
       "credentials": {
         "supabaseApi": {
@@ -214,9 +214,137 @@
           "name": "Supabase"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { output: 'completed' } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        80
+      ],
+      "id": "002cbe91-3568-49af-aee2-0d3afbd96b41",
+      "name": "Filtered Message4"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -912,
+        208
+      ],
+      "id": "0c87c274-0f95-463d-a298-b7a6e5a381db",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "related_id",
+              "field2": "day_routine_id"
+            }
+          ]
+        },
+        "joinMode": "keepNonMatches",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -128,
+        48
+      ],
+      "id": "29808737-b3a2-4df5-af61-1c1fadeb35a2",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "pending_tasks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $json.user_id }}"
+            },
+            {
+              "keyName": "related_id",
+              "keyValue": "={{ $json.day_routine_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -64
+      ],
+      "id": "e3fb17ee-703e-49ec-9184-8cf8c9a18b79",
+      "name": "PendingTasks",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "feb511b1-c009-4cda-9a08-a75281057732",
+              "leftValue": "={{$items('Merge')[0].json.user_id}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        112,
+        48
+      ],
+      "id": "bace8105-92c4-42ed-b910-0e82ceb2f22f",
+      "name": "If"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "success": true
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -255,9 +383,14 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "PendingTasks",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
           }
         ]
       ]
@@ -294,6 +427,68 @@
           }
         ]
       ]
+    },
+    "Create_Pending_Task": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get_Today_Planned_Workouts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PendingTasks": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtered Message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -301,7 +496,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "07676417-45b3-4cff-b7d9-9aedafc093fc",
+  "versionId": "743e7478-4172-426f-8743-33b1e4d1c751",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
