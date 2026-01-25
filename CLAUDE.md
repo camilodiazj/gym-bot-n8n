@@ -20,9 +20,10 @@ The system consists of 4 n8n workflows in the `/n8n/` directory:
 |----------|---------|
 | `GymRatFlow_Supabase.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
 | `GymRatForm Supabase.json` | Routine generation engine - creates personalized 4-week workout plans based on user profiles |
-| `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status |
+| `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status, prevents duplicate pending_tasks |
 | `RoutineMorningReminder.json` | Morning motivation (5 AM) - sends daily workout reminders |
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
+| `GymBotWorkoutCompletion_E2E_TestRunner.json` | E2E test suite for workout completion workflow (4 test cases) |
 
 ### Data Flow Patterns
 
@@ -147,7 +148,9 @@ users_gym_profile ------------------------------>+
 | Action | Tables Used | Operation |
 |--------|-------------|-----------|
 | Get today's uncompleted | `user_weekly_schedule` | SELECT WHERE `planned_day = today` AND `Completed = false` |
+| Check existing pending_task | `pending_tasks` | SELECT by `user_id` + `related_id` (Merge with keepNonMatches filters duplicates) |
 | Get user contact | `users` | SELECT by `user_id` |
+| Create pending_task | `pending_tasks` | INSERT (only if no existing task for same workout) |
 | Store conversation | `n8n_chat_histories` | INSERT (via Postgres Memory) |
 
 ### 4. RoutineMorningReminder (5 AM Reminder)
@@ -244,6 +247,16 @@ e2e/
 ## Changelog
 
 ### 2026-01-25
+- **Fix duplicate pending_tasks en GymBotWorkoutCompletion**: Reestructurado workflow para prevenir creación de pending_tasks duplicados:
+  - Agregado nodo `PendingTasks` (Supabase GET) para consultar pending_tasks existentes
+  - Agregado nodo `Merge` con `joinMode: "keepNonMatches"` que actúa como LEFT ANTI JOIN
+  - Solo procesa workouts que NO tienen pending_task existente (evita duplicados y mensajes WhatsApp repetidos)
+  - `Create_Pending_Task` ahora usa `$('Merge').item.json.*` para datos del workout
+- **Nuevo E2E Test Runner para GymBotWorkoutCompletion**: Creado `GymBotWorkoutCompletion_E2E_TestRunner.json` con 4 test cases:
+  - TC_WC_001: No crea pending_task duplicado (DUPLICATE_PREVENTION)
+  - TC_WC_002: Crea pending_task cuando no existe (TASK_CREATION)
+  - TC_WC_003: No procesa usuarios sin workout hoy (FILTER)
+  - TC_WC_004: No procesa workouts ya completados (FILTER)
 - **Fix timezone en E2E tests**: Cambiado `CURRENT_DATE` a `(NOW() AT TIME ZONE 'America/Bogota')::date` en:
   - `e2e/test_data_setup.sql` - Todas las queries de schedule y pending_tasks
   - `n8n/GymRatFlow_E2E_TestRunner.json` - Queries de cleanup
