@@ -1,0 +1,1897 @@
+{
+  "name": "GymRatFlow_Supabase_V2",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $items('If')[0].json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# System Prompt: FitBot – Gestor de Flujos y Progreso (V7)\n\nEres \"FitBot\", un asistente de entrenamiento inteligente.\n\nUSER_ID: {{ $items('GetUser')[0].json.user_id }}\n\nSESION_ENTRENAMIENTO_PARA_HOY: \n{{ JSON.stringify($('Filter_Today_Routine').all().map(i => i.json), null, 2) }}\n\nDebes seguir los siguientes pasos:\n\n1. ACCIÓN:\n   - Usa 'Tool_Get_Workout' pasando los parámetros: user_id (el USER_ID de arriba), session_name y week (obtenidos de SESION_ENTRENAMIENTO_PARA_HOY).\n   - Presenta la rutina con el FORMATO VISUAL.\n---\n\n## 📋 FORMATO VISUAL (WhatsApp)\nSaluda al usuario. Estructura el mensaje así para facilitar la lectura:\n\n*¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:\n\n[NÚMERO]️ [NOMBRE DEL EJERCICIO]\n🎯 Zona: [Músculo principal]\n\n📋 Qué hacer:\n* [Series] Series\n* [Reps] Repeticiones\n* ⏸ [Descanso en minutos] de descanso\n\n🔥 Esfuerzo: RIR [Rir] (Deja [Rir] reps en reserva)\n\n📹 ¿Cómo se hace?:\n[Link limpio]\n\n〰〰〰〰〰〰〰〰\n\n# REGLAS DE TEXTO:\n1. Convierte los segundos de descanso a minutos (ej: 120s -> \"2 min\", 90s -> \"1.5 min\").\n2. Si el RIR es un rango (ej: 3-4), escribe: \"Deja 3 o 4 reps en reserva\".\n3. Usa separadores de ondas (〰〰〰) entre ejercicios.\n\n────────────────────\n*¡Dale con toda! 🚀*\n\n---\n\n## 🚨 REGLAS INQUEBRANTABLES\n4. DISEÑO: Usa estrictamente la línea ──────────────────── para separar los bloques de ejercicios.\n5. IDIOMA: Todo el contenido enviado al usuario debe ser en español.\n6. Al entregar la rutina NO preguntes al usuario si terminó el entrenamiento.\n\nFecha actual (HOY): {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -96,
+        24656
+      ],
+      "id": "4b349e39-3f4a-4159-8aa3-c845943c2412",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
+        "recipientPhoneNumber": "={{$items(\"If\")[0].json.contacts[0].wa_id}}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        24656
+      ],
+      "id": "47e80ede-5689-4f56-a96b-21998b743d07",
+      "name": "Send message",
+      "webhookId": "a66bf4fa-1891-4ebe-b8cb-fb5b047f17bf",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $items(\"If\")[0].json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=Eres \"FitBot\", un asistente experto en entrenamiento personal. Tu misión es configurar la Agenda Semanal del usuario recolectando primero su información técnica y asegurando la progresión lógica de sus semanas de entrenamiento.\n\n## 📥 FASE 0: RECOLECCIÓN OBLIGATORIA DE DATOS\nAntes de dar cualquier respuesta al usuario o proponer días, DEBES ejecutar estas herramientas en orden para obtener el contexto necesario:\n\n1.Tienes `user_id` = {{ $items('Week_Schedule')[0].json.user_id }}\ny `days_per_week` = {{ $items('Week_Schedule')[0].json.days_per_week }}\n\n2.Finished_Workouts: {{ JSON.stringify($('User_Finished_Workouts').all().map(i => i.json), null, 2) }}\n\n3. SESIONES: {{ JSON.stringify($('Template_Days').all().map(i => i.json), null, 2) }}\n\n---\n\n## ⚙️ LÓGICA DE PROCESAMIENTO (Interna)\nUna vez obtenida la información de las herramientas, aplica estas reglas:\n\n1. **Cálculo de Semana (`week`):**\n   - Revisa los registros de Finished_Workouts.\n   - Si no hay registros: `week = 1`.\n   - Si hay registros: `week = [Semana más alta completada] + 1`.\n\n2. **Validación de Frecuencia:**\n   - El valor `days_per_week` es **INAMOVIBLE**.\n\n---\n\n## 📅 FLUJO SECUENCIAL DE CONVERSACIÓN\n\n### PASO 1: Diagnóstico e Información\n* **Condición:** El usuario inicia la interacción para agendar.\n* **Acción:** (Tras ejecutar los pasos de la Fase 0) Informa al usuario sobre su plan.\n* **Respuesta:** \"¡Hola! He consultado tu plan. Actualmente tienes configurado entrenar **[days_per_week] días por semana**. Esta es la frecuencia que elegiste al registrarte para garantizar resultados y no es posible modificarla. ¿Qué días prefieres para tus [days_per_week] sesiones de la **Semana [week]**? Te sugiero [Propuesta], pero dime los que te funcionen a ti.\"\n\n### PASO 2: Definición de Fecha\n* **Condición:** El usuario eligió exactamente los [days_per_week] días.\n* **Respuesta:** \"¡Excelente elección! Ahora, ¿en qué fecha (día y mes) iniciamos esta nueva semana?\".\nPuedes dar un ejemplo tipo (Ejemplo: lunes DD de MM) fijandote en cual día de la semana eligió el usuario y calculando la fecha màs cercana relativa al día escogido.\n\n### PASO 3: Mapeo y Confirmación\n* **Acción:** Mapea el primer día mencionado al `day_number: 1`, el segundo al `2`, etc.\n* **Respuesta:** \"¡Listo! Tu agenda para la **Semana [week]** quedaría así:\n  1. [Día 1]: [Nombre Sesión 1]\n  2. [Día 2]: [Nombre Sesión 2]...\n  ¿Me confirmas para guardarlo definitivamente en tu calendario?\"\n\n### PASO 4: Persistencia (EJECUCIÓN TÉCNICA)\n* **Condición:** El usuario confirma.\n* **ACCIÓN OBLIGATORIA:** Llama a `Tool_Update_User_Weekly_Schedule`. Envía: `user_id`, `week` (calculada), `week_day`, `session_name` y `planned_day`.\n* **Respuesta Final:** \"¡Agenda guardada con éxito para la Semana [week]! 🚀 Ya está todo en tu calendario. \n\nImportante:\nPara week_day debes usar exactamente los valores dentros de esta lista: [Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo] NO TILDES NI NINGÙNA MODIFICACIÓN.\nSi el usuario pone tildes haz el match, NO corrijas al usuario.\nEjemplo: Sí el usuario dice \"Sábado\", tú simplemente tomas el Sabado. El usuario no debería saber que nosotros guardamos los días sin tildes.\n---\n\n## 🛠️ REGLAS TÉCNICAS Y DE CONTROL\n1. **BLOQUEO DE MODIFICACIÓN:** Si el usuario pide cambiar el número de días por semana, responde: \"Tu plan está diseñado para **[days_per_week]** días. No podemos modificar la cantidad de sesiones, ya que afectaría tu progresión. ¿Qué [days_per_week] días prefieres agendar?\"\n2. **Prioridad de Ejecución:** No confirmes nada al usuario sin haber recibido respuesta exitosa de las herramientas (Tools).\n3. **Cálculo de Fecha:** Calcula el `planned_day` sumando los días correspondientes a partir de la fecha de inicio proporcionada en el Paso 2.\n4. **Tono:** Profesional, motivador y firme con las reglas del plan.\n5. **La fecha actual (HOY) es:** [{{ $now.day }}/{{ $now.month }}/{{ $now.year }}]"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1184,
+        25296
+      ],
+      "id": "26b00b71-ef15-42a1-b914-9880401f0c3a",
+      "name": "AI Agent1",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1392,
+        25504
+      ],
+      "id": "2e9e6dd5-eb48-4e30-8807-fd50a64a4a77",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
+        "recipientPhoneNumber": "={{$items(\"If\")[0].json.contacts[0].wa_id}}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        25264
+      ],
+      "id": "3282b2c1-2b32-44f7-9b2b-1ded9f28d2d3",
+      "name": "Send message2",
+      "webhookId": "70f4697f-fadf-46f7-854c-dad58f2cf662",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3664,
+        25216
+      ],
+      "id": "9dc10586-7149-42e5-b7a1-7ecebd6536e4",
+      "name": "WhatsApp_Trigger1",
+      "webhookId": "67d708ee-d81c-47a3-9efb-42d45227ce28",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "oKhoyxAukdcY8qMi",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "full_phone_number",
+              "keyValue": "={{ $json.messages[0].from }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3088,
+        25232
+      ],
+      "id": "8125ccb5-8a70-4c92-86dd-260023953893",
+      "name": "GetUser",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "operation": "get",
+        "tableId": "user_weekly_schedule",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('GetUser').item.json.user_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2592,
+        25200
+      ],
+      "id": "2644a5a7-456e-420c-894b-ced17e3e4dc3",
+      "name": "GetWeeklySchedule",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
+        "recipientPhoneNumber": "={{ $('If').item.json.contacts[0].wa_id }}",
+        "textBody": "=¡Hola {{ $items(\"GetUser\")[0].json.full_name }}! Para hoy, {{$now.format('yyyy-MM-dd')}}, no tienes sesión programada. 🛋️ ¡Aprovecha para descansar!\n¡Nos vemos pronto! 🔥",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -1056,
+        24928
+      ],
+      "id": "634ceadd-8c01-4449-800b-48ad1f14b7a2",
+      "name": "Send message1",
+      "webhookId": "9d5075d4-b4aa-49af-87d5-ece739728767",
+      "executeOnce": true,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select day_name as session_name, week, spanish_name, main_muscle, reps, sets, rir, link, \"rest-seconds\" from workouts\njoin exercises using(exercise_id)\nwhere user_id = '{{ $fromAI('user_id', 'UUID del usuario', 'string') }}'\nand day_name = '{{ $fromAI('session_name', 'Nombre de la sesión del día, ejemplo: Día 1 - Pecho y Tríceps', 'string') }}'\nand week = {{ $fromAI('week', 'Número de semana', 'number') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        112,
+        24896
+      ],
+      "id": "012945c4-3299-4f8d-bbdc-c5285fcca981",
+      "name": "Tool_Get_Workout2",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('If').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY o CHAT), sin explicación adicional."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -880,
+        24256
+      ],
+      "id": "a213f213-ac0a-431f-aa4e-dc85b05642a9",
+      "name": "Intention_Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -912,
+        24560
+      ],
+      "id": "a967c19c-2313-4821-aaa2-01b410a661ad",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.trim()}}",
+                    "rightValue": "=CONFIRMAR_RUTINA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "77fe3bdd-77b3-46ed-b707-a1f200c4dbd2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ROUTINE_CONFIRMATION"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cef2c8d2-71fd-4010-8777-9399c05906b3",
+                    "leftValue": "={{ $json.output.trim() }}",
+                    "rightValue": "CHAT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CHAT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b44ecaad-ce21-47e4-9326-0ac5ed78c5a2",
+                    "leftValue": "={{ $json.output.trim() }}",
+                    "rightValue": "VER_RUTINA_DE_HOY",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "VER_RUTINA_DE_HOY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -512,
+        24192
+      ],
+      "id": "932fbd8f-8448-4a4b-b978-fe7cc78d034d",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
+        "recipientPhoneNumber": "={{ $('If').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $('CONFIRMATION AGENT').item.json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        24160
+      ],
+      "id": "ab5f1976-0718-414b-a652-7cc21b63d2ae",
+      "name": "Send message3",
+      "webhookId": "58bd9ca9-ac11-45d6-85eb-a6e01e2b3f83",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('GetUser').item.json.user_id }}_{{ $now.weekNumber }}_confirmation",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -752,
+        24544
+      ],
+      "id": "972d4ac7-b0e7-49d1-a0ff-a3bb379ac708",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day = '{{ $now.format('yyyy-MM-dd') }}'\nAND \"Completed\" = false;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -64,
+        24352
+      ],
+      "id": "58fc72d5-7579-47b7-9e22-4e31695a5f4b",
+      "name": "Tool_Update_User_Weekly_Schedule1",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $items('GetUser')[0].json.user_id }}_{{ $now.weekNumber }}_chat_v2"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        24896
+      ],
+      "id": "f1dccc37-a25c-4511-b173-aee3d1577a03",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4c90932f-00a5-4cca-ba7f-e19c20959661",
+              "leftValue": "={{ Object.keys($input.first().json).length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1456,
+        24800
+      ],
+      "id": "fc3735fe-15a2-4dda-8d06-6abc0a54eb79",
+      "name": "userHasRoutineForToday",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select user_id, days_per_week from users_plans \njoin week_schedules\non users_plans.week_schedule = week_schedules.schedule_type\nwhere user_id = '{{ $items('GetUser')[0].json.user_id }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1856,
+        25360
+      ],
+      "id": "460fe228-b54d-4b8e-aa16-bcde047a3d36",
+      "name": "Week_Schedule",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "numberInputs": 3,
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1648,
+        25456
+      ],
+      "id": "4f9cf571-a042-4c52-a71b-ec818e4f7a02",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6fdb5aca-0a64-4c5a-8e0b-c0fbedd7aa01",
+              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => item.json.planned_day >= $now.toFormat('yyyy-MM-dd')) }}",
+              "rightValue": "={{ $now.format('yyyy-MM-dd') }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2256,
+        25200
+      ],
+      "id": "b174f164-b990-41d8-9841-645e390e8860",
+      "name": "has_planned_workouts1",
+      "executeOnce": false,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "user_weekly_schedule",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{$items('GetUser')[0].json.user_id}}"
+            },
+            {
+              "keyName": "Completed",
+              "keyValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        25568
+      ],
+      "id": "d4c43195-dd9b-48be-a9ed-b936213e17fd",
+      "name": "User_Finished_Workouts",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select  template_days.title from users_plans \njoin week_schedules\non users_plans.week_schedule = week_schedules.schedule_type\njoin template_days using (week_schedule)\nwhere user_id = '{{$items('GetUser')[0].json.user_id}}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1888,
+        25776
+      ],
+      "id": "c0f367db-4574-487c-ad42-d66276c89793",
+      "name": "Template_Days",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $items('GetUser')[0].json.user_id }}_{{ $now.weekNumber }}_chat",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -1168,
+        25504
+      ],
+      "id": "8f3e024e-587a-46c9-a7f2-9a8e454d861a",
+      "name": "Postgres Chat Memory2",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "user_weekly_schedule",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_id",
+              "fieldValue": "={{ $items('GetUser')[0].json.user_id }}"
+            },
+            {
+              "fieldId": "week",
+              "fieldValue": "={{ $fromAI('week', ``, 'string') }}"
+            },
+            {
+              "fieldId": "week_day",
+              "fieldValue": "={{ $fromAI('week_day', 'Day of the week: by example Lunes', 'string') }}"
+            },
+            {
+              "fieldId": "session_name",
+              "fieldValue": "={{ $fromAI('session_name', ``, 'string') }}"
+            },
+            {
+              "fieldId": "planned_day",
+              "fieldValue": "={{ $fromAI('planned_day', ``, 'string') }}"
+            },
+            {
+              "fieldId": "Completed",
+              "fieldValue": "false"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        25504
+      ],
+      "id": "e8b27f96-24f0-4fc5-9798-550283acc66b",
+      "name": "Tool_Update_User_Weekly_Schedule",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2560,
+        26320
+      ],
+      "id": "9730e825-4250-40e7-8f34-5b3918dba766",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FGJvOXDfOTLntPLK",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $items('If')[0].json.contacts[0].wa_id }}_kyc_v4",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -2400,
+        26320
+      ],
+      "id": "4d4bc2d7-a22f-48fb-92cc-b01b48a066ec",
+      "name": "Postgres Chat Memory3",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e7209125-f72f-4d97-9a6c-6cac123c6ce0",
+              "leftValue": "={{$items('GetUser')[0].json}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2880,
+        25232
+      ],
+      "id": "1892422e-5edc-4ad3-8379-7b661622bd52",
+      "name": "user_exists",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
+        "recipientPhoneNumber": "={{$items(\"If\")[0].json.contacts[0].wa_id}}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -2112,
+        26064
+      ],
+      "id": "a1a18163-aae4-43a1-a06a-45622854347c",
+      "name": "Send message4",
+      "webhookId": "75bbb77c-4f4a-4944-806b-5739a648050a",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $items('If')[0].json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# ROL DEL AGENTE\nEres \"Tu Coach Virtual\", un asistente de entrenamiento personal amigable, entusiasta y motivador. Tu misión es conocer a fondo al usuario para diseñar su rutina de gimnasio perfecta.\n\n# TONO Y ESTILO\n* **Cercano y Humano:** No uses lenguaje corporativo ni frases como \"rellene el campo\". Usa frases como \"¡Queremos conocerte!\", \"¿Qué te motiva?\", \"¡Vamos a darle forma a tu plan!\".\n* **Conversacional:** Haz las preguntas una por una (o máximo dos si están muy relacionadas). Espera siempre la respuesta del usuario antes de continuar.\n* **Claro:** Cuando haya opciones múltiples, preséntalas con viñetas o emojis para que sean fáciles de leer y elegir.\n* **Empático:** Valida las respuestas del usuario con breves comentarios positivos (ej: \"¡Excelente meta!\", \"Entendido, vamos a trabajar en eso\", \"Perfecto, tomamos nota\").\n* **Transparencia Técnica Cero:** Nunca menciones al usuario términos como \"tools\", \"funciones\", \"base de datos\" o \"JSON\". Para el usuario, tú eres simplemente su coach pensando en su rutina.\n\n# GESTIÓN DE ERRORES Y VALIDACIÓN DE RESPUESTAS (PRIORITARIO)\nComo coach, debes asegurar que los datos sean precisos. Si el usuario se confunde, guíalo con amabilidad:\n\n1.  **Opciones Múltiples Excluyentes:** Si en una pregunta de opciones (A, B, C...) el usuario responde seleccionando dos letras contradictorias (ej: \"A y D\") o elige más de una cuando solo se pide una, **NO aceptes la respuesta**.\n    * *Respuesta del Agente:* \"¡Ojo! 🛑 Para ajustar tu plan con precisión, necesito que elijas **solo una** opción principal por ahora. ¿Cuál define mejor tu situación actual?\"\n2.  **Opción No Válida:** Si el usuario responde algo que no está en el menú (ej: responde \"G\" cuando las opciones son A, B, C).\n    * *Respuesta del Agente:* \"Mmm, esa opción no la tengo en mi lista 🤔. Por favor, elige una de las opciones de arriba para poder continuar.\"\n\n# INSTRUCCIONES DE INTERACCIÓN\nTu objetivo es completar la información del \"Formulario de Rutina Personalizada\". No te saltes preguntas. Sigue este flujo lógico:\n\n## FASE 1: El Saludo y Contacto (Romper el hielo)\nSaluda con energía y explica que quieres conocerlo/a para armar un plan a su medida.\n* Pide su **Nombre completo**.\n* Pide su **Correo electrónico**.\n*(Nota: Puedes pedir estos dos en un solo bloque inicial suave).*\n\n## FASE 2: Perfil Físico (Datos Bio)\nDile que necesitas unos datos básicos para calibrar la rutina.\n* **Edad**.\n* **Sexo** (Opciones: M / F).\n* **Estatura** (Pide el dato en cm, ej: 170).\n* **Peso** (Pide el dato en kg, sin puntos ni comas).\n\n## FASE 3: Tus Objetivos (El \"Por qué\")\nPregunta qué quiere lograr.\n* **Objetivo Principal** (Muestra estas opciones exactas):\n    - 🟢 Ganar masa muscular\n    - 🔵 Bajar grasa\n    - 🔴 Mejorar fuerza\n    - 🟣 Mejorar resistencia\n    - 🟡 Salud general / recomposición corporal\n* **Objetivo Secundario:** (Pregunta abierta: \"¿Tienes alguna otra meta en mente?\").\n\n## FASE 4: Tu Experiencia (El Historial)\nIndaga sobre su pasado en el gym.\n* **Tiempo entrenando:**\n    - Nunca he entrenado\n    - Menos de 6 meses\n    - 6 a 12 meses\n    - 1 a 3 años\n    - Más de 3 años\n* **Frecuencia actual:**\n    - No entreno\n    - 1-2 días por semana\n    - 3-4 días por semana\n    - 5-6 días por semana\n* **Nivel autopercibido:**\n    - Principiante\n    - Intermedio\n    - Avanzado\n* **Estado de Salud / Lesiones:** (Pregunta: \"¡La seguridad es lo primero! 🛡️ ¿Cómo te sientes físicamente hoy? Selecciona una opción para adaptar los ejercicios\"):\n    A) 💪 Estoy al 100% (Sin dolor ni lesiones)\n    B) 🦵 Cuidado en Tren Inferior (Rodillas, tobillos, cadera)\n    C) 🦾 Cuidado en Tren Superior (Hombros, codos, muñecas)\n    D) 🦴 Cuidado en Espalda (Lumbares o cervicales)\n    E) 🩺 Condición Médica Especial\n\n* **VALIDACIÓN ESTRICTA FASE 4:**\n    * Si el usuario responde combinaciones como **\"A y D\"** (Estoy sano Y tengo dolor de espalda) o **\"B y C\"**, recuérdale amablemente: *\"Para diseñar la rutina más segura, necesito que selecciones **solo una** opción. Si tienes varias molestias, elige la que sea más limitante o importante hoy.\"*\n    * Solo avanza cuando tengas una única letra (A, B, C, D o E).\n\n*VALIDACIÓN POSTERIOR:* Después de obtener una única respuesta válida de salud, confirma de forma empática que la rutina se ajustará teniendo en cuenta esta información antes de avanzar.\n\n## FASE 5: Logística (Tu Tiempo)\nPregunta cómo encajar el gym en su vida.\n* **Días disponibles para entrenar:** (Opciones: 2, 3, 4, 5, 6).\n* **Tiempo por sesión:**\n    - 30-45 minutos\n    - 45-60 minutos\n    - 60-75 minutos\n    - Más de 75 minutos\n* **Horario habitual:** (Mañana, Tarde o Noche).\n\n## FASE 6: Preferencias (Tus Gustos)\nAsegúrate de que disfrute el proceso.\n* **Tipo de entrenamiento preferido:**\n    - Pesas libres\n    - Máquinas\n    - Funcional\n    - Mixto\n* **Prioridades:** ¿Qué partes del cuerpo le gustaría priorizar? (Pregunta abierta).\n* **Desafíos:** ¿Qué partes le cuesta más entrenar o no le gustan? (Pregunta abierta).\n\n## FASE 7: El Cardio (El remate)\n* **¿Realizas cardio actualmente?:**\n    - No\n    - Caminata\n    - Bicicleta\n    - Running\nREGLA FASE 7 (CARDIO)\n- Si el usuario responde \"No\", guarda: cardio_actual=\"No\" y frecuencia_cardio=\"0\".\n- Luego continúa con la siguiente pregunta del flujo o con el cierre (si ya era la última).\n- NO llames Tool_Create_Routine hasta haber confirmado que no falta ningún dato previo.\n\n* **Frecuencia de cardio:** (Días a la semana: 0, 1-2, 3-4, 5 o más).\n\n---\n\n# PROTOCOLO DE FINALIZACIÓN Y EJECUCIÓN (LÓGICA ESTRICTA)\n\nTu trabajo NO termina al recibir la respuesta de la FASE 7. En ese momento exacto, se activa el siguiente protocolo obligatorio que debes ejecutar antes de cerrar la conversación.\n\n**CONDICIÓN DE DISPARO:**\nEl usuario ha respondido la última pregunta (Frecuencia de Cardio) y tienes los datos completos.\n\n**ACCIONES OBLIGATORIAS (EN ESTE ORDEN):**\n\n1.  **INVOCACIÓN DE TOOLS (PRIORIDAD MÁXIMA):**\n    Antes de despedirte, debes invocar internamente la siguiente función con los datos recolectados. Es imperativo que esta accion quede registrada en tu salida:\n    * Llamar a `Tool_Create_User_Profile`\n\n2.  **MENSAJE DE CIERRE AL USUARIO:**\n    Solamente cuando hayas asegurado la invocación de la tool en tu proceso interno, envía este mensaje final (sin mencionar nada técnico):\n\n    > \"¡Perfecto, [Nombre del usuario]! 🎉 Ya tengo todo lo que necesito.\n    >\n    > Me pongo manos a la obra ahora mismo para diseñar tu rutina 100% personalizada y segura. En breve recibirás tu plan para que empieces con todo. ¡Estoy emocionado por ver tu progreso! 💪🚀\"\n\n**ADVERTENCIA DE FALLO:**\nSi envías el mensaje de despedida sin haber activado la tool `Tool_Create_User_Profile`, la rutina no se creará y habrás fallado en tu misión. **Asegúrate de ejecutar la tool junto con tu respuesta final.**\n\n# REGLAS CRÍTICAS (NO ROMPER)\n1) Nunca ejecutes el tool `Tool_Create_User_Profile` mientras el formulario KYC NO esté 100% completo.\n2) Respuestas como \"no\", \"ninguna\", \"no hago cardio\", \"no tengo lesiones\" NO significan que el usuario terminó el formulario. Solo son la respuesta a esa pregunta.\n3) Si falta al menos 1 dato requerido, debes:\n   - validar con empatía\n   - guardar/recordar la respuesta\n   - y hacer la siguiente pregunta del flujo\n   - SIN llamar tools de creación de rutina.\n4) Solo puedes ejecutar `Tool_Create_User_Profile` cuando tengas TODOS estos campos completos y no nulos:\n   - nombre_completo\n   - email\n   - edad\n   - sexo\n   - estatura_cm\n   - peso_kg\n   - objetivo_principal\n   - objetivo_secundario (si no hay, guardar \"N/A\")\n   - tiempo_entrenando\n   - frecuencia_actual\n   - nivel\n   - estado_salud_lesiones\n   - dias_disponibles\n   - tiempo_por_sesion\n   - horario_habitual\n   - tipo_entrenamiento_preferido\n   - prioridades\n   - desafios\n   - cardio_actual (si no hace, guardar \"No\")\n   - frecuencia_cardio (si no hace, guardar \"0\")\n5) Al finalizar, LUEGO de llamar `Tool_Create_User_Profile`, confirma en 1 frase que ya tienes todo.\n6) **UNICIDAD DE RESPUESTA:** Si el usuario da más de una opción en preguntas de selección única (especialmente en Salud/Lesiones), detente y pide aclaración amablemente. Solo una opción es válida por campo."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -2416,
+        26064
+      ],
+      "id": "803b883a-7a7a-4cd5-8fc4-50aa3b004707",
+      "name": "KYC Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('If').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "Eres un GYM_BOT encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó que completó su rutina de hoy, usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así. \nNo le preguntes nada al usuario."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -208,
+        24160
+      ],
+      "id": "24b0a030-cb01-48a4-a5d2-848ac2e9a956",
+      "name": "CONFIRMATION AGENT"
+    },
+    {
+      "parameters": {
+        "useCustomSchema": true,
+        "tableId": "users_gym_profile",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "submission_date",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "whatsapp_id",
+              "fieldValue": "={{$items(\"If\")[0].json.contacts[0].wa_id}}"
+            },
+            {
+              "fieldId": "full_name",
+              "fieldValue": "={{ $fromAI(\"nombre_del_usuario\") }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $fromAI('correo_electronico', ``, 'string') }}"
+            },
+            {
+              "fieldId": "age",
+              "fieldValue": "={{ $fromAI(\"edad\", \"\", \"number\") }}"
+            },
+            {
+              "fieldId": "biological_sex",
+              "fieldValue": "={{ $fromAI(\"sexo\", \"M/F\") }}"
+            },
+            {
+              "fieldId": "height_cm",
+              "fieldValue": "={{ $fromAI(\"estatura\", \"\", \"number\") }}"
+            },
+            {
+              "fieldId": "weight_kg",
+              "fieldValue": "={{ $fromAI(\"peso\", \"\", \"number\") }}"
+            },
+            {
+              "fieldId": "primary_goal",
+              "fieldValue": "={{ $fromAI(\"objetivo_principal\", \"opciones: Ganar masa muscular, Bajar grasa, Mejorar fuerza, Mejorar resistencia, Salud general / recomposición corporal\", \"string\") }}"
+            },
+            {
+              "fieldId": "secondary_goal",
+              "fieldValue": "={{ $fromAI(\"objetivo_secundario\", \"\", \"string\") }}"
+            },
+            {
+              "fieldId": "training_experience",
+              "fieldValue": "={{ $fromAI(\"experiencia\", \"opciones: Nunca he entrenado, Menos de 6 meses, 6 a 12 meses, 1 a 3 años, Más de 3 años\") }}"
+            },
+            {
+              "fieldId": "current_frequency",
+              "fieldValue": "={{ $fromAI(\"frecuencia_actual\", \"opciones: No entreno, 1-2 días por semana, 3-4 días por semana, 5-6 días por semana\", \"string\") }}"
+            },
+            {
+              "fieldId": "fitness_level",
+              "fieldValue": "={{ $fromAI(\"nivel_autopercibido\", \"opciones: Principiante, Intermedio, Avanzado\", \"string\") }}"
+            },
+            {
+              "fieldId": "health_status",
+              "fieldValue": "={{ $fromAI(\"estado_de_salud\", \"opciones: A,B,C,D,E\", \"string\") }}"
+            },
+            {
+              "fieldId": "days_available",
+              "fieldValue": "={{ $fromAI(\"dias_disponibles_para_entrenar\", \"opciones: 2,3,4,5,6\", \"number\") }}"
+            },
+            {
+              "fieldId": "session_duration_mins",
+              "fieldValue": "={{ $fromAI(\"tiempo_por_sesion\", \"opciones: 30-45 minutos, 45-60 minutos, 60-75 minutos, Más de 75 minutos\", \"string\") }}"
+            },
+            {
+              "fieldId": "preferred_schedule",
+              "fieldValue": "={{ $fromAI(\"horario_habitual\", \"opciones: Mañana, Tarde, Noche\", \"string\") }}"
+            },
+            {
+              "fieldId": "training_style",
+              "fieldValue": "={{ $fromAI(\"tipo_de_entrenamiento_preferido\", \"opciones: Pesas libres, Máquinas, Funcional, Mixto\", \"string\") }}"
+            },
+            {
+              "fieldId": "priority_muscles",
+              "fieldValue": "={{ $fromAI(\"partes_del_cuerpo_a_priorizar\", \"\", \"string\") }}"
+            },
+            {
+              "fieldId": "disliked_exercises",
+              "fieldValue": "={{ $fromAI(\"partes_que_no_le_gustan\", \"\", \"string\") }}"
+            },
+            {
+              "fieldId": "cardio_type",
+              "fieldValue": "={{ $fromAI(\"tipo_de_cardio_que_realiza\", \"opciones: No, Caminata, Bicicleta, Running\", \"string\") }}"
+            },
+            {
+              "fieldId": "cardio_frequency",
+              "fieldValue": "={{ $fromAI(\"frecuencia_de_cardio\", \"opciones: 0, 1-2, 3-4, 5 o más\", \"string\") }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        26320
+      ],
+      "id": "5622370e-608a-45a1-bf5a-1f1c0285cf66",
+      "name": "Tool_Create_User_Profile",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        24864
+      ],
+      "id": "11e91711-fe6f-4d54-93a5-f56f89bfc248",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FGJvOXDfOTLntPLK",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtrar solo la rutina de hoy que NO esté completada\nconst today = $now.toFormat('yyyy-MM-dd');\nconst items = $input.all();\n\nconst todayRoutine = items.filter(item => {\n  // Comparar fecha (puede venir con o sin hora)\n  const plannedDay = String(item.json.planned_day).substring(0, 10);\n  const isToday = plannedDay === today;\n  \n  // Completed puede ser booleano false o string 'false'\n  const isNotCompleted = item.json.Completed === false || item.json.Completed === 'false';\n  \n  return isToday && isNotCompleted;\n});\n\n// Si no hay rutina para hoy sin completar, retornar array vacío\nreturn todayRoutine.length > 0 ? todayRoutine : [];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1856,
+        24800
+      ],
+      "id": "2ef1a54b-8d86-4f9f-a996-fdf0a6b93da7",
+      "name": "Filter_Today_Routine",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5d850c40-d3ac-48e8-8128-91a524c0a3fa",
+              "leftValue": "={{ $json.messages[0].from }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "edeebc27-df75-45af-8158-a6836ca8bf06",
+              "leftValue": "={{ $json.messages[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3344,
+        25232
+      ],
+      "id": "cd1969b9-88bc-4540-a24d-7f9f82033421",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "pending_tasks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('GetUser').item.json.user_id }}"
+            },
+            {
+              "keyName": "status",
+              "keyValue": "pending"
+            },
+            {
+              "keyName": "task_type",
+              "keyValue": "CONFIRMAR_RUTINA"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2784,
+        25040
+      ],
+      "id": "cdd09998-a5b1-4da1-8300-a6e014fd2968",
+      "name": "Check_Pending_Tasks",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "pending-task-check-001",
+              "leftValue": "={{ $json.task_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2592,
+        25040
+      ],
+      "id": "5a58990b-ee95-421a-8467-248aec7fa15b",
+      "name": "Has_Pending_Task"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE pending_tasks\nSET status = 'completed', resolved_at = NOW()\nWHERE user_id = '{{ $('GetUser').item.json.user_id }}'\nAND task_type = 'CONFIRMAR_RUTINA'\nAND status = 'pending';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -16,
+        23952
+      ],
+      "id": "abfdca6b-1711-453d-89c1-0ea961de66fe",
+      "name": "Update_Pending_Task_Completed",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -3552,
+        25408
+      ],
+      "id": "e581f349-abc8-4f78-b68f-bb06a939e2c5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mensaje filtrado (status update, audio, etc)\n// Retornar objeto vacío para que el test runner pueda continuar\nreturn [{ json: { filtered: true, output: '' } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3088,
+        25424
+      ],
+      "id": "6acd702f-9e32-4bbb-991b-3aca16bd7459",
+      "name": "Filtered Message"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: $('AI Agent').first().json.output\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        24656
+      ],
+      "id": "34984912-8aed-4f76-a640-9cee01f362cb",
+      "name": "Filtered Message1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: $('KYC Agent').first().json.output\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1120,
+        26096
+      ],
+      "id": "40772482-410b-46de-863e-ad30ec52e21f",
+      "name": "Filtered Message2"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: $('CONFIRMATION AGENT').first().json.output\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        24160
+      ],
+      "id": "855f0d54-c3bf-4526-b023-7056b1212ad3",
+      "name": "Filtered Message3"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: $('AI Agent1').first().json.output\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -592,
+        25264
+      ],
+      "id": "310a59d4-ec47-45cc-8fb0-de9e4bf2f5b8",
+      "name": "Filtered Message4"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      output: 'descanso'\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        24928
+      ],
+      "id": "794e141d-cb33-4ce2-a7d5-a6d95ba320d8",
+      "name": "Filtered Message5"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users_gym_profile",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "whatsapp_id",
+              "keyValue": "={{$items(\"If\")[0].json.contacts[0].wa_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        26064
+      ],
+      "id": "4abbb40e-f32c-4af3-be43-20a18045ed42",
+      "name": "GetNewUserProfile",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SkVWOQLDNqQulhao",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5b8f0759-6b75-4c33-9aa8-212c983b46db",
+              "leftValue": "={{$items(\"GetNewUserProfile\")[0].json}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1712,
+        26064
+      ],
+      "id": "6d7c3fe4-09c3-4f2e-9bb8-1000c6af1d89",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "Oryd6zGQCVQ73KCH_9Lcx",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Oryd6zGQCVQ73KCH_9Lcx",
+          "cachedResultName": "Learning Project — GymRatForm Supabase v2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp_id": "={{$items(\"If\")[0].json.contacts[0].wa_id}}"
+          },
+          "matchingColumns": [
+            "whatsapp_id"
+          ],
+          "schema": [
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -1408,
+        25920
+      ],
+      "id": "b420004d-65fa-430f-a5ed-2175671e4f4d",
+      "name": "Call 'GymRatForm Supabase v2'",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "573213413664",
+            "phone_number_id": "914510145083991"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "Test NewUser"
+              },
+              "wa_id": "570000000009"
+            }
+          ],
+          "messages": [
+            {
+              "from": "570000000009",
+              "id": "wamid.E2E-TC002",
+              "timestamp": "1769085000",
+              "text": {
+                "body": "Hola, quiero empezar a entrenar"
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp_Trigger1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetUser": {
+      "main": [
+        [
+          {
+            "node": "user_exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetWeeklySchedule": {
+      "main": [
+        [
+          {
+            "node": "has_planned_workouts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool_Get_Workout2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intention_Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intention_Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intention_Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool_Update_User_Weekly_Schedule1": {
+      "ai_tool": [
+        [
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "userHasRoutineForToday": {
+      "main": [
+        [
+          {
+            "node": "Intention_Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Week_Schedule": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "has_planned_workouts1": {
+      "main": [
+        [
+          {
+            "node": "Filter_Today_Routine",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Week_Schedule",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "User_Finished_Workouts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Template_Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User_Finished_Workouts": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter_Today_Routine": {
+      "main": [
+        [
+          {
+            "node": "userHasRoutineForToday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Template_Days": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool_Update_User_Weekly_Schedule": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "KYC Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "KYC Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "user_exists": {
+      "main": [
+        [
+          {
+            "node": "Check_Pending_Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "KYC Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check_Pending_Tasks": {
+      "main": [
+        [
+          {
+            "node": "Has_Pending_Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has_Pending_Task": {
+      "main": [
+        [
+          {
+            "node": "CONFIRMATION AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetWeeklySchedule",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KYC Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIRMATION AGENT": {
+      "main": [
+        [
+          {
+            "node": "Update_Pending_Task_Completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_Pending_Task_Completed": {
+      "main": [
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tool_Create_User_Profile": {
+      "ai_tool": [
+        [
+          {
+            "node": "KYC Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "GetUser",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtered Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message4": {
+      "main": [
+        [
+          {
+            "node": "GetNewUserProfile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message3": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message2": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message1": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetNewUserProfile": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Call 'GymRatForm Supabase v2'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GymRatForm Supabase v2'": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "8e7a6637-877d-4f61-a897-191400df6122",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "xBIHfN9K6F2OaKRh",
+  "tags": [
+    {
+      "updatedAt": "2026-01-12T17:40:14.959Z",
+      "createdAt": "2026-01-12T17:40:14.959Z",
+      "id": "TUr1XJVoKGmfIrDX",
+      "name": "gym-bot"
+    }
+  ]
+}
