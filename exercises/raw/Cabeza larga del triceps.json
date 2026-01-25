@@ -1,0 +1,1709 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-rope-overhead-tricep-extension",
+            "female": "cables/female/triceps/cable-rope-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps por encima de la cabeza con cuerda en polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "kettlebells/male/triceps/kettlebell-decline-skull-crusher",
+            "female": "kettlebells/female/triceps/kettlebell-decline-skull-crusher"
+        },
+        "name": "Extensión De Tríceps Declinada Con Pesa Rusa"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 10,
+            "name": "Banda",
+            "name_en_us": "Band",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 9,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "band/male/triceps/band-overhead-tricep-extension",
+            "female": "band/female/triceps/band-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps por encima de la cabeza con banda elástica"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/triceps/barbell-overhead-tricep-extension",
+            "female": "barbell/female/triceps/barbell-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps con barra por encima de la cabeza"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/triceps/barbell-skullcrusher",
+            "female": "barbell/female/triceps/barbell-skullcrusher"
+        },
+        "name": "Press francés con barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 35,
+                "name": "Cabeza lateral del tríceps",
+                "name_en_us": "Lateral Head Triceps",
+                "scientific_name": null,
+                "url_name": "lateral-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 36,
+                "name": "Cabeza medial del tríceps",
+                "name_en_us": "Medial Head Triceps",
+                "scientific_name": null,
+                "url_name": "medial-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-rolling-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-rolling-tricep-extension"
+        },
+        "name": "Extensión de Tríceps con Mancuerna Rodante"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 35,
+                "name": "Cabeza lateral del tríceps",
+                "name_en_us": "Lateral Head Triceps",
+                "scientific_name": null,
+                "url_name": "lateral-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 36,
+                "name": "Cabeza medial del tríceps",
+                "name_en_us": "Medial Head Triceps",
+                "scientific_name": null,
+                "url_name": "medial-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-incline-skullover",
+            "female": "dumbbells/female/triceps/dumbbell-incline-skullover"
+        },
+        "name": "Pullover inclinado con mancuerna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "kettlebells/male/triceps/kettlebell-overhead-tricep-extension",
+            "female": "kettlebells/female/triceps/kettlebell-overhead-tricep-extension"
+        },
+        "name": "Extensión de Tríceps por Encima de la Cabeza con Kettlebell"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "smith-machine/male/triceps/smith-machine-skullcrusher",
+            "female": "smith-machine/female/triceps/smith-machine-skullcrusher"
+        },
+        "name": "Smith Machine Press Francés"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-overhead-tricep-press",
+            "female": "cables/female/triceps/cable-overhead-tricep-press"
+        },
+        "name": "Press de tríceps en polea alta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-single-arm-overhead-tricep-extension",
+            "female": "cables/female/triceps/cable-single-arm-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps por encima de la cabeza con cable y un solo brazo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-decline-skullcrusher",
+            "female": "dumbbells/female/triceps/dumbbell-decline-skullcrusher"
+        },
+        "name": "Press francés declinado con mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-skullcrusher",
+            "female": "dumbbells/female/triceps/dumbbell-skullcrusher"
+        },
+        "name": "Extensión de tríceps con mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 3,
+            "name": "Peso Corporal",
+            "name_en_us": "Bodyweight",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 2,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "bodyweight/male/triceps/ring-skullcrusher",
+            "female": "bodyweight/female/triceps/ring-skullcrusher"
+        },
+        "name": "Extensión de tríceps en anillas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-rope-skullcrusher",
+            "female": "cables/female/triceps/cable-rope-skullcrusher"
+        },
+        "name": "Extensión de tríceps en polea con cuerda"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-single-arm-skullcrusher",
+            "female": "cables/female/triceps/cable-single-arm-skullcrusher"
+        },
+        "name": "Extensión de tríceps con cable a un brazo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-bench-braced-single-arm-overhead-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-bench-braced-single-arm-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps por encima de la cabeza con un solo brazo, apoyado en banco con mancuerna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-overhead-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps por encima de la cabeza con mancuerna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-seated-overhead-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-seated-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps con mancuerna por encima de la cabeza (sentado)"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-single-arm-overhead-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-single-arm-overhead-tricep-extension"
+        },
+        "name": "Extensión De Tríceps Unilateral Con Mancuerna Por Encima De La Cabeza"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 4,
+            "name": "Máquina",
+            "name_en_us": "Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": true,
+            "display_order": 7,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "machine/male/triceps/machine-overhead-tricep-extension",
+            "female": "machine/female/triceps/machine-overhead-tricep-extension"
+        },
+        "name": "Extensión de tríceps en máquina por encima de la cabeza"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 35,
+                "name": "Cabeza lateral del tríceps",
+                "name_en_us": "Lateral Head Triceps",
+                "scientific_name": null,
+                "url_name": "lateral-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 36,
+                "name": "Cabeza medial del tríceps",
+                "name_en_us": "Medial Head Triceps",
+                "scientific_name": null,
+                "url_name": "medial-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-high-incline-skullover",
+            "female": "dumbbells/female/triceps/dumbbell-high-incline-skullover"
+        },
+        "name": "Dumbbell High Incline Skullover"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-incline-skullcrusher",
+            "female": "dumbbells/female/triceps/dumbbell-incline-skullcrusher"
+        },
+        "name": "Dumbbell Incline Skullcrusher"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-single-arm-incline-skullcrusher",
+            "female": "dumbbells/female/triceps/dumbbell-single-arm-incline-skullcrusher"
+        },
+        "name": "Dumbbell Single Arm Incline Skullcrusher"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-single-arm-seated-overhead-tricep-extension",
+            "female": "dumbbells/female/triceps/dumbbell-single-arm-seated-overhead-tricep-extension"
+        },
+        "name": "Dumbbell Single Arm Seated Overhead Tricep Extension"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-single-arm-skullcrusher",
+            "female": "dumbbells/female/triceps/dumbbell-single-arm-skullcrusher"
+        },
+        "name": "Dumbbell Single Arm Skullcrusher"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-bar-skullcrusher",
+            "female": "cables/female/triceps/cable-bar-skullcrusher"
+        },
+        "name": "Cable Bar Skullcrusher"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-bent-over-single-arm-overhead-tricep-extension",
+            "female": "cables/female/triceps/cable-bent-over-single-arm-overhead-tricep-extension"
+        },
+        "name": "Cable Bent Over Single Arm Overhead Tricep Extension"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 34,
+                "name": "Cabeza larga del tríceps",
+                "name_en_us": "Long Head Tricep",
+                "scientific_name": null,
+                "url_name": "long-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 35,
+                "name": "Cabeza lateral del tríceps",
+                "name_en_us": "Lateral Head Triceps",
+                "scientific_name": null,
+                "url_name": "lateral-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            },
+            {
+                "id": 36,
+                "name": "Cabeza medial del tríceps",
+                "name_en_us": "Medial Head Triceps",
+                "scientific_name": null,
+                "url_name": "medial-head-triceps",
+                "description": "",
+                "description_en_us": "",
+                "lft": 6,
+                "rght": 7,
+                "tree_id": 11,
+                "level": 1,
+                "parent": 5
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-leaning-single-arm-skullover",
+            "female": "cables/female/triceps/cable-leaning-single-arm-skullover"
+        },
+        "name": "Cable Leaning Single Arm Skullover"
+    }
+]

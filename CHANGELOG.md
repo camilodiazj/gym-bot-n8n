@@ -2,37 +2,39 @@
 
 All notable changes to GymBot will be documented in this file.
 
-## [1.4.0] - 2026-01-22
+## [1.4.0] - 2026-01-24
 
-### Added - Mesocycle Renewal Feature
+### Added - E2E Test Suite v4.0
 
-- **New subflow `GymBotMesocycleRenewal.json`**: Handles end-of-mesocycle (4-week cycle) options
-  - `Renewal_Agent`: AI agent that guides users through renewal options
-  - Option 1 - **Mantener rutina**: Keeps same exercises, resets schedule for new cycle
-  - Option 2a - **Cambiar días**: Regenerates routine with different days per week
-  - Option 2b - **Rotar ejercicios**: Selects alternative exercises by movement pattern
-  - Postgres-based conversation memory with automatic cleanup
+- **TC002_FULL_KYC test**: AI-simulated user completes entire KYC flow using GPT-4o-mini
+- **DB verification as ground truth**: TC002_FULL_KYC validates user creation via database queries instead of turn tracking
+- **Automatic cleanup queries**: TC002, TC002_FULL_KYC, and TC003 now auto-clean data before each run
 
-- **Mesocycle detection in `GymRatFlow_Supabase.json`**:
-  - `Check_Mesocycle_Complete` node: Detects when user has completed all week 4 sessions
-  - `If_Mesocycle_Complete` node: Routes to renewal subflow when mesocycle is done
-  - New intention `RENOVAR_MESOCICLO` added to `Intention_Agent`
-  - New Switch output for manual renewal requests
+### Fixed
 
-- **Renewal support in `GymRatForm Supabase.json`**:
-  - New input parameters: `is_renewal`, `override_days_available`
-  - `If_Is_Renewal` node: Skips user/plan creation for renewals
-  - `Clear_Old_Workouts` node: Cleans existing workouts before regenerating
-
-- **Database migration**: Added columns to `users_plans` table
-  - `mesocycle_number` (INTEGER, default 1): Tracks current mesocycle count
-  - `last_renewal_date` (TIMESTAMP): Records last renewal date
-
-- **Documentation**: Created `docs/MESOCYCLE_RENEWAL.md` with flow diagrams, SQL queries, and testing scenarios
+- **TC002 cleanup**: Added missing cleanup queries to delete user 570000000009 data before test
+- **TC003 cleanup**: Added cleanup to delete future scheduled workouts preventing false positives
+- **whatsapp_id data type**: Fixed cleanup queries using string instead of numeric for BIGINT column
+- **test_data_setup.sql FK error**: Added 570000000009 to all DELETE subqueries to prevent foreign key constraint violations
 
 ### Changed
 
-- Updated `CLAUDE.md` with new workflow documentation and database schema changes
+- **Test cases embedded in workflow**: Removed external `GymRatFlow_test_cases.json`, tests now defined in `GymRatFlow_E2E_TestRunner.json`
+- **Deprecated tests removed**: Removed TC005, TC008, TC009, TC010 (obsolete confirmation flow tests)
+- **Documentation consolidated**: Removed `how_to_make.md`, updated `GymRatFlow_test_plan.md` with complete execution guide
+
+### Documentation
+
+- Updated `GymRatFlow_test_plan.md` to v4.0 with step-by-step execution guide, architecture diagram, and troubleshooting section
+
+## [1.3.2] - 2026-01-22
+https://gym-rat.atlassian.net/browse/KAN-49
+Automated tests with "TestRunner"
+
+
+## [1.3.1] - 2026-01-22
+https://gym-rat.atlassian.net/browse/KAN-49
+Added e2e tests for gym rat flow
 
 ## [1.3.0] - 2026-01-21
 

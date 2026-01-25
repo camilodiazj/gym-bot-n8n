@@ -1,0 +1,1412 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/anterior-deltoid/dumbbell-incline-chest-flys",
+            "female": "dumbbells/female/anterior-deltoid/dumbbell-incline-chest-flys"
+        },
+        "name": "Aperturas en banco inclinado con mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/anterior-deltoid/dumbbell-incline-bench-press",
+            "female": "dumbbells/female/anterior-deltoid/dumbbell-incline-bench-press"
+        },
+        "name": "Press De Banca Inclinado Con Mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/anterior-deltoid/barbell-incline-bench-press",
+            "female": "barbell/female/anterior-deltoid/barbell-incline-bench-press"
+        },
+        "name": "Press Inclinado con Barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "dumbbells/male/triceps/dumbbell-guillotine-incline-bench-press",
+            "female": "dumbbells/female/triceps/dumbbell-guillotine-incline-bench-press"
+        },
+        "name": "Press Inclinado Guillotina con Mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/chest/dumbbell-incline-chest-fly",
+            "female": "dumbbells/female/chest/dumbbell-incline-chest-fly"
+        },
+        "name": "Aperturas en banco inclinado con mancuernas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "dumbbells/male/chest/dumbbell-internally-rotated-incline-chest-fly",
+            "female": "dumbbells/female/chest/dumbbell-internally-rotated-incline-chest-fly"
+        },
+        "name": "Aperturas con Mancuernas en Banco Inclinado con Rotación Interna"
+    },
+    {
+        "muscles": [
+            {
+                "id": 6,
+                "name": "Hombros",
+                "name_en_us": "Shoulders",
+                "scientific_name": null,
+                "url_name": "Shoulders",
+                "description": "Para hombres y mujeres, los deltoides, también llamados delts, son un músculo muy deseable de desarrollar. Unos hombros bien desarrollados pueden dar la apariencia de una cintura más pequeña (porque los hombros se ven más anchos). Por tanto, unos deltoides bien entrenados mejoran el aspecto de todo el físico.\n\nEl deltoides tiene tres cabezas: anterior (frontal), lateral (media) y posterior (trasera). Cada cabeza tiene funciones similares, aunque presentan algunas diferencias.",
+                "description_en_us": "For both men and women, the deltoids, also referred to as delts, are a very desirable muscle to build. Well-developed shoulders can give the appearance of a smaller waist (because the shoulders look broader). Therefore, well-trained delts improve the look of the entire physique.\r\n\r\nThe deltoid has three different heads: anterior (front), lateral (middle), and posterior (rear). Each head has similar functions, but they do have some variance.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 10,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/shoulders/dumbbell-neutral-incline-bench-press",
+            "female": "dumbbells/female/shoulders/dumbbell-neutral-incline-bench-press"
+        },
+        "name": "Press Inclinado con Mancuernas (Agarre Neutro)"
+    },
+    {
+        "muscles": [
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/chest/cable-incline-bench-press",
+            "female": "cables/female/chest/cable-incline-bench-press"
+        },
+        "name": "Press de banca inclinado con polea"
+    },
+    {
+        "muscles": [
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/triceps/cable-single-arm-incline-bench-press",
+            "female": "cables/female/triceps/cable-single-arm-incline-bench-press"
+        },
+        "name": "Press inclinado en polea con un brazo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "barbell/male/anterior-deltoid/barbell-high-incline-bench-press",
+            "female": "barbell/female/anterior-deltoid/barbell-high-incline-bench-press"
+        },
+        "name": "Press de Banca con Barra en Inclinación Alta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "dumbbells/male/anterior-deltoid/dumbbell-high-incline-bench-press",
+            "female": "dumbbells/female/anterior-deltoid/dumbbell-high-incline-bench-press"
+        },
+        "name": "Press de Banca con Mancuernas en Inclinación Alta"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/anterior-deltoid/kettlebell-high-incline-bench-press",
+            "female": "kettlebells/female/anterior-deltoid/kettlebell-high-incline-bench-press"
+        },
+        "name": "Press Inclinado Alto con Pesa Rusa"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/anterior-deltoid/kettlebell-incline-bench-press",
+            "female": "kettlebells/female/anterior-deltoid/kettlebell-incline-bench-press"
+        },
+        "name": "Press Inclinado Con Kettlebells"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 85,
+            "name": "Smith-Machine",
+            "name_en_us": "Smith-Machine",
+            "include_in_api": false,
+            "include_in_workout_generator": false,
+            "display_order": 8,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "smith-machine/male/anterior-deltoid/smith-machine-incline-bench-press",
+            "female": "smith-machine/female/anterior-deltoid/smith-machine-incline-bench-press"
+        },
+        "name": "Press de banca inclinado en máquina Smith"
+    },
+    {
+        "muscles": [
+            {
+                "id": 6,
+                "name": "Hombros",
+                "name_en_us": "Shoulders",
+                "scientific_name": null,
+                "url_name": "Shoulders",
+                "description": "Para hombres y mujeres, los deltoides, también llamados delts, son un músculo muy deseable de desarrollar. Unos hombros bien desarrollados pueden dar la apariencia de una cintura más pequeña (porque los hombros se ven más anchos). Por tanto, unos deltoides bien entrenados mejoran el aspecto de todo el físico.\n\nEl deltoides tiene tres cabezas: anterior (frontal), lateral (media) y posterior (trasera). Cada cabeza tiene funciones similares, aunque presentan algunas diferencias.",
+                "description_en_us": "For both men and women, the deltoids, also referred to as delts, are a very desirable muscle to build. Well-developed shoulders can give the appearance of a smaller waist (because the shoulders look broader). Therefore, well-trained delts improve the look of the entire physique.\r\n\r\nThe deltoid has three different heads: anterior (front), lateral (middle), and posterior (rear). Each head has similar functions, but they do have some variance.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 10,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 5,
+                "name": "Tríceps",
+                "name_en_us": "Triceps",
+                "scientific_name": null,
+                "url_name": "Triceps",
+                "description": "Los tríceps son un músculo con tres cabezas, de ahí el nombre. Sus cabezas son la larga, la lateral y la medial. Tradicionalmente se consideran muy potentes porque en ellos predominan las fibras de contracción rápida. Esto se refiere a las fibras musculares que consumen energía con rapidez; los tríceps destacan en este rasgo. Participan en cualquier movimiento de empuje.",
+                "description_en_us": "The triceps are a muscle with three heads, hence the name. Those heads are the long head, lateral head, and medial head. The triceps are traditionally considered a powerhouse due to their overwhelmingly fast twitch. This expression refers to muscle fibers which expend energy quickly, and the triceps are particularly dominant in this trait. The triceps are involved during any pushing movement.",
+                "lft": 1,
+                "rght": 8,
+                "tree_id": 11,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 2,
+            "name": "Mancuernas",
+            "name_en_us": "Dumbbells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 6,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "dumbbells/male/shoulders/dumbbell-neutral-high-incline-bench-press",
+            "female": "dumbbells/female/shoulders/dumbbell-neutral-high-incline-bench-press"
+        },
+        "name": "Dumbbell Neutral High Incline Bench Press"
+    },
+    {
+        "muscles": [
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "cables/male/chest/cable-incline-fly-around",
+            "female": "cables/female/chest/cable-incline-fly-around"
+        },
+        "name": "Cable Incline Fly Around"
+    },
+    {
+        "muscles": [
+            {
+                "id": 19,
+                "name": "Deltoides Anterior",
+                "name_en_us": "Anterior Deltoid",
+                "scientific_name": null,
+                "url_name": "anterior-deltoid",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 10,
+                "level": 1,
+                "parent": 6
+            },
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            },
+            {
+                "id": 47,
+                "name": "Deltoides Frontales",
+                "name_en_us": "Front Shoulders",
+                "scientific_name": "Front Deltoids",
+                "url_name": "front-shoulders",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 19,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "cables/male/anterior-deltoid/cable-standing-single-arm-incline-chest-press",
+            "female": "cables/female/anterior-deltoid/cable-standing-single-arm-incline-chest-press"
+        },
+        "name": "Cable Standing Single Arm Incline Chest Press"
+    },
+    {
+        "muscles": [
+            {
+                "id": 2,
+                "name": "Pecho",
+                "name_en_us": "Chest",
+                "scientific_name": null,
+                "url_name": "Chest",
+                "description": "Principalmente intervienen tres músculos del pecho: el pectoral mayor, el pectoral menor y el serrato anterior.\n\nLos pectorales están sobre todo vinculados al movimiento de los hombros y los brazos. Cuando actúan juntos, estabilizan estructuras óseas como la clavícula y la escápula. Los músculos del pecho nos permiten levantar, extender y rotar los brazos, además de participar en la respiración. Son necesarios para actividades cotidianas como mover muebles, levantar objetos pesados, lanzar una pelota de béisbol y estirar los brazos.",
+                "description_en_us": "Primarily, there are three chest muscles involved in movement: the pectoralis major, the pectoralis minor, and the serratus anterior.\r\n\r\nPectoral muscles are most predominantly associated with movement of the shoulders and arms. When working together, they provide stability for bone structures such as the clavicle (collar bone) and the scapula (shoulder). Muscles of the chest enable us to lift, extend, and rotate our arms, along with playing a part in the process of respiration. Chest muscles are required in order to carry out everyday activities like moving furniture, lifting heavy objects, pitching a baseball, and stretching our arms.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 14,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 23,
+                "name": "Pectoral Superior",
+                "name_en_us": "Upper Pectoralis",
+                "scientific_name": "Sternoclavicular Head",
+                "url_name": "upper-pectoralis",
+                "description": "",
+                "description_en_us": "",
+                "lft": 2,
+                "rght": 3,
+                "tree_id": 14,
+                "level": 1,
+                "parent": 2
+            }
+        ],
+        "category": {
+            "id": 9,
+            "name": "Cables",
+            "name_en_us": "Cables",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 4,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "cables/male/chest/cable-standing-single-arm-internally-rotated-incline-chest-fly",
+            "female": "cables/female/chest/cable-standing-single-arm-internally-rotated-incline-chest-fly"
+        },
+        "name": "Cable Standing Single Arm Internally Rotated Incline Chest Fly"
+    }
+]

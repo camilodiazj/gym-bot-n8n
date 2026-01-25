@@ -1,0 +1,693 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 11,
+            "name": "Plato",
+            "name_en_us": "Plate",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 14,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "plate/male/forearms/plate-pinch-grip-farmers-carry",
+            "female": "plate/female/forearms/plate-pinch-grip-farmers-carry"
+        },
+        "name": "Caminata del granjero con agarre en pinza de discos"
+    },
+    {
+        "muscles": [
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/forearms/kettlebell-farmers-carry",
+            "female": "kettlebells/female/forearms/kettlebell-farmers-carry"
+        },
+        "name": "Caminata Del Granjero Con Kettlebells"
+    },
+    {
+        "muscles": [
+            {
+                "id": 13,
+                "name": "Zona lumbar",
+                "name_en_us": "Lower back",
+                "scientific_name": null,
+                "url_name": "Lowerback",
+                "description": "El músculo erector de la columna es otro músculo que a menudo se malinterpreta. Los erectores de la columna se consideran los músculos de la parte baja de la espalda. Sin embargo, los erectores recorren toda la longitud de la columna vertebral. Las fibras superiores se esconden bajo el dorsal ancho y el trapecio, por eso no son visibles a simple vista.",
+                "description_en_us": "The erector spinae is another often-misunderstood muscle. The spinal erectors are thought of as the “lower back” muscles. However, the spinal erectors travel the length of the entire spine. The upper fibers tuck under the latissimus dorsi and trapezius, and therefore are not visible to the naked eye.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 3,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 7,
+                "name": "Dorsales",
+                "name_en_us": "Lats",
+                "scientific_name": null,
+                "url_name": "Lats",
+                "description": "Los dorsales son un músculo grande y plano con puntos de origen en la parte media y baja de la columna, la cresta ilíaca (pelvis) y las costillas. Unos dorsales bien desarrollados dan la apariencia de una espalda más ancha y hacen que la cintura parezca más pequeña.",
+                "description_en_us": "The lats are a large flat muscle that has origin points at the mid and lower spine, the iliac crest (pelvis), and the ribs. Well-developed lats give the appearance of a wider back, therefore making the waist look smaller.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 9,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 11,
+            "name": "Plato",
+            "name_en_us": "Plate",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 14,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "plate/male/lowerback/plate-pinch-grip-deadlift",
+            "female": "plate/female/lowerback/plate-pinch-grip-deadlift"
+        },
+        "name": "Peso Muerto con Agarre en Pinza de Discos"
+    },
+    {
+        "muscles": [
+            {
+                "id": 13,
+                "name": "Zona lumbar",
+                "name_en_us": "Lower back",
+                "scientific_name": null,
+                "url_name": "Lowerback",
+                "description": "El músculo erector de la columna es otro músculo que a menudo se malinterpreta. Los erectores de la columna se consideran los músculos de la parte baja de la espalda. Sin embargo, los erectores recorren toda la longitud de la columna vertebral. Las fibras superiores se esconden bajo el dorsal ancho y el trapecio, por eso no son visibles a simple vista.",
+                "description_en_us": "The erector spinae is another often-misunderstood muscle. The spinal erectors are thought of as the “lower back” muscles. However, the spinal erectors travel the length of the entire spine. The upper fibers tuck under the latissimus dorsi and trapezius, and therefore are not visible to the naked eye.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 3,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 15,
+                "name": "Oblicuos",
+                "name_en_us": "Obliques",
+                "scientific_name": null,
+                "url_name": "Obliques",
+                "description": "Los oblicuos están formados por el oblicuo interno y el oblicuo externo.\n\nEl oblicuo interno se sitúa entre el transverso del abdomen y el oblicuo externo. Su origen es la cresta ilíaca y la parte inferior de la pelvis. Se inserta en la línea alba, la cresta púbica y las 3-4 costillas inferiores.\n\nEl oblicuo interno cumple las mismas funciones que el oblicuo externo: ayuda en la rotación, la flexión y la flexión lateral de la columna.\n\nEl oblicuo externo es visible con porcentajes bajos de grasa corporal. El músculo aparece como una serie de líneas diagonales que conectan con los abdominales.\n\nEl oblicuo externo se origina en las costillas 5–8 y se inserta en varios puntos (línea alba, espina ilíaca, cresta púbica y cresta ilíaca).\n\nLas funciones del oblicuo externo son ayudar en la rotación (como al talar un árbol), la flexión (inclinarse hacia adelante) y la flexión lateral de la columna (inclinarse hacia un lado).",
+                "description_en_us": "The obliques are made up of the internal and external obliques. \r\n\r\nThe internal oblique sits between the transverse abdominis and the external oblique. The origin is from the iliac crest, and the lower part of the pelvis. The insertion is at the linea alba, pubic crest, and the lower 3-4 ribs.\r\n\r\nThe internal oblique serves the exact same functions as the external oblique - aiding rotation, flexion and lateral flexion of the spine.\r\n\r\nThe external oblique is visible at low body fat percentages. The muscle appears as a series of diagonal lines connecting to the six-pack.\r\n\r\nThe external oblique originates from the 5th – 8th ribs, and insert at several points (linea alba, iliac spine, pubic crest, and the iliac crest).\r\n\r\nThe functions of the external oblique are to aid in rotation (chopping down a tree), flexion (bending over), and lateral flexion of the spine (bending to the side).",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 15,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/lowerback/barbell-suitcase-deadlift",
+            "female": "barbell/female/lowerback/barbell-suitcase-deadlift"
+        },
+        "name": "Peso Muerto Maleta con Barra"
+    },
+    {
+        "muscles": [
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "kettlebells/male/forearms/kettlebell-farmers-march",
+            "female": "kettlebells/female/forearms/kettlebell-farmers-march"
+        },
+        "name": "Paseo del Granjero con Pesa Rusa"
+    },
+    {
+        "muscles": [
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/forearms/kettlebell-single-arm-farmers-march",
+            "female": "kettlebells/female/forearms/kettlebell-single-arm-farmers-march"
+        },
+        "name": "Caminata del granjero con pesa rusa a un brazo"
+    },
+    {
+        "muscles": [
+            {
+                "id": 10,
+                "name": "Antebrazos",
+                "name_en_us": "Forearms",
+                "scientific_name": null,
+                "url_name": "Forearms",
+                "description": "Los antebrazos están formados por muchos músculos diferentes y el número exacto depende del libro de anatomía que consultes. Suelen dividirse en tres partes principales: el braquiorradial, los flexores de la muñeca y el pronador redondo.",
+                "description_en_us": "The forearms consist of many different muscles and the exact number depends on the anatomy book you are reading! Frequently, the forearms are broken down into three main parts: the brachioradialis, the wrist flexors, and the pronator teres.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 6,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 26,
+                "name": "Flexores de la muñeca",
+                "name_en_us": "Wrist Flexors",
+                "scientific_name": null,
+                "url_name": "wrist-flexors",
+                "description": "",
+                "description_en_us": "",
+                "lft": 4,
+                "rght": 5,
+                "tree_id": 6,
+                "level": 1,
+                "parent": 10
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 1,
+            "name": "Principiante",
+            "name_en_us": "Beginner"
+        },
+        "target_url": {
+            "male": "kettlebells/male/forearms/kettlebell-walking-farmers-march",
+            "female": "kettlebells/female/forearms/kettlebell-walking-farmers-march"
+        },
+        "name": "Caminata del granjero con pesas rusas"
+    },
+    {
+        "muscles": [
+            {
+                "id": 13,
+                "name": "Zona lumbar",
+                "name_en_us": "Lower back",
+                "scientific_name": null,
+                "url_name": "Lowerback",
+                "description": "El músculo erector de la columna es otro músculo que a menudo se malinterpreta. Los erectores de la columna se consideran los músculos de la parte baja de la espalda. Sin embargo, los erectores recorren toda la longitud de la columna vertebral. Las fibras superiores se esconden bajo el dorsal ancho y el trapecio, por eso no son visibles a simple vista.",
+                "description_en_us": "The erector spinae is another often-misunderstood muscle. The spinal erectors are thought of as the “lower back” muscles. However, the spinal erectors travel the length of the entire spine. The upper fibers tuck under the latissimus dorsi and trapezius, and therefore are not visible to the naked eye.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 3,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 15,
+                "name": "Oblicuos",
+                "name_en_us": "Obliques",
+                "scientific_name": null,
+                "url_name": "Obliques",
+                "description": "Los oblicuos están formados por el oblicuo interno y el oblicuo externo.\n\nEl oblicuo interno se sitúa entre el transverso del abdomen y el oblicuo externo. Su origen es la cresta ilíaca y la parte inferior de la pelvis. Se inserta en la línea alba, la cresta púbica y las 3-4 costillas inferiores.\n\nEl oblicuo interno cumple las mismas funciones que el oblicuo externo: ayuda en la rotación, la flexión y la flexión lateral de la columna.\n\nEl oblicuo externo es visible con porcentajes bajos de grasa corporal. El músculo aparece como una serie de líneas diagonales que conectan con los abdominales.\n\nEl oblicuo externo se origina en las costillas 5–8 y se inserta en varios puntos (línea alba, espina ilíaca, cresta púbica y cresta ilíaca).\n\nLas funciones del oblicuo externo son ayudar en la rotación (como al talar un árbol), la flexión (inclinarse hacia adelante) y la flexión lateral de la columna (inclinarse hacia un lado).",
+                "description_en_us": "The obliques are made up of the internal and external obliques. \r\n\r\nThe internal oblique sits between the transverse abdominis and the external oblique. The origin is from the iliac crest, and the lower part of the pelvis. The insertion is at the linea alba, pubic crest, and the lower 3-4 ribs.\r\n\r\nThe internal oblique serves the exact same functions as the external oblique - aiding rotation, flexion and lateral flexion of the spine.\r\n\r\nThe external oblique is visible at low body fat percentages. The muscle appears as a series of diagonal lines connecting to the six-pack.\r\n\r\nThe external oblique originates from the 5th – 8th ribs, and insert at several points (linea alba, iliac spine, pubic crest, and the iliac crest).\r\n\r\nThe functions of the external oblique are to aid in rotation (chopping down a tree), flexion (bending over), and lateral flexion of the spine (bending to the side).",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 15,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 7,
+            "name": "Kettlebells",
+            "name_en_us": "Kettlebells",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 5,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 2,
+            "name": "Intermedio",
+            "name_en_us": "Intermediate"
+        },
+        "target_url": {
+            "male": "kettlebells/male/lowerback/kettlebell-suitcase-deadlift",
+            "female": "kettlebells/female/lowerback/kettlebell-suitcase-deadlift"
+        },
+        "name": "Peso muerto tipo maleta con pesa rusa"
+    },
+    {
+        "muscles": [
+            {
+                "id": 13,
+                "name": "Zona lumbar",
+                "name_en_us": "Lower back",
+                "scientific_name": null,
+                "url_name": "Lowerback",
+                "description": "El músculo erector de la columna es otro músculo que a menudo se malinterpreta. Los erectores de la columna se consideran los músculos de la parte baja de la espalda. Sin embargo, los erectores recorren toda la longitud de la columna vertebral. Las fibras superiores se esconden bajo el dorsal ancho y el trapecio, por eso no son visibles a simple vista.",
+                "description_en_us": "The erector spinae is another often-misunderstood muscle. The spinal erectors are thought of as the “lower back” muscles. However, the spinal erectors travel the length of the entire spine. The upper fibers tuck under the latissimus dorsi and trapezius, and therefore are not visible to the naked eye.",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 3,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 9,
+                "name": "Glúteos",
+                "name_en_us": "Glutes",
+                "scientific_name": null,
+                "url_name": "Glutes",
+                "description": "Los glúteos están ganando popularidad por su aspecto, pero son mucho más que algo agradable a la vista. El glúteo mayor es el músculo más grande del cuerpo y cumple muchas funciones importantes.",
+                "description_en_us": "With regard to desirability, the glutes are gaining in popularity, however the glutes are far more than something nice to look at. The gluteus maximus is the largest muscle in the body and serves many important functions.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 7,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 8,
+                "name": "Isquiotibiales",
+                "name_en_us": "Hamstrings",
+                "scientific_name": null,
+                "url_name": "Hamstrings",
+                "description": "Los isquiotibiales son los grandes músculos en la parte posterior de tus muslos. Junto con el cuádriceps, los isquiotibiales hacen posible caminar y estar de pie.\n\nLos isquiotibiales están formados por los siguientes músculos: el bíceps femoral (cabeza corta y larga), el semimembranoso y el semitendinoso.\n\nLos isquiotibiales son más débiles en comparación con el cuádriceps (músculo anterior del muslo). Tanto los isquiotibiales como el cuádriceps tiran de la articulación de la rodilla, por lo que si uno de esos músculos es más fuerte que el otro, surgirán problemas en la rodilla. Una regla práctica es asegurarte de que los isquiotibiales tengan 2/3 de la fuerza del cuádriceps. Por ejemplo, si puedes resistir 100 lbs con tus cuádriceps, deberías poder resistir 66 lbs con tus isquiotibiales.",
+                "description_en_us": "The hamstrings are the big muscles on the back of your thighs. Together with the quadriceps, the hamstrings make walking and standing possible.\r\n\r\nThe hamstrings are made up of the following muscles - the biceps femoris (short and long head), the semimembranosus, and the semitendinosus.\r\n\r\nThe hamstrings are a weak muscle when compared with the quadriceps (front thigh muscle). Both the hamstrings and the quadriceps pull on the knee joint, so if one of those muscles is stronger than the other, then knee problems are bound to arise. A good rule of thumb is to make sure that the hamstrings are 2/3 as strong as the quadriceps. For example, if you can resist 100 lbs with your quads, then you should be able to resist 66 lbs with your hamstrings.",
+                "lft": 1,
+                "rght": 6,
+                "tree_id": 8,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 15,
+                "name": "Oblicuos",
+                "name_en_us": "Obliques",
+                "scientific_name": null,
+                "url_name": "Obliques",
+                "description": "Los oblicuos están formados por el oblicuo interno y el oblicuo externo.\n\nEl oblicuo interno se sitúa entre el transverso del abdomen y el oblicuo externo. Su origen es la cresta ilíaca y la parte inferior de la pelvis. Se inserta en la línea alba, la cresta púbica y las 3-4 costillas inferiores.\n\nEl oblicuo interno cumple las mismas funciones que el oblicuo externo: ayuda en la rotación, la flexión y la flexión lateral de la columna.\n\nEl oblicuo externo es visible con porcentajes bajos de grasa corporal. El músculo aparece como una serie de líneas diagonales que conectan con los abdominales.\n\nEl oblicuo externo se origina en las costillas 5–8 y se inserta en varios puntos (línea alba, espina ilíaca, cresta púbica y cresta ilíaca).\n\nLas funciones del oblicuo externo son ayudar en la rotación (como al talar un árbol), la flexión (inclinarse hacia adelante) y la flexión lateral de la columna (inclinarse hacia un lado).",
+                "description_en_us": "The obliques are made up of the internal and external obliques. \r\n\r\nThe internal oblique sits between the transverse abdominis and the external oblique. The origin is from the iliac crest, and the lower part of the pelvis. The insertion is at the linea alba, pubic crest, and the lower 3-4 ribs.\r\n\r\nThe internal oblique serves the exact same functions as the external oblique - aiding rotation, flexion and lateral flexion of the spine.\r\n\r\nThe external oblique is visible at low body fat percentages. The muscle appears as a series of diagonal lines connecting to the six-pack.\r\n\r\nThe external oblique originates from the 5th – 8th ribs, and insert at several points (linea alba, iliac spine, pubic crest, and the iliac crest).\r\n\r\nThe functions of the external oblique are to aid in rotation (chopping down a tree), flexion (bending over), and lateral flexion of the spine (bending to the side).",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 15,
+                "level": 0,
+                "parent": null
+            },
+            {
+                "id": 43,
+                "name": "Manos",
+                "name_en_us": "Hands",
+                "scientific_name": "Hands",
+                "url_name": "hands",
+                "description": "",
+                "description_en_us": "",
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 16,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 1,
+            "name": "Barra olímpica",
+            "name_en_us": "Barbell",
+            "include_in_api": true,
+            "include_in_workout_generator": true,
+            "display_order": 3,
+            "enable": true,
+            "featured": true,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 3,
+            "name": "Avanzado",
+            "name_en_us": "Advanced"
+        },
+        "target_url": {
+            "male": "barbell/male/lowerback/barbell-suitcase-carry",
+            "female": "barbell/female/lowerback/barbell-suitcase-carry"
+        },
+        "name": "Levantamiento de barra tipo maleta"
+    }
+]

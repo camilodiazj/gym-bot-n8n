@@ -1,0 +1,289 @@
+[
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/upper-spine/standing-neck-mobility-circumductions",
+            "female": "recovery/female/upper-spine/standing-neck-mobility-circumductions"
+        },
+        "name": "Circunducciones de movilidad cervical de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/upper-spine/standing-neck-extensions",
+            "female": "recovery/female/upper-spine/standing-neck-extensions"
+        },
+        "name": "Extensiones de cuello de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/upper-spine/standing-neck-flexions",
+            "female": "recovery/female/upper-spine/standing-neck-flexions"
+        },
+        "name": "Flexiones de cuello de pie."
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/upper-spine/standing-neck-rotations",
+            "female": "recovery/female/upper-spine/standing-neck-rotations"
+        },
+        "name": "Rotaciones de cuello de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/upper-spine/standing-neck-side-flexions",
+            "female": "recovery/female/upper-spine/standing-neck-side-flexions"
+        },
+        "name": "Inclinaciones laterales del cuello de pie"
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/wrist/seated-radial-nerve-slider",
+            "female": "recovery/female/wrist/seated-radial-nerve-slider"
+        },
+        "name": "Deslizamiento del Nervio Radial Sentado"
+    },
+    {
+        "muscles": [
+            {
+                "id": 49,
+                "name": "Cuello",
+                "name_en_us": "Neck",
+                "scientific_name": null,
+                "url_name": "neck",
+                "description": null,
+                "description_en_us": null,
+                "lft": 1,
+                "rght": 2,
+                "tree_id": 21,
+                "level": 0,
+                "parent": null
+            }
+        ],
+        "category": {
+            "id": 105,
+            "name": "Recuperación",
+            "name_en_us": "Recovery",
+            "include_in_api": true,
+            "include_in_workout_generator": false,
+            "display_order": 22,
+            "enable": true,
+            "featured": false,
+            "image": null,
+            "mobile_icon": null,
+            "description": null
+        },
+        "difficulty": {
+            "id": 4,
+            "name": "Principiante",
+            "name_en_us": "Novice"
+        },
+        "target_url": {
+            "male": "recovery/male/wrist/seated-radial-nerve-tensioner",
+            "female": "recovery/female/wrist/seated-radial-nerve-tensioner"
+        },
+        "name": "Estiramiento del Nervio Radial (Sentado)"
+    }
+]

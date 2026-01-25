@@ -12,40 +12,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        1040,
-        48
+        1456,
+        3888
       ],
-      "id": "da21332a-c083-400b-b987-696f3711767b",
+      "id": "5aea426f-80b3-4030-9d35-63ed0057bed4",
       "name": "AI Agent",
       "executeOnce": true
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-5.2",
-          "mode": "list",
-          "cachedResultName": "gpt-5.2"
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        1024,
-        288
-      ],
-      "id": "4b6fa192-dfc0-41b7-8d95-569a114c0d9e",
-      "name": "OpenAI Chat Model",
-      "retryOnFail": true,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "openAiApi": {
-          "id": "mwhZD1w0asX5zwKw",
-          "name": "OpenAi account"
-        }
-      }
     },
     {
       "parameters": {
@@ -54,10 +26,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1680,
-        -80
+        2096,
+        3760
       ],
-      "id": "307cdbe1-5442-426b-a6df-a847dc98640b",
+      "id": "a7a9a526-713c-4e07-b489-94ec6da3385a",
       "name": "Code in JavaScript1"
     },
     {
@@ -67,10 +39,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        528,
-        -96
+        944,
+        3744
       ],
-      "id": "654c79a7-4f62-4719-b4a8-4a5f7450dd14",
+      "id": "f2c411da-6588-4549-8e00-531fe97473b7",
       "name": "Loop Over Items"
     },
     {
@@ -82,23 +54,23 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        832,
-        -224
+        1248,
+        3616
       ],
-      "id": "dd494f65-2461-41fb-9bbd-53df0d4198e8",
+      "id": "81c802f9-f932-4abe-9f8b-5ee9292e110d",
       "name": "AI Transform"
     },
     {
       "parameters": {
-        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        // Parseamos el string de 'output' para convertirlo en lista de objetos\n        const exercises = JSON.parse(entry.output);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
+        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        let outputStr = entry.output;\n        \n        // Limpiar los bloques de código markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n        \n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1152,
-        -128
+        1568,
+        3712
       ],
-      "id": "736edb89-0486-435d-b84e-7a44d6254c89",
+      "id": "7f55d073-b2fb-46f4-b0ed-d33025fa884b",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -111,10 +83,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -400,
-        -80
+        16,
+        3760
       ],
-      "id": "68b2054d-6823-40ae-b85d-48a0d2015ad4",
+      "id": "ef527435-10f2-4214-80bd-d2b013634a38",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -149,10 +121,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -656,
-        -80
+        -240,
+        3760
       ],
-      "id": "d01c666a-440f-4ca3-91a5-c9d6f428227a",
+      "id": "c5792562-5b48-48cd-a92d-75123b9af812",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -177,10 +149,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        768,
-        16
+        1184,
+        3856
       ],
-      "id": "1b03389e-9973-48da-8b14-040090c2316c",
+      "id": "0d4b8856-851b-4b6c-94cf-bf927cd33e22",
       "name": "GetExercisesByPattern",
       "credentials": {
         "supabaseApi": {
@@ -229,10 +201,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        128,
-        256
+        544,
+        4096
       ],
-      "id": "4f3fe133-5247-4b8b-bb81-50338527beb6",
+      "id": "ea01d204-1eb3-4733-9d2e-f17e70cccfff",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -270,10 +242,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -48,
-        128
+        368,
+        3968
       ],
-      "id": "a49f1161-3a87-45f7-995d-ac23a34d8fe7",
+      "id": "855b04dd-c5b8-40b0-a1bf-29bb625ccc19",
       "name": "UserExists"
     },
     {
@@ -292,10 +264,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -208,
-        32
+        208,
+        3872
       ],
-      "id": "264bb7e0-4951-443f-ae28-ce2804ae8349",
+      "id": "d5efd29f-23e5-4571-afcf-714182b5c568",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -345,10 +317,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        176,
-        80
+        592,
+        3920
       ],
-      "id": "d0531c4a-9a62-4b33-a241-e8e06f816612",
+      "id": "b7b54b80-9a32-4490-8f2a-aa0ee3b06af7",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -364,10 +336,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        304,
-        -96
+        720,
+        3744
       ],
-      "id": "84f6413a-5cd1-4d8d-988b-6bd4a341fc02",
+      "id": "b5171148-e1c0-4f79-a6db-007abb676ea7",
       "name": "Merge"
     },
     {
@@ -426,10 +398,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1920,
-        -80
+        2336,
+        3760
       ],
-      "id": "4cdaf574-3d01-4c75-b4b7-47b68ed5adb0",
+      "id": "b543032c-f24f-45fa-a442-6c75a9b9a2f6",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -455,10 +427,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1424,
-        -80
+        1840,
+        3760
       ],
-      "id": "b10f925a-8c61-42a9-bf29-495246791f95",
+      "id": "ad603741-0089-4ff7-b9a4-7939180a9f78",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -491,10 +463,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -1056,
-        -80
+        -640,
+        3760
       ],
-      "id": "808ae635-a994-4dc2-b66c-de05776f009a",
+      "id": "a9b51323-1e98-4ca6-b543-36abda89aeb4",
       "name": "input",
       "executeOnce": true
     },
@@ -514,10 +486,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -880,
-        -80
+        -464,
+        3760
       ],
-      "id": "85ff6d69-ffab-4839-b0a8-433d7a0a6597",
+      "id": "5c6d5e1f-7fe9-4b8b-8ff5-113f7beb5df6",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -537,12 +509,13 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        2160,
-        -80
+        2576,
+        3760
       ],
-      "id": "f7a8b9c0-d1e2-4f56-a789-0123456789ab",
+      "id": "486413fd-cc54-4ebd-a262-3b2ccbc2a1a6",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
+      "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -552,55 +525,33 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "is-renewal-condition",
-              "leftValue": "={{ $items('input')[0].json.is_renewal }}",
-              "rightValue": "true",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
+        "jsCode": "return [\n  {\n    json: {\n      output: 'routine created'\n    }\n  }\n];"
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -368,
-        32
+        2784,
+        3776
       ],
-      "id": "if-is-renewal",
-      "name": "If_Is_Renewal"
+      "id": "96c04c5a-161c-43d1-ac66-dd9c2979da19",
+      "name": "Filtered Message2"
     },
     {
       "parameters": {
-        "operation": "executeQuery",
-        "query": "-- Limpiar workouts existentes para regenerar\nDELETE FROM workouts WHERE user_id = '{{ $items('GetUser')[0].json.user_id }}';\n\n-- Retornar user_id para continuar el flujo\nSELECT user_id FROM users WHERE user_id = '{{ $items('GetUser')[0].json.user_id }}';",
         "options": {}
       },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
       "position": [
-        -208,
-        -112
+        1328,
+        4096
       ],
-      "id": "clear-old-workouts",
-      "name": "Clear_Old_Workouts",
+      "id": "6f0ffb68-f7a1-4adf-a04c-7907971ba171",
+      "name": "Google Gemini Chat Model",
       "credentials": {
-        "postgres": {
-          "id": "vZLJtIWG5nYXMez4",
-          "name": "Supabase Memory"
+        "googlePalmApi": {
+          "id": "FGJvOXDfOTLntPLK",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     }
@@ -609,42 +560,93 @@
     "input": [
       {
         "json": {
-          "whatsapp_id": 573506267523
+          "whatsapp_id": 570000000009
         },
         "pairedItem": {
           "item": 0
         }
       }
     ],
-    "GetUserProfile": [
+    "AI Transform": [
       {
         "json": {
-          "submission_date": "2026-01-19T19:18:02.45",
-          "whatsapp_id": 573506267523,
-          "full_name": "Camilo Díaz",
-          "email": "Camilodiazjaimes@gmail.com",
-          "age": 27,
-          "biological_sex": "M",
-          "height_cm": 171,
-          "weight_kg": 68,
-          "primary_goal": "Ganar masa muscular",
-          "secondary_goal": "Ninguna",
-          "training_experience": "Más de 3 años",
-          "current_frequency": "1-2 días por semana",
-          "fitness_level": "Intermedio",
-          "health_status": "A",
-          "days_available": 3,
-          "session_duration_mins": "60-75 minutos",
-          "preferred_schedule": "Mañana",
-          "training_style": "Mixto",
-          "priority_muscles": "Abdomen",
-          "disliked_exercises": "Pantorrillas",
-          "cardio_type": "Bicicleta",
-          "cardio_frequency": "1-2"
+          "unifiedArray": [
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_023\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_035\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_029\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_007\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_025\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_017\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_036\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_010\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper A\",\n    \"exercise_id\": \"ex_031\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_002\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_032\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_013\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_019\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_001\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_020\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_041\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower A\",\n    \"exercise_id\": \"ex_040\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_023\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_035\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_007\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_025\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_017\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_026\",\n    \"sets\": \"3–4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_036\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_024\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_010\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Upper B\",\n    \"exercise_id\": \"ex_031\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_013\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_019\",\n    \"sets\": \"4\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_002\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"compound\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_032\",\n    \"sets\": \"3\",\n    \"reps\": \"8–12\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 120,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_001\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"isolation\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_020\",\n    \"sets\": \"3\",\n    \"reps\": \"12–15\",\n    \"rir\": \"1–2\",\n    \"rest_seconds\": 75,\n    \"tempo\": \"2-0-2\"\n  }\n]\n```"
+            },
+            {
+              "output": "```json\n[\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_041\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  },\n  {\n    \"user_id\": \"0153e378-b914-4cfd-8ec5-2b8b93da8203\",\n    \"goal\": \"Ganar masa muscular\",\n    \"level\": \"Intermedio\",\n    \"role\": \"core\",\n    \"week_number\": 1,\n    \"day_name\": \"Lower B\",\n    \"exercise_id\": \"ex_040\",\n    \"sets\": \"3\",\n    \"reps\": \"8–15\",\n    \"rir\": \"2–3\",\n    \"rest_seconds\": 60,\n    \"tempo\": \"—\"\n  }\n]\n```"
+            }
+          ]
         },
-        "pairedItem": {
-          "item": 0
-        }
+        "pairedItem": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
       }
     ]
   },
@@ -655,17 +657,6 @@
           {
             "node": "Loop Over Items",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -894,6 +885,28 @@
           }
         ]
       ]
+    },
+    "NotifyRoutineCreated": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -901,12 +914,12 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "71958964-16b6-4dea-bce7-74d868740a0d",
+  "versionId": "b5f3a952-d8ed-49bd-afcd-8e1a929c1b76",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "56TDVpPWb8DafTyq",
+  "id": "EyzkqFaL_O-WKwspAy6ud",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",

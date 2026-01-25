@@ -1,0 +1,962 @@
+{
+  "name": "GymRatFlow_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        13536,
+        15232
+      ],
+      "id": "58e06509-7120-4234-a2a6-aa1b3e848331",
+      "name": "Run All Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Test Cases E2E para GymRatFlow\n// Tests ejecutados en orden secuencial por el campo 'order'\n\nconst testCases = [\n  {\n    order: 1,\n    id: \"TC001\",\n    name: \"Bloqueo de Ruido - Status Update\",\n    priority: \"CRITICAL\",\n    category: \"FILTRO_RUIDO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output === undefined || output === null || output === ''\",\n      description: \"No debe generar respuesta\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"statuses\": [{ \"id\": \"wamid.test\", \"status\": \"sent\", \"timestamp\": \"1769084739\", \"recipient_id\": \"573208780020\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 2,\n    id: \"TC002\",\n    name: \"Usuario Nuevo - Onboarding KYC (Greeting)\",\n    priority: \"HIGH\",\n    category: \"ONBOARDING\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('conocerte') || output.includes('nombre') || output.includes('Coach')\",\n      description: \"Debe iniciar KYC\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NewUser\" }, \"wa_id\": \"570000000009\" }],\n      \"messages\": [{ \"from\": \"570000000009\", \"id\": \"wamid.E2E-TC002\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Hola, quiero empezar a entrenar\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ]\n  },\n  {\n    order: 3,\n    id: \"TC002_FULL_KYC\",\n    name: \"Onboarding Completo - KYC con Usuario Simulado IA\",\n    priority: \"CRITICAL\",\n    category: \"ONBOARDING_FULL\",\n    testType: \"MULTI_TURN_AI\",\n    simulatedUser: {\n      nombre: \"Juan Pérez García\",\n      email: \"juan.perez.e2e@test.com\",\n      edad: 28,\n      sexo: \"M\",\n      estatura_cm: 175,\n      peso_kg: 75,\n      objetivo_principal: \"Ganar masa muscular\",\n      objetivo_secundario: \"Mejorar fuerza\",\n      tiempo_entrenando: \"6 a 12 meses\",\n      frecuencia_actual: \"3-4 días por semana\",\n      nivel: \"Intermedio\",\n      estado_salud: \"A\",\n      dias_disponibles: 4,\n      tiempo_por_sesion: \"45-60 minutos\",\n      horario: \"Mañana\",\n      tipo_entrenamiento: \"Pesas libres\",\n      prioridades: \"Pecho y espalda\",\n      desafios: \"Entrenar piernas\",\n      cardio_actual: \"No\",\n      frecuencia_cardio: \"0\"\n    },\n    config: {\n      maxTurns: 25,\n      completionIndicators: [\"me pongo manos a la obra\", \"recibirás tu plan\", \"tu rutina 100%\", \"diseñar tu rutina\", \"estoy emocionado por ver tu progreso\", \"en breve recibirás\"],\n      firstMessage: \"Hola, quiero empezar a entrenar en el gimnasio\"\n    },\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ],\n    verification: {\n      queries: [\n        { sql: \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000009\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000009'\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 1 },\n        { sql: \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 4 }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"Debe completar KYC dinámicamente y crear usuario + rutina\"\n    }\n  },\n  {\n    order: 4,\n    id: \"TC003\",\n    name: \"Usuario sin Workouts - Flujo Agendar\",\n    priority: \"HIGH\",\n    category: \"AGENDAR\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('dias') || output.includes('días') || output.includes('semana')\",\n      description: \"Debe ofrecer agendar semana\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NoSchedule\" }, \"wa_id\": \"570000000001\" }],\n      \"messages\": [{ \"from\": \"570000000001\", \"id\": \"wamid.E2E-TC003\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Quiero agendar mi semana\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001' AND planned_day >= (NOW() AT TIME ZONE 'America/Bogota')::date::text;\"\n    ]\n  },\n  {\n    order: 5,\n    id: \"TC004\",\n    name: \"Dia de Descanso\",\n    priority: \"MEDIUM\",\n    category: \"DESCANSO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('no tienes sesión') || output.includes('no tienes sesion') || output.includes('descansar') || output.includes('descanso')\",\n      description: \"Debe indicar día de descanso\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test RestDay\" }, \"wa_id\": \"570000000002\" }],\n      \"messages\": [{ \"from\": \"570000000002\", \"id\": \"wamid.E2E-TC004\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que hay para hoy?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 6,\n    id: \"TC006\",\n    name: \"VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"VER_RUTINA\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"(output.includes('plan para hoy') || output.includes('rutina') || output.includes('RUTINA')) && (output.includes('Series') || output.includes('series') || output.includes('Repeticiones'))\",\n      description: \"Debe mostrar rutina formateada\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC006\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Muestrame mi rutina de hoy\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 7,\n    id: \"TC007\",\n    name: \"CHAT - Pregunta General\",\n    priority: \"MEDIUM\",\n    category: \"CHAT\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 50\",\n      description: \"Debe responder pregunta fitness\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC007\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que ejercicio es mejor para biceps?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 8,\n    id: \"TC011\",\n    name: \"Confirmacion via Pending Task\",\n    priority: \"CRITICAL\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('Felicidades') || output.includes('excelente') || output.includes('Felicitaciones') || output.includes('increíble') || output.includes('genial') || output.includes('Completada')\",\n      description: \"Debe confirmar rutina completada\"\n    },\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text;\",\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC011\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Si, ya terminé mi rutina\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 9,\n    id: \"TC012\",\n    name: \"Pending Task - No confirma\",\n    priority: \"HIGH\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 30\",\n      description: \"Debe manejar no-confirmación\"\n    },\n    cleanup: [\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"573213413664\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC012\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"No pude hoy, me senti mal\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  }\n];\n\n// Ordenar tests por el campo 'order' para garantizar ejecución secuencial\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n\n// Inicializar estado global del test run\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', sortedTests.length);\n$execution.customData.set('testResults', '[]');\n\nconsole.log(`📋 Tests cargados y ordenados: ${sortedTests.map(t => t.id).join(' -> ')}`);\n\nreturn sortedTests.map(tc => ({ json: tc }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        13760,
+        15232
+      ],
+      "id": "4c8f163b-9408-4129-9157-839868fb4c2a",
+      "name": "Load Test Cases"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        13968,
+        15232
+      ],
+      "id": "94714126-97c1-40fd-8919-5ec81a2e2cc1",
+      "name": "Loop Tests"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pre-process: preparar el test case actual\nconst testCase = $input.first().json;\n\nconsole.log(`\\n========================================`);\nconsole.log(`🧪 [${testCase.order}/${$execution.customData.get('totalTests')}] ${testCase.id} - ${testCase.name}`);\nconsole.log(`   Categoria: ${testCase.category}`);\nconsole.log(`   Prioridad: ${testCase.priority}`);\nconsole.log(`========================================`);\n\nreturn [{ json: testCase }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14240,
+        15408
+      ],
+      "id": "4b43010f-98c9-4b89-84fd-a1d01359f7ce",
+      "name": "Pre-Test Log"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.cleanup ? $json.cleanup.join('; ') : 'SELECT 1;' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        14416,
+        15408
+      ],
+      "id": "0b427c0c-37ed-4468-bcd8-290a799c72c2",
+      "name": "Run Cleanup SQL",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer solo el input del test case para pasarlo al sub-workflow\nconst testCase = $('Pre-Test Log').first().json;\nconst whatsappInput = testCase.input[0];\n\n// Retornar el objeto WhatsApp directamente\nreturn [{ json: whatsappInput }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14576,
+        15408
+      ],
+      "id": "d05534d4-d14f-43dc-bfe2-b881067cc9ae",
+      "name": "Extract Test Input"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "KOrUQ4fNOepmjimF",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/KOrUQ4fNOepmjimF",
+          "cachedResultName": "Learning Project — GymRatFlow_Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        14752,
+        15408
+      ],
+      "id": "db3ea42f-0031-46ff-a962-e6d60ff51561",
+      "name": "Execute GymRatFlow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Evaluar resultado del test\nconst testCase = $('Pre-Test Log').first().json;\nconst workflowResult = $input.first().json;\n\n// Extraer el output del workflow\nlet output = '';\ntry {\n  if (workflowResult.output) {\n    output = workflowResult.output;\n  } else if (workflowResult.text) {\n    output = workflowResult.text;\n  } else if (typeof workflowResult === 'string') {\n    output = workflowResult;\n  } else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) {\n  output = '';\n}\n\n// Evaluar la métrica\nlet passed = false;\nlet error = null;\n\ntry {\n  const rule = testCase.metrics.rule;\n  passed = eval(rule);\n} catch (e) {\n  error = e.message;\n  passed = false;\n}\n\nconst result = {\n  order: testCase.order,\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: passed,\n  output: output ? output.substring(0, 500) : '(empty)',\n  expectedRule: testCase.metrics.rule,\n  ruleDescription: testCase.metrics.description,\n  error: error,\n  executedAt: new Date().toISOString()\n};\n\n// Guardar resultado en customData para agregarlo al final\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nconsole.log(`${passed ? '✅ PASSED' : '❌ FAILED'}: [${testCase.order}] ${testCase.id} - ${testCase.name}`);\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14944,
+        15408
+      ],
+      "id": "3f6833f4-03a3-46b7-94af-dcbc3358d19f",
+      "name": "Evaluate Result"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        15296,
+        15232
+      ],
+      "id": "c648f2b3-5f4f-49e1-ae08-e66c7d511511",
+      "name": "Collect Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. DATA EXTRACTION\n// ------------------------------------------------\nlet results = [];\nlet source = 'None';\n\n// Check if input exists and has the 'results' key (matches your specific input)\nif (items && items.length > 0 && items[0].json && Array.isArray(items[0].json.results)) {\n  results = items[0].json.results;\n  source = 'items[0].json.results';\n} \n// Fallback: If the input is the array itself\nelse if (items && items.length > 0 && Array.isArray(items[0].json)) {\n  results = items[0].json;\n  source = 'items[0].json (Direct)';\n}\n\n// Debug Log for the Console Tab\nconsole.log(`\\n🔍 DATA SOURCE: ${source}`);\nconsole.log(`📊 RECORDS FOUND: ${results.length}`);\n\n// 2. STATISTICS CALCULATION\n// ------------------------------------------------\nconst total = results.length;\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\n\n// Calculate Pass Rate (Avoid division by zero)\nconst passRateRaw = total > 0 ? (passed.length / total) * 100 : 0;\nconst passRate = passRateRaw % 1 === 0 ? passRateRaw.toFixed(0) : passRateRaw.toFixed(1);\n\n// Group by Category\nconst byCategory = results.reduce((acc, curr) => {\n  const cat = curr.category || 'UNCATEGORIZED';\n  if (!acc[cat]) acc[cat] = { total: 0, passed: 0, failed: 0 };\n  \n  acc[cat].total++;\n  curr.passed ? acc[cat].passed++ : acc[cat].failed++;\n  return acc;\n}, {});\n\n// Group by Priority\nconst byPriority = results.reduce((acc, curr) => {\n  const prio = curr.priority || 'UNKNOWN';\n  if (!acc[prio]) acc[prio] = { total: 0, passed: 0, failed: 0 };\n  \n  acc[prio].total++;\n  curr.passed ? acc[prio].passed++ : acc[prio].failed++;\n  return acc;\n}, {});\n\n// 3. GENERATE MARKDOWN REPORT (For Slack/Telegram/Email)\n// ------------------------------------------------\nlet statusEmoji = failed.length === 0 ? '✅' : '❌';\nif (total === 0) statusEmoji = '⚠️';\n\nlet mdReport = `*📊 Test Report - GymRatFlow*\\n`;\nmdReport += `──────────────────────\\n`;\nmdReport += `*Status:* ${statusEmoji} ${failed.length === 0 ? 'PASS' : 'FAIL'}\\n`;\nmdReport += `*Score:* ${passRate}% (${passed.length}/${total})\\n`;\nmdReport += `*Time:* ${new Date().toLocaleString('es-CO')}\\n\\n`; // Adjusted to your locale context\n\n// Add Category Summary\nmdReport += `*📂 Categorías:*\\n`;\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const icon = c.failed === 0 ? '✔' : '❗';\n  mdReport += `${icon} ${cat}: ${c.passed}/${c.total}\\n`;\n});\n\n// Add Detailed Failures if any\nif (failed.length > 0) {\n  mdReport += `\\n*🚨 Fallos Detectados:*\\n`;\n  failed.forEach(f => {\n    mdReport += `• *[${f.priority}] ${f.testName}*\\n`;\n    mdReport += `  _Exp:_ ${f.ruleDescription}\\n`;\n    // Clean output for message (truncate)\n    const cleanOutput = (f.output || 'null').replace(/\\n/g, ' ').substring(0, 80);\n    mdReport += `  _Got:_ ${cleanOutput}...\\n`;\n  });\n}\n\n// 4. CONSOLE LOGGING (Visual Table for n8n UI)\n// ------------------------------------------------\nconsole.log('\\n╔══════════════════════════════════════════════╗');\nconsole.log(`║ STATUS: ${statusEmoji}  RATE: ${passRate}% (${passed.length}/${total})`.padEnd(47) + '║');\nconsole.log('╠══════════════════════════════════════════════╣');\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const bar = c.failed === 0 ? 'OK' : 'FAIL';\n  console.log(`║ ${cat.padEnd(20)}: ${c.passed}/${c.total} ${bar.padStart(13)} ║`);\n});\nconsole.log('╚══════════════════════════════════════════════╝');\n\n// 5. RETURN OUTPUT\n// ------------------------------------------------\nreturn [{\n  json: {\n    meta: {\n      timestamp: new Date().toISOString(),\n      totalTests: total,\n      success: failed.length === 0\n    },\n    // This is the string you map to your Slack/Email node\n    markdownReport: mdReport,\n    // This object helps if you need to do conditional logic in Switch nodes next\n    stats: {\n      passed: passed.length,\n      failed: failed.length,\n      rate: parseFloat(passRate),\n      byCategory,\n      byPriority\n    },\n    // Only return detailed failure info to keep payload light\n    failures: failed.map(r => ({\n      testId: r.testId,\n      name: r.testName,\n      category: r.category,\n      reason: r.ruleDescription,\n      output: r.output\n    }))\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15520,
+        15232
+      ],
+      "id": "285fe780-0029-488d-bd8c-ce7edb840927",
+      "name": "Generate Report"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-failed",
+              "leftValue": "={{ $json.failures }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        15728,
+        15232
+      ],
+      "id": "a650c6cf-dd07-4b70-ac57-82abf6c7cb7c",
+      "name": "Has Failures?"
+    },
+    {
+      "parameters": {
+        "content": "## 🧪 E2E Test Runner - GymRatFlow\n\n### Uso:\n1. **Configurar credenciales**: Actualiza los nodos Postgres y OpenAI\n2. **Configurar workflow**: En \"Execute GymRatFlow\", selecciona `GymRatFlow_Supabase`\n3. **Ejecutar**: Click en \"Test Workflow\"\n\n### Tests incluidos:\n- TC001: Bloqueo de ruido (status updates)\n- TC002: Usuario nuevo -> KYC (greeting)\n- **TC002_FULL_KYC**: Onboarding con IA Simulada 🤖\n- TC003: Sin workouts -> Agendar\n- TC004: Día de descanso\n- TC006: Ver rutina de hoy\n- TC007: Chat general\n- TC011: Confirmación via pending task\n- TC012: No confirma pending task\n\n### Output:\nEl nodo \"Generate Report\" produce:\n- `summary`: totales y pass rate\n- `byPriority`: desglose por prioridad\n- `failedTests`: detalle de fallos\n\n### 🤖 AI-Simulated User Test:\nTC002_FULL_KYC usa GPT-4o-mini para simular\nun usuario real respondiendo dinámicamente\nal KYC Agent. Resiliente a preguntas múltiples.",
+        "height": 840,
+        "width": 448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        14288,
+        14336
+      ],
+      "id": "1e53641d-ecaa-4e08-999b-7ceb1d0b438f",
+      "name": "Instructions"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "multi-turn-ai-check",
+                    "leftValue": "={{ $('Pre-Test Log').first().json.testType }}",
+                    "rightValue": "MULTI_TURN_AI",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MULTI_TURN_AI"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "multi-turn-check",
+                    "leftValue": "={{ $('Pre-Test Log').first().json.testType }}",
+                    "rightValue": "MULTI_TURN",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MULTI_TURN"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "single-turn-check",
+                    "leftValue": "={{ $('Pre-Test Log').first().json.testType }}",
+                    "rightValue": "SINGLE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SINGLE"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        14576,
+        15616
+      ],
+      "id": "86a06eb1-ad11-4437-8d86-f0ca89573e02",
+      "name": "Detect Multi-Turn"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        14816,
+        15808
+      ],
+      "id": "d7f16b18-80ea-40c5-801f-1d4c26edf106",
+      "name": "Multi-Turn Loop"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build Turn Input - construye el mensaje WhatsApp para cada turno\n// El turno actual viene del input (pasado por Prepare Turns -> Multi-Turn Loop)\nconst currentTurn = $input.first().json;\n\nconsole.log(`   📤 Turn ${currentTurn.turn}: \"${currentTurn.message.substring(0, 50)}...\"`);\n\nreturn [{ \n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: { \n      display_phone_number: \"573213413664\", \n      phone_number_id: \"914510145083991\" \n    },\n    contacts: [{ \n      profile: { name: \"Test KYC User\" }, \n      wa_id: \"570000000009\" \n    }],\n    messages: [{\n      from: \"570000000009\",\n      id: `wamid.E2E-TC002-FULL-TURN${currentTurn.turn}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: currentTurn.message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15056,
+        15808
+      ],
+      "id": "15ffc3dd-dd99-48da-baa9-3cfe8ff4b0b2",
+      "name": "Build Turn Input"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "KOrUQ4fNOepmjimF",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/KOrUQ4fNOepmjimF",
+          "cachedResultName": "Learning Project — GymRatFlow_Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        15296,
+        15808
+      ],
+      "id": "7c2c8fdb-a670-4078-8cd6-0450cc232f6f",
+      "name": "Execute GymRatFlow Multi"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Evaluate Turn Result - evalúa si la respuesta del turno es correcta\n// Obtener el turno actual desde Build Turn Input (viene en el contexto del loop)\nconst testCase = $('Pre-Test Log').first().json;\nconst buildTurnInput = $('Build Turn Input').first().json;\nconst workflowResult = $input.first().json;\n\n// Encontrar el turno actual basado en el mensaje enviado\nconst currentMessage = buildTurnInput.messages[0].text.body;\nconst turn = testCase.turns.find(t => t.message === currentMessage);\n\nif (!turn) {\n  throw new Error(`Turn not found for message: ${currentMessage}`);\n}\n\n// Extraer el output\nlet output = '';\ntry {\n  if (workflowResult.output) {\n    output = workflowResult.output;\n  } else if (workflowResult.text) {\n    output = workflowResult.text;\n  } else if (typeof workflowResult === 'string') {\n    output = workflowResult;\n  } else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) {\n  output = '';\n}\n\n// Evaluar si contiene alguna de las palabras esperadas\nconst outputLower = output.toLowerCase();\nconst passed = turn.expectContains.some(keyword => \n  outputLower.includes(keyword.toLowerCase())\n);\n\nconst emoji = passed ? '✅' : '❌';\nconsole.log(`   ${emoji} Turn ${turn.turn}: ${passed ? 'PASSED' : 'FAILED'}`);\nif (!passed) {\n  console.log(`      Expected one of: ${turn.expectContains.join(', ')}`);\n  console.log(`      Got: ${output.substring(0, 100)}...`);\n}\n\n// Guardar resultado del turno\nlet turnResults = [];\ntry {\n  const existing = $execution.customData.get('turnResults');\n  if (existing) turnResults = JSON.parse(existing);\n} catch(e) {}\n\nturnResults.push({\n  turn: turn.turn,\n  message: turn.message,\n  passed,\n  output: output.substring(0, 300),\n  expected: turn.expectContains\n});\n$execution.customData.set('turnResults', JSON.stringify(turnResults));\n\nreturn [{ json: { turn: turn.turn, passed, output: output.substring(0, 300) } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15536,
+        15808
+      ],
+      "id": "87a1652b-f2f5-48b4-b1f3-bdce94497f9a",
+      "name": "Evaluate Turn Result"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare Turns - convierte el array de turns en items para el loop\nconst testCase = $('Pre-Test Log').first().json;\n\n// Limpiar resultados previos de turnos\n$execution.customData.set('turnResults', '[]');\n\nconsole.log(`\\n🔄 Iniciando test multi-turno: ${testCase.turns.length} turnos`);\n\n// Retornar cada turno como un item separado\nreturn testCase.turns.map((turn, index) => ({ \n  json: { \n    turnIndex: index,\n    ...turn \n  } \n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14656,
+        15808
+      ],
+      "id": "e5ff0e7b-19a5-4968-acb9-e858e2f289b8",
+      "name": "Prepare Turns"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.verification.queries.map(q => q.sql).join('; ') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        15296,
+        15616
+      ],
+      "id": "21f3785f-02b2-43dc-a58b-18ea32c22960",
+      "name": "Run DB Verification",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Aggregate Multi-Turn Results - consolida resultados de todos los turnos y verificación DB\nconst testCase = $('Pre-Test Log').first().json;\n\n// Obtener resultados de turnos\nlet turnResults = [];\ntry {\n  const existing = $execution.customData.get('turnResults');\n  if (existing) turnResults = JSON.parse(existing);\n} catch(e) {}\n\n// Obtener resultados de verificación DB\nconst dbResults = $input.all();\nconst verification = testCase.verification;\n\n// Evaluar verificación de DB\nlet dbPassed = true;\nlet dbDetails = [];\n\nif (verification && verification.queries) {\n  verification.queries.forEach((query, idx) => {\n    const result = dbResults[idx];\n    let actualValue = 0;\n    \n    if (result && result.json) {\n      // El resultado puede venir como cnt o como el primer valor del objeto\n      actualValue = result.json.cnt || result.json.count || Object.values(result.json)[0] || 0;\n    }\n    \n    const queryPassed = Number(actualValue) >= query.expected;\n    dbPassed = dbPassed && queryPassed;\n    \n    dbDetails.push({\n      query: query.sql.substring(0, 50) + '...',\n      expected: query.expected,\n      actual: actualValue,\n      passed: queryPassed\n    });\n    \n    const emoji = queryPassed ? '✅' : '❌';\n    console.log(`   ${emoji} DB Check ${idx + 1}: expected ${query.expected}, got ${actualValue}`);\n  });\n}\n\n// Calcular resultado final\nconst allTurnsPassed = turnResults.every(t => t.passed);\nconst overallPassed = allTurnsPassed && dbPassed;\n\nconst passedTurns = turnResults.filter(t => t.passed).length;\nconst totalTurns = turnResults.length;\n\nconsole.log(`\\n📊 Resultado Multi-Turn:`);\nconsole.log(`   Turnos: ${passedTurns}/${totalTurns}`);\nconsole.log(`   DB Verification: ${dbPassed ? 'PASSED' : 'FAILED'}`);\nconsole.log(`   Overall: ${overallPassed ? '✅ PASSED' : '❌ FAILED'}`);\n\n// Construir resultado final en el mismo formato que Evaluate Result\nconst result = {\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: overallPassed,\n  output: `Turns: ${passedTurns}/${totalTurns} passed. DB: ${dbPassed ? 'OK' : 'FAIL'}`,\n  expectedRule: testCase.metrics.rule,\n  ruleDescription: testCase.metrics.description,\n  error: overallPassed ? null : `Failed turns: ${turnResults.filter(t => !t.passed).map(t => t.turn).join(', ')}`,\n  executedAt: new Date().toISOString(),\n  details: {\n    turns: turnResults,\n    dbVerification: dbDetails\n  }\n};\n\n// Guardar en customData para el reporte final\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15536,
+        15616
+      ],
+      "id": "3afd24a0-524a-461d-90f0-446e3b1e05a4",
+      "name": "Aggregate Multi-Turn Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Initialize AI Loop - prepara el loop dinámico para el test con IA\nconst testCase = $('Pre-Test Log').first().json;\n\n// Inicializar contadores\n$execution.customData.set('aiTurnCount', '0');\n$execution.customData.set('aiTurnResults', '[]');\n$execution.customData.set('conversationHistory', '[]');\n\nconsole.log(`\\n🤖 Iniciando test AI-Simulated User`);\nconsole.log(`   Max turns: ${testCase.config.maxTurns}`);\nconsole.log(`   Usuario simulado: ${testCase.simulatedUser.nombre}`);\n\n// Retornar el primer mensaje\nreturn [{ \n  json: {\n    currentMessage: testCase.config.firstMessage,\n    turnNumber: 1,\n    isFirstTurn: true\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14656,
+        16016
+      ],
+      "id": "67f060d0-c0e6-424a-bb16-f9a7645de0b0",
+      "name": "Initialize AI Loop"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build AI Turn Input - construye el mensaje WhatsApp para el turno actual\nconst turnData = $input.first().json;\nconst turnNumber = turnData.turnNumber || 1;\nconst message = turnData.currentMessage;\n\nconsole.log(`   📤 AI Turn ${turnNumber}: \"${message.substring(0, 60)}...\"`);\n\nreturn [{ \n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: { \n      display_phone_number: \"573213413664\", \n      phone_number_id: \"914510145083991\" \n    },\n    contacts: [{ \n      profile: { name: \"Test KYC User\" }, \n      wa_id: \"570000000009\" \n    }],\n    messages: [{\n      from: \"570000000009\",\n      id: `wamid.E2E-TC002-AI-TURN${turnNumber}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        14896,
+        16016
+      ],
+      "id": "a7f5a112-bb51-43f5-9786-8c2cdc6d473e",
+      "name": "Build AI Turn Input"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "KOrUQ4fNOepmjimF",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/KOrUQ4fNOepmjimF",
+          "cachedResultName": "Learning Project — GymRatFlow_Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        15136,
+        16016
+      ],
+      "id": "cd8bfcb1-2db7-4d33-a36d-11b64c50cb70",
+      "name": "Execute GymRatFlow AI"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Check Completion - verifica si el KYC terminó o si hay que continuar\nconst testCase = $('Pre-Test Log').first().json;\nconst workflowResult = $input.first().json;\n\n// Extraer el output del workflow\nlet output = '';\ntry {\n  if (workflowResult.output) {\n    output = workflowResult.output;\n  } else if (workflowResult.text) {\n    output = workflowResult.text;\n  } else if (typeof workflowResult === 'string') {\n    output = workflowResult;\n  } else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) {\n  output = '';\n}\n\n// Verificar indicadores de finalización\nconst outputLower = output.toLowerCase();\nconst isComplete = testCase.config.completionIndicators.some(indicator =>\n  outputLower.includes(indicator.toLowerCase())\n);\n\n// Obtener contador de turnos\nlet turnCount = parseInt($execution.customData.get('aiTurnCount') || '0');\nturnCount++;\n$execution.customData.set('aiTurnCount', String(turnCount));\n\nconst maxTurnsReached = turnCount >= testCase.config.maxTurns;\n\n// Guardar resultado del turno\nlet turnResults = [];\ntry {\n  const existing = $execution.customData.get('aiTurnResults');\n  if (existing) turnResults = JSON.parse(existing);\n} catch(e) {}\n\nturnResults.push({\n  turn: turnCount,\n  kycResponse: output.substring(0, 500),\n  isComplete,\n  timestamp: new Date().toISOString()\n});\n$execution.customData.set('aiTurnResults', JSON.stringify(turnResults));\n\n// Guardar historial de conversación para el simulador\nlet history = [];\ntry {\n  const existing = $execution.customData.get('conversationHistory');\n  if (existing) history = JSON.parse(existing);\n} catch(e) {}\nhistory.push({ role: 'assistant', content: output });\n$execution.customData.set('conversationHistory', JSON.stringify(history));\n\nconst emoji = isComplete ? '🎉' : (maxTurnsReached ? '⚠️' : '🔄');\nconsole.log(`   ${emoji} Turn ${turnCount}: ${isComplete ? 'KYC COMPLETE!' : (maxTurnsReached ? 'MAX TURNS' : 'Continuing...')}`);\n\nreturn [{ \n  json: {\n    output,\n    turnCount,\n    isComplete,\n    maxTurnsReached,\n    shouldContinue: !isComplete && !maxTurnsReached\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        15376,
+        16016
+      ],
+      "id": "b878d2e0-826c-4bfb-b881-d27de4391a5f",
+      "name": "Check Completion"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "should-continue",
+              "leftValue": "={{ $json.shouldContinue }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        15616,
+        16016
+      ],
+      "id": "c21b638a-0c44-48cb-accb-8b247d1924c1",
+      "name": "Loop Control AI"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Eres un usuario de WhatsApp que quiere empezar a entrenar en el gimnasio. Estás hablando con un coach virtual que te hace preguntas para crear tu rutina.\\n\\nTU PERFIL (usa estos datos exactos):\\n- Nombre: {{ $('Pre-Test Log').first().json.simulatedUser.nombre }}\\n- Email: {{ $('Pre-Test Log').first().json.simulatedUser.email }}\\n- Edad: {{ $('Pre-Test Log').first().json.simulatedUser.edad }} años\\n- Sexo: {{ $('Pre-Test Log').first().json.simulatedUser.sexo === 'M' ? 'Hombre' : 'Mujer' }}\\n- Estatura: {{ $('Pre-Test Log').first().json.simulatedUser.estatura_cm }} cm\\n- Peso: {{ $('Pre-Test Log').first().json.simulatedUser.peso_kg }} kg\\n- Objetivo principal: {{ $('Pre-Test Log').first().json.simulatedUser.objetivo_principal }}\\n- Objetivo secundario: {{ $('Pre-Test Log').first().json.simulatedUser.objetivo_secundario }}\\n- Tiempo entrenando: {{ $('Pre-Test Log').first().json.simulatedUser.tiempo_entrenando }}\\n- Frecuencia actual: {{ $('Pre-Test Log').first().json.simulatedUser.frecuencia_actual }}\\n- Nivel: {{ $('Pre-Test Log').first().json.simulatedUser.nivel }}\\n- Estado de salud: {{ $('Pre-Test Log').first().json.simulatedUser.estado_salud }} (A=sin lesiones, B=cuidado tren inferior, C=cuidado tren superior, D=cuidado espalda, E=condición médica)\\n- Días disponibles: {{ $('Pre-Test Log').first().json.simulatedUser.dias_disponibles }}\\n- Tiempo por sesión: {{ $('Pre-Test Log').first().json.simulatedUser.tiempo_por_sesion }}\\n- Horario preferido: {{ $('Pre-Test Log').first().json.simulatedUser.horario }}\\n- Tipo de entrenamiento: {{ $('Pre-Test Log').first().json.simulatedUser.tipo_entrenamiento }}\\n- Prioridades: {{ $('Pre-Test Log').first().json.simulatedUser.prioridades }}\\n- Desafíos: {{ $('Pre-Test Log').first().json.simulatedUser.desafios }}\\n- Cardio actual: {{ $('Pre-Test Log').first().json.simulatedUser.cardio_actual }}\\n- Frecuencia cardio: {{ $('Pre-Test Log').first().json.simulatedUser.frecuencia_cardio }}\\n\\nREGLAS:\\n1. Responde SOLO lo que te pregunten. Si preguntan nombre y correo, da ambos.\\n2. Sé conciso y natural, como un usuario real de WhatsApp (1-2 oraciones máximo).\\n3. Si dan opciones (A, B, C...), responde con la letra que corresponda a tu perfil.\\n4. No inventes datos que no estén en tu perfil.\\n5. Si te piden confirmar o despedirse, responde amablemente.\\n6. NO uses emojis excesivos, solo ocasionalmente.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"El coach dice: {{ $json.output.replace(/\\\"/g, '\\\\\\\"').replace(/\\n/g, '\\\\n') }}\\n\\nResponde como el usuario de WhatsApp:\"\n    }\n  ],\n  \"max_tokens\": 150,\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        15856,
+        16128
+      ],
+      "id": "7091a5b5-d8f7-4768-9749-0d813838dbf4",
+      "name": "Simulate User Response",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        },
+        "httpBearerAuth": {
+          "id": "lX4aMTbl1Km1KSwS",
+          "name": "Open AI Api KEY"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process AI Response - extrae la respuesta del usuario simulado\nconst apiResponse = $input.first().json;\n\nlet userMessage = '';\ntry {\n  userMessage = apiResponse.choices[0].message.content.trim();\n} catch(e) {\n  console.log('Error parsing OpenAI response:', e.message);\n  userMessage = 'Sí';\n}\n\n// Obtener el número de turno actual\nconst turnCount = parseInt($execution.customData.get('aiTurnCount') || '0');\n\n// Guardar en historial\nlet history = [];\ntry {\n  const existing = $execution.customData.get('conversationHistory');\n  if (existing) history = JSON.parse(existing);\n} catch(e) {}\nhistory.push({ role: 'user', content: userMessage });\n$execution.customData.set('conversationHistory', JSON.stringify(history));\n\nconsole.log(`   🧑 AI User Response: \"${userMessage.substring(0, 60)}...\"`);\n\nreturn [{ \n  json: {\n    currentMessage: userMessage,\n    turnNumber: turnCount + 1,\n    isFirstTurn: false\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16096,
+        16128
+      ],
+      "id": "3a1db37f-8f36-4af0-9d5f-558685042567",
+      "name": "Process AI Response"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.verification.queries.map(q => q.sql).join('; ') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        15856,
+        15888
+      ],
+      "id": "8a0538c8-15b7-488d-aebc-7b14ca797420",
+      "name": "Run DB Verification AI",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Aggregate AI Results - consolida resultados del test con usuario simulado por IA\nconst testCase = $('Pre-Test Log').first().json;\n\n// Obtener resultados de turnos\nlet turnResults = [];\ntry {\n  const existing = $execution.customData.get('aiTurnResults');\n  if (existing) turnResults = JSON.parse(existing);\n} catch(e) {}\n\n// Obtener resultados de verificación DB\nconst dbResults = $input.all();\nconst verification = testCase.verification;\n\n// Evaluar verificación de DB\nlet dbPassed = true;\nlet dbDetails = [];\n\nif (verification && verification.queries) {\n  verification.queries.forEach((query, idx) => {\n    const result = dbResults[idx];\n    let actualValue = 0;\n    \n    if (result && result.json) {\n      actualValue = result.json.cnt || result.json.count || Object.values(result.json)[0] || 0;\n    }\n    \n    const queryPassed = Number(actualValue) >= query.expected;\n    dbPassed = dbPassed && queryPassed;\n    \n    dbDetails.push({\n      query: query.sql.substring(0, 50) + '...',\n      expected: query.expected,\n      actual: actualValue,\n      passed: queryPassed\n    });\n    \n    const emoji = queryPassed ? '✅' : '❌';\n    console.log(`   ${emoji} DB Check ${idx + 1}: expected ${query.expected}, got ${actualValue}`);\n  });\n}\n\n// Verificar si el KYC se completó (el último turno debe tener isComplete=true)\nconst lastTurn = turnResults[turnResults.length - 1];\nconst kycCompleted = lastTurn && lastTurn.isComplete;\nconst totalTurns = turnResults.length;\n\n// El test pasa si: KYC completó Y todas las verificaciones de DB pasaron\nconst overallPassed = dbPassed; // DB verification es la fuente de verdad\n\nconsole.log(`\\n📊 Resultado AI Multi-Turn:`);\nconsole.log(`   Turnos ejecutados: ${totalTurns}`);\nconsole.log(`   KYC Completado: ${kycCompleted ? 'SÍ' : 'NO'}`);\nconsole.log(`   DB Verification: ${dbPassed ? 'PASSED' : 'FAILED'}`);\nconsole.log(`   Overall: ${overallPassed ? '✅ PASSED' : '❌ FAILED'}`);\n\n// Construir resultado final\nconst result = {\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: overallPassed,\n  output: `AI Turns: ${totalTurns}. KYC: ${kycCompleted ? 'Complete' : 'Incomplete'}. DB: ${dbPassed ? 'OK' : 'FAIL'}`,\n  expectedRule: testCase.metrics.rule,\n  ruleDescription: testCase.metrics.description,\n  error: overallPassed ? null : `KYC ${kycCompleted ? 'completed' : 'not completed'}. DB ${dbPassed ? 'passed' : 'failed'}`,\n  executedAt: new Date().toISOString(),\n  details: {\n    totalTurns,\n    kycCompleted,\n    turns: turnResults,\n    dbVerification: dbDetails\n  }\n};\n\n// Guardar en customData para el reporte final\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16096,
+        15888
+      ],
+      "id": "290b9329-93bd-4bb1-bc3b-c97923e65dff",
+      "name": "Aggregate AI Results"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [
+        [
+          {
+            "node": "Load Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Tests": {
+      "main": [
+        [
+          {
+            "node": "Collect Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre-Test Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [
+        [
+          {
+            "node": "Run Cleanup SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Cleanup SQL": {
+      "main": [
+        [
+          {
+            "node": "Detect Multi-Turn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Multi-Turn": {
+      "main": [
+        [
+          {
+            "node": "Initialize AI Loop",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Turns",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Test Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Result": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Turns": {
+      "main": [
+        [
+          {
+            "node": "Multi-Turn Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Multi-Turn Loop": {
+      "main": [
+        [
+          {
+            "node": "Run DB Verification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Turn Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Turn Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow Multi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow Multi": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Turn Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Turn Result": {
+      "main": [
+        [
+          {
+            "node": "Multi-Turn Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run DB Verification": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Multi-Turn Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Multi-Turn Results": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize AI Loop": {
+      "main": [
+        [
+          {
+            "node": "Build AI Turn Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build AI Turn Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow AI": {
+      "main": [
+        [
+          {
+            "node": "Check Completion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Completion": {
+      "main": [
+        [
+          {
+            "node": "Loop Control AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Control AI": {
+      "main": [
+        [
+          {
+            "node": "Simulate User Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Run DB Verification AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simulate User Response": {
+      "main": [
+        [
+          {
+            "node": "Process AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process AI Response": {
+      "main": [
+        [
+          {
+            "node": "Build AI Turn Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run DB Verification AI": {
+      "main": [
+        [
+          {
+            "node": "Aggregate AI Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate AI Results": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Has Failures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "6e12f9f1-2114-431a-8f22-ce8a2d1ac770",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "e75fxJpo-czH3SuVsiqg3",
+  "tags": []
+}
