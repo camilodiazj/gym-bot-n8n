@@ -14,12 +14,29 @@ GymBot is an AI-powered fitness coaching platform built on n8n workflows. It pro
 
 ## Architecture
 
-The system consists of 4 n8n workflows in the `/n8n/` directory:
+The n8n workflows are organized in the `/n8n/` directory:
+
+```
+n8n/
+├── running_flows/          # Active production workflows
+│   ├── GymRatFlow_Supabase_V2.json
+│   ├── GymRatForm Supabase v2.json
+│   ├── GymBotWorkoutCompletion.json
+│   └── RoutineMorningReminder.json
+├── tests/                  # E2E test runners
+│   ├── GymRatFlow_E2E_TestRunner.json
+│   └── GymBotWorkoutCompletion_E2E_TestRunner.json
+├── deprecated/             # Old workflow versions (backup)
+│   ├── GymRatFlow_Supabase.json
+│   └── GymRatForm Supabase.json
+└── system_prompts/         # AI agent system prompts
+    └── RoutineCreation.txt
+```
 
 | Workflow | Purpose |
 |----------|---------|
-| `GymRatFlow_Supabase.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
-| `GymRatForm Supabase.json` | Routine generation engine - creates personalized 4-week workout plans based on user profiles |
+| `GymRatFlow_Supabase_V2.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
+| `GymRatForm Supabase v2.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) |
 | `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status, prevents duplicate pending_tasks |
 | `RoutineMorningReminder.json` | Morning motivation (5 AM) - sends daily workout reminders |
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
@@ -131,17 +148,48 @@ users_gym_profile ------------------------------>+
 | Schedule creation | `user_weekly_schedule` | INSERT via tool |
 | Plan info | `users_plans` + `week_schedules` + `template_days` | JOIN query |
 
-### 2. GymRatForm Supabase (Routine Generator)
+### 2. GymRatForm Supabase v2 (Advanced Routine Generator)
 
 | Action | Tables Used | Operation |
 |--------|-------------|-----------|
 | Load user profile | `users_gym_profile` | SELECT by `whatsapp_id` |
+| **Process preferences** | (in-memory) | `ProcessUserPreferences` node transforms profile |
 | Get set profiles | `set_profiles` | SELECT by `goal`, `level` |
 | Get day requirements | `routine_templates` + `template_days` + `day_requirements` | JOIN query |
 | Find exercises | `exercises` | SELECT by `pattern` |
 | Create user | `users` | INSERT |
 | Create plan | `users_plans` | INSERT |
 | Save workouts | `workouts` | INSERT (bulk) |
+
+#### ProcessUserPreferences Node
+
+New Code node that transforms user profile data for AI personalization:
+
+| Input (Spanish) | Output (English) | Purpose |
+|-----------------|------------------|---------|
+| `priority_muscles` | `processed.priority_muscles_en` | Maps "Glúteo, pierna" → ["Glutes", "Quads", "Hamstrings"] |
+| `disliked_exercises` | `processed.disliked_muscles_en` | Maps "Pantorrillas" → ["Calfs"] |
+| `training_experience` | `processed.experience_tier` | "Más de 3 años" → "advanced" |
+| `session_duration_mins` | `processed.volume_modifier` | "45-60 min" → 0.85 (reduce volume) |
+| `health_status` | `processed.health.*` | "C" → `avoid_upper_body_overhead: true` |
+
+#### Health Status Codes
+
+| Code | Restriction | AI Behavior |
+|------|-------------|-------------|
+| A | None | Full exercise selection |
+| B | Lower body issues | Avoid high-impact on knees/ankles |
+| C | Upper body issues | **Avoid overhead pressing** |
+| D | Spine issues | Avoid heavy axial loading |
+| E | Special condition | Prioritize machines, low-risk exercises |
+
+#### Personalization Rules (AI Agent)
+
+1. **Exclusion**: Remove exercises where `main_muscle` matches disliked muscles
+2. **Prioritization**: Prefer exercises matching priority muscles (main or secondary)
+3. **Sex adaptation**: F→Glutes/Hamstrings, M→Chest/Back/Shoulders
+4. **Experience**: Beginner→machines, Advanced→barbell/compound
+5. **Volume**: Apply `volume_modifier` to isolation exercises
 
 ### 3. GymBotWorkoutCompletion (8 PM Follow-up)
 
@@ -246,7 +294,25 @@ e2e/
 
 ## Changelog
 
-### 2026-01-25
+### 2026-01-25 (Personalization v2)
+- **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando los 22 campos de `users_gym_profile`:
+  - Nuevo nodo `ProcessUserPreferences`: Transforma preferencias del usuario (español→inglés, mapeo de músculos)
+  - Mapeo de músculos: "Glúteo, pierna" → ["Glutes", "Quads", "Hamstrings", "Calfs"]
+  - Tier de experiencia: Principiante/Intermedio/Avanzado basado en `training_experience`
+  - Modificador de volumen: Ajusta series según `session_duration_mins` (0.85x para sesiones cortas)
+  - Restricciones de salud: Códigos A-E mapean a restricciones específicas (ej: C = evitar overhead)
+- **System prompt mejorado** (`RoutineCreation.txt`): Reglas de personalización para el AI Agent:
+  - Exclusión obligatoria de músculos no deseados
+  - Priorización por músculos favoritos (main_muscle o secondary_muscles)
+  - Adaptación por sexo biológico (F→glúteos, M→pecho/espalda)
+  - Adaptación por experiencia (beginner→máquinas, advanced→barbell)
+- **Reorganización de directorio n8n/**:
+  - `running_flows/`: Workflows activos en producción
+  - `tests/`: E2E test runners
+  - `deprecated/`: Versiones anteriores (backup)
+  - `system_prompts/`: Prompts de AI agents
+
+### 2026-01-25 (Earlier)
 - **Fix duplicate pending_tasks en GymBotWorkoutCompletion**: Reestructurado workflow para prevenir creación de pending_tasks duplicados:
   - Agregado nodo `PendingTasks` (Supabase GET) para consultar pending_tasks existentes
   - Agregado nodo `Merge` con `joinMode: "keepNonMatches"` que actúa como LEFT ANTI JOIN
