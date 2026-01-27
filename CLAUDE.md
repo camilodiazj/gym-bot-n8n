@@ -296,6 +296,24 @@ e2e/
 
 ## Changelog
 
+### 2026-01-27 (Workout Time Validation - KAN-51)
+- **Nuevo nodo `ValidateWorkoutDuration` en GymRatForm Supabase v2.json**: Sistema determinístico de validación de tiempo que garantiza que las rutinas diarias no excedan el tiempo disponible del usuario:
+  - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
+  - Parseo de tempo formato "X-Y-Z-W" (ej: "3-0-1-0" = 4 seg/rep)
+  - Algoritmo de reducción determinística: Si rutina excede tiempo objetivo, reduce series gradualmente respetando prioridad (isolation > core > compound)
+  - Respeta restricción dura: Nunca reduce por debajo de 2 sets por ejercicio
+  - Mapeo de `session_duration_mins` a minutos objetivo:
+    - "45-60 minutos" → 55 min
+    - "60-75 minutos" → 70 min
+    - "Más de 75 minutos" → 85 min
+- **Flujo actualizado**: `Code in JavaScript1` → `ValidateWorkoutDuration` → `Create a row`
+- **Logging detallado**: Cada validación registra duración inicial, final, ajustes realizados y cumplimiento de objetivo
+- **Usuario de prueba**: Creado `570000000020` (Test Short Session) con sesión de 45-60 min para testing
+- **Beneficios**:
+  - Solución 100% determinística (mismo input → mismo output)
+  - No depende de AI Agent para cumplir restricciones de tiempo
+  - Mejora adherencia al plan (workouts que caben en tiempo disponible del usuario)
+
 ### 2026-01-25 (Personalization v2)
 - **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando los 22 campos de `users_gym_profile`:
   - Nuevo nodo `ProcessUserPreferences`: Transforma preferencias del usuario (español→inglés, mapeo de músculos)
