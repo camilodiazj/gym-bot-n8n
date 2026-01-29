@@ -304,7 +304,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
         onClick={onComplete}
         className="flex items-center justify-center gap-2 w-full h-[52px] bg-[#22C55E] rounded-[26px] hover:bg-[#16A34A] transition-colors"
       >
-        <CheckCircle className="w-[22px] h-[22px] text-white" fill="white" />
+        <CheckCircle className="w-[22px] h-[22px] text-white" />
         <span className="text-white text-base font-bold font-['DM_Sans']">
           Completar Rutina
         </span>
