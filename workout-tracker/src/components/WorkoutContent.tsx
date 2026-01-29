@@ -24,6 +24,7 @@ interface ExerciseData {
   sets: SetData[];
   tips: Tip[];
   steps: Step[];
+  rir: string;
   instructionsExpanded?: boolean;
 }
 
@@ -39,6 +40,7 @@ const defaultExercises: ExerciseData[] = [
     name: 'DB Front Squat',
     badgeColor: '#22C55E',
     instructionsExpanded: false,
+    rir: '3-4',
     tips: [
       { text: 'Mantener la espalda recta y el core activado durante todo el ejercicio.' },
       { text: 'Mantener los talones en contacto con el suelo durante todo el movimiento.' },
@@ -64,6 +66,7 @@ const defaultExercises: ExerciseData[] = [
     name: 'Lunges',
     badgeColor: '#3B82F6',
     instructionsExpanded: true,
+    rir: '2-3',
     tips: [
       { text: 'Mantener la espalda recta y el torso erguido durante todo el movimiento.' },
       { text: 'La rodilla delantera no debe sobrepasar la punta del pie.' },
@@ -87,6 +90,7 @@ const defaultExercises: ExerciseData[] = [
     name: 'Plank Hold',
     badgeColor: '#8B5CF6',
     instructionsExpanded: true,
+    rir: '1-2',
     tips: [
       { text: 'Mantener el cuerpo en línea recta desde la cabeza hasta los talones.' },
       { text: 'Activar el core y glúteos durante todo el ejercicio.' },
@@ -164,6 +168,16 @@ const ExerciseCard: React.FC<{
           <span className="text-[#FF6B6B] text-sm font-semibold font-['DM_Sans']">
             Workout Instructions
           </span>
+
+          {/* RIR Section */}
+          <div className="flex items-center gap-2 bg-[#FEF3C7] rounded-lg px-3 py-2">
+            <span className="text-[#92400E] text-sm font-semibold font-['DM_Sans']">
+              Esfuerzo:
+            </span>
+            <span className="text-[#92400E] text-sm font-normal font-['DM_Sans']">
+              RIR: {exercise.rir} (Deja {exercise.rir} reps en reserva)
+            </span>
+          </div>
 
           {/* Tips Section */}
           <div className="flex flex-col gap-2 w-full">
