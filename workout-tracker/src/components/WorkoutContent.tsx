@@ -25,6 +25,7 @@ interface ExerciseData {
   tips: Tip[];
   steps: Step[];
   rir: string;
+  videoLink?: string;
   instructionsExpanded?: boolean;
 }
 
@@ -129,13 +130,26 @@ const ExerciseCard: React.FC<{
       {/* Exercise Header */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
-          {/* Exercise Badge */}
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ backgroundColor: exercise.badgeColor }}
-          >
-            <Play className="w-4 h-4 text-white" fill="white" />
-          </div>
+          {/* Exercise Badge - Clickable when video link exists */}
+          {exercise.videoLink ? (
+            <a
+              href={exercise.videoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl flex items-center justify-center flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: exercise.badgeColor }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Play className="w-4 h-4 text-white flex-shrink-0" fill="white" />
+            </a>
+          ) : (
+            <div
+              className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: exercise.badgeColor }}
+            >
+              <Play className="w-4 h-4 text-white flex-shrink-0" fill="white" />
+            </div>
+          )}
           {/* Exercise Info */}
           <div className="flex flex-col gap-0.5">
             <span className="text-[#9CA3AF] text-xs font-medium font-['DM_Sans']">
