@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle, Circle } from 'lucide-react';
 
 // Types
 interface SetData {
@@ -111,7 +111,13 @@ const defaultExercises: ExerciseData[] = [
 const ExerciseCard: React.FC<{
   exercise: ExerciseData;
   onToggleInstructions: () => void;
-}> = ({ exercise, onToggleInstructions }) => {
+  onToggleSet: (setNumber: number) => void;
+  onUpdateReps: (setNumber: number, reps: number) => void;
+  onUpdateKg: (setNumber: number, kg: string) => void;
+}> = ({ exercise, onToggleInstructions, onToggleSet, onUpdateReps, onUpdateKg }) => {
+  const [editingReps, setEditingReps] = React.useState<number | null>(null);
+  const [editingKg, setEditingKg] = React.useState<number | null>(null);
+  const [editValue, setEditValue] = React.useState<string>('');
   const totalSets = exercise.sets.length;
 
   return (
@@ -222,12 +228,17 @@ const ExerciseCard: React.FC<{
         {exercise.sets.map((set) => (
           <div
             key={set.setNumber}
-            className={`grid grid-cols-3 py-3 border-b border-[#E5E7EB] last:border-b-0 ${
+            onClick={() => onToggleSet(set.setNumber)}
+            className={`grid grid-cols-3 py-3 border-b border-[#E5E7EB] last:border-b-0 cursor-pointer hover:bg-[#E8F5E9] transition-colors ${
               set.completed ? 'bg-[#F0FDF4]' : ''
             }`}
           >
             <div className="flex items-center justify-center gap-2">
-              {set.completed && <Check className="w-[18px] h-[18px] text-[#22C55E] flex-shrink-0" />}
+              {set.completed ? (
+                <Check className="w-[18px] h-[18px] text-[#22C55E] flex-shrink-0" />
+              ) : (
+                <Circle className="w-[18px] h-[18px] text-[#D1D5DB] flex-shrink-0" />
+              )}
               <span
                 className={`text-[15px] font-['DM_Sans'] ${
                   set.completed
@@ -238,29 +249,89 @@ const ExerciseCard: React.FC<{
                 {set.setNumber}
               </span>
             </div>
-            <div className="flex items-center justify-center">
-              <span
-                className={`text-[15px] font-['DM_Sans'] ${
-                  set.completed
-                    ? 'text-[#22C55E] font-semibold'
-                    : 'text-[#1A1A1A] font-medium'
-                }`}
-              >
-                {set.reps}
-              </span>
+            <div className="flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              {editingReps === set.setNumber ? (
+                <input
+                  type="number"
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onBlur={() => {
+                    const newReps = parseInt(editValue);
+                    if (!isNaN(newReps) && newReps > 0) {
+                      onUpdateReps(set.setNumber, newReps);
+                    }
+                    setEditingReps(null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const newReps = parseInt(editValue);
+                      if (!isNaN(newReps) && newReps > 0) {
+                        onUpdateReps(set.setNumber, newReps);
+                      }
+                      setEditingReps(null);
+                    }
+                    if (e.key === 'Escape') {
+                      setEditingReps(null);
+                    }
+                  }}
+                  autoFocus
+                  className="w-12 text-center text-[15px] font-['DM_Sans'] font-medium bg-white border border-[#22C55E] rounded px-1 py-0.5 outline-none"
+                />
+              ) : (
+                <span
+                  onClick={() => {
+                    setEditingReps(set.setNumber);
+                    setEditValue(set.reps.toString());
+                  }}
+                  className={`text-[15px] font-['DM_Sans'] cursor-pointer hover:underline ${
+                    set.completed
+                      ? 'text-[#22C55E] font-semibold'
+                      : 'text-[#1A1A1A] font-medium'
+                  }`}
+                >
+                  {set.reps}
+                </span>
+              )}
             </div>
-            <div className="flex items-center justify-center">
-              <span
-                className={`text-[15px] font-['DM_Sans'] ${
-                  set.completed
-                    ? 'text-[#22C55E] font-semibold'
-                    : set.kg === '-'
-                    ? 'text-[#9CA3AF] font-medium'
-                    : 'text-[#1A1A1A] font-medium'
-                }`}
-              >
-                {set.kg}
-              </span>
+            <div className="flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              {editingKg === set.setNumber ? (
+                <input
+                  type="text"
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onBlur={() => {
+                    onUpdateKg(set.setNumber, editValue || '-');
+                    setEditingKg(null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      onUpdateKg(set.setNumber, editValue || '-');
+                      setEditingKg(null);
+                    }
+                    if (e.key === 'Escape') {
+                      setEditingKg(null);
+                    }
+                  }}
+                  autoFocus
+                  className="w-12 text-center text-[15px] font-['DM_Sans'] font-medium bg-white border border-[#22C55E] rounded px-1 py-0.5 outline-none"
+                />
+              ) : (
+                <span
+                  onClick={() => {
+                    setEditingKg(set.setNumber);
+                    setEditValue(set.kg === '-' ? '' : set.kg);
+                  }}
+                  className={`text-[15px] font-['DM_Sans'] cursor-pointer hover:underline ${
+                    set.completed
+                      ? 'text-[#22C55E] font-semibold'
+                      : set.kg === '-'
+                      ? 'text-[#9CA3AF] font-medium'
+                      : 'text-[#1A1A1A] font-medium'
+                  }`}
+                >
+                  {set.kg}
+                </span>
+              )}
             </div>
           </div>
         ))}
@@ -286,6 +357,57 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
     );
   };
 
+  const handleToggleSet = (exerciseId: string, setNumber: number) => {
+    setExerciseList((prev) =>
+      prev.map((ex) =>
+        ex.id === exerciseId
+          ? {
+              ...ex,
+              sets: ex.sets.map((set) =>
+                set.setNumber === setNumber
+                  ? { ...set, completed: !set.completed }
+                  : set
+              ),
+            }
+          : ex
+      )
+    );
+  };
+
+  const handleUpdateReps = (exerciseId: string, setNumber: number, reps: number) => {
+    setExerciseList((prev) =>
+      prev.map((ex) =>
+        ex.id === exerciseId
+          ? {
+              ...ex,
+              sets: ex.sets.map((set) =>
+                set.setNumber === setNumber
+                  ? { ...set, reps }
+                  : set
+              ),
+            }
+          : ex
+      )
+    );
+  };
+
+  const handleUpdateKg = (exerciseId: string, setNumber: number, kg: string) => {
+    setExerciseList((prev) =>
+      prev.map((ex) =>
+        ex.id === exerciseId
+          ? {
+              ...ex,
+              sets: ex.sets.map((set) =>
+                set.setNumber === setNumber
+                  ? { ...set, kg }
+                  : set
+              ),
+            }
+          : ex
+      )
+    );
+  };
+
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Exercise Cards */}
@@ -295,6 +417,9 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
             key={exercise.id}
             exercise={exercise}
             onToggleInstructions={() => handleToggleInstructions(exercise.id)}
+            onToggleSet={(setNumber) => handleToggleSet(exercise.id, setNumber)}
+            onUpdateReps={(setNumber, reps) => handleUpdateReps(exercise.id, setNumber, reps)}
+            onUpdateKg={(setNumber, kg) => handleUpdateKg(exercise.id, setNumber, kg)}
           />
         ))}
       </div>
