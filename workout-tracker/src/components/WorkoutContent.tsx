@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle, Circle } from 'lucide-react';
 
 // Types
@@ -346,6 +346,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   onComplete,
 }) => {
   const [exerciseList, setExerciseList] = useState<ExerciseData[]>(exercises);
+  const exerciseRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const handleToggleInstructions = (exerciseId: string) => {
     setExerciseList((prev) =>
@@ -358,8 +359,8 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   };
 
   const handleToggleSet = (exerciseId: string, setNumber: number) => {
-    setExerciseList((prev) =>
-      prev.map((ex) =>
+    setExerciseList((prev) => {
+      let newList = prev.map((ex) =>
         ex.id === exerciseId
           ? {
               ...ex,
@@ -370,8 +371,34 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
               ),
             }
           : ex
-      )
-    );
+      );
+
+      // Check if all sets of this exercise are now completed
+      const currentExercise = newList.find((ex) => ex.id === exerciseId);
+      const currentIndex = newList.findIndex((ex) => ex.id === exerciseId);
+
+      if (currentExercise && currentExercise.sets.every((set) => set.completed)) {
+        // Collapse the completed exercise
+        newList = newList.map((ex) =>
+          ex.id === exerciseId
+            ? { ...ex, instructionsExpanded: false }
+            : ex
+        );
+
+        // Find next exercise and scroll to it
+        const nextExercise = newList[currentIndex + 1];
+        if (nextExercise) {
+          setTimeout(() => {
+            const nextRef = exerciseRefs.current[nextExercise.id];
+            if (nextRef) {
+              nextRef.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 300);
+        }
+      }
+
+      return newList;
+    });
   };
 
   const handleUpdateReps = (exerciseId: string, setNumber: number, reps: number) => {
@@ -413,14 +440,18 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
       {/* Exercise Cards */}
       <div className="flex flex-col gap-6 w-full">
         {exerciseList.map((exercise) => (
-          <ExerciseCard
+          <div
             key={exercise.id}
-            exercise={exercise}
-            onToggleInstructions={() => handleToggleInstructions(exercise.id)}
-            onToggleSet={(setNumber) => handleToggleSet(exercise.id, setNumber)}
-            onUpdateReps={(setNumber, reps) => handleUpdateReps(exercise.id, setNumber, reps)}
-            onUpdateKg={(setNumber, kg) => handleUpdateKg(exercise.id, setNumber, kg)}
-          />
+            ref={(el) => { exerciseRefs.current[exercise.id] = el; }}
+          >
+            <ExerciseCard
+              exercise={exercise}
+              onToggleInstructions={() => handleToggleInstructions(exercise.id)}
+              onToggleSet={(setNumber) => handleToggleSet(exercise.id, setNumber)}
+              onUpdateReps={(setNumber, reps) => handleUpdateReps(exercise.id, setNumber, reps)}
+              onUpdateKg={(setNumber, kg) => handleUpdateKg(exercise.id, setNumber, kg)}
+            />
+          </div>
         ))}
       </div>
 
