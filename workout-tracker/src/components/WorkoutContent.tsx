@@ -115,7 +115,7 @@ const ExerciseCard: React.FC<{
   const totalSets = exercise.sets.length;
 
   return (
-    <div className="bg-[#F6F7F8] rounded-[20px] p-5 flex flex-col gap-4 w-full">
+    <div className="bg-[#F6F7F8] rounded-[20px] flex flex-col gap-4 w-full" style={{ padding: '24px' }}>
       {/* Exercise Header */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
