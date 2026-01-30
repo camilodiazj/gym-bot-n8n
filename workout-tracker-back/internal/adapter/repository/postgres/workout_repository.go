@@ -39,6 +39,21 @@ func parseReps(repsStr string) int {
 	return reps
 }
 
+// parseRepsRange parses reps from string, returning min and max values
+// For "10-12" returns (10, 12), for "10" returns (10, 10)
+func parseRepsRange(repsStr string) (min, max int) {
+	for i, c := range repsStr {
+		if c == '-' && i > 0 {
+			min, _ = strconv.Atoi(repsStr[:i])
+			max, _ = strconv.Atoi(repsStr[i+1:])
+			return min, max
+		}
+	}
+	// Single number - min equals max
+	val, _ := strconv.Atoi(repsStr)
+	return val, val
+}
+
 // GetTodayWorkout retrieves today's workout for a user
 func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) (*entity.Workout, error) {
 	// First, get the scheduled workout session for today
@@ -118,9 +133,9 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		}
 
 		// Parse sets and reps from text to int
-		// Note: both can be ranges like "3-4" or "10-12", we take the first number
+		// Note: both can be ranges like "3-4" or "10-12"
 		sets := parseReps(setsStr)
-		reps := parseReps(repsStr)
+		minReps, maxReps := parseRepsRange(repsStr)
 
 		exercise := entity.NewExercise(
 			workoutID,
@@ -138,6 +153,7 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		}
 
 		// Create sets for the exercise with pre-filled weights from history
+		// Reps are distributed progressively: Set 1 = min, Set 2 = min+1, ... capped at max
 		for i := 1; i <= sets; i++ {
 			weight := "-" // Default weight
 			if w, exists := lastWeights[i]; exists {
@@ -145,6 +161,12 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 			} else if w, exists := lastWeights[1]; exists && i > 1 {
 				// Fallback to Set 1's weight if specific set not found
 				weight = w
+			}
+
+			// Progressive reps: start at min, increment by 1 per set, cap at max
+			reps := minReps + (i - 1)
+			if reps > maxReps {
+				reps = maxReps
 			}
 
 			set := entity.NewSet(
