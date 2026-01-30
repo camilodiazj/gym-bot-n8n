@@ -131,7 +131,7 @@ const ExerciseCard: React.FC<{
   const [editValue, setEditValue] = React.useState<string>('');
 
   return (
-    <div className="bg-[#F6F7F8] rounded-[20px] flex flex-col gap-4 w-full" style={{ padding: '24px' }}>
+    <div className="bg-[#EBEDF0] rounded-[20px] flex flex-col gap-4 w-full" style={{ padding: '24px' }}>
       {/* Exercise Header */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
@@ -219,39 +219,47 @@ const ExerciseCard: React.FC<{
             )}
           </div>
 
-          {/* Tips Section */}
-          <div className="flex flex-col gap-2 w-full">
-            <span className="text-[#1A1A1A] text-sm font-semibold font-['DM_Sans']">
-              Ten en cuenta:
-            </span>
-            <div className="flex flex-col gap-1 w-full">
-              {exercise.tips.map((tip, index) => (
-                <p
-                  key={index}
-                  className="text-[#6B7280] text-[13px] font-normal font-['DM_Sans'] leading-[1.5]"
-                >
-                  - {tip.text}
-                </p>
-              ))}
+          {/* Tips Section - Hidden until we have data in DB */}
+          {/* TODO: Uncomment when tips data is available
+          {exercise.tips && exercise.tips.length > 0 && (
+            <div className="flex flex-col gap-2 w-full">
+              <span className="text-[#1A1A1A] text-sm font-semibold font-['DM_Sans']">
+                Ten en cuenta:
+              </span>
+              <div className="flex flex-col gap-1 w-full">
+                {exercise.tips.map((tip, index) => (
+                  <p
+                    key={index}
+                    className="text-[#6B7280] text-[13px] font-normal font-['DM_Sans'] leading-[1.5]"
+                  >
+                    - {tip.text}
+                  </p>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+          */}
 
-          {/* Steps Section */}
-          <div className="flex flex-col gap-2 w-full">
-            <span className="text-[#1A1A1A] text-sm font-semibold font-['DM_Sans']">
-              Sigue el paso a paso:
-            </span>
-            <div className="flex flex-col gap-1 w-full">
-              {exercise.steps.map((step, index) => (
-                <p
-                  key={index}
-                  className="text-[#6B7280] text-[13px] font-normal font-['DM_Sans'] leading-[1.5]"
-                >
-                  - {step.text}
-                </p>
-              ))}
+          {/* Steps Section - Hidden until we have data in DB */}
+          {/* TODO: Uncomment when steps data is available
+          {exercise.steps && exercise.steps.length > 0 && (
+            <div className="flex flex-col gap-2 w-full">
+              <span className="text-[#1A1A1A] text-sm font-semibold font-['DM_Sans']">
+                Sigue el paso a paso:
+              </span>
+              <div className="flex flex-col gap-1 w-full">
+                {exercise.steps.map((step, index) => (
+                  <p
+                    key={index}
+                    className="text-[#6B7280] text-[13px] font-normal font-['DM_Sans'] leading-[1.5]"
+                  >
+                    - {step.text}
+                  </p>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+          */}
         </div>
       )}
 
@@ -456,15 +464,17 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
         // Save all weights for this exercise to the server
         saveExerciseWeights(currentExercise);
 
-        // Collapse the completed exercise
+        // Collapse the completed exercise and expand the next one
+        const nextExercise = newList[currentIndex + 1];
         newList = newList.map((ex) =>
           ex.id === exerciseId
             ? { ...ex, instructionsExpanded: false }
+            : nextExercise && ex.id === nextExercise.id
+            ? { ...ex, instructionsExpanded: true }
             : ex
         );
 
-        // Find next exercise and scroll to it
-        const nextExercise = newList[currentIndex + 1];
+        // Scroll to next exercise
         if (nextExercise) {
           setTimeout(() => {
             const nextRef = exerciseRefs.current[nextExercise.id];
@@ -515,7 +525,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full pb-8">
       {/* Exercise Cards */}
       <div className="flex flex-col gap-6 w-full">
         {exerciseList.map((exercise) => (

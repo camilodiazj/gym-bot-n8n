@@ -184,7 +184,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white overflow-auto flex justify-center">
-      <div className="w-full max-w-[400px] px-6 py-8">
+      <div className="w-full max-w-[400px] px-6 pt-8 pb-16">
         {/* Session Header */}
         {sessionName && (
           <div className="mb-6">
