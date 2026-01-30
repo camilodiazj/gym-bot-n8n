@@ -4,6 +4,10 @@ import { updateSetWeight, updateSetReps, markSetComplete } from './api'
 const mockFetch = vi.fn()
 global.fetch = mockFetch
 
+// The test setup stubs VITE_DEV_USER_ID, so auth params will be included
+const DEV_USER_ID = '0a220ce8-00e8-4eda-bbf4-112a7fd1e57d'
+const AUTH_PARAMS = `?user_id=${DEV_USER_ID}`
+
 describe('API Service', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -19,7 +23,7 @@ describe('API Service', () => {
       await updateSetWeight('set-123', '50')
 
       expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:8080/api/v1/sets/set-123',
+        `http://localhost:8080/api/v1/sets/set-123${AUTH_PARAMS}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -69,7 +73,7 @@ describe('API Service', () => {
       await updateSetReps('set-456', 15)
 
       expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:8080/api/v1/sets/set-456',
+        `http://localhost:8080/api/v1/sets/set-456${AUTH_PARAMS}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -119,7 +123,7 @@ describe('API Service', () => {
       await markSetComplete('set-789')
 
       expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:8080/api/v1/sets/set-789/complete',
+        `http://localhost:8080/api/v1/sets/set-789/complete${AUTH_PARAMS}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },

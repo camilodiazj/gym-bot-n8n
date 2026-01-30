@@ -52,11 +52,16 @@ func (m *MockMagicLinkRepository) GetUserIDByCode(ctx context.Context, code stri
 	return "", errors.New("not found")
 }
 
+func (m *MockMagicLinkRepository) InvalidateByUser(ctx context.Context, userID string) error {
+	return nil
+}
+
 func TestNewRouter(t *testing.T) {
 	healthHandler := handler.NewHealthHandler()
+	mockMagicLink := &MockMagicLinkRepository{}
 	workoutHandler := handler.NewWorkoutHandler(
 		usecase.NewGetTodayWorkoutUseCase(nil),
-		usecase.NewCompleteWorkoutUseCase(nil),
+		usecase.NewCompleteWorkoutUseCase(nil, mockMagicLink),
 	)
 	setHandler := handler.NewSetHandler(
 		usecase.NewMarkSetCompleteUseCase(nil),
@@ -67,7 +72,8 @@ func TestNewRouter(t *testing.T) {
 		return "user-123", nil
 	}
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver)
+	corsOrigins := []string{"http://localhost:5173"}
+	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, corsOrigins)
 
 	if router.healthHandler != healthHandler {
 		t.Error("Expected healthHandler to be set")
@@ -80,6 +86,9 @@ func TestNewRouter(t *testing.T) {
 	}
 	if router.codeResolver == nil {
 		t.Error("Expected codeResolver to be set")
+	}
+	if len(router.corsAllowedOrigins) == 0 {
+		t.Error("Expected corsAllowedOrigins to be set")
 	}
 }
 
@@ -94,7 +103,7 @@ func TestRouter_Setup(t *testing.T) {
 		return "user-123", nil
 	}
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver)
+	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	if engine == nil {
@@ -122,7 +131,7 @@ func TestRouter_Setup_ProtectedRoutes(t *testing.T) {
 		return "user-123", nil
 	}
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver)
+	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	// Test protected route without auth
@@ -152,7 +161,7 @@ func TestRouter_Setup_CORSMiddleware(t *testing.T) {
 	workoutHandler := handler.NewWorkoutHandler(nil, nil)
 	setHandler := handler.NewSetHandler(nil, nil)
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, nil)
+	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	// Test OPTIONS request (CORS preflight)

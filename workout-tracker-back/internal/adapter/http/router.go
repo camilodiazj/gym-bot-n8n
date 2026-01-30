@@ -8,11 +8,12 @@ import (
 
 // Router holds all HTTP handlers and configures routes
 type Router struct {
-	engine         *gin.Engine
-	healthHandler  *handler.HealthHandler
-	workoutHandler *handler.WorkoutHandler
-	setHandler     *handler.SetHandler
-	codeResolver   middleware.CodeResolver
+	engine             *gin.Engine
+	healthHandler      *handler.HealthHandler
+	workoutHandler     *handler.WorkoutHandler
+	setHandler         *handler.SetHandler
+	codeResolver       middleware.CodeResolver
+	corsAllowedOrigins []string
 }
 
 // NewRouter creates a new Router with all dependencies
@@ -21,12 +22,14 @@ func NewRouter(
 	workoutHandler *handler.WorkoutHandler,
 	setHandler *handler.SetHandler,
 	codeResolver middleware.CodeResolver,
+	corsAllowedOrigins []string,
 ) *Router {
 	return &Router{
-		healthHandler:  healthHandler,
-		workoutHandler: workoutHandler,
-		setHandler:     setHandler,
-		codeResolver:   codeResolver,
+		healthHandler:      healthHandler,
+		workoutHandler:     workoutHandler,
+		setHandler:         setHandler,
+		codeResolver:       codeResolver,
+		corsAllowedOrigins: corsAllowedOrigins,
 	}
 }
 
@@ -38,7 +41,7 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 	// Global middleware
 	r.engine.Use(gin.Logger())
 	r.engine.Use(middleware.ErrorHandler())
-	r.engine.Use(middleware.CORS())
+	r.engine.Use(middleware.CORS(r.corsAllowedOrigins))
 
 	// API v1 routes
 	v1 := r.engine.Group("/api/v1")

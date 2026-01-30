@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Check, ChevronDown, ChevronUp, Play, CheckCircle, Circle, ExternalLink } from 'lucide-react';
 import { updateSetWeight } from '../services/api';
 
@@ -35,6 +35,9 @@ interface ExerciseData {
 interface WorkoutContentProps {
   exercises?: ExerciseData[];
   onComplete?: () => void;
+  onExercisesChange?: (exercises: ExerciseData[]) => void;
+  isCompleted?: boolean;
+  isCompleting?: boolean;
 }
 
 // Default exercise data matching the design
@@ -393,9 +396,17 @@ const ExerciseCard: React.FC<{
 export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   exercises = defaultExercises,
   onComplete,
+  onExercisesChange,
+  isCompleted = false,
+  isCompleting = false,
 }) => {
   const [exerciseList, setExerciseList] = useState<ExerciseData[]>(exercises);
   const exerciseRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  // Notify parent when exercises change
+  useEffect(() => {
+    onExercisesChange?.(exerciseList);
+  }, [exerciseList, onExercisesChange]);
 
   const handleToggleInstructions = (exerciseId: string) => {
     setExerciseList((prev) =>
@@ -526,12 +537,37 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
       {/* Complete Button */}
       <button
         onClick={onComplete}
-        className="flex items-center justify-center gap-2 w-full h-[52px] bg-[#22C55E] rounded-[26px] hover:bg-[#16A34A] transition-colors"
+        disabled={isCompleting || isCompleted}
+        className={`flex items-center justify-center gap-2 w-full h-[52px] rounded-[26px] transition-colors ${
+          isCompleted
+            ? 'bg-[#86EFAC] cursor-default'
+            : isCompleting
+            ? 'bg-[#22C55E] opacity-70 cursor-wait'
+            : 'bg-[#22C55E] hover:bg-[#16A34A]'
+        }`}
       >
-        <CheckCircle className="w-[22px] h-[22px] text-white" />
-        <span className="text-white text-base font-bold font-['DM_Sans']">
-          Completar Rutina
-        </span>
+        {isCompleting ? (
+          <>
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="text-white text-base font-bold font-['DM_Sans']">
+              Completando...
+            </span>
+          </>
+        ) : isCompleted ? (
+          <>
+            <CheckCircle className="w-[22px] h-[22px] text-white" />
+            <span className="text-white text-base font-bold font-['DM_Sans']">
+              Rutina Completada
+            </span>
+          </>
+        ) : (
+          <>
+            <CheckCircle className="w-[22px] h-[22px] text-white" />
+            <span className="text-white text-base font-bold font-['DM_Sans']">
+              Completar Rutina
+            </span>
+          </>
+        )}
       </button>
     </div>
   );

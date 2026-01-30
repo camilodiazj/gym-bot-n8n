@@ -58,13 +58,14 @@ func (r *MagicLinkRepository) Create(ctx context.Context, userID string) (string
 	return resultCode, nil
 }
 
-// GetUserID retrieves the user ID for a valid (non-expired) code
+// GetUserID retrieves the user ID for a valid (non-expired, non-used) code
 func (r *MagicLinkRepository) GetUserID(ctx context.Context, code string) (string, error) {
 	query := `
 		SELECT user_id
 		FROM magic_links
 		WHERE code = $1
 		  AND expires_at > NOW()
+		  AND used_at IS NULL
 	`
 
 	var userID string
@@ -76,13 +77,23 @@ func (r *MagicLinkRepository) GetUserID(ctx context.Context, code string) (strin
 		return "", apperror.NewInternalError("failed to lookup code", err)
 	}
 
-	// Mark as used (optional, for analytics)
-	go func() {
-		updateQuery := `UPDATE magic_links SET used_at = NOW() WHERE code = $1 AND used_at IS NULL`
-		r.conn.DB.ExecContext(context.Background(), updateQuery, code)
-	}()
-
 	return userID, nil
+}
+
+// InvalidateByUser marks all active magic links for a user as used
+// This prevents the user from reusing any existing links after workout completion
+func (r *MagicLinkRepository) InvalidateByUser(ctx context.Context, userID string) error {
+	query := `
+		UPDATE magic_links
+		SET used_at = NOW()
+		WHERE user_id = $1
+		  AND used_at IS NULL
+	`
+	_, err := r.conn.DB.ExecContext(ctx, query, userID)
+	if err != nil {
+		return apperror.NewInternalError("failed to invalidate magic links", err)
+	}
+	return nil
 }
 
 // Cleanup removes expired magic links (call periodically)

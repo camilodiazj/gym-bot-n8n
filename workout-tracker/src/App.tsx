@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
 import { WorkoutContent } from './components'
-
-// API Configuration
-const API_BASE_URL = 'https://workout-api-148665080566.us-central1.run.app/api/v1'
-// Fallback user ID for development (only used when no code in URL)
-const DEV_USER_ID = '0a220ce8-00e8-4eda-bbf4-112a7fd1e57d'
+import { CompletionCelebration } from './components/CompletionCelebration'
+import { completeWorkout } from './services/api'
+import config from './config'
 
 interface SetData {
-  id: string
+  id?: string
   setNumber: number
   reps: number
   kg: string
@@ -53,8 +51,12 @@ interface WorkoutResponse {
 function App() {
   const [exercises, setExercises] = useState<ExerciseData[]>([])
   const [sessionName, setSessionName] = useState<string>('')
+  const [sessionId, setSessionId] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isCompleted, setIsCompleted] = useState(false)
+  const [showCelebration, setShowCelebration] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false)
 
   useEffect(() => {
     const fetchWorkout = async () => {
@@ -70,10 +72,15 @@ function App() {
         let apiUrl: string
         if (code) {
           // Production: use short code
-          apiUrl = `${API_BASE_URL}/workouts/today?c=${encodeURIComponent(code)}`
-        } else {
+          apiUrl = `${config.apiBaseUrl}/workouts/today?c=${encodeURIComponent(code)}`
+        } else if (config.devUserId) {
           // Development fallback: use user_id directly
-          apiUrl = `${API_BASE_URL}/workouts/today?user_id=${DEV_USER_ID}`
+          apiUrl = `${config.apiBaseUrl}/workouts/today?user_id=${config.devUserId}`
+        } else {
+          // No auth method available
+          setError('No se encontro codigo de acceso. Usa el link de WhatsApp.')
+          setLoading(false)
+          return
         }
 
         const response = await fetch(apiUrl)
@@ -95,6 +102,7 @@ function App() {
           }))
           setExercises(exercisesWithState)
           setSessionName(data.data.session_name)
+          setSessionId(data.data.session_id)
         } else {
           setError(data.error?.message || 'No workout scheduled for today')
         }
@@ -109,8 +117,38 @@ function App() {
     fetchWorkout()
   }, [])
 
-  const handleComplete = () => {
-    alert('Rutina completada!')
+  const handleExercisesChange = (updatedExercises: ExerciseData[]) => {
+    setExercises(updatedExercises)
+  }
+
+  const handleComplete = async () => {
+    if (isCompleting || isCompleted || !sessionId) return
+
+    // Check if all sets are completed
+    const totalSets = exercises.reduce((sum, ex) => sum + ex.sets.length, 0)
+    const completedSets = exercises.reduce(
+      (sum, ex) => sum + ex.sets.filter((s) => s.completed).length,
+      0
+    )
+
+    if (completedSets < totalSets) {
+      const confirmed = window.confirm(
+        `Solo completaste ${completedSets} de ${totalSets} sets. ¿Seguro que quieres terminar la rutina?`
+      )
+      if (!confirmed) return
+    }
+
+    setIsCompleting(true)
+    try {
+      await completeWorkout(sessionId)
+      setIsCompleted(true)
+      setShowCelebration(true)
+    } catch (err) {
+      console.error('Failed to complete workout:', err)
+      alert('Error al completar la rutina. Intenta de nuevo.')
+    } finally {
+      setIsCompleting(false)
+    }
   }
 
   if (loading) {
@@ -158,8 +196,19 @@ function App() {
             </p>
           </div>
         )}
-        <WorkoutContent exercises={exercises} onComplete={handleComplete} />
+        <WorkoutContent
+          exercises={exercises}
+          onComplete={handleComplete}
+          onExercisesChange={handleExercisesChange}
+          isCompleted={isCompleted}
+          isCompleting={isCompleting}
+        />
       </div>
+
+      {/* Celebration overlay */}
+      {showCelebration && (
+        <CompletionCelebration onDismiss={() => setShowCelebration(false)} />
+      )}
     </div>
   )
 }

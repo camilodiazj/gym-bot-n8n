@@ -17,6 +17,6 @@ gcloud run deploy workout-api \
   --source . \
   --region us-central1 \
   --allow-unauthenticated \
-  --set-env-vars "GIN_MODE=release"
+  --set-env-vars "GIN_MODE=release,CORS_ALLOWED_ORIGINS=https://workout-tracker-69b08.web.app"
 
 echo "✅ Deploy complete!"

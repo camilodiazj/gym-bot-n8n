@@ -42,7 +42,7 @@ func main() {
 
 	// Initialize use cases (Application Layer)
 	getTodayWorkoutUC := usecase.NewGetTodayWorkoutUseCase(workoutRepo)
-	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(workoutRepo)
+	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(workoutRepo, magicLinkRepo)
 	markSetCompleteUC := usecase.NewMarkSetCompleteUseCase(setRepo)
 	updateSetUC := usecase.NewUpdateSetUseCase(setRepo)
 
@@ -52,7 +52,7 @@ func main() {
 	setHandler := handler.NewSetHandler(markSetCompleteUC, updateSetUC)
 
 	// Initialize router and setup routes
-	router := http.NewRouter(healthHandler, workoutHandler, setHandler, codeResolver)
+	router := http.NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, cfg.Server.CORSAllowedOrigins)
 	engine := router.Setup(cfg.Server.GinMode)
 
 	// Start server in a goroutine

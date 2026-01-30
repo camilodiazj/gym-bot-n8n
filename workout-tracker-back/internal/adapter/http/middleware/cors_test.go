@@ -12,7 +12,7 @@ func TestCORS_RegularRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	router := gin.New()
-	router.Use(CORS())
+	router.Use(CORS([]string{"*"}))
 	router.GET("/test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": true})
 	})
@@ -47,7 +47,7 @@ func TestCORS_OptionsRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	router := gin.New()
-	router.Use(CORS())
+	router.Use(CORS([]string{"*"}))
 	router.OPTIONS("/test", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"success": true})
 	})
@@ -70,7 +70,7 @@ func TestCORS_POSTRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	router := gin.New()
-	router.Use(CORS())
+	router.Use(CORS([]string{"*"}))
 	router.POST("/test", func(c *gin.Context) {
 		c.JSON(http.StatusCreated, gin.H{"success": true})
 	})
