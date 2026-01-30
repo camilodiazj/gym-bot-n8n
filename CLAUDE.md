@@ -296,6 +296,24 @@ e2e/
 
 ## Changelog
 
+### 2026-01-28 (Priority-Based Duration Validation - KAN-51)
+- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en GymRatForm Supabase v2.1.json:
+  - **Priorización muscular**: Protege ejercicios que trabajan `priority_muscles_en` del usuario
+  - **Sistema de scoring**: Cada ejercicio recibe un puntaje basado en rol + prioridad muscular:
+    | Rol | No Prioritario | Prioritario |
+    |-----|----------------|-------------|
+    | isolation | 0 | 10 |
+    | core | 20 | 30 |
+    | compound | 40 | 50 |
+  - **Fase 1 - Reducción de series**: Reduce sets en ejercicios de menor puntaje primero
+  - **Fase 2 - Eliminación**: Si aún excede tiempo, elimina ejercicios (nunca compound prioritarios)
+  - **Mínimo dinámico**: 3 sets (semanas 1-3 hipertrofia), 2 sets (semana 4 descarga)
+  - **Tiempo de transición**: Actualizado a 120 seg (2 min) para setup de máquinas
+  - **Protección absoluta**: Ejercicios compound + músculo prioritario NUNCA se eliminan
+  - **Mínimo ejercicios**: Nunca deja menos de 4 ejercicios por día
+- **Lookup de ejercicios**: Obtiene `main_muscle` y `secondary_muscles` de `GetExercisesByPattern`
+- **Logging mejorado**: Registra acciones de reducción/eliminación con puntajes de prioridad
+
 ### 2026-01-27 (Workout Time Validation - KAN-51)
 - **Nuevo nodo `ValidateWorkoutDuration` en GymRatForm Supabase v2.json**: Sistema determinístico de validación de tiempo que garantiza que las rutinas diarias no excedan el tiempo disponible del usuario:
   - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
