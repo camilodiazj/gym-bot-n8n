@@ -29,6 +29,7 @@ interface ExerciseData {
   tips: Tip[]
   steps: Step[]
   rir: string
+  restSeconds?: number
   videoLink?: string
   instructionsExpanded?: boolean
 }

@@ -21,14 +21,15 @@ type SetDTO struct {
 
 // ExerciseDTO represents an exercise in the response
 type ExerciseDTO struct {
-	ID         string    `json:"id"`
-	Name       string    `json:"name"`
-	BadgeColor string    `json:"badgeColor"`
-	RIR        string    `json:"rir"`
-	VideoLink  string    `json:"videoLink,omitempty"`
-	Sets       []SetDTO  `json:"sets"`
-	Tips       []TipDTO  `json:"tips"`
-	Steps      []StepDTO `json:"steps"`
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	BadgeColor  string    `json:"badgeColor"`
+	RIR         string    `json:"rir"`
+	RestSeconds int       `json:"restSeconds"`
+	VideoLink   string    `json:"videoLink,omitempty"`
+	Sets        []SetDTO  `json:"sets"`
+	Tips        []TipDTO  `json:"tips"`
+	Steps       []StepDTO `json:"steps"`
 }
 
 // TodayWorkoutResponse is the response for GET /api/v1/workouts/today

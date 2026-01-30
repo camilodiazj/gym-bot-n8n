@@ -12,27 +12,29 @@ type Step struct {
 
 // Exercise represents a single exercise in a workout
 type Exercise struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	BadgeColor string `json:"badge_color"`
-	RIR        string `json:"rir"`  // Reps In Reserve (e.g., "3-4")
-	Link       string `json:"link"` // MuscleWiki video URL
-	Sets       []Set  `json:"sets"`
-	Tips       []Tip  `json:"tips"`
-	Steps      []Step `json:"steps"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	BadgeColor  string `json:"badge_color"`
+	RIR         string `json:"rir"`          // Reps In Reserve (e.g., "3-4")
+	RestSeconds int    `json:"rest_seconds"` // Rest time between sets in seconds
+	Link        string `json:"link"`         // MuscleWiki video URL
+	Sets        []Set  `json:"sets"`
+	Tips        []Tip  `json:"tips"`
+	Steps       []Step `json:"steps"`
 }
 
 // NewExercise creates a new Exercise entity
-func NewExercise(id, name, badgeColor, rir, link string) *Exercise {
+func NewExercise(id, name, badgeColor, rir string, restSeconds int, link string) *Exercise {
 	return &Exercise{
-		ID:         id,
-		Name:       name,
-		BadgeColor: badgeColor,
-		RIR:        rir,
-		Link:       link,
-		Sets:       []Set{},
-		Tips:       []Tip{},
-		Steps:      []Step{},
+		ID:          id,
+		Name:        name,
+		BadgeColor:  badgeColor,
+		RIR:         rir,
+		RestSeconds: restSeconds,
+		Link:        link,
+		Sets:        []Set{},
+		Tips:        []Tip{},
+		Steps:       []Step{},
 	}
 }
 

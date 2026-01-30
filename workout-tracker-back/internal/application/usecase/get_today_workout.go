@@ -47,14 +47,15 @@ func (uc *GetTodayWorkoutUseCase) Execute(ctx context.Context, userID string) (*
 
 	for _, exercise := range workout.Exercises {
 		exerciseDTO := dto.ExerciseDTO{
-			ID:         exercise.ID,
-			Name:       exercise.Name,
-			BadgeColor: exercise.BadgeColor,
-			RIR:        exercise.RIR,
-			VideoLink:  exercise.Link,
-			Sets:       make([]dto.SetDTO, 0, len(exercise.Sets)),
-			Tips:       make([]dto.TipDTO, 0, len(exercise.Tips)),
-			Steps:      make([]dto.StepDTO, 0, len(exercise.Steps)),
+			ID:          exercise.ID,
+			Name:        exercise.Name,
+			BadgeColor:  exercise.BadgeColor,
+			RIR:         exercise.RIR,
+			RestSeconds: exercise.RestSeconds,
+			VideoLink:   exercise.Link,
+			Sets:        make([]dto.SetDTO, 0, len(exercise.Sets)),
+			Tips:        make([]dto.TipDTO, 0, len(exercise.Tips)),
+			Steps:       make([]dto.StepDTO, 0, len(exercise.Steps)),
 		}
 
 		for _, set := range exercise.Sets {
