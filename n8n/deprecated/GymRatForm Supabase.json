@@ -448,6 +448,14 @@
             {
               "name": "whatsapp_id",
               "type": "number"
+            },
+            {
+              "name": "is_renewal",
+              "type": "string"
+            },
+            {
+              "name": "override_days_available",
+              "type": "number"
             }
           ]
         }
@@ -765,9 +773,38 @@
       "main": [
         [
           {
+            "node": "If_Is_Renewal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Is_Renewal": {
+      "main": [
+        [
+          {
+            "node": "Clear_Old_Workouts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "UserExists",
             "type": "main",
             "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear_Old_Workouts": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
           }
         ]
       ]

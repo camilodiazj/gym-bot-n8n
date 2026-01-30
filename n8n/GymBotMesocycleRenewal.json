@@ -1,0 +1,779 @@
+{
+  "name": "GymBotMesocycleRenewal",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id",
+              "type": "string"
+            },
+            {
+              "name": "whatsapp_id",
+              "type": "string"
+            },
+            {
+              "name": "phone_number_id",
+              "type": "string"
+            },
+            {
+              "name": "current_mesocycle",
+              "type": "number"
+            },
+            {
+              "name": "current_days_per_week",
+              "type": "number"
+            },
+            {
+              "name": "user_name",
+              "type": "string"
+            },
+            {
+              "name": "user_message",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        240
+      ],
+      "id": "trigger-mesocycle-renewal",
+      "name": "Mesocycle_Renewal_Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_message }}",
+        "options": {
+          "systemMessage": "=Eres \"FitBot\", el asistente de renovación de mesociclo. Tu misión es ayudar al usuario a decidir cómo continuar después de completar su ciclo de 4 semanas.\n\n## CONTEXTO DEL USUARIO\n- user_id: {{ $json.user_id }}\n- Nombre: {{ $json.user_name }}\n- Mesociclo completado: {{ $json.current_mesocycle }}\n- Días por semana actuales: {{ $json.current_days_per_week }}\n\n## INTENCIONES A DETECTAR\nDebes identificar la intención del usuario y retornar EXACTAMENTE una de estas opciones:\n\n1. **MANTENER_RUTINA**: El usuario quiere mantener los mismos ejercicios y frecuencia\n   - Palabras clave: \"mantener\", \"misma rutina\", \"igual\", \"seguir así\", \"continuar\", \"repetir\"\n\n2. **CAMBIAR_DIAS**: El usuario quiere cambiar la cantidad de días por semana\n   - Palabras clave: \"cambiar días\", \"más días\", \"menos días\", \"entrenar X días\"\n   - IMPORTANTE: Debes obtener el nuevo número de días (2-6)\n\n3. **ROTAR_EJERCICIOS**: El usuario quiere diferentes ejercicios pero mantener la frecuencia\n   - Palabras clave: \"nuevos ejercicios\", \"cambiar ejercicios\", \"rotar\", \"variar\"\n\n4. **PREGUNTAR_OPCIONES**: El usuario necesita más información o no ha decidido\n   - Palabras clave: \"qué opciones\", \"no sé\", \"ayuda\", preguntas generales\n\n## FLUJO DE CONVERSACIÓN\n\n### Si es la primera interacción o PREGUNTAR_OPCIONES:\nResponde con:\n\"¡Felicitaciones {{ $json.user_name }}! 🎉 Has completado tu mesociclo de 4 semanas.\n\nTienes estas opciones para continuar:\n\n🔄 **Mantener rutina**: Repites los mismos ejercicios con la progresión de carga. Ideal si te sientes cómodo y ves resultados.\n\n✨ **Cambiar rutina**: Puedes:\n  - Cambiar los días de entrenamiento (actualmente {{ $json.current_days_per_week }} días)\n  - Rotar ejercicios para nuevos estímulos\n\n¿Qué prefieres?\"\n\n### Si detectas MANTENER_RUTINA:\nResponde confirmando y retorna: INTENCION:MANTENER_RUTINA\n\n### Si detectas CAMBIAR_DIAS:\n- Si el usuario ya especificó el número de días, confirma y retorna: INTENCION:CAMBIAR_DIAS:X (donde X es el número)\n- Si no especificó, pregunta: \"¿Cuántos días por semana quieres entrenar? (2-6 días)\"\n\n### Si detectas ROTAR_EJERCICIOS:\nResponde confirmando y retorna: INTENCION:ROTAR_EJERCICIOS\n\n## REGLAS\n1. Siempre sé motivador y positivo\n2. Los días disponibles son SOLO: 2, 3, 4, 5, 6\n3. Si el usuario pide algo fuera de rango, sugiere el más cercano\n4. La última línea de tu respuesta DEBE ser el código de intención cuando la detectes\n5. Formato obligatorio cuando detectes intención: INTENCION:NOMBRE_INTENCION o INTENCION:CAMBIAR_DIAS:X\n6. Todo en español"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        240,
+        240
+      ],
+      "id": "renewal-agent",
+      "name": "Renewal_Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        464
+      ],
+      "id": "openai-renewal",
+      "name": "OpenAI_Renewal",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwhZD1w0asX5zwKw",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.user_id }}_mesocycle_renewal",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        464
+      ],
+      "id": "memory-renewal",
+      "name": "Renewal_Memory",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer la intención del output del agente\nconst output = $input.first().json.output || '';\nconst inputData = $('Mesocycle_Renewal_Trigger').first().json;\n\n// Buscar el patrón de intención\nconst intentionMatch = output.match(/INTENCION:(\\w+)(?::(\\d+))?/);\n\nlet intention = 'PREGUNTAR_OPCIONES';\nlet newDays = null;\nlet cleanOutput = output;\n\nif (intentionMatch) {\n  intention = intentionMatch[1];\n  if (intentionMatch[2]) {\n    newDays = parseInt(intentionMatch[2]);\n  }\n  // Limpiar el output removiendo el código de intención\n  cleanOutput = output.replace(/INTENCION:\\w+(?::\\d+)?/g, '').trim();\n}\n\nreturn [{\n  json: {\n    ...inputData,\n    intention,\n    newDays,\n    agentOutput: cleanOutput,\n    rawOutput: output\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ],
+      "id": "parse-intention",
+      "name": "Parse_Intention"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intention }}",
+                    "rightValue": "MANTENER_RUTINA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "mantener-condition"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MANTENER_RUTINA"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intention }}",
+                    "rightValue": "CAMBIAR_DIAS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "cambiar-dias-condition"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CAMBIAR_DIAS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intention }}",
+                    "rightValue": "ROTAR_EJERCICIOS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "rotar-condition"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ROTAR_EJERCICIOS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intention }}",
+                    "rightValue": "PREGUNTAR_OPCIONES",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "preguntar-condition"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PREGUNTAR_OPCIONES"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        240
+      ],
+      "id": "switch-intention",
+      "name": "Switch_Intention"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Limpiar schedule existente\nDELETE FROM user_weekly_schedule WHERE user_id = '{{ $json.user_id }}';\n\n-- Incrementar mesociclo\nUPDATE users_plans\nSET mesocycle_number = COALESCE(mesocycle_number, 1) + 1,\n    last_renewal_date = NOW()\nWHERE user_id = '{{ $json.user_id }}'\nRETURNING mesocycle_number;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "reset-for-mantener",
+      "name": "Reset_For_Mantener",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Mesocycle_Renewal_Trigger').first().json.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('Mesocycle_Renewal_Trigger').first().json.whatsapp_id }}",
+        "textBody": "=🎉 ¡Excelente elección, {{ $('Mesocycle_Renewal_Trigger').first().json.user_name }}!\n\nTu rutina se ha renovado para el **Mesociclo {{ $json[0].mesocycle_number }}**.\n\nMantendrás los mismos ejercicios con la progresión de carga optimizada.\n\n📅 Escríbeme cuando quieras agendar tu primera semana del nuevo ciclo.\n\n¡Vamos con toda! 💪🔥",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        0
+      ],
+      "id": "notify-mantener",
+      "name": "Notify_Mantener_Success",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $json.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $json.whatsapp_id }}",
+        "textBody": "={{ $json.agentOutput }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        480
+      ],
+      "id": "send-options",
+      "name": "Send_Options_Message",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Obtener ejercicios actuales del usuario agrupados por patrón\nWITH current_exercises AS (\n  SELECT DISTINCT w.exercise_id, e.pattern, e.role, w.day_name\n  FROM workouts w\n  JOIN exercises e ON w.exercise_id = e.exercise_id\n  WHERE w.user_id = '{{ $json.user_id }}' AND w.week = 1\n),\n-- Buscar ejercicios alternativos por patrón\nalternatives AS (\n  SELECT \n    ce.exercise_id as old_exercise_id,\n    ce.pattern,\n    ce.role,\n    ce.day_name,\n    (\n      SELECT e2.exercise_id\n      FROM exercises e2\n      WHERE e2.pattern = ce.pattern\n        AND e2.role = ce.role\n        AND e2.exercise_id != ce.exercise_id\n      ORDER BY RANDOM()\n      LIMIT 1\n    ) as new_exercise_id\n  FROM current_exercises ce\n)\nSELECT * FROM alternatives WHERE new_exercise_id IS NOT NULL;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1120,
+        320
+      ],
+      "id": "find-alternatives",
+      "name": "Find_Alternative_Exercises",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar las alternativas y actualizar los ejercicios\nconst alternatives = $input.all();\nconst inputData = $('Switch_Intention').first().json;\n\nif (alternatives.length === 0) {\n  return [{\n    json: {\n      ...inputData,\n      rotationSuccess: false,\n      message: 'No se encontraron ejercicios alternativos disponibles.'\n    }\n  }];\n}\n\n// Construir las queries de actualización\nconst updates = alternatives.map(alt => {\n  return {\n    old_exercise_id: alt.json.old_exercise_id,\n    new_exercise_id: alt.json.new_exercise_id,\n    pattern: alt.json.pattern\n  };\n});\n\nreturn [{\n  json: {\n    ...inputData,\n    rotationSuccess: true,\n    exerciseUpdates: updates,\n    updatesCount: updates.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        320
+      ],
+      "id": "process-rotation",
+      "name": "Process_Rotation"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ (() => {\n  const updates = $json.exerciseUpdates || [];\n  if (updates.length === 0) return 'SELECT 1';\n  \n  const cases = updates.map(u => \n    `WHEN exercise_id = '${u.old_exercise_id}' THEN '${u.new_exercise_id}'`\n  ).join('\\n    ');\n  \n  const oldIds = updates.map(u => `'${u.old_exercise_id}'`).join(', ');\n  \n  return `\n    UPDATE workouts\n    SET exercise_id = CASE\n      ${cases}\n      ELSE exercise_id\n    END\n    WHERE user_id = '${$json.user_id}'\n    AND exercise_id IN (${oldIds});\n    \n    -- Limpiar schedule\n    DELETE FROM user_weekly_schedule WHERE user_id = '${$json.user_id}';\n    \n    -- Incrementar mesociclo\n    UPDATE users_plans\n    SET mesocycle_number = COALESCE(mesocycle_number, 1) + 1,\n        last_renewal_date = NOW()\n    WHERE user_id = '${$json.user_id}';\n  `;\n})() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1600,
+        320
+      ],
+      "id": "apply-rotation",
+      "name": "Apply_Rotation_Updates",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Mesocycle_Renewal_Trigger').first().json.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('Mesocycle_Renewal_Trigger').first().json.whatsapp_id }}",
+        "textBody": "=🔄 ¡Ejercicios rotados con éxito, {{ $('Mesocycle_Renewal_Trigger').first().json.user_name }}!\n\nHe seleccionado {{ $('Process_Rotation').first().json.updatesCount }} ejercicios nuevos para darte estímulos frescos.\n\nTu frecuencia de {{ $('Mesocycle_Renewal_Trigger').first().json.current_days_per_week }} días por semana se mantiene.\n\n📅 Escríbeme cuando quieras agendar tu primera semana.\n\n¡A por el nuevo ciclo! 💪🚀",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        320
+      ],
+      "id": "notify-rotation",
+      "name": "Notify_Rotation_Success",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Archivar workouts actuales antes de regenerar\nDELETE FROM workouts WHERE user_id = '{{ $json.user_id }}';\n\n-- Limpiar schedule\nDELETE FROM user_weekly_schedule WHERE user_id = '{{ $json.user_id }}';\n\n-- Actualizar plan con nuevo week_schedule basado en días\nUPDATE users_plans\nSET week_schedule = CASE \n      WHEN {{ $json.newDays }} = 2 THEN 'fb_2'\n      WHEN {{ $json.newDays }} = 3 THEN 'fb_3'\n      WHEN {{ $json.newDays }} = 4 THEN 'ua_4'\n      WHEN {{ $json.newDays }} = 5 THEN 'ppl_5'\n      WHEN {{ $json.newDays }} = 6 THEN 'ppl_6'\n      ELSE week_schedule\n    END,\n    mesocycle_number = COALESCE(mesocycle_number, 1) + 1,\n    last_renewal_date = NOW()\nWHERE user_id = '{{ $json.user_id }}'\nRETURNING user_id, week_schedule, mesocycle_number;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1120,
+        160
+      ],
+      "id": "prepare-days-change",
+      "name": "Prepare_Days_Change",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT whatsapp_id FROM users_gym_profile\nWHERE whatsapp_id = '{{ $('Mesocycle_Renewal_Trigger').first().json.whatsapp_id }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1360,
+        160
+      ],
+      "id": "get-whatsapp-for-gymratform",
+      "name": "Get_WhatsApp_For_GymRatForm",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "56TDVpPWb8DafTyq",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/56TDVpPWb8DafTyq",
+          "cachedResultName": "Learning Project — GymRatForm Supabase"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp_id": "={{ $('Mesocycle_Renewal_Trigger').first().json.whatsapp_id }}",
+            "is_renewal": "true",
+            "override_days_available": "={{ $('Switch_Intention').first().json.newDays }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "is_renewal",
+              "displayName": "is_renewal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "override_days_available",
+              "displayName": "override_days_available",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        160
+      ],
+      "id": "call-gymratform",
+      "name": "Call_GymRatForm"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Mesocycle_Renewal_Trigger').first().json.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('Mesocycle_Renewal_Trigger').first().json.whatsapp_id }}",
+        "textBody": "=🎉 ¡Tu nueva rutina está lista, {{ $('Mesocycle_Renewal_Trigger').first().json.user_name }}!\n\nHe creado un plan completamente nuevo con {{ $('Switch_Intention').first().json.newDays }} días por semana.\n\n📅 Escríbeme cuando quieras agendar tu primera semana del nuevo mesociclo.\n\n¡A romperla! 💪🔥",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        160
+      ],
+      "id": "notify-days-change",
+      "name": "Notify_Days_Change_Success",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Limpiar memoria de renovación después de completar\nDELETE FROM n8n_chat_histories \nWHERE session_id LIKE '{{ $json.user_id }}_mesocycle_renewal%';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1600,
+        0
+      ],
+      "id": "cleanup-memory-mantener",
+      "name": "Cleanup_Memory_Mantener",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_chat_histories \nWHERE session_id LIKE '{{ $('Mesocycle_Renewal_Trigger').first().json.user_id }}_mesocycle_renewal%';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2080,
+        160
+      ],
+      "id": "cleanup-memory-days",
+      "name": "Cleanup_Memory_Days",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_chat_histories \nWHERE session_id LIKE '{{ $('Mesocycle_Renewal_Trigger').first().json.user_id }}_mesocycle_renewal%';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2080,
+        320
+      ],
+      "id": "cleanup-memory-rotation",
+      "name": "Cleanup_Memory_Rotation",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Mesocycle_Renewal_Trigger": {
+      "main": [
+        [
+          {
+            "node": "Renewal_Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_Renewal": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Renewal_Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Renewal_Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Renewal_Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Renewal_Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse_Intention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse_Intention": {
+      "main": [
+        [
+          {
+            "node": "Switch_Intention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch_Intention": {
+      "main": [
+        [
+          {
+            "node": "Reset_For_Mantener",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare_Days_Change",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find_Alternative_Exercises",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send_Options_Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset_For_Mantener": {
+      "main": [
+        [
+          {
+            "node": "Notify_Mantener_Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify_Mantener_Success": {
+      "main": [
+        [
+          {
+            "node": "Cleanup_Memory_Mantener",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find_Alternative_Exercises": {
+      "main": [
+        [
+          {
+            "node": "Process_Rotation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process_Rotation": {
+      "main": [
+        [
+          {
+            "node": "Apply_Rotation_Updates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply_Rotation_Updates": {
+      "main": [
+        [
+          {
+            "node": "Notify_Rotation_Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify_Rotation_Success": {
+      "main": [
+        [
+          {
+            "node": "Cleanup_Memory_Rotation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare_Days_Change": {
+      "main": [
+        [
+          {
+            "node": "Get_WhatsApp_For_GymRatForm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_WhatsApp_For_GymRatForm": {
+      "main": [
+        [
+          {
+            "node": "Call_GymRatForm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call_GymRatForm": {
+      "main": [
+        [
+          {
+            "node": "Notify_Days_Change_Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify_Days_Change_Success": {
+      "main": [
+        [
+          {
+            "node": "Cleanup_Memory_Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "mesocycle-renewal-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": [
+    {
+      "name": "gym-bot"
+    }
+  ]
+}

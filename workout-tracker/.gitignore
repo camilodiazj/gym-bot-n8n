@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.vite/
+*.log
+
+# Test coverage
+coverage/
+
+# Firebase
+.firebase/
+.firebaserc
