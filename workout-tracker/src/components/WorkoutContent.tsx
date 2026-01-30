@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle, Circle, ExternalLink } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Play, CheckCircle, Circle, ExternalLink } from 'lucide-react';
 import { updateSetWeight } from '../services/api';
 
 // Types
@@ -126,7 +126,6 @@ const ExerciseCard: React.FC<{
   const [editingReps, setEditingReps] = React.useState<number | null>(null);
   const [editingKg, setEditingKg] = React.useState<number | null>(null);
   const [editValue, setEditValue] = React.useState<string>('');
-  const totalSets = exercise.sets.length;
 
   return (
     <div className="bg-[#F6F7F8] rounded-[20px] flex flex-col gap-4 w-full" style={{ padding: '24px' }}>
@@ -175,18 +174,13 @@ const ExerciseCard: React.FC<{
           </div>
         </div>
         {/* Exercise Controls */}
-        <div className="flex items-center gap-1">
-          <button onClick={onToggleInstructions} className="p-1">
-            {exercise.instructionsExpanded ? (
-              <ChevronUp className="w-5 h-5 text-[#6B7280]" />
-            ) : (
-              <ChevronDown className="w-5 h-5 text-[#6B7280]" />
-            )}
-          </button>
-          <button className="p-1">
-            <MoreVertical className="w-5 h-5 text-[#9CA3AF]" />
-          </button>
-        </div>
+        <button onClick={onToggleInstructions} className="p-1">
+          {exercise.instructionsExpanded ? (
+            <ChevronUp className="w-5 h-5 text-[#6B7280]" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-[#6B7280]" />
+          )}
+        </button>
       </div>
 
       {/* Instructions Section (Collapsible) */}
@@ -262,17 +256,15 @@ const ExerciseCard: React.FC<{
       <div className="flex flex-col w-full mt-2">
         {/* Table Header */}
         <div className="grid grid-cols-3 py-3 border-b border-[#E5E7EB] w-full">
-          <div className="flex items-center justify-center gap-1">
-            <span className="text-[#1A1A1A] text-[15px] font-semibold font-['DM_Sans'] whitespace-nowrap">
-              {totalSets} Sets
+          <div className="flex items-center justify-center">
+            <span className="text-[#1A1A1A] text-[15px] font-semibold font-['DM_Sans']">
+              Sets
             </span>
-            <ChevronDown className="w-3.5 h-3.5 text-[#6B7280] flex-shrink-0" />
           </div>
-          <div className="flex items-center justify-center gap-1">
+          <div className="flex items-center justify-center">
             <span className="text-[#1A1A1A] text-[15px] font-semibold font-['DM_Sans']">
               Reps
             </span>
-            <ChevronDown className="w-3.5 h-3.5 text-[#6B7280] flex-shrink-0" />
           </div>
           <div className="flex items-center justify-center">
             <span className="text-[#1A1A1A] text-[15px] font-semibold font-['DM_Sans']">
