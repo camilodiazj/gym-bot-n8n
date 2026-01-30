@@ -12,7 +12,7 @@ type Router struct {
 	healthHandler  *handler.HealthHandler
 	workoutHandler *handler.WorkoutHandler
 	setHandler     *handler.SetHandler
-	jwtSecret      string
+	codeResolver   middleware.CodeResolver
 }
 
 // NewRouter creates a new Router with all dependencies
@@ -20,13 +20,13 @@ func NewRouter(
 	healthHandler *handler.HealthHandler,
 	workoutHandler *handler.WorkoutHandler,
 	setHandler *handler.SetHandler,
-	jwtSecret string,
+	codeResolver middleware.CodeResolver,
 ) *Router {
 	return &Router{
 		healthHandler:  healthHandler,
 		workoutHandler: workoutHandler,
 		setHandler:     setHandler,
-		jwtSecret:      jwtSecret,
+		codeResolver:   codeResolver,
 	}
 }
 
@@ -46,22 +46,34 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 		// Health check (public)
 		v1.GET("/health", r.healthHandler.Check)
 
-		// Workout routes (protected by JWT)
+		// Auth middleware (supports ?c= and ?user_id= for development)
+		authMiddleware := middleware.ValidateAuth(r.codeResolver)
+
+		// Workout routes (protected)
 		workouts := v1.Group("/workouts")
-		workouts.Use(middleware.ValidateJWT(r.jwtSecret))
+		workouts.Use(authMiddleware)
 		{
 			workouts.GET("/today", r.workoutHandler.GetTodayWorkout)
 			workouts.POST("/:workoutId/complete", r.workoutHandler.CompleteWorkout)
 		}
 
-		// Set routes (protected by JWT)
+		// Set routes (protected)
 		sets := v1.Group("/sets")
-		sets.Use(middleware.ValidateJWT(r.jwtSecret))
+		sets.Use(authMiddleware)
 		{
 			sets.PATCH("/:setId", r.setHandler.Update)
 			sets.PATCH("/:setId/complete", r.setHandler.MarkComplete)
 		}
 	}
+
+	// Serve static frontend files (SPA)
+	r.engine.Static("/assets", "./static/assets")
+	r.engine.StaticFile("/vite.svg", "./static/vite.svg")
+
+	// SPA fallback: serve index.html for all non-API routes
+	r.engine.NoRoute(func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
 
 	return r.engine
 }

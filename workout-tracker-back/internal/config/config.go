@@ -12,12 +12,6 @@ import (
 type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
-	JWT      JWTConfig
-}
-
-// JWTConfig holds JWT-related configuration
-type JWTConfig struct {
-	Secret string
 }
 
 // ServerConfig holds server-related configuration
@@ -50,12 +44,6 @@ func Load() (*Config, error) {
 	cfg.Database.URL = getEnv("SUPABASE_DB_URL", "")
 	if cfg.Database.URL == "" {
 		return nil, fmt.Errorf("SUPABASE_DB_URL is required")
-	}
-
-	// JWT config
-	cfg.JWT.Secret = getEnv("JWT_SECRET", "")
-	if cfg.JWT.Secret == "" {
-		return nil, fmt.Errorf("JWT_SECRET is required")
 	}
 
 	return cfg, nil

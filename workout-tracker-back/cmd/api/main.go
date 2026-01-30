@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -32,6 +33,12 @@ func main() {
 	// Initialize repositories (Secondary Adapters)
 	setRepo := postgres.NewSetRepository(dbConn)
 	workoutRepo := postgres.NewWorkoutRepository(dbConn, setRepo)
+	magicLinkRepo := postgres.NewMagicLinkRepository(dbConn)
+
+	// Create code resolver function for short codes
+	codeResolver := func(code string) (string, error) {
+		return magicLinkRepo.GetUserID(context.Background(), code)
+	}
 
 	// Initialize use cases (Application Layer)
 	getTodayWorkoutUC := usecase.NewGetTodayWorkoutUseCase(workoutRepo)
@@ -45,7 +52,7 @@ func main() {
 	setHandler := handler.NewSetHandler(markSetCompleteUC, updateSetUC)
 
 	// Initialize router and setup routes
-	router := http.NewRouter(healthHandler, workoutHandler, setHandler, cfg.JWT.Secret)
+	router := http.NewRouter(healthHandler, workoutHandler, setHandler, codeResolver)
 	engine := router.Setup(cfg.Server.GinMode)
 
 	// Start server in a goroutine
