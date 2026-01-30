@@ -117,11 +117,11 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    subgraph n8n["n8n Workflow (Morning Reminder)"]
-        A[⏰ Trigger 6:00 AM] --> B[Query DB: usuarios con rutina hoy]
-        B --> C{¿Hay usuarios?}
+    subgraph n8n["n8n Workflow - Morning Reminder"]
+        A[Trigger 6:00 AM] --> B[Query DB: usuarios con rutina hoy]
+        B --> C{Hay usuarios?}
         C -->|No| Z1[End]
-        C -->|Sí| D[Para cada usuario]
+        C -->|Si| D[Para cada usuario]
         D --> E[Generar JWT Token]
         E --> F[Construir URL con token]
         F --> G[Formatear mensaje WhatsApp]
@@ -130,32 +130,32 @@ flowchart TD
     end
 
     subgraph User["Usuario"]
-        I[📱 Recibe WhatsApp] --> J[Click en link]
+        I[Recibe WhatsApp] --> J[Click en link]
         J --> K[Abre browser]
     end
 
     subgraph Frontend["Frontend React"]
         K --> L[App.tsx carga]
         L --> M[useSearchParams - extraer token]
-        M --> N{¿Hay token?}
-        N -->|No| O[Mostrar error: "Link inválido"]
-        N -->|Sí| P[Fetch API con token]
+        M --> N{Hay token?}
+        N -->|No| O[Mostrar error: Link invalido]
+        N -->|Si| P[Fetch API con token]
     end
 
     subgraph Backend["Backend Go"]
         P --> Q[Middleware: ValidateJWT]
-        Q --> R{¿Token válido?}
+        Q --> R{Token valido?}
         R -->|No| S[401 Unauthorized]
-        R -->|Sí| T{¿Expirado?}
-        T -->|Sí| S
+        R -->|Si| T{Expirado?}
+        T -->|Si| S
         T -->|No| U[Extraer user_id del payload]
         U --> V[GetTodayWorkout - user_id]
         V --> W[Return workout data]
     end
 
     subgraph Display["Resultado"]
-        W --> X[✅ Mostrar rutina]
-        S --> Y[❌ Mostrar error]
+        W --> X[OK: Mostrar rutina]
+        S --> Y[ERROR: Mostrar mensaje]
         O --> Y
     end
 
