@@ -238,29 +238,35 @@ describe('App', () => {
   })
 
   describe('Complete button', () => {
-    it('should show alert when complete button is clicked', async () => {
-      const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {})
-
-      mockFetch.mockResolvedValue({
-        status: 200,
-        json: () => Promise.resolve({
-          success: true,
-          data: {
-            session_name: 'Test',
-            exercises: [
-              {
-                id: '1',
-                name: 'Test Exercise',
-                badgeColor: '#374151',
-                rir: '2-3',
-                sets: [{ setNumber: 1, reps: 10, kg: '20', completed: false }],
-                tips: [],
-                steps: [],
-              },
-            ],
-          },
-        }),
-      })
+    it('should show celebration when complete button is clicked successfully', async () => {
+      // First call returns workout data, second call completes the workout
+      mockFetch
+        .mockResolvedValueOnce({
+          status: 200,
+          json: () => Promise.resolve({
+            success: true,
+            data: {
+              session_id: 'test-session-123',
+              session_name: 'Test',
+              exercises: [
+                {
+                  id: '1',
+                  name: 'Test Exercise',
+                  badgeColor: '#374151',
+                  rir: '2-3',
+                  sets: [{ setNumber: 1, reps: 10, kg: '20', completed: false }],
+                  tips: [],
+                  steps: [],
+                },
+              ],
+            },
+          }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({ success: true }),
+        })
 
       render(<App />)
 
@@ -271,7 +277,63 @@ describe('App', () => {
       const completeButton = screen.getByText('Completar Rutina')
       completeButton.click()
 
-      expect(alertMock).toHaveBeenCalledWith('Rutina completada!')
+      // Wait for the celebration to appear
+      await waitFor(() => {
+        expect(screen.getByText('¡Felicidades!')).toBeInTheDocument()
+      })
+
+      // Verify complete API was called
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+      expect(mockFetch).toHaveBeenLastCalledWith(
+        expect.stringContaining('/workouts/test-session-123/complete'),
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+
+    it('should show error alert when completion fails', async () => {
+      const alertMock = vi.spyOn(window, 'alert').mockImplementation(() => {})
+
+      mockFetch
+        .mockResolvedValueOnce({
+          status: 200,
+          json: () => Promise.resolve({
+            success: true,
+            data: {
+              session_id: 'test-session-123',
+              session_name: 'Test',
+              exercises: [
+                {
+                  id: '1',
+                  name: 'Test Exercise',
+                  badgeColor: '#374151',
+                  rir: '2-3',
+                  sets: [{ setNumber: 1, reps: 10, kg: '20', completed: false }],
+                  tips: [],
+                  steps: [],
+                },
+              ],
+            },
+          }),
+        })
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 500,
+          statusText: 'Internal Server Error',
+          json: () => Promise.resolve({ message: 'Server error' }),
+        })
+
+      render(<App />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Completar Rutina')).toBeInTheDocument()
+      })
+
+      const completeButton = screen.getByText('Completar Rutina')
+      completeButton.click()
+
+      await waitFor(() => {
+        expect(alertMock).toHaveBeenCalledWith('Error al completar la rutina. Intenta de nuevo.')
+      })
 
       alertMock.mockRestore()
     })

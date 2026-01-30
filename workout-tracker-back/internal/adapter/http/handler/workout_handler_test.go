@@ -52,6 +52,18 @@ func (m *MockWorkoutRepository) MarkComplete(ctx context.Context, workoutID stri
 	return nil
 }
 
+// MockMagicLinkInvalidator for testing magic link invalidation
+type MockMagicLinkInvalidator struct {
+	InvalidateByUserFunc func(ctx context.Context, userID string) error
+}
+
+func (m *MockMagicLinkInvalidator) InvalidateByUser(ctx context.Context, userID string) error {
+	if m.InvalidateByUserFunc != nil {
+		return m.InvalidateByUserFunc(ctx, userID)
+	}
+	return nil
+}
+
 func TestWorkoutHandler_GetTodayWorkout_Success(t *testing.T) {
 	mockRepo := &MockWorkoutReader{
 		GetTodayWorkoutFunc: func(ctx context.Context, userID string) (*entity.Workout, error) {
@@ -141,11 +153,17 @@ func TestWorkoutHandler_CompleteWorkout_Success(t *testing.T) {
 			return nil
 		},
 	}
+	mockMagicLink := &MockMagicLinkInvalidator{}
 
-	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo)
+	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo, mockMagicLink)
 	handler := NewWorkoutHandler(nil, completeWorkoutUC)
 
 	router := gin.New()
+	// Middleware to set user_id in context
+	router.Use(func(c *gin.Context) {
+		c.Set("user_id", "user-123")
+		c.Next()
+	})
 	router.POST("/workouts/:workoutId/complete", handler.CompleteWorkout)
 
 	req, _ := http.NewRequest("POST", "/workouts/workout-123/complete", strings.NewReader("{}"))
@@ -164,11 +182,17 @@ func TestWorkoutHandler_CompleteWorkout_NotFound(t *testing.T) {
 			return apperror.NewNotFoundError("workout not found")
 		},
 	}
+	mockMagicLink := &MockMagicLinkInvalidator{}
 
-	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo)
+	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo, mockMagicLink)
 	handler := NewWorkoutHandler(nil, completeWorkoutUC)
 
 	router := gin.New()
+	// Middleware to set user_id in context
+	router.Use(func(c *gin.Context) {
+		c.Set("user_id", "user-123")
+		c.Next()
+	})
 	router.POST("/workouts/:workoutId/complete", handler.CompleteWorkout)
 
 	req, _ := http.NewRequest("POST", "/workouts/invalid-id/complete", nil)
@@ -198,11 +222,17 @@ func TestWorkoutHandler_CompleteWorkout_WithRequestBody(t *testing.T) {
 			return nil
 		},
 	}
+	mockMagicLink := &MockMagicLinkInvalidator{}
 
-	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo)
+	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(mockRepo, mockMagicLink)
 	handler := NewWorkoutHandler(nil, completeWorkoutUC)
 
 	router := gin.New()
+	// Middleware to set user_id in context
+	router.Use(func(c *gin.Context) {
+		c.Set("user_id", "user-123")
+		c.Next()
+	})
 	router.POST("/workouts/:workoutId/complete", handler.CompleteWorkout)
 
 	body := `{"notes": "Great workout!"}`

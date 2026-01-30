@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -16,8 +17,9 @@ type Config struct {
 
 // ServerConfig holds server-related configuration
 type ServerConfig struct {
-	Port    int
-	GinMode string
+	Port               int
+	GinMode            string
+	CORSAllowedOrigins []string
 }
 
 // DatabaseConfig holds database-related configuration
@@ -39,6 +41,7 @@ func Load() (*Config, error) {
 	}
 	cfg.Server.Port = port
 	cfg.Server.GinMode = getEnv("GIN_MODE", "debug")
+	cfg.Server.CORSAllowedOrigins = getEnvAsSlice("CORS_ALLOWED_ORIGINS", []string{"*"})
 
 	// Database config
 	cfg.Database.URL = getEnv("SUPABASE_DB_URL", "")
@@ -81,6 +84,19 @@ func getEnvAsBool(key string, defaultValue bool) bool {
 		return defaultValue
 	}
 	return value
+}
+
+// getEnvAsSlice gets an environment variable as a comma-separated slice
+func getEnvAsSlice(key string, defaultValue []string) []string {
+	valueStr := getEnv(key, "")
+	if valueStr == "" {
+		return defaultValue
+	}
+	values := strings.Split(valueStr, ",")
+	for i, v := range values {
+		values[i] = strings.TrimSpace(v)
+	}
+	return values
 }
 
 // ServerAddr returns the server address string

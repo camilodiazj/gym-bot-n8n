@@ -50,13 +50,20 @@ func (h *WorkoutHandler) CompleteWorkout(c *gin.Context) {
 		return
 	}
 
+	// Get user_id from auth middleware context
+	userID, exists := c.Get("user_id")
+	if !exists {
+		response.BadRequest(c, "user identification required")
+		return
+	}
+
 	var req dto.CompleteWorkoutRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		// Request body is optional, so we ignore binding errors
 		req = dto.CompleteWorkoutRequest{}
 	}
 
-	result, err := h.completeWorkout.Execute(c.Request.Context(), workoutID, &req)
+	result, err := h.completeWorkout.Execute(c.Request.Context(), workoutID, userID.(string), &req)
 	if err != nil {
 		response.Error(c, err)
 		return
