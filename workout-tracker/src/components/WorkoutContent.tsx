@@ -1,8 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle, Circle } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+import { Check, ChevronDown, ChevronUp, MoreVertical, Play, CheckCircle, Circle, ExternalLink } from 'lucide-react';
+import { updateSetWeight } from '../services/api';
 
 // Types
 interface SetData {
+  id?: string;
   setNumber: number;
   reps: number;
   kg: string;
@@ -25,6 +27,7 @@ interface ExerciseData {
   tips: Tip[];
   steps: Step[];
   rir: string;
+  restSeconds?: number;
   videoLink?: string;
   instructionsExpanded?: boolean;
 }
@@ -39,7 +42,7 @@ const defaultExercises: ExerciseData[] = [
   {
     id: '1',
     name: 'DB Front Squat',
-    badgeColor: '#22C55E',
+    badgeColor: '#374151',
     instructionsExpanded: false,
     rir: '3-4',
     tips: [
@@ -65,7 +68,7 @@ const defaultExercises: ExerciseData[] = [
   {
     id: '2',
     name: 'Lunges',
-    badgeColor: '#3B82F6',
+    badgeColor: '#374151',
     instructionsExpanded: true,
     rir: '2-3',
     tips: [
@@ -89,7 +92,7 @@ const defaultExercises: ExerciseData[] = [
   {
     id: '3',
     name: 'Plank Hold',
-    badgeColor: '#8B5CF6',
+    badgeColor: '#374151',
     instructionsExpanded: true,
     rir: '1-2',
     tips: [
@@ -136,11 +139,22 @@ const ExerciseCard: React.FC<{
               href={exercise.videoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl flex items-center justify-center flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+              className="relative w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl flex items-center justify-center flex-shrink-0 cursor-pointer group transition-all duration-200 hover:scale-105"
               style={{ backgroundColor: exercise.badgeColor }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Animated ring on hover */}
+              <div
+                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                style={{
+                  boxShadow: `0 0 0 3px ${exercise.badgeColor}40, 0 0 12px ${exercise.badgeColor}60`,
+                }}
+              />
               <Play className="w-4 h-4 text-white flex-shrink-0" fill="white" />
+              {/* External link indicator */}
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                <ExternalLink className="w-2.5 h-2.5 text-gray-600" />
+              </div>
             </a>
           ) : (
             <div
@@ -183,14 +197,29 @@ const ExerciseCard: React.FC<{
             Workout Instructions
           </span>
 
-          {/* RIR Section */}
-          <div className="flex items-center gap-2 bg-[#FEF3C7] rounded-lg px-3 py-2">
-            <span className="text-[#92400E] text-sm font-semibold font-['DM_Sans']">
-              Esfuerzo:
-            </span>
-            <span className="text-[#92400E] text-sm font-normal font-['DM_Sans']">
-              RIR: {exercise.rir} (Deja {exercise.rir} reps en reserva)
-            </span>
+          {/* RIR and Rest Time Section */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 bg-[#FEF3C7] rounded-lg px-3 py-2">
+              <span className="text-[#92400E] text-sm font-semibold font-['DM_Sans']">
+                Esfuerzo:
+              </span>
+              <span className="text-[#92400E] text-sm font-normal font-['DM_Sans']">
+                RIR: {exercise.rir} (Deja {exercise.rir} reps en reserva)
+              </span>
+            </div>
+            {exercise.restSeconds && exercise.restSeconds > 0 && (
+              <div className="flex items-center gap-2 bg-[#DBEAFE] rounded-lg px-3 py-2">
+                <span className="text-[#1E40AF] text-sm font-semibold font-['DM_Sans']">
+                  Descanso:
+                </span>
+                <span className="text-[#1E40AF] text-sm font-normal font-['DM_Sans']">
+                  {exercise.restSeconds >= 60
+                    ? `${Math.floor(exercise.restSeconds / 60)}:${(exercise.restSeconds % 60).toString().padStart(2, '0')} min`
+                    : `${exercise.restSeconds} seg`
+                  } entre series
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Tips Section */}
@@ -386,6 +415,21 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
     );
   };
 
+  // Save all weights for an exercise to the server
+  const saveExerciseWeights = useCallback(async (exercise: ExerciseData) => {
+    for (const set of exercise.sets) {
+      if (set.kg && set.kg !== '-') {
+        const setId = set.id || `${exercise.id}-${set.setNumber}`;
+        try {
+          await updateSetWeight(setId, set.kg);
+          console.log(`Weight saved for set ${setId}: ${set.kg}`);
+        } catch (error) {
+          console.error(`Failed to save weight for set ${setId}:`, error);
+        }
+      }
+    }
+  }, []);
+
   const handleToggleSet = (exerciseId: string, setNumber: number) => {
     setExerciseList((prev) => {
       let newList = prev.map((ex) =>
@@ -406,6 +450,9 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
       const currentIndex = newList.findIndex((ex) => ex.id === exerciseId);
 
       if (currentExercise && currentExercise.sets.every((set) => set.completed)) {
+        // Save all weights for this exercise to the server
+        saveExerciseWeights(currentExercise);
+
         // Collapse the completed exercise
         newList = newList.map((ex) =>
           ex.id === exerciseId
@@ -447,15 +494,16 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   };
 
   const handleUpdateKg = (exerciseId: string, setNumber: number, kg: string) => {
+    // Only update local state - weights are saved when all sets are completed
     setExerciseList((prev) =>
       prev.map((ex) =>
         ex.id === exerciseId
           ? {
               ...ex,
-              sets: ex.sets.map((set) =>
-                set.setNumber === setNumber
-                  ? { ...set, kg }
-                  : set
+              sets: ex.sets.map((s) =>
+                s.setNumber === setNumber
+                  ? { ...s, kg }
+                  : s
               ),
             }
           : ex

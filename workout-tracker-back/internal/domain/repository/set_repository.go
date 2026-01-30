@@ -10,6 +10,8 @@ import (
 type SetReader interface {
 	// GetByID retrieves a set by its ID
 	GetByID(ctx context.Context, setID string) (*entity.Set, error)
+	// GetLastWeightsForExercise returns the last recorded weight for each set number of an exercise
+	GetLastWeightsForExercise(ctx context.Context, userID, exerciseID string) (map[int]string, error)
 }
 
 // SetWriter defines write operations for sets

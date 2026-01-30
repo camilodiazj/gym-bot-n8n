@@ -3,6 +3,8 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"strconv"
+	"strings"
 
 	"github.com/gymbot/workout-tracker-back/internal/domain/entity"
 	"github.com/gymbot/workout-tracker-back/internal/domain/repository"
@@ -59,34 +61,92 @@ func (r *SetRepository) MarkComplete(ctx context.Context, setID string) error {
 
 // Update updates a set's reps and/or weight
 func (r *SetRepository) Update(ctx context.Context, setID string, reps *int, weight *string) error {
-	// TODO: Create a proper sets tracking table for tracking actual reps/weight performed
-	// For now, we'll create a simple implementation
+	// Parse setID format: "workoutID-setNumber" where workoutID is a UUID (contains dashes)
+	// Find the last dash to separate UUID from set number
+	lastDashIdx := strings.LastIndex(setID, "-")
+	if lastDashIdx == -1 || lastDashIdx == len(setID)-1 {
+		return apperror.NewValidationError("invalid set_id format, expected workoutID-setNumber")
+	}
+	workoutID := setID[:lastDashIdx]
+	setNumber, err := strconv.Atoi(setID[lastDashIdx+1:])
+	if err != nil {
+		return apperror.NewValidationError("invalid set number in set_id")
+	}
 
+	// Get exercise_id and user_id from workouts table
+	var exerciseID, userID string
+	lookupQuery := `SELECT exercise_id, user_id FROM workouts WHERE id = $1`
+	err = r.conn.DB.QueryRowContext(ctx, lookupQuery, workoutID).Scan(&exerciseID, &userID)
+	if err == sql.ErrNoRows {
+		return apperror.NewNotFoundError("workout not found")
+	}
+	if err != nil {
+		return apperror.NewInternalError("failed to lookup workout", err)
+	}
+
+	// Upsert into set_values table
 	query := `
-		INSERT INTO workout_set_values (set_id, actual_reps, actual_weight, updated_at)
-		VALUES ($1, $2, $3, NOW())
-		ON CONFLICT (set_id) DO UPDATE SET
-			actual_reps = COALESCE($2, workout_set_values.actual_reps),
-			actual_weight = COALESCE($3, workout_set_values.actual_weight),
-			updated_at = NOW()
+		INSERT INTO set_values (user_id, exercise_id, workout_id, set_number, actual_weight, actual_reps, recorded_at)
+		VALUES ($1, $2, $3, $4, $5, $6, NOW())
+		ON CONFLICT (workout_id, set_number) DO UPDATE SET
+			actual_weight = COALESCE($5, set_values.actual_weight),
+			actual_reps = COALESCE($6, set_values.actual_reps),
+			recorded_at = NOW()
 	`
 
-	// Handle nil values
-	var repsVal sql.NullInt64
-	var weightVal sql.NullString
+	// Handle nil values - default weight to "-" if not provided
+	weightVal := "-"
+	if weight != nil {
+		weightVal = *weight
+	}
 
+	var repsVal sql.NullInt64
 	if reps != nil {
 		repsVal = sql.NullInt64{Int64: int64(*reps), Valid: true}
 	}
-	if weight != nil {
-		weightVal = sql.NullString{String: *weight, Valid: true}
-	}
 
-	_, err := r.conn.DB.ExecContext(ctx, query, setID, repsVal, weightVal)
+	_, err = r.conn.DB.ExecContext(ctx, query, userID, exerciseID, workoutID, setNumber, weightVal, repsVal)
 	if err != nil {
-		// If table doesn't exist, return success for demo purposes
-		return nil
+		return apperror.NewInternalError("failed to update set values", err)
 	}
 
 	return nil
+}
+
+// GetLastWeightsForExercise returns the last recorded weight for each set number
+// This allows pre-filling weights when user does the same exercise in a future week
+func (r *SetRepository) GetLastWeightsForExercise(ctx context.Context, userID, exerciseID string) (map[int]string, error) {
+	query := `
+		SELECT DISTINCT ON (set_number)
+			set_number,
+			actual_weight
+		FROM set_values
+		WHERE user_id = $1
+		  AND exercise_id = $2
+		  AND actual_weight IS NOT NULL
+		  AND actual_weight != '-'
+		ORDER BY set_number, recorded_at DESC
+	`
+
+	rows, err := r.conn.DB.QueryContext(ctx, query, userID, exerciseID)
+	if err != nil {
+		return nil, apperror.NewInternalError("failed to query last weights", err)
+	}
+	defer rows.Close()
+
+	weights := make(map[int]string)
+	for rows.Next() {
+		var setNumber int
+		var weight string
+		if err := rows.Scan(&setNumber, &weight); err != nil {
+			return nil, apperror.NewInternalError("failed to scan weight row", err)
+		}
+		weights[setNumber] = weight
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, apperror.NewInternalError("error iterating weight rows", err)
+	}
+
+	return weights, nil
 }

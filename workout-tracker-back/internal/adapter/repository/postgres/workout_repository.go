@@ -13,15 +13,16 @@ import (
 
 // WorkoutRepository implements repository.WorkoutRepository using PostgreSQL
 type WorkoutRepository struct {
-	conn *Connection
+	conn    *Connection
+	setRepo repository.SetReader
 }
 
 // Ensure WorkoutRepository implements the interface
 var _ repository.WorkoutRepository = (*WorkoutRepository)(nil)
 
 // NewWorkoutRepository creates a new WorkoutRepository
-func NewWorkoutRepository(conn *Connection) *WorkoutRepository {
-	return &WorkoutRepository{conn: conn}
+func NewWorkoutRepository(conn *Connection, setRepo repository.SetReader) *WorkoutRepository {
+	return &WorkoutRepository{conn: conn, setRepo: setRepo}
 }
 
 // parseReps parses reps from string, handling ranges like "10-12" (returns first number)
@@ -81,10 +82,12 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 	exerciseQuery := `
 		SELECT
 			w.id,
+			w.exercise_id,
 			e.spanish_name,
 			w.sets,
 			w.reps,
 			w.rir,
+			w."rest-seconds",
 			e.link
 		FROM workouts w
 		JOIN exercises e ON w.exercise_id = e.exercise_id
@@ -100,17 +103,17 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 	}
 	defer rows.Close()
 
-	// Badge colors for exercises
-	badgeColors := []string{"#22C55E", "#3B82F6", "#A855F7", "#F59E0B", "#EF4444", "#06B6D4"}
-	colorIdx := 0
+	// Badge color - neutral dark gray for all exercises
+	badgeColor := "#374151"
 
 	for rows.Next() {
-		var workoutID, exerciseName string
+		var workoutID, exerciseID, exerciseName string
 		var setsStr, repsStr string
 		var rir sql.NullString
+		var restSeconds sql.NullInt64
 		var link sql.NullString
 
-		if err := rows.Scan(&workoutID, &exerciseName, &setsStr, &repsStr, &rir, &link); err != nil {
+		if err := rows.Scan(&workoutID, &exerciseID, &exerciseName, &setsStr, &repsStr, &rir, &restSeconds, &link); err != nil {
 			return nil, apperror.NewInternalError("failed to scan exercise", err)
 		}
 
@@ -122,20 +125,34 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		exercise := entity.NewExercise(
 			workoutID,
 			exerciseName,
-			badgeColors[colorIdx%len(badgeColors)],
+			badgeColor,
 			rir.String,
+			int(restSeconds.Int64),
 			link.String,
 		)
-		colorIdx++
 
-		// Create sets for the exercise
+		// Get historical weights for this exercise (from previous weeks)
+		lastWeights := make(map[int]string)
+		if r.setRepo != nil {
+			lastWeights, _ = r.setRepo.GetLastWeightsForExercise(ctx, userID, exerciseID)
+		}
+
+		// Create sets for the exercise with pre-filled weights from history
 		for i := 1; i <= sets; i++ {
+			weight := "-" // Default weight
+			if w, exists := lastWeights[i]; exists {
+				weight = w // Use historical weight for this specific set
+			} else if w, exists := lastWeights[1]; exists && i > 1 {
+				// Fallback to Set 1's weight if specific set not found
+				weight = w
+			}
+
 			set := entity.NewSet(
 				workoutID+"-"+strconv.Itoa(i), // Generate set ID
 				workoutID,
 				i,
 				reps,
-				"-", // Default weight, will be updated by user
+				weight,
 			)
 			exercise.AddSet(*set)
 		}

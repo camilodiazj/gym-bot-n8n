@@ -30,8 +30,8 @@ func main() {
 	log.Println("Connected to database successfully")
 
 	// Initialize repositories (Secondary Adapters)
-	workoutRepo := postgres.NewWorkoutRepository(dbConn)
 	setRepo := postgres.NewSetRepository(dbConn)
+	workoutRepo := postgres.NewWorkoutRepository(dbConn, setRepo)
 
 	// Initialize use cases (Application Layer)
 	getTodayWorkoutUC := usecase.NewGetTodayWorkoutUseCase(workoutRepo)
