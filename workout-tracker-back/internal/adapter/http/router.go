@@ -12,6 +12,7 @@ type Router struct {
 	healthHandler  *handler.HealthHandler
 	workoutHandler *handler.WorkoutHandler
 	setHandler     *handler.SetHandler
+	jwtSecret      string
 }
 
 // NewRouter creates a new Router with all dependencies
@@ -19,11 +20,13 @@ func NewRouter(
 	healthHandler *handler.HealthHandler,
 	workoutHandler *handler.WorkoutHandler,
 	setHandler *handler.SetHandler,
+	jwtSecret string,
 ) *Router {
 	return &Router{
 		healthHandler:  healthHandler,
 		workoutHandler: workoutHandler,
 		setHandler:     setHandler,
+		jwtSecret:      jwtSecret,
 	}
 }
 
@@ -40,18 +43,20 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 	// API v1 routes
 	v1 := r.engine.Group("/api/v1")
 	{
-		// Health check
+		// Health check (public)
 		v1.GET("/health", r.healthHandler.Check)
 
-		// Workout routes
+		// Workout routes (protected by JWT)
 		workouts := v1.Group("/workouts")
+		workouts.Use(middleware.ValidateJWT(r.jwtSecret))
 		{
 			workouts.GET("/today", r.workoutHandler.GetTodayWorkout)
 			workouts.POST("/:workoutId/complete", r.workoutHandler.CompleteWorkout)
 		}
 
-		// Set routes
+		// Set routes (protected by JWT)
 		sets := v1.Group("/sets")
+		sets.Use(middleware.ValidateJWT(r.jwtSecret))
 		{
 			sets.PATCH("/:setId", r.setHandler.Update)
 			sets.PATCH("/:setId/complete", r.setHandler.MarkComplete)

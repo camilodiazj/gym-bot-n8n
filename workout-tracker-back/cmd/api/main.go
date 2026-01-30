@@ -45,7 +45,7 @@ func main() {
 	setHandler := handler.NewSetHandler(markSetCompleteUC, updateSetUC)
 
 	// Initialize router and setup routes
-	router := http.NewRouter(healthHandler, workoutHandler, setHandler)
+	router := http.NewRouter(healthHandler, workoutHandler, setHandler, cfg.JWT.Secret)
 	engine := router.Setup(cfg.Server.GinMode)
 
 	// Start server in a goroutine

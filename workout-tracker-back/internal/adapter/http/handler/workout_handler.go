@@ -26,15 +26,14 @@ func NewWorkoutHandler(
 
 // GetTodayWorkout handles GET /api/v1/workouts/today
 func (h *WorkoutHandler) GetTodayWorkout(c *gin.Context) {
-	// TODO: Get user ID from auth context/token
-	// For now, accept it as a query parameter for testing
-	userID := c.Query("user_id")
-	if userID == "" {
-		response.BadRequest(c, "user_id query parameter is required")
+	// Get user_id from JWT middleware context
+	userID, exists := c.Get("user_id")
+	if !exists {
+		response.BadRequest(c, "user identification required")
 		return
 	}
 
-	result, err := h.getTodayWorkout.Execute(c.Request.Context(), userID)
+	result, err := h.getTodayWorkout.Execute(c.Request.Context(), userID.(string))
 	if err != nil {
 		response.Error(c, err)
 		return

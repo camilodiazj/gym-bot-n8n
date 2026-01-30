@@ -3,7 +3,8 @@ import { WorkoutContent } from './components'
 
 // API Configuration
 const API_BASE_URL = 'http://localhost:8080/api/v1'
-const TEST_USER_ID = '0a220ce8-00e8-4eda-bbf4-112a7fd1e57d'
+// Fallback user ID for development (only used when no token in URL)
+const DEV_USER_ID = '0a220ce8-00e8-4eda-bbf4-112a7fd1e57d'
 
 interface SetData {
   id: string
@@ -61,9 +62,29 @@ function App() {
         setLoading(true)
         setError(null)
 
-        const response = await fetch(
-          `${API_BASE_URL}/workouts/today?user_id=${TEST_USER_ID}`
-        )
+        // Parse token from URL (?t=xxx)
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get('t')
+
+        // Build the API URL based on auth method
+        let apiUrl: string
+        if (token) {
+          // Production: use JWT token
+          apiUrl = `${API_BASE_URL}/workouts/today?token=${encodeURIComponent(token)}`
+        } else {
+          // Development fallback: use user_id directly
+          apiUrl = `${API_BASE_URL}/workouts/today?user_id=${DEV_USER_ID}`
+        }
+
+        const response = await fetch(apiUrl)
+
+        // Handle 401 Unauthorized (expired or invalid token)
+        if (response.status === 401) {
+          setError('El link ha expirado. Solicita uno nuevo via WhatsApp.')
+          setLoading(false)
+          return
+        }
+
         const data: WorkoutResponse = await response.json()
 
         if (data.success && data.data) {
@@ -78,7 +99,7 @@ function App() {
           setError(data.error?.message || 'No workout scheduled for today')
         }
       } catch (err) {
-        setError('Failed to connect to server')
+        setError('Error de conexión. Intenta de nuevo.')
         console.error('Fetch error:', err)
       } finally {
         setLoading(false)
