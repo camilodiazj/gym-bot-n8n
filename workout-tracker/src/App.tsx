@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { WorkoutContent } from './components'
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:8080/api/v1'
-// Fallback user ID for development (only used when no token in URL)
+const API_BASE_URL = 'https://workout-api-148665080566.us-central1.run.app/api/v1'
+// Fallback user ID for development (only used when no code in URL)
 const DEV_USER_ID = '0a220ce8-00e8-4eda-bbf4-112a7fd1e57d'
 
 interface SetData {
@@ -62,15 +62,15 @@ function App() {
         setLoading(true)
         setError(null)
 
-        // Parse token from URL (?t=xxx)
+        // Parse auth from URL (?c=shortcode)
         const params = new URLSearchParams(window.location.search)
-        const token = params.get('t')
+        const code = params.get('c')
 
         // Build the API URL based on auth method
         let apiUrl: string
-        if (token) {
-          // Production: use JWT token
-          apiUrl = `${API_BASE_URL}/workouts/today?token=${encodeURIComponent(token)}`
+        if (code) {
+          // Production: use short code
+          apiUrl = `${API_BASE_URL}/workouts/today?c=${encodeURIComponent(code)}`
         } else {
           // Development fallback: use user_id directly
           apiUrl = `${API_BASE_URL}/workouts/today?user_id=${DEV_USER_ID}`
