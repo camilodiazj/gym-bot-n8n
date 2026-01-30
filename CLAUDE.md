@@ -14,33 +14,52 @@ GymBot is an AI-powered fitness coaching platform built on n8n workflows. It pro
 
 ## Architecture
 
-The n8n workflows are organized in the `/n8n/` directory:
+```
+GymBot/
+├── n8n/                       # n8n workflow automation
+│   ├── running_flows/         # Active production workflows
+│   ├── tests/                 # E2E test runners
+│   ├── wip/                   # Work-in-progress workflows
+│   ├── deprecated/            # Old workflow versions (backup)
+│   └── system_prompts/        # AI agent system prompts
+├── workout-tracker/           # React/TypeScript frontend (Vite)
+├── workout-tracker-back/      # Go/Gin backend (hexagonal architecture)
+├── e2e/                       # E2E test fixtures and documentation
+└── exercises/                 # Exercise data and utilities
+```
 
-```
-n8n/
-├── running_flows/          # Active production workflows
-│   ├── GymRatFlow_Supabase_V2.json
-│   ├── GymRatForm Supabase v2.json
-│   ├── GymBotWorkoutCompletion.json
-│   └── RoutineMorningReminder.json
-├── tests/                  # E2E test runners
-│   ├── GymRatFlow_E2E_TestRunner.json
-│   └── GymBotWorkoutCompletion_E2E_TestRunner.json
-├── deprecated/             # Old workflow versions (backup)
-│   ├── GymRatFlow_Supabase.json
-│   └── GymRatForm Supabase.json
-└── system_prompts/         # AI agent system prompts
-    └── RoutineCreation.txt
-```
+### n8n Workflows
 
 | Workflow | Purpose |
 |----------|---------|
 | `GymRatFlow_Supabase_V2.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
-| `GymRatForm Supabase v2.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) |
-| `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion status, prevents duplicate pending_tasks |
-| `RoutineMorningReminder.json` | Morning motivation (5 AM) - sends daily workout reminders |
+| `GymRatForm Supabase v2.1.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
+| `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
+| `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
 | `GymBotWorkoutCompletion_E2E_TestRunner.json` | E2E test suite for workout completion workflow (4 test cases) |
+
+### Workout Tracker (Web App)
+
+**Frontend** (`workout-tracker/`): React 19 + TypeScript + Vite + Tailwind CSS
+- Exercise tracking UI with set completion
+- Deployed to Firebase Hosting
+
+**Backend** (`workout-tracker-back/`): Go + Gin with hexagonal architecture
+- REST API for workout data
+- Connects to Supabase PostgreSQL
+- Deployed to Google Cloud Run
+
+```
+workout-tracker-back/
+├── cmd/api/              # Entry point
+├── internal/
+│   ├── domain/           # Core business logic (entities, repository interfaces, services)
+│   ├── application/      # Use cases and DTOs
+│   ├── adapter/          # HTTP handlers and PostgreSQL repository
+│   └── config/
+└── pkg/                  # Shared utilities (apperror, response)
+```
 
 ### Data Flow Patterns
 
@@ -234,10 +253,46 @@ New Code node that transforms user profile data for AI personalization:
 +---------------------------------------------------------------------+
 ```
 
+## Development Commands
+
+### Frontend (workout-tracker/)
+
+```bash
+cd workout-tracker
+npm install              # Install dependencies
+npm run dev              # Start dev server (http://localhost:5173)
+npm run build            # Build for production
+npm test                 # Run tests (Vitest)
+npm run test:watch       # Watch mode
+npm run test:coverage    # Tests with coverage report
+```
+
+### Backend (workout-tracker-back/)
+
+```bash
+cd workout-tracker-back
+make deps                # Install Go dependencies
+make run                 # Run server (http://localhost:8080)
+make build               # Build binary
+make test                # Run tests
+make test-coverage       # Tests with coverage
+make lint                # Run linter (requires golangci-lint)
+make fmt                 # Format code
+make dev                 # Hot reload (requires air)
+```
+
+### Deployment
+
+```bash
+./deploy.sh              # Build frontend + deploy both to Cloud Run
+```
+
+### n8n Workflows
+
+Workflows are JSON files—import directly into n8n instance and configure credentials.
+
 ## Development Notes
 
-- **No traditional build system**: Workflows are JSON files deployed directly to n8n
-- **All workflows are active**: Check `"active": true` in each JSON
 - **Language**: All system prompts and user-facing content must be in Spanish
 - **Timezone**: Configured for America/Bogota
 - **Credentials**: OpenAI, Google Gemini, Supabase, WhatsApp APIs (managed in n8n)
@@ -296,75 +351,4 @@ e2e/
 
 ## Changelog
 
-### 2026-01-28 (Priority-Based Duration Validation - KAN-51)
-- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en GymRatForm Supabase v2.1.json:
-  - **Priorización muscular**: Protege ejercicios que trabajan `priority_muscles_en` del usuario
-  - **Sistema de scoring**: Cada ejercicio recibe un puntaje basado en rol + prioridad muscular:
-    | Rol | No Prioritario | Prioritario |
-    |-----|----------------|-------------|
-    | isolation | 0 | 10 |
-    | core | 20 | 30 |
-    | compound | 40 | 50 |
-  - **Fase 1 - Reducción de series**: Reduce sets en ejercicios de menor puntaje primero
-  - **Fase 2 - Eliminación**: Si aún excede tiempo, elimina ejercicios (nunca compound prioritarios)
-  - **Mínimo dinámico**: 3 sets (semanas 1-3 hipertrofia), 2 sets (semana 4 descarga)
-  - **Tiempo de transición**: Actualizado a 120 seg (2 min) para setup de máquinas
-  - **Protección absoluta**: Ejercicios compound + músculo prioritario NUNCA se eliminan
-  - **Mínimo ejercicios**: Nunca deja menos de 4 ejercicios por día
-- **Lookup de ejercicios**: Obtiene `main_muscle` y `secondary_muscles` de `GetExercisesByPattern`
-- **Logging mejorado**: Registra acciones de reducción/eliminación con puntajes de prioridad
-
-### 2026-01-27 (Workout Time Validation - KAN-51)
-- **Nuevo nodo `ValidateWorkoutDuration` en GymRatForm Supabase v2.json**: Sistema determinístico de validación de tiempo que garantiza que las rutinas diarias no excedan el tiempo disponible del usuario:
-  - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
-  - Parseo de tempo formato "X-Y-Z-W" (ej: "3-0-1-0" = 4 seg/rep)
-  - Algoritmo de reducción determinística: Si rutina excede tiempo objetivo, reduce series gradualmente respetando prioridad (isolation > core > compound)
-  - Respeta restricción dura: Nunca reduce por debajo de 2 sets por ejercicio
-  - Mapeo de `session_duration_mins` a minutos objetivo:
-    - "45-60 minutos" → 55 min
-    - "60-75 minutos" → 70 min
-    - "Más de 75 minutos" → 85 min
-- **Flujo actualizado**: `Code in JavaScript1` → `ValidateWorkoutDuration` → `Create a row`
-- **Logging detallado**: Cada validación registra duración inicial, final, ajustes realizados y cumplimiento de objetivo
-- **Usuario de prueba**: Creado `570000000020` (Test Short Session) con sesión de 45-60 min para testing
-- **Beneficios**:
-  - Solución 100% determinística (mismo input → mismo output)
-  - No depende de AI Agent para cumplir restricciones de tiempo
-  - Mejora adherencia al plan (workouts que caben en tiempo disponible del usuario)
-
-### 2026-01-25 (Personalization v2)
-- **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando los 22 campos de `users_gym_profile`:
-  - Nuevo nodo `ProcessUserPreferences`: Transforma preferencias del usuario (español→inglés, mapeo de músculos)
-  - Mapeo de músculos: "Glúteo, pierna" → ["Glutes", "Quads", "Hamstrings", "Calfs"]
-  - Tier de experiencia: Principiante/Intermedio/Avanzado basado en `training_experience`
-  - Modificador de volumen: Ajusta series según `session_duration_mins` (0.85x para sesiones cortas)
-  - Restricciones de salud: Códigos A-E mapean a restricciones específicas (ej: C = evitar overhead)
-- **System prompt mejorado** (`RoutineCreation.txt`): Reglas de personalización para el AI Agent:
-  - Exclusión obligatoria de músculos no deseados
-  - Priorización por músculos favoritos (main_muscle o secondary_muscles)
-  - Adaptación por sexo biológico (F→glúteos, M→pecho/espalda)
-  - Adaptación por experiencia (beginner→máquinas, advanced→barbell)
-- **Reorganización de directorio n8n/**:
-  - `running_flows/`: Workflows activos en producción
-  - `tests/`: E2E test runners
-  - `deprecated/`: Versiones anteriores (backup)
-  - `system_prompts/`: Prompts de AI agents
-
-### 2026-01-25 (Earlier)
-- **Fix duplicate pending_tasks en GymBotWorkoutCompletion**: Reestructurado workflow para prevenir creación de pending_tasks duplicados:
-  - Agregado nodo `PendingTasks` (Supabase GET) para consultar pending_tasks existentes
-  - Agregado nodo `Merge` con `joinMode: "keepNonMatches"` que actúa como LEFT ANTI JOIN
-  - Solo procesa workouts que NO tienen pending_task existente (evita duplicados y mensajes WhatsApp repetidos)
-  - `Create_Pending_Task` ahora usa `$('Merge').item.json.*` para datos del workout
-- **Nuevo E2E Test Runner para GymBotWorkoutCompletion**: Creado `GymBotWorkoutCompletion_E2E_TestRunner.json` con 4 test cases:
-  - TC_WC_001: No crea pending_task duplicado (DUPLICATE_PREVENTION)
-  - TC_WC_002: Crea pending_task cuando no existe (TASK_CREATION)
-  - TC_WC_003: No procesa usuarios sin workout hoy (FILTER)
-  - TC_WC_004: No procesa workouts ya completados (FILTER)
-- **Fix timezone en E2E tests**: Cambiado `CURRENT_DATE` a `(NOW() AT TIME ZONE 'America/Bogota')::date` en:
-  - `e2e/test_data_setup.sql` - Todas las queries de schedule y pending_tasks
-  - `n8n/GymRatFlow_E2E_TestRunner.json` - Queries de cleanup
-  - Esto evita el desfase de 5 horas entre UTC (Supabase) y hora local de Colombia
-- **Fix validación TC006**: Actualizada regla de validación para soportar nuevo formato de rutina:
-  - Antes: Buscaba "RUTINA" o "rutina"
-  - Ahora: Busca "plan para hoy", "rutina", o "RUTINA" + "Series", "series", o "Repeticiones"
+See [CHANGELOG.md](CHANGELOG.md) for version history.

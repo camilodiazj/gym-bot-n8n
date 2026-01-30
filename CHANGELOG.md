@@ -2,6 +2,61 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [1.7.0] - 2026-01-28
+
+### Added - Priority-Based Duration Validation (KAN-51)
+
+- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en GymRatForm Supabase v2.1.json:
+  - **Priorización muscular**: Protege ejercicios que trabajan `priority_muscles_en` del usuario
+  - **Sistema de scoring**: Cada ejercicio recibe un puntaje basado en rol + prioridad muscular (isolation: 0/10, core: 20/30, compound: 40/50)
+  - **Fase 1 - Reducción de series**: Reduce sets en ejercicios de menor puntaje primero
+  - **Fase 2 - Eliminación**: Si aún excede tiempo, elimina ejercicios (nunca compound prioritarios)
+  - **Mínimo dinámico**: 3 sets (semanas 1-3 hipertrofia), 2 sets (semana 4 descarga)
+  - **Tiempo de transición**: Actualizado a 120 seg (2 min) para setup de máquinas
+  - **Protección absoluta**: Ejercicios compound + músculo prioritario NUNCA se eliminan
+  - **Mínimo ejercicios**: Nunca deja menos de 4 ejercicios por día
+- **Lookup de ejercicios**: Obtiene `main_muscle` y `secondary_muscles` de `GetExercisesByPattern`
+- **Logging mejorado**: Registra acciones de reducción/eliminación con puntajes de prioridad
+
+## [1.6.0] - 2026-01-27
+
+### Added - Workout Time Validation (KAN-51)
+
+- **Nuevo nodo `ValidateWorkoutDuration`** en GymRatForm Supabase v2.json: Sistema determinístico de validación de tiempo
+  - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
+  - Parseo de tempo formato "X-Y-Z-W" (ej: "3-0-1-0" = 4 seg/rep)
+  - Algoritmo de reducción determinística: reduce series respetando prioridad (isolation > core > compound)
+  - Nunca reduce por debajo de 2 sets por ejercicio
+  - Mapeo de `session_duration_mins`: "45-60 min" → 55 min, "60-75 min" → 70 min, "75+ min" → 85 min
+- **Flujo actualizado**: `Code in JavaScript1` → `ValidateWorkoutDuration` → `Create a row`
+- **Usuario de prueba**: Creado `570000000020` (Test Short Session) con sesión de 45-60 min
+
+## [1.5.0] - 2026-01-25
+
+### Added - Personalization v2
+
+- **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando 22 campos de `users_gym_profile`
+- **Nuevo nodo `ProcessUserPreferences`**: Transforma preferencias del usuario (español→inglés, mapeo de músculos)
+  - Mapeo de músculos: "Glúteo, pierna" → ["Glutes", "Quads", "Hamstrings", "Calfs"]
+  - Tier de experiencia basado en `training_experience`
+  - Modificador de volumen según `session_duration_mins` (0.85x para sesiones cortas)
+  - Restricciones de salud: Códigos A-E mapean a restricciones específicas
+- **System prompt mejorado** (`RoutineCreation.txt`): Reglas de personalización para el AI Agent
+
+### Fixed
+
+- **Fix duplicate pending_tasks en GymBotWorkoutCompletion**: Agregado nodo `Merge` con `keepNonMatches` como LEFT ANTI JOIN
+- **Fix timezone en E2E tests**: Cambiado `CURRENT_DATE` a `(NOW() AT TIME ZONE 'America/Bogota')::date`
+- **Fix validación TC006**: Actualizada regla para soportar nuevo formato de rutina
+
+### Added - E2E Testing
+
+- **Nuevo E2E Test Runner para GymBotWorkoutCompletion**: 4 test cases (TC_WC_001-004)
+
+### Changed
+
+- **Reorganización de directorio n8n/**: `running_flows/`, `tests/`, `deprecated/`, `system_prompts/`
+
 ## [1.4.0] - 2026-01-24
 
 ### Added - E2E Test Suite v4.0
