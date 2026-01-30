@@ -1258,10 +1258,10 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "Oryd6zGQCVQ73KCH_9Lcx",
+          "value": "523zkE5vZ7aVXJk5k4GAG",
           "mode": "list",
-          "cachedResultUrl": "/workflow/Oryd6zGQCVQ73KCH_9Lcx",
-          "cachedResultName": "Learning Project — GymRatForm Supabase v2"
+          "cachedResultUrl": "/workflow/523zkE5vZ7aVXJk5k4GAG",
+          "cachedResultName": "Learning Project — GymRatForm Supabase v2.1"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -1295,7 +1295,7 @@
         25920
       ],
       "id": "b420004d-65fa-430f-a5ed-2175671e4f4d",
-      "name": "Call 'GymRatForm Supabase v2'",
+      "name": "Call 'GymRatForm Supabase v2.1'",
       "alwaysOutputData": true
     }
   ],
@@ -1323,6 +1323,40 @@
               "timestamp": "1769085000",
               "text": {
                 "body": "Hola, quiero empezar a entrenar"
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "WhatsApp_Trigger1": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "573213413664",
+            "phone_number_id": "914510145083991"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "Helena Jaimes"
+              },
+              "wa_id": "573208780020"
+            }
+          ],
+          "messages": [
+            {
+              "from": "573208780020",
+              "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUM0M0I5QjgwNjE1QjdFQzY3RkQ1OTQ1REQwMjJEQ0EA",
+              "timestamp": "1769776491",
+              "text": {
+                "body": "Rutina para hoy"
               },
               "type": "text"
             }
@@ -1770,13 +1804,7 @@
     },
     "When Executed by Another Workflow": {
       "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Send message4": {
@@ -1849,7 +1877,7 @@
       "main": [
         [
           {
-            "node": "Call 'GymRatForm Supabase v2'",
+            "node": "Call 'GymRatForm Supabase v2.1'",
             "type": "main",
             "index": 0
           }
@@ -1863,7 +1891,7 @@
         ]
       ]
     },
-    "Call 'GymRatForm Supabase v2'": {
+    "Call 'GymRatForm Supabase v2.1'": {
       "main": [
         [
           {
@@ -1880,7 +1908,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "8e7a6637-877d-4f61-a897-191400df6122",
+  "versionId": "a983f069-6e62-42cb-b7dd-2b409673558e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        300,
-        400
+        304,
+        -352
       ],
-      "id": "schedule-trigger-wt",
+      "id": "901b8558-95bb-4c27-a66b-8d5a0fd24251",
       "name": "Schedule Trigger"
     },
     {
@@ -29,10 +29,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        520,
-        400
+        528,
+        -352
       ],
-      "id": "get-today-workouts",
+      "id": "9e6bcd4a-b9ce-4b8c-bc60-d88556c057ec",
       "name": "Get Today Workouts",
       "credentials": {
         "postgres": {
@@ -40,19 +40,6 @@
           "name": "Supabase Memory"
         }
       }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Generate JWT token for each user\nconst crypto = require('crypto');\n\n// Get JWT_SECRET from environment variable\nconst JWT_SECRET = $env.JWT_SECRET;\n\nif (!JWT_SECRET) {\n  throw new Error('JWT_SECRET environment variable is not set');\n}\n\n// Base64URL encode function\nfunction base64UrlEncode(str) {\n  return Buffer.from(str)\n    .toString('base64')\n    .replace(/\\+/g, '-')\n    .replace(/\\//g, '_')\n    .replace(/=/g, '');\n}\n\n// Create HMAC-SHA256 signature\nfunction createSignature(input, secret) {\n  return crypto\n    .createHmac('sha256', secret)\n    .update(input)\n    .digest('base64')\n    .replace(/\\+/g, '-')\n    .replace(/\\//g, '_')\n    .replace(/=/g, '');\n}\n\n// Generate JWT token\nfunction generateJWT(userId, secret) {\n  const header = {\n    alg: 'HS256',\n    typ: 'JWT'\n  };\n\n  const now = Math.floor(Date.now() / 1000);\n  const payload = {\n    sub: userId,\n    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD\n    iat: now,\n    exp: now + (24 * 60 * 60) // 24 hours from now\n  };\n\n  const encodedHeader = base64UrlEncode(JSON.stringify(header));\n  const encodedPayload = base64UrlEncode(JSON.stringify(payload));\n  const signature = createSignature(`${encodedHeader}.${encodedPayload}`, secret);\n\n  return `${encodedHeader}.${encodedPayload}.${signature}`;\n}\n\n// Process each item\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const userId = item.json.user_id;\n  const token = generateJWT(userId, JWT_SECRET);\n  \n  // Build the workout URL\n  const workoutUrl = `https://app.gymbot.co/w?t=${token}`;\n  \n  results.push({\n    json: {\n      ...item.json,\n      token: token,\n      workout_url: workoutUrl\n    }\n  });\n}\n\nreturn results;"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        740,
-        400
-      ],
-      "id": "generate-jwt",
-      "name": "Generate JWT Token"
     },
     {
       "parameters": {
@@ -65,10 +52,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        960,
-        400
+        1392,
+        -352
       ],
-      "id": "send-whatsapp",
+      "id": "d830a404-c787-46ad-9d38-f1747d058c58",
       "name": "Send WhatsApp",
       "webhookId": "wt-webhook-id",
       "credentials": {
@@ -77,9 +64,71 @@
           "name": "WhatsApp account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO magic_links (code, user_id)\nVALUES (\n  substr(md5(random()::text || '{{ $json.user_id }}' || now()::text), 1, 6),\n  '{{ $json.user_id }}'\n)\nON CONFLICT (code) DO UPDATE SET\n  user_id = EXCLUDED.user_id,\n  created_at = NOW(),\n  expires_at = NOW() + INTERVAL '24 hours',\n  used_at = NULL\nRETURNING code, user_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        752,
+        -352
+      ],
+      "id": "9c2de3ff-291f-4548-adad-839a03f3517d",
+      "name": "Create Magic Link1",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "user_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        976,
+        -352
+      ],
+      "id": "eb6e3226-2c12-4a52-9a9e-3a2c13253797",
+      "name": "Merge Data1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://workout-tracker-69b08.web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -352
+      ],
+      "id": "ac87e1a7-2b0d-4130-ae22-19645394c485",
+      "name": "Build URL1"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Get Today Workouts": [
+      {
+        "json": {
+          "day_routine_id": "4cb7f6d1-c4d2-478b-bb00-74ee788faba9",
+          "user_id": "11772575-dfa4-45f8-8111-29d97c3fc3c2",
+          "week": "4",
+          "session_name": "Full Body B",
+          "full_phone_number": "573506267523",
+          "full_name": "Camilo Diaz Jaimes"
+        }
+      }
+    ]
+  },
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -96,14 +145,41 @@
       "main": [
         [
           {
-            "node": "Generate JWT Token",
+            "node": "Create Magic Link1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Data1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Generate JWT Token": {
+    "Create Magic Link1": {
+      "main": [
+        [
+          {
+            "node": "Merge Data1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Data1": {
+      "main": [
+        [
+          {
+            "node": "Build URL1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build URL1": {
       "main": [
         [
           {
@@ -120,14 +196,15 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "v1-workout-tracker-jwt",
+  "versionId": "2c61adc6-ddf6-417b-adfe-1ba6685919d3",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "morning-reminder-workout-tracker",
+  "id": "jiyLktUlw6jqDxC5Xlp_k",
   "tags": [
     {
+      "updatedAt": "2026-01-12T17:40:14.959Z",
+      "createdAt": "2026-01-12T17:40:14.959Z",
       "id": "TUr1XJVoKGmfIrDX",
       "name": "gym-bot"
     }

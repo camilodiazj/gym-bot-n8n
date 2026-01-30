@@ -1,5 +1,5 @@
 {
-  "name": "GymRatForm Supabase v2",
+  "name": "GymRatForm Supabase v2.1",
   "nodes": [
     {
       "parameters": {
@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        1408,
-        272
+        1744,
+        -16
       ],
-      "id": "28da3855-8271-46f3-9e0a-2a386b88db74",
+      "id": "992a2be5-7a6d-463b-b0a4-abf81ba9ce36",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -26,10 +26,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -400,
-        144
+        -64,
+        -144
       ],
-      "id": "fae7cd1a-8ce2-442c-928f-4994598dc2b2",
+      "id": "469a93a0-7d8a-481f-953b-ab6df2576588",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2048,
-        144
+        2384,
+        -144
       ],
-      "id": "b9bae8f0-f12c-4853-9ba3-021bf798795a",
+      "id": "da12bfef-8e7d-4653-864b-0fc167675336",
       "name": "Code in JavaScript1"
     },
     {
@@ -53,10 +53,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        896,
-        128
+        1232,
+        -160
       ],
-      "id": "4fc12e9a-f098-473f-b09a-068459d54f8a",
+      "id": "0eae7320-e19d-4a24-96cd-2e8f63ba1f75",
       "name": "Loop Over Items"
     },
     {
@@ -68,10 +68,10 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        1200,
-        0
+        1536,
+        -288
       ],
-      "id": "ef449ef0-bb36-44b1-9f91-e3d5a6930b7c",
+      "id": "0d1f14e7-f059-4664-a548-de2ad3b0f4a3",
       "name": "AI Transform"
     },
     {
@@ -81,10 +81,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1520,
-        96
+        1856,
+        -192
       ],
-      "id": "c21c9380-942f-4a97-8e8c-6d837071a597",
+      "id": "293467be-6a53-4c67-a849-7acbe886136c",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -97,10 +97,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -32,
-        144
+        304,
+        -144
       ],
-      "id": "0c610b2c-1068-4d9d-860a-3468b233eb32",
+      "id": "2d5b7790-884c-4a06-809b-fc14d0a77bbf",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -176,
-        144
+        160,
+        -144
       ],
-      "id": "462e04ec-1ff1-4f9f-aea9-ac7461adefde",
+      "id": "e4d7f578-60c2-4a72-bcb1-e5d6a002c830",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -163,10 +163,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1136,
-        240
+        1472,
+        -48
       ],
-      "id": "76e3cdce-c46d-4b30-8018-121bd0e7d38f",
+      "id": "a974b226-8000-48d5-b54f-d6d386be55d5",
       "name": "GetExercisesByPattern",
       "executeOnce": true,
       "credentials": {
@@ -216,10 +216,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        496,
-        480
+        832,
+        192
       ],
-      "id": "14576b74-09b6-4aa2-af10-f03a260c272c",
+      "id": "d60f97e4-a50a-466b-aa1e-74c16a89aa61",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -257,10 +257,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        320,
-        352
+        656,
+        64
       ],
-      "id": "583e152c-fda4-42ff-9d70-506f92540902",
+      "id": "bf4aa77a-8624-4081-9e0a-ad7ec7e4b288",
       "name": "UserExists"
     },
     {
@@ -279,10 +279,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        160,
-        256
+        496,
+        -32
       ],
-      "id": "ea212b14-6036-4455-99da-5eb1f7f14cc1",
+      "id": "6e5ef003-cf5f-49dc-95cc-cd627e08a1dc",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -332,10 +332,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        544,
-        304
+        880,
+        16
       ],
-      "id": "a2e1d13e-ee8b-430d-ae5b-32373068b28c",
+      "id": "0f3e9a2c-6a7c-472b-af41-057e46e0e368",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -351,10 +351,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        672,
-        128
+        1008,
+        -160
       ],
-      "id": "707be942-5ec0-416f-b1ba-15291b4bef02",
+      "id": "cc6bed0a-f5b9-44ea-b76d-fa7861f595a4",
       "name": "Merge"
     },
     {
@@ -413,10 +413,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2512,
-        144
+        2848,
+        -144
       ],
-      "id": "4c62a711-c113-4345-9591-81e21fc62b31",
+      "id": "3fa509f1-fecd-4493-b7e9-2cb6173474ba",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -442,10 +442,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1792,
-        144
+        2128,
+        -144
       ],
-      "id": "4adfc25b-9e5f-46fe-9bbd-7b681941bfb6",
+      "id": "2569581d-5dce-4825-9c3f-128705051cad",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -470,10 +470,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -800,
-        144
+        -464,
+        -144
       ],
-      "id": "e924f898-6534-4047-9faa-d75237fb31eb",
+      "id": "6be1a9c8-08da-4c2b-84f8-180a34203d95",
       "name": "input",
       "executeOnce": true
     },
@@ -493,10 +493,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -624,
-        144
+        -288,
+        -144
       ],
-      "id": "4a4a7fc4-21ba-4c32-a13b-811c64ea4c8f",
+      "id": "f6a7b9e2-dda9-4581-b51b-f764d83eed7e",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -516,10 +516,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        2752,
-        144
+        3088,
+        -144
       ],
-      "id": "dbbab61c-62ed-432c-b003-ecc4d7beeb7f",
+      "id": "61847f4a-3bcd-4354-b411-d60c7bf72a5b",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -537,10 +537,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2256,
-        144
+        2592,
+        -144
       ],
-      "id": "9007b975-9599-478e-bc04-b9a45266c731",
+      "id": "4c230345-a261-4311-a331-42768021b30a",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -550,10 +550,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2960,
-        160
+        3296,
+        -128
       ],
-      "id": "f5f74511-2931-4dee-a548-f25837c531a7",
+      "id": "658afc89-f5b1-44db-aafd-eb66b22978bd",
       "name": "Filtered Message2"
     },
     {
@@ -564,10 +564,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1280,
-        480
+        1616,
+        192
       ],
-      "id": "035f6e5f-19b2-4887-95fd-c05934bca88b",
+      "id": "798ee7ec-4cb2-4b49-90b3-ce3dfdf06ed7",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -581,7 +581,7 @@
     "input": [
       {
         "json": {
-          "whatsapp_id": 570000000020
+          "whatsapp_id": 573123623296
         }
       }
     ]
@@ -838,12 +838,14 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "63bd242c-a2a9-465b-8dfe-43c8edfaeb87",
+  "versionId": "08e4b309-63c6-4abf-92ef-518ebc05ce8f",
   "meta": {
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
