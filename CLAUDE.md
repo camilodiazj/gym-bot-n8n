@@ -47,14 +47,16 @@ n8n/
 1. **User Onboarding**: WhatsApp → KYC Agent → Form submission → Profile creation → Routine generation
 2. **Daily Routine**: User message → Intention detection → Routine retrieval → Formatted WhatsApp delivery
 3. **Completion Tracking**: 8 PM trigger → Query uncompleted workouts → AI follow-up → Status update
+4. **Mesocycle Renewal**: Week 4 completed → Detect completion → Offer options (maintain/change) → Update plan/workouts
 
 ### Multi-Agent Architecture
 
 Each workflow uses specialized AI agents with Spanish system prompts:
 - **KYC Agent**: Collects user profile information
-- **Intention Agent**: Classifies user messages
+- **Intention Agent**: Classifies user messages (including RENOVAR_MESOCICLO)
 - **Confirmation Agent**: Handles schedule confirmations
 - **Workout Display Agent**: Formats and presents routines
+- **Renewal Agent**: Handles mesocycle renewal conversation (maintain routine, change days, rotate exercises)
 
 Agents use Postgres-based chat memory for conversation context persistence.
 
@@ -66,7 +68,7 @@ Agents use Postgres-based chat memory for conversation context persistence.
 |-------|---------|-------------|
 | `users` | Core user identity | `user_id` (UUID PK), `full_name`, `email`, `cel_number`, `full_phone_number`, `timezone` |
 | `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (PK), fitness metrics, goals, preferences (22 columns) |
-| `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status` |
+| `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status`, `mesocycle_number`, `last_renewal_date` |
 
 ### Routine Template System
 
@@ -293,6 +295,42 @@ e2e/
 > **Important**: Phone numbers `57000000000X` are reserved for testing. Do not use for real users.
 
 ## Changelog
+
+### 2026-01-28 (Priority-Based Duration Validation - KAN-51)
+- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en GymRatForm Supabase v2.1.json:
+  - **Priorización muscular**: Protege ejercicios que trabajan `priority_muscles_en` del usuario
+  - **Sistema de scoring**: Cada ejercicio recibe un puntaje basado en rol + prioridad muscular:
+    | Rol | No Prioritario | Prioritario |
+    |-----|----------------|-------------|
+    | isolation | 0 | 10 |
+    | core | 20 | 30 |
+    | compound | 40 | 50 |
+  - **Fase 1 - Reducción de series**: Reduce sets en ejercicios de menor puntaje primero
+  - **Fase 2 - Eliminación**: Si aún excede tiempo, elimina ejercicios (nunca compound prioritarios)
+  - **Mínimo dinámico**: 3 sets (semanas 1-3 hipertrofia), 2 sets (semana 4 descarga)
+  - **Tiempo de transición**: Actualizado a 120 seg (2 min) para setup de máquinas
+  - **Protección absoluta**: Ejercicios compound + músculo prioritario NUNCA se eliminan
+  - **Mínimo ejercicios**: Nunca deja menos de 4 ejercicios por día
+- **Lookup de ejercicios**: Obtiene `main_muscle` y `secondary_muscles` de `GetExercisesByPattern`
+- **Logging mejorado**: Registra acciones de reducción/eliminación con puntajes de prioridad
+
+### 2026-01-27 (Workout Time Validation - KAN-51)
+- **Nuevo nodo `ValidateWorkoutDuration` en GymRatForm Supabase v2.json**: Sistema determinístico de validación de tiempo que garantiza que las rutinas diarias no excedan el tiempo disponible del usuario:
+  - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
+  - Parseo de tempo formato "X-Y-Z-W" (ej: "3-0-1-0" = 4 seg/rep)
+  - Algoritmo de reducción determinística: Si rutina excede tiempo objetivo, reduce series gradualmente respetando prioridad (isolation > core > compound)
+  - Respeta restricción dura: Nunca reduce por debajo de 2 sets por ejercicio
+  - Mapeo de `session_duration_mins` a minutos objetivo:
+    - "45-60 minutos" → 55 min
+    - "60-75 minutos" → 70 min
+    - "Más de 75 minutos" → 85 min
+- **Flujo actualizado**: `Code in JavaScript1` → `ValidateWorkoutDuration` → `Create a row`
+- **Logging detallado**: Cada validación registra duración inicial, final, ajustes realizados y cumplimiento de objetivo
+- **Usuario de prueba**: Creado `570000000020` (Test Short Session) con sesión de 45-60 min para testing
+- **Beneficios**:
+  - Solución 100% determinística (mismo input → mismo output)
+  - No depende de AI Agent para cumplir restricciones de tiempo
+  - Mejora adherencia al plan (workouts que caben en tiempo disponible del usuario)
 
 ### 2026-01-25 (Personalization v2)
 - **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando los 22 campos de `users_gym_profile`:

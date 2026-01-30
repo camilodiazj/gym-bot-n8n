@@ -14,3 +14,9 @@
 # n8n
 .n8n/
 .claude
+
+# Separate projects
+n8n-mcp/
+
+# Temp test files
+test/

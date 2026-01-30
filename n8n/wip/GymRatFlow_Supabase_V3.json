@@ -1,5 +1,5 @@
 {
-  "name": "GymRatFlow_Supabase_V2",
+  "name": "GymRatFlow_Supabase_V3",
   "nodes": [
     {
       "parameters": {
@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -96,
-        24656
+        -1824,
+        2256
       ],
-      "id": "4b349e39-3f4a-4159-8aa3-c845943c2412",
+      "id": "81395f08-eeca-4fb1-9cd6-9a7e126412de",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        304,
-        24656
+        -1424,
+        2256
       ],
-      "id": "47e80ede-5689-4f56-a96b-21998b743d07",
+      "id": "d33c50ea-6fb0-4f48-b0b5-3d2a3305cea0",
       "name": "Send message",
       "webhookId": "a66bf4fa-1891-4ebe-b8cb-fb5b047f17bf",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -1184,
-        25296
+        -2912,
+        2896
       ],
-      "id": "26b00b71-ef15-42a1-b914-9880401f0c3a",
+      "id": "88f937c2-9252-4027-be44-c3637385e97d",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -1392,
-        25504
+        -3008,
+        3088
       ],
-      "id": "2e9e6dd5-eb48-4e30-8807-fd50a64a4a77",
+      "id": "92dc702d-4039-417a-810e-c660afbd994e",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -800,
-        25264
+        -2528,
+        2864
       ],
-      "id": "3282b2c1-2b32-44f7-9b2b-1ded9f28d2d3",
+      "id": "95086d43-c7aa-4bbc-b40a-bc93ef3965d4",
       "name": "Send message2",
       "webhookId": "70f4697f-fadf-46f7-854c-dad58f2cf662",
       "credentials": {
@@ -121,10 +121,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -3664,
-        25216
+        -5392,
+        2816
       ],
-      "id": "9dc10586-7149-42e5-b7a1-7ecebd6536e4",
+      "id": "0d05ce10-bdac-46b0-a083-c8481e651543",
       "name": "WhatsApp_Trigger1",
       "webhookId": "67d708ee-d81c-47a3-9efb-42d45227ce28",
       "credentials": {
@@ -150,10 +150,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -3088,
-        25232
+        -4816,
+        2832
       ],
-      "id": "8125ccb5-8a70-4c92-86dd-260023953893",
+      "id": "5d901239-e1ae-4e9d-a3d6-32a7f327c39d",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -180,10 +180,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2592,
-        25200
+        -4320,
+        2800
       ],
-      "id": "2644a5a7-456e-420c-894b-ced17e3e4dc3",
+      "id": "980dff8f-744d-4eb1-8dae-9e91d9ad57f6",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -204,10 +204,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -1056,
-        24928
+        -2784,
+        2528
       ],
-      "id": "634ceadd-8c01-4449-800b-48ad1f14b7a2",
+      "id": "b9b52f95-fafb-4686-a5c1-5cc49dea5d6f",
       "name": "Send message1",
       "webhookId": "9d5075d4-b4aa-49af-87d5-ece739728767",
       "executeOnce": true,
@@ -227,10 +227,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        112,
-        24896
+        -1616,
+        2496
       ],
-      "id": "012945c4-3299-4f8d-bbdc-c5285fcca981",
+      "id": "0b80c4a5-e6fc-49d7-be5a-f1c954efe683",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -244,16 +244,16 @@
         "promptType": "define",
         "text": "={{ $('If').item.json.messages[0].text.body }}",
         "options": {
-          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY o CHAT), sin explicación adicional."
+          "systemMessage": "Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- RENOVAR_MESOCICLO\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\nRENOVAR_MESOCICLO: El usuario menciona explícitamente querer cambiar su rutina, rotar ejercicios, o renovar mesociclo.\nEjemplos: \"Quiero cambiar mi rutina\", \"Nuevos ejercicios\", \"Renovar mesociclo\", \"Cambiar días\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY, RENOVAR_MESOCICLO o CHAT), sin explicación adicional."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -880,
-        24256
+        -2608,
+        1856
       ],
-      "id": "a213f213-ac0a-431f-aa4e-dc85b05642a9",
+      "id": "6f84e2a6-80f9-474b-b681-c591cefc2d1a",
       "name": "Intention_Agent"
     },
     {
@@ -269,10 +269,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -912,
-        24560
+        -2640,
+        2160
       ],
-      "id": "a967c19c-2313-4821-aaa2-01b410a661ad",
+      "id": "186a0131-9af9-44c4-8860-80f38de2b4d2",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -357,6 +357,30 @@
               },
               "renameOutput": true,
               "outputKey": "VER_RUTINA_DE_HOY"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "renovar-mesociclo-001",
+                    "leftValue": "={{ $json.output.trim() }}",
+                    "rightValue": "RENOVAR_MESOCICLO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RENOVAR_MESOCICLO"
             }
           ]
         },
@@ -365,10 +389,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -512,
-        24192
+        -2240,
+        1792
       ],
-      "id": "932fbd8f-8448-4a4b-b978-fe7cc78d034d",
+      "id": "650a2221-df83-4143-b0c5-84dbbe508ad9",
       "name": "Switch"
     },
     {
@@ -382,10 +406,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        128,
-        24160
+        -1600,
+        1760
       ],
-      "id": "ab5f1976-0718-414b-a652-7cc21b63d2ae",
+      "id": "282daee9-7ddc-447a-95f8-f674e495af0f",
       "name": "Send message3",
       "webhookId": "58bd9ca9-ac11-45d6-85eb-a6e01e2b3f83",
       "credentials": {
@@ -404,10 +428,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -752,
-        24544
+        -2480,
+        2144
       ],
-      "id": "972d4ac7-b0e7-49d1-a0ff-a3bb379ac708",
+      "id": "68b02d06-fa4a-4a33-9693-82e14bdc37b8",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -425,10 +449,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -64,
-        24352
+        -1792,
+        1952
       ],
-      "id": "58fc72d5-7579-47b7-9e22-4e31695a5f4b",
+      "id": "be088622-4987-4829-ae2e-997412e588f8",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -445,10 +469,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -32,
-        24896
+        -1760,
+        2496
       ],
-      "id": "f1dccc37-a25c-4511-b173-aee3d1577a03",
+      "id": "605cddb9-94c0-4961-a5f9-9632efb54efa",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -485,10 +509,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1456,
-        24800
+        -3184,
+        2400
       ],
-      "id": "fc3735fe-15a2-4dda-8d06-6abc0a54eb79",
+      "id": "834b85f9-7a4d-489f-8515-541fb4b56534",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -501,10 +525,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1856,
-        25360
+        -3584,
+        2960
       ],
-      "id": "460fe228-b54d-4b8e-aa16-bcde047a3d36",
+      "id": "514beb8f-2cb2-4217-bbae-ca8a78fe5ca5",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -522,10 +546,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1648,
-        25456
+        -3376,
+        3056
       ],
-      "id": "4f9cf571-a042-4c52-a71b-ec818e4f7a02",
+      "id": "ef2d0452-75fe-4b2a-a6a7-55290d9e47b3",
       "name": "Merge"
     },
     {
@@ -556,10 +580,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2256,
-        25200
+        -3984,
+        2800
       ],
-      "id": "b174f164-b990-41d8-9841-645e390e8860",
+      "id": "61029df1-aa94-447c-aaf0-ba92b0519d03",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -584,10 +608,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1872,
-        25568
+        -3600,
+        3168
       ],
-      "id": "d4c43195-dd9b-48be-a9ed-b936213e17fd",
+      "id": "2040fd96-6bfc-4358-85a4-9519a754ce6c",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -606,10 +630,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1888,
-        25776
+        -3616,
+        3376
       ],
-      "id": "c0f367db-4574-487c-ad42-d66276c89793",
+      "id": "4ebc9daf-5c22-4a59-b6f1-6750ae4cb1ac",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -627,10 +651,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -1168,
-        25504
+        -2896,
+        3104
       ],
-      "id": "8f3e024e-587a-46c9-a7f2-9a8e454d861a",
+      "id": "bf57cb31-fe73-4e26-8a79-e37b2813c11f",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -674,10 +698,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -1024,
-        25504
+        -2752,
+        3104
       ],
-      "id": "e8b27f96-24f0-4fc5-9798-550283acc66b",
+      "id": "d49f7475-3fd7-478f-af8c-0df6e6b1da24",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -694,10 +718,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2560,
-        26320
+        -4288,
+        3920
       ],
-      "id": "9730e825-4250-40e7-8f34-5b3918dba766",
+      "id": "428ae359-f7e7-4949-8319-0edfc4aeecc0",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -715,10 +739,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -2400,
-        26320
+        -4128,
+        3920
       ],
-      "id": "4d4bc2d7-a22f-48fb-92cc-b01b48a066ec",
+      "id": "540d2081-f490-4962-abc0-4c6a79cce277",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -755,10 +779,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2880,
-        25232
+        -4608,
+        2832
       ],
-      "id": "1892422e-5edc-4ad3-8379-7b661622bd52",
+      "id": "e72470b1-ca73-4bd5-97fe-51fa5a607058",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -773,10 +797,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2112,
-        26064
+        -3840,
+        3664
       ],
-      "id": "a1a18163-aae4-43a1-a06a-45622854347c",
+      "id": "d3dc3cd7-df4b-406b-8792-01cfcb7a87d3",
       "name": "Send message4",
       "webhookId": "75bbb77c-4f4a-4944-806b-5739a648050a",
       "credentials": {
@@ -797,10 +821,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -2416,
-        26064
+        -4144,
+        3664
       ],
-      "id": "803b883a-7a7a-4cd5-8fc4-50aa3b004707",
+      "id": "285764ed-8243-4653-b15d-8441e9a2ae8d",
       "name": "KYC Agent"
     },
     {
@@ -814,10 +838,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -208,
-        24160
+        -1936,
+        1760
       ],
-      "id": "24b0a030-cb01-48a4-a5d2-848ac2e9a956",
+      "id": "bd3898c5-7b3c-4115-af01-380a741752f6",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -920,10 +944,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -2240,
-        26320
+        -3968,
+        3920
       ],
-      "id": "5622370e-608a-45a1-bf5a-1f1c0285cf66",
+      "id": "10b040b5-1029-4780-b98b-6fcac824e104",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -939,10 +963,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -224,
-        24864
+        -1952,
+        2464
       ],
-      "id": "11e91711-fe6f-4d54-93a5-f56f89bfc248",
+      "id": "918f60d0-740c-40f7-91af-4b182d23eca8",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -958,10 +982,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1856,
-        24800
+        -3584,
+        2400
       ],
-      "id": "2ef1a54b-8d86-4f9f-a996-fdf0a6b93da7",
+      "id": "0a6849e4-55b4-4dce-b597-6d8ce97651c9",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1002,10 +1026,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3344,
-        25232
+        -5072,
+        2832
       ],
-      "id": "cd1969b9-88bc-4540-a24d-7f9f82033421",
+      "id": "9b64b795-c6cb-461b-ac22-d4df251c24b1",
       "name": "If"
     },
     {
@@ -1032,10 +1056,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2784,
-        25040
+        -4512,
+        2640
       ],
-      "id": "cdd09998-a5b1-4da1-8300-a6e014fd2968",
+      "id": "5ea2ace6-a79c-4e28-94b8-c0a64a3df0a8",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1073,10 +1097,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2592,
-        25040
+        -4320,
+        2640
       ],
-      "id": "5a58990b-ee95-421a-8467-248aec7fa15b",
+      "id": "4031826b-d92f-4ec8-a651-c435e4117e30",
       "name": "Has_Pending_Task"
     },
     {
@@ -1088,10 +1112,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -16,
-        23952
+        -1744,
+        1552
       ],
-      "id": "abfdca6b-1711-453d-89c1-0ea961de66fe",
+      "id": "d5b053d5-f29c-4aad-acc5-b67e2e245f05",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1107,10 +1131,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -3552,
-        25408
+        -5280,
+        3008
       ],
-      "id": "e581f349-abc8-4f78-b68f-bb06a939e2c5",
+      "id": "af6e07f9-99d1-44f3-9077-7767165709cb",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -1120,10 +1144,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3088,
-        25424
+        -4816,
+        3024
       ],
-      "id": "6acd702f-9e32-4bbb-991b-3aca16bd7459",
+      "id": "401327e1-714d-4378-9e69-cbf4d66decad",
       "name": "Filtered Message"
     },
     {
@@ -1133,10 +1157,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        512,
-        24656
+        -1216,
+        2256
       ],
-      "id": "34984912-8aed-4f76-a640-9cee01f362cb",
+      "id": "fd61bdf7-a88d-457a-81bd-36e61e037133",
       "name": "Filtered Message1"
     },
     {
@@ -1146,10 +1170,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1120,
-        26096
+        -2848,
+        3696
       ],
-      "id": "40772482-410b-46de-863e-ad30ec52e21f",
+      "id": "c1d03053-edf2-40cb-9a96-bec51742d9e6",
       "name": "Filtered Message2"
     },
     {
@@ -1159,10 +1183,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        320,
-        24160
+        -1408,
+        1760
       ],
-      "id": "855f0d54-c3bf-4526-b023-7056b1212ad3",
+      "id": "116c9ed5-384a-4340-b1c6-d846a60401a0",
       "name": "Filtered Message3"
     },
     {
@@ -1172,10 +1196,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -592,
-        25264
+        -2320,
+        2864
       ],
-      "id": "310a59d4-ec47-45cc-8fb0-de9e4bf2f5b8",
+      "id": "5b12a7ad-bfb9-43e0-a4fd-30a43ad466db",
       "name": "Filtered Message4"
     },
     {
@@ -1185,10 +1209,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -816,
-        24928
+        -2544,
+        2528
       ],
-      "id": "794e141d-cb33-4ce2-a7d5-a6d95ba320d8",
+      "id": "238f9775-e286-4f76-b904-151635656df0",
       "name": "Filtered Message5"
     },
     {
@@ -1207,10 +1231,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1904,
-        26064
+        -3632,
+        3664
       ],
-      "id": "4abbb40e-f32c-4af3-be43-20a18045ed42",
+      "id": "02646753-0006-429a-b11c-8892a355b441",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1248,20 +1272,20 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1712,
-        26064
+        -3440,
+        3664
       ],
-      "id": "6d7c3fe4-09c3-4f2e-9bb8-1000c6af1d89",
+      "id": "0065a532-2c6d-496d-b24e-bbc138366f7b",
       "name": "If1"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "523zkE5vZ7aVXJk5k4GAG",
+          "value": "GNsEjMIwcFwKU3UHyQpJi",
           "mode": "list",
-          "cachedResultUrl": "/workflow/523zkE5vZ7aVXJk5k4GAG",
-          "cachedResultName": "Learning Project — GymRatForm Supabase v2.1"
+          "cachedResultUrl": "/workflow/GNsEjMIwcFwKU3UHyQpJi",
+          "cachedResultName": "Learning Project — GymRatForm Supabase v3"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -1291,11 +1315,127 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -1408,
-        25920
+        -3136,
+        3520
       ],
-      "id": "b420004d-65fa-430f-a5ed-2175671e4f4d",
-      "name": "Call 'GymRatForm Supabase v2.1'",
+      "id": "79c455a2-a4c2-4b54-b41c-0cc14094f76d",
+      "name": "Call 'GymRatForm Supabase v3'",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Verificar si el mesociclo está completo (semana 4)\nconst daysPerWeek = $items('Week_Schedule')[0].json.days_per_week;\nconst finishedWorkouts = $('User_Finished_Workouts').all();\n\nconst week4Completed = finishedWorkouts.filter(\n  w => w.json.week === 4 && w.json.Completed === true\n).length;\n\nconst mesocycleComplete = week4Completed >= daysPerWeek;\n\nreturn [{\n  json: {\n    mesocycle_complete: mesocycleComplete,\n    week4_completed: week4Completed,\n    days_per_week: daysPerWeek\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3376,
+        3200
+      ],
+      "id": "72298d76-edd6-451d-a2c7-96a32a87f7db",
+      "name": "Check_Mesocycle_Complete",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "mesocycle-complete-check-001",
+              "leftValue": "={{ $json.mesocycle_complete }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3184,
+        3200
+      ],
+      "id": "087d26e1-4dbd-4556-a7e7-1a1141edc1ad",
+      "name": "If_Mesocycle_Complete",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0AgDhZ5kP7F9xJWnJET-j",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/0AgDhZ5kP7F9xJWnJET-j",
+          "cachedResultName": "Learning Project — GymBotMesocycleRenewal"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $items('GetUser')[0].json.user_id }}",
+            "full_name": "={{ $items('GetUser')[0].json.full_name }}",
+            "whatsapp_id": "={{ $items('If')[0].json.contacts[0].wa_id }}",
+            "phone_number_id": "={{ $items('If')[0].json.metadata.phone_number_id }}",
+            "user_message": "={{ $items('If')[0].json.messages[0].text.body }}",
+            "days_per_week": "={{ $items('Week_Schedule')[0].json.days_per_week }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "type": "string"
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "type": "string"
+            },
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "type": "string"
+            },
+            {
+              "id": "phone_number_id",
+              "displayName": "phone_number_id",
+              "type": "string"
+            },
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "type": "string"
+            },
+            {
+              "id": "days_per_week",
+              "displayName": "days_per_week",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -2096,
+        3328
+      ],
+      "id": "40d010f3-6959-48c1-835c-577ffa4837f9",
+      "name": "Execute_Mesocycle_Renewal",
       "alwaysOutputData": true
     }
   ],
@@ -1323,40 +1463,6 @@
               "timestamp": "1769085000",
               "text": {
                 "body": "Hola, quiero empezar a entrenar"
-              },
-              "type": "text"
-            }
-          ],
-          "field": "messages"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
-    "WhatsApp_Trigger1": [
-      {
-        "json": {
-          "messaging_product": "whatsapp",
-          "metadata": {
-            "display_phone_number": "573213413664",
-            "phone_number_id": "914510145083991"
-          },
-          "contacts": [
-            {
-              "profile": {
-                "name": "Helena Jaimes"
-              },
-              "wa_id": "573208780020"
-            }
-          ],
-          "messages": [
-            {
-              "from": "573208780020",
-              "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUM0M0I5QjgwNjE1QjdFQzY3RkQ1OTQ1REQwMjJEQ0EA",
-              "timestamp": "1769776491",
-              "text": {
-                "body": "Rutina para hoy"
               },
               "type": "text"
             }
@@ -1496,6 +1602,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1620,7 +1733,7 @@
       "main": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Check_Mesocycle_Complete",
             "type": "main",
             "index": 0
           }
@@ -1804,7 +1917,13 @@
     },
     "When Executed by Another Workflow": {
       "main": [
-        []
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Send message4": {
@@ -1877,7 +1996,7 @@
       "main": [
         [
           {
-            "node": "Call 'GymRatForm Supabase v2.1'",
+            "node": "Call 'GymRatForm Supabase v3'",
             "type": "main",
             "index": 0
           }
@@ -1891,11 +2010,29 @@
         ]
       ]
     },
-    "Call 'GymRatForm Supabase v2.1'": {
+    "Check_Mesocycle_Complete": {
       "main": [
         [
           {
-            "node": "Filtered Message2",
+            "node": "If_Mesocycle_Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Mesocycle_Complete": {
+      "main": [
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
             "type": "main",
             "index": 0
           }
@@ -1903,17 +2040,16 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "a983f069-6e62-42cb-b7dd-2b409673558e",
+  "versionId": "2e8fc720-9bd2-4f2d-85a7-6b669072643d",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "xBIHfN9K6F2OaKRh",
+  "id": "r8SxFuwYHp6Q_r5Cok5oc",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",
