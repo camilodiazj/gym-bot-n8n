@@ -1,0 +1,135 @@
+{
+  "name": "MorningReminder-WorkoutTracker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        400
+      ],
+      "id": "schedule-trigger-wt",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')\n  AND uws.\"Completed\" = false",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        520,
+        400
+      ],
+      "id": "get-today-workouts",
+      "name": "Get Today Workouts",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate JWT token for each user\nconst crypto = require('crypto');\n\n// Get JWT_SECRET from environment variable\nconst JWT_SECRET = $env.JWT_SECRET;\n\nif (!JWT_SECRET) {\n  throw new Error('JWT_SECRET environment variable is not set');\n}\n\n// Base64URL encode function\nfunction base64UrlEncode(str) {\n  return Buffer.from(str)\n    .toString('base64')\n    .replace(/\\+/g, '-')\n    .replace(/\\//g, '_')\n    .replace(/=/g, '');\n}\n\n// Create HMAC-SHA256 signature\nfunction createSignature(input, secret) {\n  return crypto\n    .createHmac('sha256', secret)\n    .update(input)\n    .digest('base64')\n    .replace(/\\+/g, '-')\n    .replace(/\\//g, '_')\n    .replace(/=/g, '');\n}\n\n// Generate JWT token\nfunction generateJWT(userId, secret) {\n  const header = {\n    alg: 'HS256',\n    typ: 'JWT'\n  };\n\n  const now = Math.floor(Date.now() / 1000);\n  const payload = {\n    sub: userId,\n    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD\n    iat: now,\n    exp: now + (24 * 60 * 60) // 24 hours from now\n  };\n\n  const encodedHeader = base64UrlEncode(JSON.stringify(header));\n  const encodedPayload = base64UrlEncode(JSON.stringify(payload));\n  const signature = createSignature(`${encodedHeader}.${encodedPayload}`, secret);\n\n  return `${encodedHeader}.${encodedPayload}.${signature}`;\n}\n\n// Process each item\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const userId = item.json.user_id;\n  const token = generateJWT(userId, JWT_SECRET);\n  \n  // Build the workout URL\n  const workoutUrl = `https://app.gymbot.co/w?t=${token}`;\n  \n  results.push({\n    json: {\n      ...item.json,\n      token: token,\n      workout_url: workoutUrl\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        400
+      ],
+      "id": "generate-jwt",
+      "name": "Generate JWT Token"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "914510145083991",
+        "recipientPhoneNumber": "={{ $json.full_phone_number }}",
+        "textBody": "=¡Hola, {{ $json.full_name }}! 🔥\n\nTu rutina de hoy está lista:\n\n👉 {{ $json.workout_url }}\n\n🏋️ *{{ $json.session_name }}* - Semana {{ $json.week }}\n\n¡Dale con toda! 💪",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        400
+      ],
+      "id": "send-whatsapp",
+      "name": "Send WhatsApp",
+      "webhookId": "wt-webhook-id",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Today Workouts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Today Workouts": {
+      "main": [
+        [
+          {
+            "node": "Generate JWT Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate JWT Token": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "v1-workout-tracker-jwt",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "morning-reminder-workout-tracker",
+  "tags": [
+    {
+      "id": "TUr1XJVoKGmfIrDX",
+      "name": "gym-bot"
+    }
+  ]
+}
