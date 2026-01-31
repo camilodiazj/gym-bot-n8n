@@ -6,7 +6,7 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 6
+              "triggerAtHour": 5
             }
           ]
         }
@@ -14,50 +14,41 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        304,
-        -352
+        1456,
+        624
       ],
-      "id": "901b8558-95bb-4c27-a66b-8d5a0fd24251",
-      "name": "Schedule Trigger"
+      "id": "9211191c-e8aa-4358-acd0-7b27c80a0c42",
+      "name": "Schedule Trigger1"
     },
     {
       "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')\n  AND uws.\"Completed\" = false",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        528,
-        -352
-      ],
-      "id": "9e6bcd4a-b9ce-4b8c-bc60-d88556c057ec",
-      "name": "Get Today Workouts",
-      "credentials": {
-        "postgres": {
-          "id": "vZLJtIWG5nYXMez4",
-          "name": "Supabase Memory"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "send",
         "phoneNumberId": "914510145083991",
         "recipientPhoneNumber": "={{ $json.full_phone_number }}",
-        "textBody": "=¡Hola, {{ $json.full_name }}! 🔥\n\nTu rutina de hoy está lista:\n\n👉 {{ $json.workout_url }}\n\n🏋️ *{{ $json.session_name }}* - Semana {{ $json.week }}\n\n¡Dale con toda! 💪",
-        "additionalFields": {}
+        "template": "prueba_2|es_CO",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.full_name }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1392,
-        -352
+        1856,
+        624
       ],
-      "id": "d830a404-c787-46ad-9d38-f1747d058c58",
-      "name": "Send WhatsApp",
-      "webhookId": "wt-webhook-id",
+      "id": "e93c80a0-b161-48c2-b2e5-b341582641da",
+      "name": "Send template",
+      "webhookId": "21c6af23-a721-439e-9a25-b77d22bf95e4",
+      "executeOnce": false,
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -68,122 +59,43 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO magic_links (code, user_id)\nVALUES (\n  substr(md5(random()::text || '{{ $json.user_id }}' || now()::text), 1, 6),\n  '{{ $json.user_id }}'\n)\nON CONFLICT (code) DO UPDATE SET\n  user_id = EXCLUDED.user_id,\n  created_at = NOW(),\n  expires_at = NOW() + INTERVAL '24 hours',\n  used_at = NULL\nRETURNING code, user_id",
+        "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')\n  AND uws.\"Completed\" = false",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        752,
-        -352
+        1648,
+        624
       ],
-      "id": "9c2de3ff-291f-4548-adad-839a03f3517d",
-      "name": "Create Magic Link1",
+      "id": "dce4aa5c-3261-404c-9ef6-98c3b3c6e7a0",
+      "name": "Get Today Workouts1",
       "credentials": {
         "postgres": {
           "id": "vZLJtIWG5nYXMez4",
           "name": "Supabase Memory"
         }
       }
-    },
-    {
-      "parameters": {
-        "mode": "combine",
-        "fieldsToMatchString": "user_id",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3,
-      "position": [
-        976,
-        -352
-      ],
-      "id": "eb6e3226-2c12-4a52-9a9e-3a2c13253797",
-      "name": "Merge Data1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://workout-tracker-69b08.web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1184,
-        -352
-      ],
-      "id": "ac87e1a7-2b0d-4130-ae22-19645394c485",
-      "name": "Build URL1"
     }
   ],
-  "pinData": {
-    "Get Today Workouts": [
-      {
-        "json": {
-          "day_routine_id": "4cb7f6d1-c4d2-478b-bb00-74ee788faba9",
-          "user_id": "11772575-dfa4-45f8-8111-29d97c3fc3c2",
-          "week": "4",
-          "session_name": "Full Body B",
-          "full_phone_number": "573506267523",
-          "full_name": "Camilo Diaz Jaimes"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
-    "Schedule Trigger": {
+    "Schedule Trigger1": {
       "main": [
         [
           {
-            "node": "Get Today Workouts",
+            "node": "Get Today Workouts1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Today Workouts": {
+    "Get Today Workouts1": {
       "main": [
         [
           {
-            "node": "Create Magic Link1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Merge Data1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Magic Link1": {
-      "main": [
-        [
-          {
-            "node": "Merge Data1",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Merge Data1": {
-      "main": [
-        [
-          {
-            "node": "Build URL1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Build URL1": {
-      "main": [
-        [
-          {
-            "node": "Send WhatsApp",
+            "node": "Send template",
             "type": "main",
             "index": 0
           }
@@ -191,16 +103,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "2c61adc6-ddf6-417b-adfe-1ba6685919d3",
+  "versionId": "1396afa4-8930-4e14-a85b-339ce02ffd61",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "jiyLktUlw6jqDxC5Xlp_k",
+  "id": "ER2AFhRPmzx9i6xk6DbVv",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",

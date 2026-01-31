@@ -26,10 +26,11 @@ func NewWorkoutRepository(conn *Connection, setRepo repository.SetReader) *Worko
 }
 
 // parseReps parses reps from string, handling ranges like "10-12" (returns first number)
+// Supports both hyphen (-) and en-dash (–)
 func parseReps(repsStr string) int {
-	// Handle range format "10-12" -> take first number
+	// Handle range format "10-12" or "10–12" -> take first number
 	for i, c := range repsStr {
-		if c == '-' && i > 0 {
+		if (c == '-' || c == '–') && i > 0 {
 			reps, _ := strconv.Atoi(repsStr[:i])
 			return reps
 		}
@@ -41,11 +42,19 @@ func parseReps(repsStr string) int {
 
 // parseRepsRange parses reps from string, returning min and max values
 // For "10-12" returns (10, 12), for "10" returns (10, 10)
+// Supports both hyphen (-) and en-dash (–)
 func parseRepsRange(repsStr string) (min, max int) {
 	for i, c := range repsStr {
-		if c == '-' && i > 0 {
+		if (c == '-' || c == '–') && i > 0 {
 			min, _ = strconv.Atoi(repsStr[:i])
-			max, _ = strconv.Atoi(repsStr[i+1:])
+			// Skip the separator character (can be multi-byte for en-dash)
+			rest := repsStr[i:]
+			if rest[0] == '-' {
+				max, _ = strconv.Atoi(rest[1:])
+			} else {
+				// en-dash is 3 bytes in UTF-8
+				max, _ = strconv.Atoi(rest[3:])
+			}
 			return min, max
 		}
 	}
