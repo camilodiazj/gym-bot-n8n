@@ -221,7 +221,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "select day_name as session_name, week, spanish_name, main_muscle, reps, sets, rir, link, \"rest-seconds\" from workouts\njoin exercises using(exercise_id)\nwhere user_id = '{{ $fromAI('user_id', 'UUID del usuario', 'string') }}'\nand day_name = '{{ $fromAI('session_name', 'Nombre de la sesión del día, ejemplo: Día 1 - Pecho y Tríceps', 'string') }}'\nand week = {{ $fromAI('week', 'Número de semana', 'number') }}",
+        "query": "select day_name as session_name, week, spanish_name, main_muscle, reps, sets, rir, link, \"rest-seconds\" from workouts\njoin exercises using(exercise_id)\nwhere user_id = '{{ $fromAI('user_id', 'UUID del usuario', 'string') }}'\nand day_name = '{{ $fromAI('session_name', 'Nombre de la sesión del día, ejemplo: Día 1 - Pecho y Tríceps', 'string') }}'\nand week = {{ $fromAI('week', 'Número de semana', 'number') }}\norder by exercise_order",
         "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
