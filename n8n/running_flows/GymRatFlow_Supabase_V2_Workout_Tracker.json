@@ -1,5 +1,5 @@
 {
-  "name": "GymRatFlow_Supabase_V2",
+  "name": "GymRatFlow_Supabase_V2_Workout_Tracker",
   "nodes": [
     {
       "parameters": {
@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -96,
-        24656
+        -2432,
+        24848
       ],
-      "id": "4b349e39-3f4a-4159-8aa3-c845943c2412",
+      "id": "e7591ecc-c9df-42a6-b014-4d80994ab465",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -24,18 +24,18 @@
         "operation": "send",
         "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
         "recipientPhoneNumber": "={{$items(\"If\")[0].json.contacts[0].wa_id}}",
-        "textBody": "={{ $json.output }}",
+        "textBody": "={{ $json.output }}\n\nEmpezar mi rutina 👉 {{ $json.workout_url }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        304,
-        24656
+        -1424,
+        24848
       ],
-      "id": "47e80ede-5689-4f56-a96b-21998b743d07",
+      "id": "ee12022d-1b77-47d0-b360-997d7a38d5e2",
       "name": "Send message",
-      "webhookId": "a66bf4fa-1891-4ebe-b8cb-fb5b047f17bf",
+      "webhookId": "10fb6670-6b0a-4139-b31e-e009fca86100",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -1184,
-        25296
+        -3520,
+        25488
       ],
-      "id": "26b00b71-ef15-42a1-b914-9880401f0c3a",
+      "id": "c7896ac4-f6ce-477e-ade0-331acf230f8d",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -1392,
-        25504
+        -3728,
+        25696
       ],
-      "id": "2e9e6dd5-eb48-4e30-8807-fd50a64a4a77",
+      "id": "2e483f52-beaa-4e57-baec-3e87c9dc25ac",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,12 +98,12 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -800,
-        25264
+        -3136,
+        25456
       ],
-      "id": "3282b2c1-2b32-44f7-9b2b-1ded9f28d2d3",
+      "id": "e7b47ede-6330-47cb-b140-cb0ec4f438bd",
       "name": "Send message2",
-      "webhookId": "70f4697f-fadf-46f7-854c-dad58f2cf662",
+      "webhookId": "16f0732e-1b44-4c37-9a47-4d32112c6e78",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -121,12 +121,12 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -3664,
-        25216
+        -6000,
+        25408
       ],
-      "id": "9dc10586-7149-42e5-b7a1-7ecebd6536e4",
+      "id": "6475015d-9cb3-4f4b-9652-c851d734c117",
       "name": "WhatsApp_Trigger1",
-      "webhookId": "67d708ee-d81c-47a3-9efb-42d45227ce28",
+      "webhookId": "8bf52a73-7fd4-4762-ba3f-f77e5b9b8f7a",
       "credentials": {
         "whatsAppTriggerApi": {
           "id": "oKhoyxAukdcY8qMi",
@@ -150,10 +150,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -3088,
-        25232
+        -5424,
+        25424
       ],
-      "id": "8125ccb5-8a70-4c92-86dd-260023953893",
+      "id": "d3e3bad0-cb0d-4712-829c-8bde35e00cc5",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -180,10 +180,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2592,
-        25200
+        -4928,
+        25392
       ],
-      "id": "2644a5a7-456e-420c-894b-ced17e3e4dc3",
+      "id": "f1bcc943-43ef-420f-9d32-6d8e1c65a2e2",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -204,12 +204,12 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -1056,
-        24928
+        -3392,
+        25120
       ],
-      "id": "634ceadd-8c01-4449-800b-48ad1f14b7a2",
+      "id": "24dc7eee-185d-47ea-8d70-a7ed6a6d9ee4",
       "name": "Send message1",
-      "webhookId": "9d5075d4-b4aa-49af-87d5-ece739728767",
+      "webhookId": "45dd2929-4021-4904-ae82-c5f878f9a340",
       "executeOnce": true,
       "credentials": {
         "whatsAppApi": {
@@ -227,10 +227,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        112,
-        24896
+        -2224,
+        25088
       ],
-      "id": "012945c4-3299-4f8d-bbdc-c5285fcca981",
+      "id": "1c43a014-a424-4b0e-9b9b-1d37f38ea557",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -250,10 +250,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -880,
-        24256
+        -3216,
+        24448
       ],
-      "id": "a213f213-ac0a-431f-aa4e-dc85b05642a9",
+      "id": "f409bee4-c5fe-4580-9890-d9c4b24b331a",
       "name": "Intention_Agent"
     },
     {
@@ -269,10 +269,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -912,
-        24560
+        -3248,
+        24752
       ],
-      "id": "a967c19c-2313-4821-aaa2-01b410a661ad",
+      "id": "2b8b0a81-1c22-4d94-bc9c-62a47c0b0bf0",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -365,10 +365,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -512,
-        24192
+        -2848,
+        24384
       ],
-      "id": "932fbd8f-8448-4a4b-b978-fe7cc78d034d",
+      "id": "8fc0ecb3-0f14-48ad-873a-11577cece84d",
       "name": "Switch"
     },
     {
@@ -382,12 +382,12 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        128,
-        24160
+        -2208,
+        24352
       ],
-      "id": "ab5f1976-0718-414b-a652-7cc21b63d2ae",
+      "id": "bcd9f017-b3a0-4b11-ba2a-b92de0a3b0ae",
       "name": "Send message3",
-      "webhookId": "58bd9ca9-ac11-45d6-85eb-a6e01e2b3f83",
+      "webhookId": "d91b39ce-c157-41c0-806d-e89f891c234b",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -404,10 +404,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -752,
-        24544
+        -3088,
+        24736
       ],
-      "id": "972d4ac7-b0e7-49d1-a0ff-a3bb379ac708",
+      "id": "33e5f0cd-0205-4bf2-8511-9db7f6739e3f",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -425,10 +425,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -64,
-        24352
+        -2400,
+        24544
       ],
-      "id": "58fc72d5-7579-47b7-9e22-4e31695a5f4b",
+      "id": "3e9f7976-73f2-49bb-af6f-2203e6612613",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -445,10 +445,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -32,
-        24896
+        -2400,
+        25088
       ],
-      "id": "f1dccc37-a25c-4511-b173-aee3d1577a03",
+      "id": "c5c86c71-cdcf-4f62-b72b-dabfd6ba406e",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -485,10 +485,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1456,
-        24800
+        -3792,
+        24992
       ],
-      "id": "fc3735fe-15a2-4dda-8d06-6abc0a54eb79",
+      "id": "19731297-d46a-4c91-9915-2b7b61e1e1e3",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -501,10 +501,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1856,
-        25360
+        -4192,
+        25552
       ],
-      "id": "460fe228-b54d-4b8e-aa16-bcde047a3d36",
+      "id": "b7fc3375-4818-47e8-915b-92c3dd604bb5",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -522,10 +522,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1648,
-        25456
+        -3984,
+        25648
       ],
-      "id": "4f9cf571-a042-4c52-a71b-ec818e4f7a02",
+      "id": "bef6325d-62a2-422a-b559-d8a0667817f7",
       "name": "Merge"
     },
     {
@@ -556,10 +556,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2256,
-        25200
+        -4592,
+        25392
       ],
-      "id": "b174f164-b990-41d8-9841-645e390e8860",
+      "id": "f15a87fe-d05b-485a-8207-0bc1f046fede",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -584,10 +584,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1872,
-        25568
+        -4208,
+        25760
       ],
-      "id": "d4c43195-dd9b-48be-a9ed-b936213e17fd",
+      "id": "7017dbe0-5a4f-408b-a07b-b4a3898f83c2",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -606,10 +606,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1888,
-        25776
+        -4224,
+        25968
       ],
-      "id": "c0f367db-4574-487c-ad42-d66276c89793",
+      "id": "cb61c648-eba2-4412-baaa-1a4146499a26",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -627,10 +627,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -1168,
-        25504
+        -3504,
+        25696
       ],
-      "id": "8f3e024e-587a-46c9-a7f2-9a8e454d861a",
+      "id": "b26dbaba-36f5-45ea-9a46-1bf9193113cd",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -674,10 +674,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -1024,
-        25504
+        -3360,
+        25696
       ],
-      "id": "e8b27f96-24f0-4fc5-9798-550283acc66b",
+      "id": "8dee9b37-6bad-47ac-9daf-978b4db80cf7",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -694,10 +694,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2560,
-        26320
+        -4896,
+        26512
       ],
-      "id": "9730e825-4250-40e7-8f34-5b3918dba766",
+      "id": "0b9ecde7-bc19-43f2-a270-293d8cb7b1ab",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -715,10 +715,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -2400,
-        26320
+        -4736,
+        26512
       ],
-      "id": "4d4bc2d7-a22f-48fb-92cc-b01b48a066ec",
+      "id": "c9a83a31-0d8d-457b-9327-2f579adaf4cd",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -755,10 +755,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2880,
-        25232
+        -5216,
+        25424
       ],
-      "id": "1892422e-5edc-4ad3-8379-7b661622bd52",
+      "id": "265d1c8d-b007-401c-9414-01755df68fd6",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -773,12 +773,12 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2112,
-        26064
+        -4448,
+        26256
       ],
-      "id": "a1a18163-aae4-43a1-a06a-45622854347c",
+      "id": "a0bdaf5a-0fe0-4755-971f-7de60d6736d9",
       "name": "Send message4",
-      "webhookId": "75bbb77c-4f4a-4944-806b-5739a648050a",
+      "webhookId": "62006b73-0285-4ac9-ad46-2b327a2d5be5",
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -797,10 +797,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -2416,
-        26064
+        -4752,
+        26256
       ],
-      "id": "803b883a-7a7a-4cd5-8fc4-50aa3b004707",
+      "id": "48b143e5-8bc9-4ddf-a697-eef08323495c",
       "name": "KYC Agent"
     },
     {
@@ -814,10 +814,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -208,
-        24160
+        -2544,
+        24352
       ],
-      "id": "24b0a030-cb01-48a4-a5d2-848ac2e9a956",
+      "id": "a65724a8-cd4c-491d-b8c7-d38cae1eb57f",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -920,10 +920,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -2240,
-        26320
+        -4576,
+        26512
       ],
-      "id": "5622370e-608a-45a1-bf5a-1f1c0285cf66",
+      "id": "682d98c5-e22d-4b46-8346-244ceb772dff",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -939,10 +939,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -224,
-        24864
+        -2560,
+        25056
       ],
-      "id": "11e91711-fe6f-4d54-93a5-f56f89bfc248",
+      "id": "d275a71e-fd44-4d46-8f12-dc03fe8460cf",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -958,10 +958,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1856,
-        24800
+        -4192,
+        24992
       ],
-      "id": "2ef1a54b-8d86-4f9f-a996-fdf0a6b93da7",
+      "id": "e226b5cd-7b02-4ee9-aea1-0bbb5fcc510f",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1002,10 +1002,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3344,
-        25232
+        -5680,
+        25424
       ],
-      "id": "cd1969b9-88bc-4540-a24d-7f9f82033421",
+      "id": "38e4daad-bd63-42cf-8e00-1404ef75d9c7",
       "name": "If"
     },
     {
@@ -1032,10 +1032,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2784,
-        25040
+        -5120,
+        25232
       ],
-      "id": "cdd09998-a5b1-4da1-8300-a6e014fd2968",
+      "id": "079207bb-c171-4e50-b1e7-127f7984a24b",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1073,10 +1073,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2592,
-        25040
+        -4928,
+        25232
       ],
-      "id": "5a58990b-ee95-421a-8467-248aec7fa15b",
+      "id": "b50f92ff-33b6-479d-b357-50359fbb11f8",
       "name": "Has_Pending_Task"
     },
     {
@@ -1088,10 +1088,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -16,
-        23952
+        -2352,
+        24144
       ],
-      "id": "abfdca6b-1711-453d-89c1-0ea961de66fe",
+      "id": "97cb12f9-03cf-4e98-869c-913b763eb863",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1107,11 +1107,12 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -3552,
-        25408
+        -5888,
+        25600
       ],
-      "id": "e581f349-abc8-4f78-b68f-bb06a939e2c5",
-      "name": "When Executed by Another Workflow"
+      "id": "9ae73bc3-6747-4a08-bdb1-a805f216de7c",
+      "name": "When Executed by Another Workflow",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1120,10 +1121,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3088,
-        25424
+        -5424,
+        25616
       ],
-      "id": "6acd702f-9e32-4bbb-991b-3aca16bd7459",
+      "id": "a6bdc8e2-660c-4292-99a6-4ba05ee2b50e",
       "name": "Filtered Message"
     },
     {
@@ -1133,10 +1134,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        512,
-        24656
+        -1216,
+        24848
       ],
-      "id": "34984912-8aed-4f76-a640-9cee01f362cb",
+      "id": "433d4900-9bbc-4992-9902-7917e12f8864",
       "name": "Filtered Message1"
     },
     {
@@ -1146,10 +1147,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1120,
-        26096
+        -3456,
+        26288
       ],
-      "id": "40772482-410b-46de-863e-ad30ec52e21f",
+      "id": "33382bb3-76a0-452e-abd8-40533b8bf559",
       "name": "Filtered Message2"
     },
     {
@@ -1159,10 +1160,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        320,
-        24160
+        -2016,
+        24352
       ],
-      "id": "855f0d54-c3bf-4526-b023-7056b1212ad3",
+      "id": "f5e85b6d-d26d-4867-9e31-4d6df9550dbf",
       "name": "Filtered Message3"
     },
     {
@@ -1172,10 +1173,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -592,
-        25264
+        -2928,
+        25456
       ],
-      "id": "310a59d4-ec47-45cc-8fb0-de9e4bf2f5b8",
+      "id": "6543ede6-6ff6-4cfd-8ba1-865fe0ceb740",
       "name": "Filtered Message4"
     },
     {
@@ -1185,10 +1186,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -816,
-        24928
+        -3152,
+        25120
       ],
-      "id": "794e141d-cb33-4ce2-a7d5-a6d95ba320d8",
+      "id": "3df08035-5e1d-4322-a882-f8d3cc498e57",
       "name": "Filtered Message5"
     },
     {
@@ -1207,10 +1208,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1904,
-        26064
+        -4240,
+        26256
       ],
-      "id": "4abbb40e-f32c-4af3-be43-20a18045ed42",
+      "id": "5b00b0b4-e0a6-4a50-8cb4-08275ac4369d",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1248,10 +1249,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1712,
-        26064
+        -4048,
+        26256
       ],
-      "id": "6d7c3fe4-09c3-4f2e-9bb8-1000c6af1d89",
+      "id": "54bbb982-a948-40b5-8a8c-eb53a9b914f3",
       "name": "If1"
     },
     {
@@ -1291,12 +1292,61 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -1408,
-        25920
+        -3744,
+        26112
       ],
-      "id": "b420004d-65fa-430f-a5ed-2175671e4f4d",
+      "id": "a699e3bc-a754-470b-bbb9-e2b78f154b39",
       "name": "Call 'GymRatForm Supabase v2.1'",
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO magic_links (code, user_id)\nVALUES (\n  substr(md5(random()::text || '{{ $items('GetUser')[0].json.user_id }}' || now()::text), 1, 6),\n  '{{ $items('GetUser')[0].json.user_id }}'\n)\nON CONFLICT (code) DO UPDATE SET\n  user_id = EXCLUDED.user_id,\n  created_at = NOW(),\n  expires_at = NOW() + INTERVAL '24 hours',\n  used_at = NULL\nRETURNING code, user_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2064,
+        24960
+      ],
+      "id": "568c35eb-606c-4243-8427-c9c6de41d646",
+      "name": "Create Magic Link",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://workout-tracker-69b08.web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1872,
+        24960
+      ],
+      "id": "8b344439-c8ef-4332-8c51-975fe0fe7d53",
+      "name": "Build URL"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1616,
+        24848
+      ],
+      "id": "3004d84f-b82d-4b49-8739-f76ad7844dd6",
+      "name": "Merge1"
     }
   ],
   "pinData": {
@@ -1345,23 +1395,42 @@
           "contacts": [
             {
               "profile": {
-                "name": "Helena Jaimes"
+                "name": "Juan Perez Garcial"
               },
-              "wa_id": "573208780020"
+              "wa_id": "570000000009"
             }
           ],
           "messages": [
             {
-              "from": "573208780020",
+              "from": "570000000009",
               "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUM0M0I5QjgwNjE1QjdFQzY3RkQ1OTQ1REQwMjJEQ0EA",
               "timestamp": "1769776491",
               "text": {
-                "body": "Rutina para hoy"
+                "body": "Quiero mi rutina de hoy"
               },
               "type": "text"
             }
           ],
           "field": "messages"
+        }
+      }
+    ],
+    "Build URL": [
+      {
+        "json": {
+          "code": "8e230d",
+          "user_id": "5d3b501c-8ac5-4dfd-9c0d-4ef9a8a15f9c",
+          "workout_url": "https://workout-tracker-69b08.web.app/w?c=8e230d"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "AI Agent": [
+      {
+        "json": {
+          "output": "¡Hola, Juan Pérez García! 🔥 Aquí tienes tu plan para hoy:\n\n1️ Sentadilla con barra y pausa\n🎯 Zona: Lower back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-pause-squat\n\n〰〰〰〰〰〰〰〰\n2️ Sentadilla trasera con barra baja\n🎯 Zona: Lower back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-low-bar-squat\n\n〰〰〰〰〰〰〰〰\n3️ Peso muerto convencional\n🎯 Zona: Back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-deadlift\n\n〰〰〰〰〰〰〰〰\n4️ Peso muerto con barra\n🎯 Zona: Traps (mid-back)\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-deadlift\n\n〰〰〰〰〰〰〰〰\n5️ Abdominal con barra\n🎯 Zona: Abs\n\n📋 Qué hacer:\n* 3 Series\n* 8–15 Repeticiones\n* ⏸ 1 min de descanso\n\n🔥 Esfuerzo: RIR 1–2 (Deja 1 o 2 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-situp\n\n〰〰〰〰〰〰〰〰\n6️ Abdominales colgado\n🎯 Zona: Abs\n\n📋 Qué hacer:\n* 3 Series\n* 8–15 Repeticiones\n* ⏸ 1 min de descanso\n\n🔥 Esfuerzo: RIR 1–2 (Deja 1 o 2 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercises/abdominals/2?model=f\n\n────────────────────\n*¡Dale con toda! 🚀*\n"
         },
         "pairedItem": {
           "item": 0
@@ -1374,7 +1443,12 @@
       "main": [
         [
           {
-            "node": "Send message",
+            "node": "Create Magic Link",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
             "type": "main",
             "index": 0
           }
@@ -1802,11 +1876,6 @@
         ]
       ]
     },
-    "When Executed by Another Workflow": {
-      "main": [
-        []
-      ]
-    },
     "Send message4": {
       "main": [
         [
@@ -1901,6 +1970,50 @@
           }
         ]
       ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Magic Link": {
+      "main": [
+        [
+          {
+            "node": "Build URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build URL": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1908,12 +2021,12 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "a983f069-6e62-42cb-b7dd-2b409673558e",
+  "versionId": "8e225bbf-2058-4f8b-9c30-72e708fdc899",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "xBIHfN9K6F2OaKRh",
+  "id": "MTDFZAcfUYnKvhzc",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",

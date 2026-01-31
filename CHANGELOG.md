@@ -2,6 +2,34 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.1.0] - 2026-01-31
+
+### Added - Workout Tracker Integration
+
+- **Workout Tracker Web App**: Nueva aplicación web para que los usuarios vean y registren sus rutinas diarias
+  - Frontend: React 19 + TypeScript + Vite + Tailwind CSS (Firebase Hosting)
+  - Backend: Go + Gin con arquitectura hexagonal (Google Cloud Run)
+  - Magic links para autenticación sin contraseña
+  - Seguimiento de sets completados con peso y repeticiones
+
+### Added - Exercise Ordering System
+
+- **Nuevo campo `exercise_order`** en tabla `workouts`: Garantiza orden determinístico de ejercicios
+  - Orden: compound (1-4) → core (5-6) → isolation (7+)
+  - Backend Go: `ORDER BY exercise_order` en consultas
+  - Workflow n8n: Ordenamiento programático por `role` antes de insertar
+- **Migración automática**: Ejercicios existentes actualizados con orden correcto basado en `role`
+
+### Fixed
+
+- **Soporte para en-dash en reps**: Funciones `parseReps` y `parseRepsRange` ahora soportan tanto guión corto (-) como en-dash (–)
+- **Tests unitarios**: Agregados tests para funciones de parsing de reps
+
+### Changed
+
+- **Workflows renombrados**: `GymRatFlow_Supabase_V2.json` → `GymRatFlow_Supabase_V2_Workout_Tracker.json`
+- **Limpieza de archivos deprecados**: Eliminados workflows obsoletos de `n8n/deprecated/`
+
 ## [1.7.0] - 2026-01-28
 
 ### Added - Priority-Based Duration Validation (KAN-51)
