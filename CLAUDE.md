@@ -20,7 +20,6 @@ GymBot/
 │   ├── running_flows/         # Active production workflows
 │   ├── tests/                 # E2E test runners
 │   ├── wip/                   # Work-in-progress workflows
-│   ├── deprecated/            # Old workflow versions (backup)
 │   └── system_prompts/        # AI agent system prompts
 ├── workout-tracker/           # React/TypeScript frontend (Vite)
 ├── workout-tracker-back/      # Go/Gin backend (hexagonal architecture)
@@ -32,7 +31,7 @@ GymBot/
 
 | Workflow | Purpose |
 |----------|---------|
-| `GymRatFlow_Supabase_V2.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
+| `GymRatFlow_Supabase_V2_Workout_Tracker.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
 | `GymRatForm Supabase v2.1.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
@@ -102,7 +101,7 @@ Agents use Postgres-based chat memory for conversation context persistence.
 
 | Table | Purpose | Key Columns |
 |-------|---------|-------------|
-| `exercises` | Exercise catalog | `exercise_id` (PK), `spanish_name`, `pattern`, `role`, `main_muscle`, `level`, `link` |
+| `exercises` | Exercise catalog (1657 exercises) | `exercise_id` (PK), `spanish_name`, `pattern`, `role`, `main_muscle`, `secondary_muscles` (array), `level`, `link`, `equipment` |
 | `exercise_patterns` | Movement patterns (e.g., hip_hinge, push) | `pattern` (PK), `detail` |
 | `exercise_role` | Exercise classifications | `role` (PK): compound, isolation, core |
 | `muscles` | Muscle groups | `main_muscle` (PK), `main_muscle_spanish` |
@@ -111,9 +110,10 @@ Agents use Postgres-based chat memory for conversation context persistence.
 
 | Table | Purpose | Key Columns |
 |-------|---------|-------------|
-| `workouts` | User-assigned exercises | `id` (UUID PK), `user_id`, `week`, `day_name`, `exercise_id`, `sets`, `reps`, `rir`, `rest-seconds`, `tempo` |
+| `workouts` | User-assigned exercises | `id` (UUID PK), `user_id`, `week`, `day_name`, `exercise_id`, `sets`, `reps`, `rir`, `rest-seconds`, `tempo`, `exercise_order` |
 | `set_profiles` | Loading parameters by goal/level/week | `profile_id` (PK), `goal`, `level`, `week`, `role`, `sets`, `reps`, `rir`, `rest_sec`, `tempo` |
 | `user_weekly_schedule` | Scheduled workout sessions | `day_routine_id` (UUID PK), `user_id`, `week`, `week_day` (enum), `session_name`, `planned_day`, `Completed` |
+| `set_values` | User-recorded weights/reps per set | `id` (UUID PK), `user_id`, `exercise_id`, `workout_id`, `set_number`, `actual_weight`, `actual_reps`, `recorded_at` |
 
 ### Pending Tasks (Confirmation Flow)
 
@@ -122,6 +122,12 @@ Agents use Postgres-based chat memory for conversation context persistence.
 | `pending_tasks` | Tracks pending user confirmations | `task_id` (UUID PK), `user_id`, `task_type`, `related_id`, `session_name`, `week`, `status`, `created_at`, `resolved_at` |
 
 Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
+
+### Authentication (Workout Tracker)
+
+| Table | Purpose | Key Columns |
+|-------|---------|-------------|
+| `magic_links` | Passwordless auth via WhatsApp deep links | `code` (VARCHAR PK), `user_id`, `created_at`, `expires_at` (24h default), `used_at` |
 
 ### Reference/Lookup Tables
 
@@ -132,6 +138,15 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 | `health_status` | Health condition codes (A-E) |
 | `routine_environments` | Training location (GYM) |
 | `n8n_chat_histories` | AI conversation memory storage |
+
+### Exercise Ordering
+
+The `exercise_order` field in `workouts` ensures deterministic ordering:
+- **compound** exercises: 1-4 (heavy lifts first)
+- **core** exercises: 5-6 (after main lifts)
+- **isolation** exercises: 7+ (accessories last)
+
+This is set programmatically in `GymRatForm Supabase v2.1.json` and queried with `ORDER BY exercise_order`.
 
 ### Entity Relationships
 
@@ -283,9 +298,9 @@ make dev                 # Hot reload (requires air)
 
 ### Deployment
 
-```bash
-./deploy.sh              # Build frontend + deploy both to Cloud Run
-```
+- **Frontend**: Firebase Hosting (manual deploy via Firebase CLI)
+- **Backend**: Google Cloud Run (deploy via `gcloud run deploy`)
+- **Production API**: `https://workout-api-148665080566.us-central1.run.app/api/v1`
 
 ### n8n Workflows
 
@@ -296,6 +311,14 @@ Workflows are JSON files—import directly into n8n instance and configure crede
 - **Language**: All system prompts and user-facing content must be in Spanish
 - **Timezone**: Configured for America/Bogota
 - **Credentials**: OpenAI, Google Gemini, Supabase, WhatsApp APIs (managed in n8n)
+
+### Backend Go Notes
+
+- **Reps format**: Can be single number ("10") or range with hyphen ("10-12") or en-dash ("6–8"). The `parseReps` functions handle both.
+- **API endpoints**:
+  - `GET /api/v1/workouts/today?user_id=UUID` - Get today's workout
+  - `POST /api/v1/auth/magic-link` - Validate magic link code
+  - `PATCH /api/v1/sets/:id` - Update set (weight, reps, completed)
 
 ### Workflow Conventions
 
