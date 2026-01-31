@@ -109,7 +109,7 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		WHERE w.user_id = $1
 		AND w.week = $2
 		AND w.day_name = $3
-		ORDER BY w.id
+		ORDER BY w.exercise_order
 	`
 
 	rows, err := r.conn.DB.QueryContext(ctx, exerciseQuery, userID, week, sessionName)
