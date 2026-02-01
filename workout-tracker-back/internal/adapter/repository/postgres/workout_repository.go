@@ -8,6 +8,7 @@ import (
 
 	"github.com/gymbot/workout-tracker-back/internal/domain/entity"
 	"github.com/gymbot/workout-tracker-back/internal/domain/repository"
+	"github.com/gymbot/workout-tracker-back/internal/pkg/timezone"
 	"github.com/gymbot/workout-tracker-back/pkg/apperror"
 )
 
@@ -66,27 +67,31 @@ func parseRepsRange(repsStr string) (min, max int) {
 // GetTodayWorkout retrieves today's workout for a user
 func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) (*entity.Workout, error) {
 	// First, get the scheduled workout session for today
-	// Note: planned_day is stored as TEXT in format 'YYYY-MM-DD'
+	// Note: planned_day_utc is stored as TIMESTAMPTZ (midnight Bogota in UTC = 05:00:00+00)
 	scheduleQuery := `
 		SELECT
 			uws.day_routine_id,
 			uws.week,
 			uws.week_day,
 			uws.session_name,
-			uws.planned_day,
+			uws.planned_day_utc,
 			uws."Completed"
 		FROM user_weekly_schedule uws
 		WHERE uws.user_id = $1
-		AND uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')
+		AND uws.planned_day_utc = (
+			DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota')
+			AT TIME ZONE 'America/Bogota'
+		)
 		LIMIT 1
 	`
 
-	var scheduleID, dayName, sessionName, plannedDayStr string
+	var scheduleID, dayName, sessionName string
+	var plannedDay time.Time
 	var week int
 	var completed bool
 
 	err := r.conn.DB.QueryRowContext(ctx, scheduleQuery, userID).Scan(
-		&scheduleID, &week, &dayName, &sessionName, &plannedDayStr, &completed,
+		&scheduleID, &week, &dayName, &sessionName, &plannedDay, &completed,
 	)
 	if err == sql.ErrNoRows {
 		return nil, nil // No workout scheduled for today
@@ -95,8 +100,8 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		return nil, apperror.NewInternalError("failed to query schedule", err)
 	}
 
-	// Parse the planned_day string to time.Time
-	plannedDay, _ := time.Parse("2006-01-02", plannedDayStr)
+	// plannedDay is already a time.Time from TIMESTAMPTZ, ensure it's in UTC
+	plannedDay = timezone.ToUTC(plannedDay)
 
 	workout := entity.NewWorkout(scheduleID, userID, week, dayName, sessionName, plannedDay)
 	workout.Completed = completed
@@ -211,18 +216,19 @@ func (r *WorkoutRepository) GetByID(ctx context.Context, workoutID string) (*ent
 			uws.week,
 			uws.week_day,
 			uws.session_name,
-			uws.planned_day,
+			uws.planned_day_utc,
 			uws."Completed"
 		FROM user_weekly_schedule uws
 		WHERE uws.day_routine_id = $1
 	`
 
-	var scheduleID, userID, dayName, sessionName, plannedDayStr string
+	var scheduleID, userID, dayName, sessionName string
+	var plannedDay time.Time
 	var week int
 	var completed bool
 
 	err := r.conn.DB.QueryRowContext(ctx, query, workoutID).Scan(
-		&scheduleID, &userID, &week, &dayName, &sessionName, &plannedDayStr, &completed,
+		&scheduleID, &userID, &week, &dayName, &sessionName, &plannedDay, &completed,
 	)
 	if err == sql.ErrNoRows {
 		return nil, apperror.NewNotFoundError("workout not found")
@@ -231,8 +237,8 @@ func (r *WorkoutRepository) GetByID(ctx context.Context, workoutID string) (*ent
 		return nil, apperror.NewInternalError("failed to query workout", err)
 	}
 
-	// Parse the planned_day string to time.Time
-	plannedDay, _ := time.Parse("2006-01-02", plannedDayStr)
+	// plannedDay is already a time.Time from TIMESTAMPTZ, ensure it's in UTC
+	plannedDay = timezone.ToUTC(plannedDay)
 
 	workout := entity.NewWorkout(scheduleID, userID, week, dayName, sessionName, plannedDay)
 	workout.Completed = completed

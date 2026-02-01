@@ -1,0 +1,47 @@
+{
+  "tech_stack": [
+    "TypeScript",
+    "React 19",
+    "Vite 7",
+    "Tailwind CSS 4",
+    "Vitest",
+    "Testing Library"
+  ],
+  "test_configuration": {
+    "base_url": "http://localhost:5173",
+    "auth_url": "http://localhost:5173/",
+    "auth_method": "Development mode - app uses VITE_DEV_USER_ID environment variable for automatic authentication. Do NOT use ?c= parameter - just navigate to the base URL http://localhost:5173/ and the app will automatically authenticate using the dev user."
+  },
+  "features": [
+    {
+      "name": "App - Main Application",
+      "description": "Root component that handles workout data fetching. In development mode, navigate to http://localhost:5173/ without any query parameters - the app will automatically authenticate using VITE_DEV_USER_ID. Do NOT use magic link codes (?c=) for testing.",
+      "files": ["src/App.tsx", "src/main.tsx"]
+    },
+    {
+      "name": "WorkoutContent - Exercise Tracker",
+      "description": "Main workout tracking component displaying exercise cards with sets, reps, and weight tracking. Supports inline editing, set completion toggling, auto-collapse/expand on exercise completion, and scrolls to next exercise",
+      "files": ["src/components/WorkoutContent.tsx", "src/components/index.ts"]
+    },
+    {
+      "name": "ExerciseCard - Exercise Display",
+      "description": "Individual exercise card showing exercise name, video link, RIR (Reps In Reserve), rest time, and a table of sets. Supports inline editing of reps and kg values with keyboard navigation",
+      "files": ["src/components/WorkoutContent.tsx"]
+    },
+    {
+      "name": "CompletionCelebration - Success Animation",
+      "description": "Modal overlay with confetti animation and congratulations message shown when workout is completed. Auto-dismisses after 5 seconds or on tap",
+      "files": ["src/components/CompletionCelebration.tsx"]
+    },
+    {
+      "name": "API Service - Backend Communication",
+      "description": "API client for workout operations: fetch today's workout, update set weight/reps, mark sets complete, and complete entire workout session",
+      "files": ["src/services/api.ts"]
+    },
+    {
+      "name": "Config - Environment Configuration",
+      "description": "Application configuration loading API base URL and dev user ID from Vite environment variables",
+      "files": ["src/config/index.ts"]
+    }
+  ]
+}

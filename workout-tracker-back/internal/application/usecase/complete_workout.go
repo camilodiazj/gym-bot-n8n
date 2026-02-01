@@ -48,6 +48,6 @@ func (uc *CompleteWorkoutUseCase) Execute(ctx context.Context, workoutID string,
 	return &dto.CompleteWorkoutResponse{
 		Success:     true,
 		WorkoutID:   workoutID,
-		CompletedAt: time.Now().Format(time.RFC3339),
+		CompletedAt: time.Now().UTC().Format(time.RFC3339),
 	}, nil
 }

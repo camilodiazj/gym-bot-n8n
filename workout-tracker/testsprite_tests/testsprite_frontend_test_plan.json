@@ -1,0 +1,320 @@
+[
+  {
+    "id": "TC001",
+    "title": "Validate magic link authentication with valid code",
+    "description": "Verify that the app authenticates a user successfully when a valid magic link code within 24-hour validity is provided.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the app with a valid magic link code parameter in the URL within 24 hours of code issuance"
+      },
+      {
+        "type": "assertion",
+        "description": "Check the user is authenticated and today's workout session loads automatically"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Rejection of expired magic link code",
+    "description": "Verify the app shows an appropriate error message when the magic link code is expired (older than 24 hours).",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the app with an expired magic link code parameter in the URL"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that a clear error message about expired link is shown and no workout data is loaded"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Rejection of invalid magic link code",
+    "description": "Verify the app shows an appropriate error message when the magic link code is invalid or malformed.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open the app with an invalid or malformed magic link code parameter in the URL"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an error message indicating invalid code is displayed, preventing access to workout data"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Display daily workout session with prioritized exercises",
+    "description": "Verify the app loads daily workout session listing exercises prioritized by type (compound, core, isolation) and displays them as expandable cards.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Authenticate successfully and load today's workout session"
+      },
+      {
+        "type": "assertion",
+        "description": "Check exercises are shown in correct prioritized order and presented as collapsible/expandable cards containing exercise details"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Verify exercise card details including embedded video tutorial links",
+    "description": "Ensure each exercise card displays exercise name, RIR, rest time, and contains working embedded video tutorial link.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load workout session containing exercises with associated metadata and video links"
+      },
+      {
+        "type": "assertion",
+        "description": "Check exercise name, RIR (Reps In Reserve), rest time values are visible, and video tutorial links open the correct video content in a separate window or overlay"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Inline editing of reps and weight fields with keyboard navigation",
+    "description": "Verify users can edit reps and weight inline directly in set rows using keyboard input, including support for weight formats such as numerical, BW, and BW+ increments.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open an exercise card with editable sets"
+      },
+      {
+        "type": "action",
+        "description": "Edit reps field using keyboard input and confirm the value updates"
+      },
+      {
+        "type": "action",
+        "description": "Edit weight field entering numeric values and formats like 'BW' or 'BW+2.5'"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify changes reflect immediately in UI and backend persist updates successfully"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Toggle set completion and verify visual feedback",
+    "description": "Verify that clicking a set row toggles its completion status and the UI updates with colored checkmarks and background changes accordingly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Click on a set row in an exercise card"
+      },
+      {
+        "type": "assertion",
+        "description": "Check if the set is visually marked complete with colored backgrounds and checkmarks, and this state persists when reloading the app"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Prefill weights from previous sessions",
+    "description": "Verify that when a user loads today's workout, weights for sets are prefilled from the previous sessions correctly for streamlined input.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Authenticate and load a workout session for a user with previous workout data available"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that set weight fields are prefilled with weights from prior sessions correctly"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Auto-collapse completed exercise and auto-expand next",
+    "description": "Verify that once all sets for an exercise are marked complete, the exercise card auto-collapses and the next exercise card expands automatically with smooth scrolling.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Complete all sets in an exercise card by toggling set completion"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify exercise card collapses automatically and the next exercise card expands with smooth scroll transition"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Batch save updated set data on exercise completion",
+    "description": "Verify that all updates to sets (reps, weights, completion status) are saved in batch when the exercise is completed, ensuring data consistency.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Make multiple inline edits and toggle completions in sets of the same exercise"
+      },
+      {
+        "type": "action",
+        "description": "Complete the exercise by marking all sets complete"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all set data changes are persisted in the backend correctly and visible on reload"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Workout completion button validation for incomplete sets",
+    "description": "Verify that clicking the 'Completar Rutina' button triggers validation that all sets in all exercises are complete before allowing routine completion, showing prompts if incomplete.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to complete the workout routine with some sets left incomplete"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that a validation prompt informs the user about incomplete sets and completion is blocked"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Successful workout completion triggers celebration overlay",
+    "description": "Verify that when the user completes all sets and confirms routine completion, an animated confetti celebration overlay appears with congratulations message and auto-dismisses after 5 seconds or on tap.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Complete all sets in all exercises and click 'Completar Rutina'"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify celebration modal with confetti animation is shown and dismisses automatically or on user tap"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Loading state displays during workout data fetch",
+    "description": "Verify that a clear loading UI state is shown while the app fetches workout data after authentication.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Initiate app load with valid magic link and delay response from backend"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that a loading indicator or screen is visible until data is fully loaded"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Display rest day message when no workout session scheduled",
+    "description": "Verify that on days when the user has no scheduled workout session, the app shows a clear rest day message with no exercise cards or action buttons.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Authenticate on a rest day with no scheduled workout"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that a localized rest day message in Spanish for Colombia is displayed and no workout data is shown"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Error handling for backend API failures",
+    "description": "Verify that if the app API calls fail (e.g. fetch workout, update sets), the app shows informative error messages and allows retry or request for new magic link.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate backend API failure during workout fetch or update"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that a clear error message is displayed to the user with options to retry or request a new link"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Completion button disables and shows loading state after click",
+    "description": "Verify that after clicking the completion button when all sets are complete, the button shows a loading state and disables to prevent duplicate submissions.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Complete all sets and click the 'Completar Rutina' button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the button disables and shows a loading indication until completion process finishes"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Smooth auto-scroll behavior between exercises",
+    "description": "Verify that the scroll transitions to the next exercise card after completion are smooth and consistent across mobile devices and desktop browsers.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Complete all sets in an exercise triggering auto-collapse and auto-expand of next exercise"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that the-scroll movement to the next exercise is smooth without jank or abrupt jumps"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Language localization in Spanish for Colombia",
+    "description": "Verify all UI text content including error messages, rest day notices, prompts, and button labels appear correctly localized in Spanish tailored for the Colombian market.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load the app under standard conditions"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that all visible text content uses Spanish appropriate for Colombia locale, with no untranslated fragments"
+      }
+    ]
+  }
+]
