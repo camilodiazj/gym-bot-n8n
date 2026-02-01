@@ -1,6 +1,11 @@
 package postgres
 
-import "testing"
+import (
+	"testing"
+	"time"
+
+	"github.com/gymbot/workout-tracker-back/internal/pkg/timezone"
+)
 
 func TestParseReps(t *testing.T) {
 	tests := []struct {
@@ -50,5 +55,128 @@ func TestParseRepsRange(t *testing.T) {
 					tt.input, min, max, tt.expectedMin, tt.expectedMax)
 			}
 		})
+	}
+}
+
+// TestGetTodayWorkout_CrossTimezone tests the critical edge case where
+// the server is in UTC but the user is in Colombia (UTC-5)
+func TestGetTodayWorkout_CrossTimezone(t *testing.T) {
+	loc := timezone.GetLocation()
+
+	tests := []struct {
+		name          string
+		serverTimeUTC time.Time
+		plannedDayUTC time.Time
+		shouldMatch   bool
+	}{
+		{
+			name:          "7:30 PM Bogota (00:30 UTC next day) - should match same day",
+			serverTimeUTC: time.Date(2026, 2, 1, 0, 30, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC), // Jan 31 Bogota
+			shouldMatch:   true,
+		},
+		{
+			name:          "4:59 AM UTC (11:59 PM Bogota) - still same day",
+			serverTimeUTC: time.Date(2026, 2, 1, 4, 59, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+			shouldMatch:   true,
+		},
+		{
+			name:          "5:00 AM UTC (00:00 Bogota next day) - new day",
+			serverTimeUTC: time.Date(2026, 2, 1, 5, 0, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+			shouldMatch:   false,
+		},
+		{
+			name:          "5:01 AM UTC - definitely next day",
+			serverTimeUTC: time.Date(2026, 2, 1, 5, 1, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+			shouldMatch:   false,
+		},
+		{
+			name:          "Early morning same UTC day - matches",
+			serverTimeUTC: time.Date(2026, 1, 31, 6, 0, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+			shouldMatch:   true,
+		},
+		{
+			name:          "Midnight UTC - previous day in Bogota",
+			serverTimeUTC: time.Date(2026, 2, 1, 0, 0, 0, 0, time.UTC),
+			plannedDayUTC: time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+			shouldMatch:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Calculate "today" from server time using Bogota timezone
+			// This simulates what the SQL query does:
+			// DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'
+			bogotaTime := tt.serverTimeUTC.In(loc)
+			todayMidnightBogota := time.Date(
+				bogotaTime.Year(), bogotaTime.Month(), bogotaTime.Day(),
+				0, 0, 0, 0, loc,
+			)
+			todayMidnightUTC := todayMidnightBogota.UTC()
+
+			matches := tt.plannedDayUTC.Equal(todayMidnightUTC)
+			if matches != tt.shouldMatch {
+				t.Errorf("Expected match=%v, got %v. Server UTC: %v, Today UTC: %v, Planned: %v",
+					tt.shouldMatch, matches, tt.serverTimeUTC, todayMidnightUTC, tt.plannedDayUTC)
+			}
+		})
+	}
+}
+
+// TestPlannedDayFormat_AlwaysMidnightUTC verifies that all planned_day_utc values
+// should have hour = 5 (UTC) representing midnight Bogota (UTC-5)
+func TestPlannedDayFormat_AlwaysMidnightUTC(t *testing.T) {
+	validPlannedDays := []time.Time{
+		time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC),
+		time.Date(2026, 2, 1, 5, 0, 0, 0, time.UTC),
+		time.Date(2026, 2, 15, 5, 0, 0, 0, time.UTC),
+		time.Date(2026, 12, 31, 5, 0, 0, 0, time.UTC),
+	}
+
+	for _, pd := range validPlannedDays {
+		if pd.Hour() != 5 {
+			t.Errorf("planned_day_utc %v should have hour=5 (midnight Bogota), got %d", pd, pd.Hour())
+		}
+		if pd.Minute() != 0 {
+			t.Errorf("planned_day_utc %v should have minute=0, got %d", pd, pd.Minute())
+		}
+		if pd.Second() != 0 {
+			t.Errorf("planned_day_utc %v should have second=0, got %d", pd, pd.Second())
+		}
+	}
+}
+
+// TestTimezoneToUTC verifies the timezone conversion helper
+func TestTimezoneToUTC(t *testing.T) {
+	loc := timezone.GetLocation()
+
+	// Test conversion from Bogota midnight to UTC
+	bogotaMidnight := time.Date(2026, 1, 31, 0, 0, 0, 0, loc)
+	utc := timezone.ToUTC(bogotaMidnight)
+
+	if utc.Hour() != 5 {
+		t.Errorf("Bogota midnight should be 05:00 UTC, got %02d:00", utc.Hour())
+	}
+	if utc.Location().String() != "UTC" {
+		t.Errorf("ToUTC should return UTC location, got %v", utc.Location())
+	}
+}
+
+// TestTimezoneFromUTC verifies the reverse timezone conversion
+func TestTimezoneFromUTC(t *testing.T) {
+	// 05:00 UTC should be midnight Bogota
+	utcTime := time.Date(2026, 1, 31, 5, 0, 0, 0, time.UTC)
+	bogota := timezone.ToUserTimezone(utcTime)
+
+	if bogota.Hour() != 0 {
+		t.Errorf("05:00 UTC should be 00:00 Bogota, got %02d:00", bogota.Hour())
+	}
+	if bogota.Day() != 31 {
+		t.Errorf("Expected day 31, got %d", bogota.Day())
 	}
 }

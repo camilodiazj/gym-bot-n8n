@@ -199,7 +199,8 @@ LIMIT 1;
 
 -- Usuario 2 (RestDay): Schedule para MANANA (no hoy)
 -- Usando timezone de Bogota para evitar desfase con UTC
-INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
+-- planned_day_utc = midnight Bogota expresado en UTC (05:00:00+00)
+INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
 VALUES (
     'e2e00002-0000-0000-0000-000000000002',
     1,
@@ -214,12 +215,14 @@ VALUES (
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
     ((NOW() AT TIME ZONE 'America/Bogota')::date + INTERVAL '1 day')::date::text,
+    (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota' + INTERVAL '1 day'),
     false
 );
 
 -- Usuario 3 (WithRoutine): Schedule para HOY
 -- Usando timezone de Bogota para evitar desfase con UTC
-INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
+-- planned_day_utc = midnight Bogota expresado en UTC (05:00:00+00)
+INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
 VALUES (
     'e2e00003-0000-0000-0000-000000000003',
     1,
@@ -234,12 +237,14 @@ VALUES (
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
     (NOW() AT TIME ZONE 'America/Bogota')::date::text,
+    (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'),
     false
 );
 
 -- Usuario 4 (WithPendingTask): Schedule para HOY [NUEVO v3.0]
 -- Usando timezone de Bogota para evitar desfase con UTC
-INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, "Completed")
+-- planned_day_utc = midnight Bogota expresado en UTC (05:00:00+00)
+INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
 VALUES (
     'e2e00004-0000-0000-0000-000000000004',
     1,
@@ -254,6 +259,7 @@ VALUES (
     END)::week_days,
     'Dia 1 - Pecho y Triceps',
     (NOW() AT TIME ZONE 'America/Bogota')::date::text,
+    (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'),
     false
 );
 
@@ -276,7 +282,7 @@ SELECT
     NOW() - INTERVAL '2 hours'  -- Simula que se creo hace 2 horas (8 PM reminder)
 FROM user_weekly_schedule
 WHERE user_id = 'e2e00004-0000-0000-0000-000000000004'
-AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text
+AND planned_day_utc = (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota')
 LIMIT 1;
 
 -- ============================================
@@ -340,12 +346,12 @@ FROM users_plans up
 JOIN users u USING (user_id)
 WHERE u.full_phone_number::text LIKE '57000000000%';
 
--- Verificar schedules
-SELECT u.full_name, uws.session_name, uws.planned_day, uws."Completed"
+-- Verificar schedules (mostrando ambas columnas para verificar conversion)
+SELECT u.full_name, uws.session_name, uws.planned_day, uws.planned_day_utc, uws."Completed"
 FROM user_weekly_schedule uws
 JOIN users u USING (user_id)
 WHERE u.full_phone_number::text LIKE '57000000000%'
-ORDER BY uws.planned_day;
+ORDER BY uws.planned_day_utc;
 
 -- Verificar workouts
 SELECT u.full_name, w.day_name, e.spanish_name, w.sets, w.reps
@@ -374,13 +380,13 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 -- UPDATE user_weekly_schedule
 -- SET "Completed" = false
 -- WHERE user_id = 'e2e00003-0000-0000-0000-000000000003'
--- AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text;
+-- AND planned_day_utc = (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota');
 
 -- Resetear Completed y pending_task para Usuario 4 [NUEVO v3.0]
 -- UPDATE user_weekly_schedule
 -- SET "Completed" = false
 -- WHERE user_id = 'e2e00004-0000-0000-0000-000000000004'
--- AND planned_day = (NOW() AT TIME ZONE 'America/Bogota')::date::text;
+-- AND planned_day_utc = (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota');
 
 -- UPDATE pending_tasks
 -- SET status = 'pending', resolved_at = NULL

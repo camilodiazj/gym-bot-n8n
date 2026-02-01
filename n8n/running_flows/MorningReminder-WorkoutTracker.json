@@ -59,7 +59,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')\n  AND uws.\"Completed\" = false",
+        "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day_utc = (\n  DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota')\n  AT TIME ZONE 'America/Bogota'\n)\n  AND uws.\"Completed\" = false",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",

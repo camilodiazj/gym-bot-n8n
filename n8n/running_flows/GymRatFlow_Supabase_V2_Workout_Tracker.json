@@ -419,7 +419,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day = '{{ $now.format('yyyy-MM-dd') }}'\nAND \"Completed\" = false;\n",
+        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day_utc = (\n  DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota')\n  AT TIME ZONE 'America/Bogota'\n)\nAND \"Completed\" = false;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
@@ -540,7 +540,7 @@
           "conditions": [
             {
               "id": "6fdb5aca-0a64-4c5a-8e0b-c0fbedd7aa01",
-              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => item.json.planned_day >= $now.toFormat('yyyy-MM-dd')) }}",
+              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => new Date(item.json.planned_day_utc || item.json.planned_day) >= new Date($now.setZone('America/Bogota').startOf('day').toUTC().toISO())) }}",
               "rightValue": "={{ $now.format('yyyy-MM-dd') }}",
               "operator": {
                 "type": "boolean",
@@ -953,7 +953,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Filtrar solo la rutina de hoy que NO esté completada\nconst today = $now.toFormat('yyyy-MM-dd');\nconst items = $input.all();\n\nconst todayRoutine = items.filter(item => {\n  // Comparar fecha (puede venir con o sin hora)\n  const plannedDay = String(item.json.planned_day).substring(0, 10);\n  const isToday = plannedDay === today;\n  \n  // Completed puede ser booleano false o string 'false'\n  const isNotCompleted = item.json.Completed === false || item.json.Completed === 'false';\n  \n  return isToday && isNotCompleted;\n});\n\n// Si no hay rutina para hoy sin completar, retornar array vacío\nreturn todayRoutine.length > 0 ? todayRoutine : [];"
+        "jsCode": "// Filtrar solo la rutina de hoy que NO esté completada\n// Calculamos midnight de hoy en Bogota, expresado en UTC\nconst todayMidnightUTC = $now.setZone('America/Bogota').startOf('day').toUTC();\nconst items = $input.all();\n\nconst todayRoutine = items.filter(item => {\n  // planned_day_utc es TIMESTAMPTZ (midnight Bogota en UTC = 05:00:00Z)\n  const plannedUTC = item.json.planned_day_utc || item.json.planned_day;\n  const plannedDate = new Date(plannedUTC);\n  const todayDate = new Date(todayMidnightUTC.toISO());\n  \n  // Comparar timestamps (ambos deberían ser midnight Bogota en UTC)\n  const isToday = plannedDate.getTime() === todayDate.getTime();\n  \n  // Completed puede ser booleano false o string 'false'\n  const isNotCompleted = item.json.Completed === false || item.json.Completed === 'false';\n  \n  return isToday && isNotCompleted;\n});\n\n// Si no hay rutina para hoy sin completar, retornar array vacío\nreturn todayRoutine.length > 0 ? todayRoutine : [];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,

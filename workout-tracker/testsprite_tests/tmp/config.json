@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "loginUser": "TEST01",
+  "executionArgs": {
+    "projectName": "workout-tracker",
+    "projectPath": "/Users/camilodiazjaimes/Documents/GymBot/workout-tracker",
+    "testIds": [],
+    "additionalInstruction": "CRITICAL AUTHENTICATION INSTRUCTIONS:\n\n1. For tests TC001, TC002, TC003 (magic link tests): Use URL http://localhost:5173/?c=TEST01 - this code is intentionally expired/used for testing error handling.\n\n2. For ALL OTHER TESTS (TC004 onwards - functional tests): Use URL http://localhost:5173/ WITHOUT any ?c= parameter. The app will automatically authenticate using VITE_DEV_USER_ID environment variable. This provides stable authentication that won't expire.\n\nDO NOT use ?c=TEST01 for functional tests - only use the base URL http://localhost:5173/",
+    "envs": {
+      "API_KEY": "REDACTED_TESTSPRITE_API_KEY"
+    }
+  },
+  "proxy": "REDACTED_PROXY_URL"
+}
