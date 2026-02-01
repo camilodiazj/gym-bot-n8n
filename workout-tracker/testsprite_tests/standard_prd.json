@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "project": "Workout Tracker",
+    "date": "2026-01-29",
+    "prepared_by": "Standard PRD Generator"
+  },
+  "product_overview": "Workout Tracker is a mobile-first web application integrated within the GymBot ecosystem to allow authenticated users to log and track their gym workout progress in real time. It leverages magic link authentication via WhatsApp to provide seamless access to personalized daily training routines, enabling users to monitor repetitions, weight lifted, and set completion with an optimized user interface for gym usage.",
+  "core_goals": [
+    "Enable frictionless login through 6-digit magic link codes sent via WhatsApp for secure and automatic user authentication.",
+    "Provide real-time workout tracking with inline editing for repetitions and weight per set, including visual indicators for completion state.",
+    "Automatically load and prefill weights from previous sessions to streamline user input and aid workout progression.",
+    "Deliver an intuitive and mobile-optimized interface with easy navigation, collapsible exercise cards, and smooth auto-scroll behavior between exercises.",
+    "Support complete workout session progression, including validation of all sets completed before allowing routine completion.",
+    "Celebrate user success visually with an animated confetti overlay upon completion of the workout routine.",
+    "Handle edge cases such as rest days, expired or invalid links, and error states gracefully with informative messaging."
+  ],
+  "key_features": [
+    "Magic link authentication with 24-hour validity and dev mode user overrides for testing.",
+    "Daily auto-loaded workout sessions showing an ordered list of exercises prioritized by type (compound, core, isolation).",
+    "Exercise cards showing exercise details such as name, RIR (Reps In Reserve), rest time, and embedded video tutorial links.",
+    "Inline editable fields for reps and weight with keyboard navigation support and flexible weight input formats (e.g., numeric values, BW, BW+ increments).",
+    "Set completion toggling by clicking rows, with visual feedback via colored checkmarks and backgrounds.",
+    "Automatic collapsing of completed exercises and expanding plus smooth scrolling to the next exercise in the routine.",
+    "Batch-saving of updated set data and weights upon exercise completion.",
+    "Completion button with validation prompts if any sets are incomplete, accompanied by loading states and success disables.",
+    "Celebration modal featuring emoji confetti animations, congratulatory messages, and auto-dismiss functionality.",
+    "Clear UI states for loading, errors, and resting days, with language localization focused on Spanish for the Colombian market."
+  ],
+  "user_flow_summary": [
+    "User receives daily workout link via WhatsApp and clicks to open the app with attached magic link code.",
+    "App validates the code, authenticates the user, and loads today's workout session automatically.",
+    "User reviews the exercise list with instructions, RIR, rest time, and video guides.",
+    "For each exercise, user completes sets by marking them done, editing reps or weight inline as needed.",
+    "Upon completing all sets in an exercise, the exercise auto-collapses and the next exercise expands with smooth scroll.",
+    "User clicks the 'Completar Rutina' button after completing all exercises; app validates all sets completion before proceeding.",
+    "On successful completion, an animated confetti celebration overlay is shown, and the routine is marked as complete in the system.",
+    "Alternative flows include a rest day notice if no session is scheduled, and error messaging for expired or invalid magic links."
+  ],
+  "validation_criteria": [
+    "Authentication accepts only valid magic link codes within 24 hours; invalid or expired codes produce clear error messaging.",
+    "Daily workout routine loads correctly with exercises prioritized and displayed as expandable cards.",
+    "User can toggle set completion and edit sets inline with real-time UI updates and persisted backend updates.",
+    "Weights prefilled from previous sessions appear correctly and accept custom user input in supported formats.",
+    "Auto-collapse and auto-expand behavior for exercises occur appropriately upon set completion.",
+    "Scroll transitions to the next exercise card smooth and consistent across devices.",
+    "Completion button enforces all sets are marked complete and provides loading and success states.",
+    "Celebration animation triggers on routine completion, with overlay dismissal on timeout or user tap.",
+    "Rest day displays a clear message with no actionable elements.",
+    "Error states for API failures, link expiration, or invalid requests are shown and allow users to request a new link."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "React 19",
+      "Vite 7",
+      "Tailwind CSS 4",
+      "Vitest",
+      "Testing Library"
+    ],
+    "features": [
+      {
+        "name": "App - Main Application",
+        "description": "Root component that handles workout data fetching, authentication via magic link codes (?c=), loading/error states, and orchestrates the workout completion flow",
+        "files": [
+          "src/App.tsx",
+          "src/main.tsx"
+        ]
+      },
+      {
+        "name": "WorkoutContent - Exercise Tracker",
+        "description": "Main workout tracking component displaying exercise cards with sets, reps, and weight tracking. Supports inline editing, set completion toggling, auto-collapse/expand on exercise completion, and scrolls to next exercise",
+        "files": [
+          "src/components/WorkoutContent.tsx",
+          "src/components/index.ts"
+        ]
+      },
+      {
+        "name": "ExerciseCard - Exercise Display",
+        "description": "Individual exercise card showing exercise name, video link, RIR (Reps In Reserve), rest time, and a table of sets. Supports inline editing of reps and kg values with keyboard navigation",
+        "files": [
+          "src/components/WorkoutContent.tsx"
+        ]
+      },
+      {
+        "name": "CompletionCelebration - Success Animation",
+        "description": "Modal overlay with confetti animation and congratulations message shown when workout is completed. Auto-dismisses after 5 seconds or on tap",
+        "files": [
+          "src/components/CompletionCelebration.tsx"
+        ]
+      },
+      {
+        "name": "API Service - Backend Communication",
+        "description": "API client for workout operations: fetch today's workout, update set weight/reps, mark sets complete, and complete entire workout session. Handles magic link and dev authentication",
+        "files": [
+          "src/services/api.ts"
+        ]
+      },
+      {
+        "name": "Config - Environment Configuration",
+        "description": "Application configuration loading API base URL and optional dev user ID from Vite environment variables",
+        "files": [
+          "src/config/index.ts"
+        ]
+      }
+    ]
+  }
+}
