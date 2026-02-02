@@ -1,5 +1,5 @@
 {
-  "name": "GymRatForm Supabase v2.1",
+  "name": "GymRatForm Supabase v3",
   "nodes": [
     {
       "parameters": {
@@ -21,7 +21,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const profile = $('GetUserProfile').item.json;\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status)\n    }\n  }\n}];"
+        "jsCode": "const profile = $('GetUserProfile').item.json;\nconst inputData = $items('input')[0].json;\n\n// Override days_available if provided (for renewal with changed days)\nif (inputData.override_days_available) {\n  profile.days_available = inputData.override_days_available;\n}\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status)\n    }\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -265,6 +265,39 @@
     },
     {
       "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "renewal-check-001",
+              "leftValue": "={{ $items(\"input\")[0].json.is_renewal }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -760,
+        304
+      ],
+      "id": "if-is-renewal-001",
+      "name": "If_Is_Renewal"
+    },
+    {
+      "parameters": {
         "operation": "get",
         "tableId": "users",
         "filters": {
@@ -466,6 +499,14 @@
           "values": [
             {
               "name": "whatsapp_id",
+              "type": "number"
+            },
+            {
+              "name": "is_renewal",
+              "type": "string"
+            },
+            {
+              "name": "override_days_available",
               "type": "number"
             }
           ]
@@ -695,7 +736,7 @@
       "main": [
         [
           {
-            "node": "CreatePlan",
+            "node": "If_Is_Renewal",
             "type": "main",
             "index": 0
           }
@@ -703,6 +744,24 @@
         [
           {
             "node": "CreateUser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Is_Renewal": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "CreatePlan",
             "type": "main",
             "index": 0
           }

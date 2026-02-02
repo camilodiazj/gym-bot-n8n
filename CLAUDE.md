@@ -32,7 +32,7 @@ GymBot/
 | Workflow | Purpose |
 |----------|---------|
 | `GymRatFlow_Supabase_V2_Workout_Tracker.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
-| `GymRatForm Supabase v2.1.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
+| `GymRatForm Supabase v3.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
@@ -85,8 +85,52 @@ Agents use Postgres-based chat memory for conversation context persistence.
 | Table | Purpose | Key Columns |
 |-------|---------|-------------|
 | `users` | Core user identity | `user_id` (UUID PK), `full_name`, `email`, `cel_number`, `full_phone_number`, `timezone` |
-| `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (PK), fitness metrics, goals, preferences (22 columns) |
+| `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (BIGINT PK), 22 columns - ALL are NOT NULL |
 | `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status`, `mesocycle_number`, `last_renewal_date` |
+
+### users_gym_profile Schema (Complete)
+
+**IMPORTANT**: All columns are NOT NULL. When inserting test data, ALL columns must be provided.
+
+| Column | Type | Valid Values / Notes |
+|--------|------|---------------------|
+| `submission_date` | timestamp with time zone | When profile was collected |
+| `whatsapp_id` | BIGINT (PK) | Phone number as integer (e.g., 573001234567) |
+| `full_name` | text | User's full name |
+| `email` | text | User's email |
+| `age` | BIGINT | User's age |
+| `biological_sex` | enum | `'M'`, `'F'` |
+| `height_cm` | BIGINT | Height in centimeters |
+| `weight_kg` | double precision | Weight in kilograms |
+| `primary_goal` | enum | `'Ganar masa muscular'`, `'Bajar grasa'`, `'Salud general / recomposición corporal'` |
+| `secondary_goal` | text | `'Ninguna'` or specific goal |
+| `training_experience` | enum | `'Nunca he entrenado'`, `'6 a 12 meses'`, `'1 a 3 años'`, `'Más de 3 años'` |
+| `current_frequency` | enum | `'1-2 días por semana'`, `'3-4 días por semana'`, `'5+ días por semana'` |
+| `fitness_level` | text | `'Principiante'`, `'Intermedio'`, `'Avanzado'` |
+| `health_status` | text | `'A'` (healthy) through `'E'` (special condition) |
+| `days_available` | SMALLINT | 2-6 days per week |
+| `session_duration_mins` | text | `'30-45 minutos'`, `'45-60 minutos'`, `'60-75 minutos'`, `'75+ minutos'` |
+| `preferred_schedule` | enum | `'Mañana'`, `'Tarde'`, `'Noche'` |
+| `training_style` | enum | `'Mixto'`, `'Fuerza'`, `'Hipertrofia'` |
+| `priority_muscles` | text | Comma-separated: `'Pecho, Espalda'`, `'Gluteo, Pierna'`, etc. |
+| `disliked_exercises` | text | `'Ninguno'` or comma-separated muscle groups: `'Pantorrillas'` |
+| `cardio_type` | enum | `'No'`, `'Bicicleta'`, `'Running'`, `'Caminata'` |
+| `cardio_frequency` | enum | `'0'`, `'1-2'`, `'3-4'` |
+
+**Example INSERT:**
+```sql
+INSERT INTO users_gym_profile (
+    submission_date, whatsapp_id, full_name, email, age, biological_sex, height_cm, weight_kg,
+    primary_goal, secondary_goal, training_experience, current_frequency, fitness_level,
+    health_status, days_available, session_duration_mins, preferred_schedule, training_style,
+    priority_muscles, disliked_exercises, cardio_type, cardio_frequency
+) VALUES (
+    NOW(), 573001234567, 'Test User', 'test@example.com', 30, 'M', 175, 75,
+    'Ganar masa muscular', 'Ninguna', 'Más de 3 años', '3-4 días por semana', 'Intermedio',
+    'A', 4, '60-75 minutos', 'Mañana', 'Mixto',
+    'Pecho, Espalda', 'Pantorrillas', 'No', '0'
+);
+```
 
 ### Routine Template System
 
@@ -146,7 +190,7 @@ The `exercise_order` field in `workouts` ensures deterministic ordering:
 - **core** exercises: 5-6 (after main lifts)
 - **isolation** exercises: 7+ (accessories last)
 
-This is set programmatically in `GymRatForm Supabase v2.1.json` and queried with `ORDER BY exercise_order`.
+This is set programmatically in `GymRatForm Supabase v3.json` and queried with `ORDER BY exercise_order`.
 
 ### Entity Relationships
 
@@ -184,7 +228,7 @@ users_gym_profile ------------------------------>+
 | Schedule creation | `user_weekly_schedule` | INSERT via tool |
 | Plan info | `users_plans` + `week_schedules` + `template_days` | JOIN query |
 
-### 2. GymRatForm Supabase v2 (Advanced Routine Generator)
+### 2. GymRatForm Supabase v3 (Advanced Routine Generator)
 
 | Action | Tables Used | Operation |
 |--------|-------------|-----------|
@@ -326,6 +370,19 @@ Workflows are JSON files—import directly into n8n instance and configure crede
 - Conditional nodes check user existence and scheduled routines before proceeding
 - `alwaysOutputData: true` preserves data flow through false conditions
 - `executeOnce: true` prevents duplicate processing on loops
+
+### n8n Variables Syntax
+
+**IMPORTANT**: This n8n instance uses **Variables** (not environment variables).
+
+| Syntax | Usage |
+|--------|-------|
+| `$vars.WORKOUT_API_URL` | ✅ Correct - accesses n8n Variables |
+| `$env.WORKOUT_API_URL` | ❌ Wrong - environment variables not configured |
+
+Available variables:
+- `$vars.WORKOUT_API_URL` - Backend API base URL
+- `$vars.JWT_SECRET` - JWT signing secret
 
 ## E2E Testing
 

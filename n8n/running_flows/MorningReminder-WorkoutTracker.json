@@ -14,11 +14,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        1456,
+        1260,
         624
       ],
       "id": "9211191c-e8aa-4358-acd0-7b27c80a0c42",
-      "name": "Schedule Trigger1"
+      "name": "morning_schedule_trigger"
     },
     {
       "parameters": {
@@ -42,11 +42,11 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1856,
-        624
+        2060,
+        524
       ],
       "id": "e93c80a0-b161-48c2-b2e5-b341582641da",
-      "name": "Send template",
+      "name": "send_morning_reminder",
       "webhookId": "21c6af23-a721-439e-9a25-b77d22bf95e4",
       "executeOnce": false,
       "credentials": {
@@ -54,48 +54,273 @@
           "id": "xIjy4zDHyjIvGQT4",
           "name": "WhatsApp account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "operation": "executeQuery",
         "query": "SELECT \n  uws.day_routine_id,\n  uws.user_id,\n  uws.week,\n  uws.session_name,\n  users.full_phone_number,\n  users.full_name\nFROM user_weekly_schedule uws\nJOIN users USING(user_id)\nWHERE uws.planned_day = to_char((NOW() AT TIME ZONE 'America/Bogota')::date, 'YYYY-MM-DD')\n  AND uws.\"Completed\" = false",
-        "options": {}
+        "options": {
+          "queryReplacement": ""
+        }
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1648,
+        1460,
         624
       ],
       "id": "dce4aa5c-3261-404c-9ef6-98c3b3c6e7a0",
-      "name": "Get Today Workouts1",
+      "name": "get_today_scheduled_workouts",
       "credentials": {
         "postgres": {
           "id": "vZLJtIWG5nYXMez4",
           "name": "Supabase Memory"
         }
-      }
+      },
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-results-exist",
+              "leftValue": "={{ $json.user_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1660,
+        624
+      ],
+      "id": "b1e2c3d4-5f6a-7b8c-9d0e-1f2a3b4c5d6e",
+      "name": "check_has_workouts_today"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        724
+      ],
+      "id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "name": "no_workouts_today"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error.message || 'Unknown error in MorningReminder workflow' }}"
+      },
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        900
+      ],
+      "id": "f1e2d3c4-b5a6-9870-1234-567890abcdef",
+      "name": "error_trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO n8n_workflow_errors (workflow_name, error_message, error_timestamp, context)\nVALUES (\n  'MorningReminder-WorkoutTracker',\n  $1,\n  NOW() AT TIME ZONE 'America/Bogota',\n  $2\n)",
+        "options": {
+          "queryReplacement": "={{ $json.error?.message || 'Unknown error' }},={{ JSON.stringify($json) }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1460,
+        900
+      ],
+      "id": "d1c2b3a4-9876-5432-fedc-ba0987654321",
+      "name": "log_error_to_database",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## Morning Reminder Workflow\n\n**Purpose:** Sends daily workout reminders to users with scheduled workouts.\n\n**Schedule:** Runs at 5:00 AM (America/Bogota timezone)\n\n**Business Logic:**\n1. Queries `user_weekly_schedule` for today's uncompleted workouts\n2. Joins with `users` to get contact info\n3. Sends WhatsApp template reminder to each user\n\n**Template:** `prueba_2|es_CO` (Spanish - Colombia)",
+        "height": 320,
+        "width": 340,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        420
+      ],
+      "id": "sticky-purpose",
+      "name": "workflow_documentation"
+    },
+    {
+      "parameters": {
+        "content": "## Environment Configuration\n\n**TODO:** Move to environment variable:\n- `phoneNumberId`: 914510145083991\n\nThis should be configured via:\n`$env.WHATSAPP_PHONE_NUMBER_ID`",
+        "height": 180,
+        "width": 280,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        340
+      ],
+      "id": "sticky-env-note",
+      "name": "env_config_note"
+    },
+    {
+      "parameters": {
+        "content": "## Error Handling\n\nCaptures workflow errors and logs them to database for monitoring.\n\n**Note:** Create the `n8n_workflow_errors` table if it doesn't exist.",
+        "height": 160,
+        "width": 280,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        1060
+      ],
+      "id": "sticky-error-handling",
+      "name": "error_handling_note"
+    },
+    {
+      "parameters": {
+        "content": "## Empty Results\n\nGracefully handles days with no scheduled workouts.\nNo messages sent, no errors thrown.",
+        "height": 120,
+        "width": 240,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        840
+      ],
+      "id": "sticky-empty-results",
+      "name": "empty_results_note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "count-sent",
+              "name": "reminders_sent",
+              "value": "={{ $('check_has_workouts_today').all().length }}",
+              "type": "number"
+            },
+            {
+              "id": "timestamp",
+              "name": "completed_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "status",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2260,
+        524
+      ],
+      "id": "set-execution-summary",
+      "name": "execution_summary"
     }
   ],
   "pinData": {},
   "connections": {
-    "Schedule Trigger1": {
+    "morning_schedule_trigger": {
       "main": [
         [
           {
-            "node": "Get Today Workouts1",
+            "node": "get_today_scheduled_workouts",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Today Workouts1": {
+    "get_today_scheduled_workouts": {
       "main": [
         [
           {
-            "node": "Send template",
+            "node": "check_has_workouts_today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_has_workouts_today": {
+      "main": [
+        [
+          {
+            "node": "send_morning_reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "no_workouts_today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "error_trigger": {
+      "main": [
+        [
+          {
+            "node": "log_error_to_database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_morning_reminder": {
+      "main": [
+        [
+          {
+            "node": "execution_summary",
             "type": "main",
             "index": 0
           }
@@ -106,7 +331,9 @@
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "errorWorkflow": "",
+    "timezone": "America/Bogota"
   },
   "versionId": "1396afa4-8930-4e14-a85b-339ce02ffd61",
   "meta": {

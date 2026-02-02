@@ -1,0 +1,18 @@
+I'm happy with the plan, but please can we create a detailed implementation plan based on all of this? This implementation plan should be split up into phases and actionable tasks. It's really important that you include all of the technical detail as well. We will be handing this plan over to a team of developers, so everything, all the technical details, all the decisions need to be clearly documented in the implementation plan. I created a folder called Spec in the root of this project. Create a subfolder within that Spec folder and create your implementation plan in that folder. Please kick off multiple general purpose agents to run in the background and in parallel to write the documents if neeed.
+
+
+Orchestator:
+I need you to implement this feature. Now, this is really important. I don't want you to write any code yourself. 
+Your role is to coordinate the efforts between Coding Agents and Code Review Agents. 
+Have a look at this implementation plan, and I want you to create different tracks. 
+Have a look at any phases or tasks that can be implemented in parallel. 
+Find any phases or tasks that do not have a dependency on each other, and then create different tracks. 
+Then for each track, kick off a coding agent (pixel-dev for frontend and backend) and n8n-agent (for n8n workflows) to implement the changes for that track. 
+You need to use the pixel-dev and n8n-agent for this. 
+Once the coding agent completes its work, you need to hand over the solution to the code-reviewer agent and 
+then let the code-reviewer agent provide feedback back to the pixel-dev agent. 
+
+The cycle should continue until all changes have been fully implemented. 
+Again, I do not want you to implement anything yourself. 
+You need to keep your context window as lean as possible. 
+Coordinate all the different efforts between the tracks, the coder agents (pixel-dev & n8n-agent), and code review agents (code-reviewer).
