@@ -12,7 +12,9 @@ type Router struct {
 	healthHandler      *handler.HealthHandler
 	workoutHandler     *handler.WorkoutHandler
 	setHandler         *handler.SetHandler
+	planHandler        *handler.PlanHandler
 	codeResolver       middleware.CodeResolver
+	internalAPIKey     string
 	corsAllowedOrigins []string
 }
 
@@ -21,14 +23,18 @@ func NewRouter(
 	healthHandler *handler.HealthHandler,
 	workoutHandler *handler.WorkoutHandler,
 	setHandler *handler.SetHandler,
+	planHandler *handler.PlanHandler,
 	codeResolver middleware.CodeResolver,
+	internalAPIKey string,
 	corsAllowedOrigins []string,
 ) *Router {
 	return &Router{
 		healthHandler:      healthHandler,
 		workoutHandler:     workoutHandler,
 		setHandler:         setHandler,
+		planHandler:        planHandler,
 		codeResolver:       codeResolver,
+		internalAPIKey:     internalAPIKey,
 		corsAllowedOrigins: corsAllowedOrigins,
 	}
 }
@@ -52,7 +58,10 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 		// Auth middleware (supports ?c= and ?user_id= for development)
 		authMiddleware := middleware.ValidateAuth(r.codeResolver)
 
-		// Workout routes (protected)
+		// Internal API key middleware (for n8n)
+		internalAuthMiddleware := middleware.ValidateInternalAPIKey(r.internalAPIKey)
+
+		// Workout routes (protected by user auth)
 		workouts := v1.Group("/workouts")
 		workouts.Use(authMiddleware)
 		{
@@ -60,12 +69,23 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 			workouts.POST("/:workoutId/complete", r.workoutHandler.CompleteWorkout)
 		}
 
-		// Set routes (protected)
+		// Set routes (protected by user auth)
 		sets := v1.Group("/sets")
 		sets.Use(authMiddleware)
 		{
 			sets.PATCH("/:setId", r.setHandler.Update)
 			sets.PATCH("/:setId/complete", r.setHandler.MarkComplete)
+		}
+
+		// Plan routes (protected by internal API key - for n8n)
+		plans := v1.Group("/plans")
+		plans.Use(internalAuthMiddleware)
+		{
+			plans.GET("/:userId/mesocycle-status", r.planHandler.GetMesocycleStatus)
+			plans.POST("/:userId/renew/maintain", r.planHandler.RenewMaintain)
+			plans.POST("/:userId/renew/rotate-exercises", r.planHandler.RenewRotateExercises)
+			plans.POST("/:userId/renew/change-days", r.planHandler.RenewChangeDays)
+			plans.POST("/:userId/renew/update-profile", r.planHandler.RenewUpdateProfile)
 		}
 	}
 

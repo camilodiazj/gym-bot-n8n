@@ -73,7 +73,8 @@ func TestNewRouter(t *testing.T) {
 	}
 
 	corsOrigins := []string{"http://localhost:5173"}
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, corsOrigins)
+	internalAPIKey := "test-api-key-123"
+	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, codeResolver, internalAPIKey, corsOrigins)
 
 	if router.healthHandler != healthHandler {
 		t.Error("Expected healthHandler to be set")
@@ -86,6 +87,9 @@ func TestNewRouter(t *testing.T) {
 	}
 	if router.codeResolver == nil {
 		t.Error("Expected codeResolver to be set")
+	}
+	if router.internalAPIKey != internalAPIKey {
+		t.Error("Expected internalAPIKey to be set")
 	}
 	if len(router.corsAllowedOrigins) == 0 {
 		t.Error("Expected corsAllowedOrigins to be set")
@@ -103,7 +107,7 @@ func TestRouter_Setup(t *testing.T) {
 		return "user-123", nil
 	}
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, []string{"*"})
+	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, codeResolver, "test-api-key", []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	if engine == nil {
@@ -131,7 +135,7 @@ func TestRouter_Setup_ProtectedRoutes(t *testing.T) {
 		return "user-123", nil
 	}
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, []string{"*"})
+	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, codeResolver, "test-api-key", []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	// Test protected route without auth
@@ -161,7 +165,7 @@ func TestRouter_Setup_CORSMiddleware(t *testing.T) {
 	workoutHandler := handler.NewWorkoutHandler(nil, nil)
 	setHandler := handler.NewSetHandler(nil, nil)
 
-	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, []string{"*"})
+	router := NewRouter(healthHandler, workoutHandler, setHandler, nil, nil, "test-api-key", []string{"*"})
 	engine := router.Setup(gin.TestMode)
 
 	// Test OPTIONS request (CORS preflight)

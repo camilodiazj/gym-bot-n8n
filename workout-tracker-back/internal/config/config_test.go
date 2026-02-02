@@ -83,9 +83,11 @@ func TestLoad_DefaultPort(t *testing.T) {
 func TestLoad_GinMode(t *testing.T) {
 	os.Setenv("SUPABASE_DB_URL", "postgresql://test:test@localhost:5432/test")
 	os.Setenv("GIN_MODE", "release")
+	os.Setenv("INTERNAL_API_KEY", "test-api-key-for-production")
 	defer func() {
 		os.Unsetenv("SUPABASE_DB_URL")
 		os.Unsetenv("GIN_MODE")
+		os.Unsetenv("INTERNAL_API_KEY")
 	}()
 
 	cfg, err := Load()
@@ -95,6 +97,41 @@ func TestLoad_GinMode(t *testing.T) {
 
 	if cfg.Server.GinMode != "release" {
 		t.Errorf("Expected GinMode 'release', got '%s'", cfg.Server.GinMode)
+	}
+
+	if cfg.Server.InternalAPIKey != "test-api-key-for-production" {
+		t.Errorf("Expected InternalAPIKey 'test-api-key-for-production', got '%s'", cfg.Server.InternalAPIKey)
+	}
+}
+
+func TestLoad_InternalAPIKey_RequiredInProduction(t *testing.T) {
+	os.Setenv("SUPABASE_DB_URL", "postgresql://test:test@localhost:5432/test")
+	os.Setenv("GIN_MODE", "release")
+	os.Unsetenv("INTERNAL_API_KEY")
+	defer func() {
+		os.Unsetenv("SUPABASE_DB_URL")
+		os.Unsetenv("GIN_MODE")
+	}()
+
+	_, err := Load()
+	if err == nil {
+		t.Fatal("Expected error when INTERNAL_API_KEY is missing in production")
+	}
+}
+
+func TestLoad_InternalAPIKey_DefaultInDev(t *testing.T) {
+	os.Setenv("SUPABASE_DB_URL", "postgresql://test:test@localhost:5432/test")
+	os.Unsetenv("GIN_MODE")
+	os.Unsetenv("INTERNAL_API_KEY")
+	defer os.Unsetenv("SUPABASE_DB_URL")
+
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("Expected no error in dev mode, got: %v", err)
+	}
+
+	if cfg.Server.InternalAPIKey != "dev-api-key-not-for-production" {
+		t.Errorf("Expected default InternalAPIKey 'dev-api-key-not-for-production', got '%s'", cfg.Server.InternalAPIKey)
 	}
 }
 

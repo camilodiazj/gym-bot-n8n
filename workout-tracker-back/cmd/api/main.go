@@ -12,6 +12,7 @@ import (
 	"github.com/gymbot/workout-tracker-back/internal/adapter/repository/postgres"
 	"github.com/gymbot/workout-tracker-back/internal/application/usecase"
 	"github.com/gymbot/workout-tracker-back/internal/config"
+	"github.com/gymbot/workout-tracker-back/internal/domain/service"
 )
 
 func main() {
@@ -30,32 +31,83 @@ func main() {
 
 	log.Println("Connected to database successfully")
 
-	// Initialize repositories (Secondary Adapters)
+	// ==================== REPOSITORIES ====================
+
+	// Existing repositories
 	setRepo := postgres.NewSetRepository(dbConn)
 	workoutRepo := postgres.NewWorkoutRepository(dbConn, setRepo)
 	magicLinkRepo := postgres.NewMagicLinkRepository(dbConn)
 
-	// Create code resolver function for short codes
+	// Renewal repositories
+	planRepo := postgres.NewPlanRepository(dbConn)
+	scheduleRepo := postgres.NewScheduleRepository(dbConn)
+	exerciseRepo := postgres.NewExerciseRepository(dbConn)
+	workoutRenewalRepo := postgres.NewWorkoutRenewalRepository(dbConn)
+	userProfileRepo := postgres.NewUserProfileRepository(dbConn)
+
+	// ==================== SERVICES ====================
+
+	// Domain services
+	preferenceProcessor := service.NewPreferenceProcessor()
+	exerciseRotationService := service.NewExerciseRotationService(exerciseRepo, preferenceProcessor)
+
+	// Code resolver for magic links
 	codeResolver := func(code string) (string, error) {
 		return magicLinkRepo.GetUserID(context.Background(), code)
 	}
 
-	// Initialize use cases (Application Layer)
+	// ==================== USE CASES ====================
+
+	// Existing use cases
 	getTodayWorkoutUC := usecase.NewGetTodayWorkoutUseCase(workoutRepo)
 	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(workoutRepo, magicLinkRepo)
 	markSetCompleteUC := usecase.NewMarkSetCompleteUseCase(setRepo)
 	updateSetUC := usecase.NewUpdateSetUseCase(setRepo)
 
-	// Initialize HTTP handlers (Primary Adapters)
+	// Renewal use cases
+	checkMesocycleStatusUC := usecase.NewCheckMesocycleStatusUseCase(planRepo)
+	renewMaintainUC := usecase.NewRenewMaintainUseCase(planRepo, scheduleRepo, workoutRenewalRepo)
+	renewRotateExercisesUC := usecase.NewRenewRotateExercisesUseCase(
+		planRepo,
+		scheduleRepo,
+		workoutRenewalRepo,
+		userProfileRepo,
+		exerciseRotationService,
+	)
+	renewChangeDaysUC := usecase.NewRenewChangeDaysUseCase(planRepo, scheduleRepo, workoutRenewalRepo)
+	renewUpdateProfileUC := usecase.NewRenewUpdateProfileUseCase(planRepo, scheduleRepo, workoutRenewalRepo, userProfileRepo)
+
+	// ==================== HANDLERS ====================
+
+	// Existing handlers
 	healthHandler := handler.NewHealthHandler()
 	workoutHandler := handler.NewWorkoutHandler(getTodayWorkoutUC, completeWorkoutUC)
 	setHandler := handler.NewSetHandler(markSetCompleteUC, updateSetUC)
 
-	// Initialize router and setup routes
-	router := http.NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, cfg.Server.CORSAllowedOrigins)
+	// Plan handler
+	planHandler := handler.NewPlanHandler(
+		checkMesocycleStatusUC,
+		renewMaintainUC,
+		renewRotateExercisesUC,
+		renewChangeDaysUC,
+		renewUpdateProfileUC,
+	)
+
+	// ==================== ROUTER ====================
+
+	router := http.NewRouter(
+		healthHandler,
+		workoutHandler,
+		setHandler,
+		planHandler,
+		codeResolver,
+		cfg.Server.InternalAPIKey,
+		cfg.Server.CORSAllowedOrigins,
+	)
 	engine := router.Setup(cfg.Server.GinMode)
 
-	// Start server in a goroutine
+	// ==================== START SERVER ====================
+
 	go func() {
 		log.Printf("Starting server on %s", cfg.ServerAddr())
 		if err := engine.Run(cfg.ServerAddr()); err != nil {
