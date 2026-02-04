@@ -2,6 +2,39 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [1.8.0] - 2026-02-03
+
+### Fixed - Band Exercise Equipment Classification
+
+- **Migración de 82 ejercicios de banda**: Corregido `equipment` de `machine` a `resistance_band`
+  - Framework de clasificación basado en "Test de Remoción" (kiro-coach)
+  - Reglas deterministas por patrón de `exercise_id`:
+    - R1: `ex_band_*` → resistance_band (71 ejercicios)
+    - R2: `*_resisted*` → resistance_band (8 ejercicios)
+    - R3: `*_band_*` (cardio) → resistance_band (4 ejercicios)
+  - Fallback por nombre español: `spanish_name ILIKE '%con banda%'`
+  - **Híbridos preservados**: 5 ejercicios `ex_barbell_banded_*` mantienen `barbell` (accommodating resistance)
+  - **Corrección especial**: `ex_band_goblet_squat` → `dumbbell` (ID incorrecto, nombre indica mancuerna)
+
+### Fixed - WORKOUT_CREATOR Band Equipment Filter
+
+- **Bug crítico corregido en `ProcessUserPreferences`**: Bandas elásticas no se incluían en el filtro de equipment
+  - **Antes**: `"bandas"` solo seteaba `flags.has_bands = true` pero NO agregaba al `equipmentSet`
+  - **Después**: Ahora también ejecuta `equipmentSet.add('resistance_band')`
+  - **Resultado**: HOME users con bandas ahora reciben ejercicios con `equipment = 'resistance_band'`
+
+### Added - E2E Test Infrastructure for HOME Users
+
+- **Nuevos test cases HOME** (TC_HOME_001, TC_HOME_002, TC_HOME_003) con usuarios MULTI_TURN_AI
+- **Teardown actualizado** en `test_data_setup.sql`: Incluye phones HOME (570000000211-213) para re-ejecución limpia
+- **Documentación HOME_TEST_CASES.md**: Guía de validación para rutinas HOME
+
+### Impact
+
+- **HOME users con bandas elásticas** ahora reciben ejercicios de banda correctamente filtrados
+- Query `WHERE equipment = 'resistance_band'` ahora devuelve 82 ejercicios
+- Ejemplo María (570000000211): 48 resistance_band + 26 dumbbell + 16 bodyweight exercises
+
 ## [0.1.0] - 2026-01-31
 
 ### Added - Workout Tracker Integration
@@ -34,7 +67,7 @@ All notable changes to GymBot will be documented in this file.
 
 ### Added - Priority-Based Duration Validation (KAN-51)
 
-- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en GymRatForm Supabase v2.1.json:
+- **Algoritmo mejorado `ValidateWorkoutDuration` v2.0** en WORKOUT_CREATOR.json:
   - **Priorización muscular**: Protege ejercicios que trabajan `priority_muscles_en` del usuario
   - **Sistema de scoring**: Cada ejercicio recibe un puntaje basado en rol + prioridad muscular (isolation: 0/10, core: 20/30, compound: 40/50)
   - **Fase 1 - Reducción de series**: Reduce sets en ejercicios de menor puntaje primero
@@ -50,7 +83,7 @@ All notable changes to GymBot will be documented in this file.
 
 ### Added - Workout Time Validation (KAN-51)
 
-- **Nuevo nodo `ValidateWorkoutDuration`** en GymRatForm Supabase v2.json: Sistema determinístico de validación de tiempo
+- **Nuevo nodo `ValidateWorkoutDuration`** en WORKOUT_CREATOR.json: Sistema determinístico de validación de tiempo
   - Cálculo matemático de duración: `tiempo_trabajo (sets × reps × tempo) + tiempo_descanso + warmup (10 min) + transiciones (30 seg/ejercicio)`
   - Parseo de tempo formato "X-Y-Z-W" (ej: "3-0-1-0" = 4 seg/rep)
   - Algoritmo de reducción determinística: reduce series respetando prioridad (isolation > core > compound)
@@ -63,7 +96,7 @@ All notable changes to GymBot will be documented in this file.
 
 ### Added - Personalization v2
 
-- **Nueva versión GymRatForm Supabase v2.json**: Rutinas completamente personalizadas usando 22 campos de `users_gym_profile`
+- **Nueva versión WORKOUT_CREATOR.json**: Rutinas completamente personalizadas usando 22 campos de `users_gym_profile`
 - **Nuevo nodo `ProcessUserPreferences`**: Transforma preferencias del usuario (español→inglés, mapeo de músculos)
   - Mapeo de músculos: "Glúteo, pierna" → ["Glutes", "Quads", "Hamstrings", "Calfs"]
   - Tier de experiencia basado en `training_experience`

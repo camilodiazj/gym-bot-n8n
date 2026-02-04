@@ -13,8 +13,8 @@ AI-powered fitness coaching bot that delivers personalized workout plans and dai
 
 | File | Description |
 |------|-------------|
-| `GymRatFlow_Supabase.json` | Main orchestrator - handles incoming WhatsApp messages, user validation, and routine display |
-| `GymRatForm Supabase.json` | Generates personalized 4-week workout plans based on user profiles |
+| `MAIN_FLOW.json` | Main orchestrator - handles incoming WhatsApp messages, user validation, and routine display |
+| `WORKOUT_CREATOR.json` | Generates personalized 4-week workout plans based on user profiles |
 | `GymBotWorkoutCompletion.json` | Evening follow-up (8 PM) - tracks workout completion |
 | `RoutineMorningReminder (2).json` | Morning motivation (5 AM) - sends daily workout reminders |
 

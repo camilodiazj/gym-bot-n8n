@@ -1,12 +1,12 @@
 {
-  "name": "GymRatForm Supabase v2.1",
+  "name": "WORKOUT_CREATOR",
   "nodes": [
     {
       "parameters": {
         "promptType": "define",
         "text": "=Genera la rutina semanal para el usuario:\n\n- **Objetivo**: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- **Nivel**: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- **Dias**: {{ $('ProcessUserPreferences').item.json.days_available }}\n- **Prioridades**: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- **Musculos prioritarios (EN)**: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- **Tier experiencia**: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}",
         "options": {
-          "systemMessage": "=Eres un Entrenador Personal de Elite. Tu mision es construir una rutina PERSONALIZADA para este usuario especifico.\n\n---\n\n## PERFIL COMPLETO DEL USUARIO\n\n**Datos personales:**\n- Edad: {{ $('ProcessUserPreferences').item.json.age }} anos\n- Sexo biologico: {{ $('ProcessUserPreferences').item.json.biological_sex }}\n- Altura: {{ $('ProcessUserPreferences').item.json.height_cm }} cm\n- Peso: {{ $('ProcessUserPreferences').item.json.weight_kg }} kg\n\n**Objetivos:**\n- Principal: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- Secundario: {{ $('ProcessUserPreferences').item.json.secondary_goal }}\n\n**Experiencia y nivel:**\n- Nivel: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- Experiencia: {{ $('ProcessUserPreferences').item.json.training_experience }}\n- Frecuencia actual: {{ $('ProcessUserPreferences').item.json.current_frequency }}\n- Tier de experiencia: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}\n\n**Preferencias de entrenamiento:**\n- Dias disponibles: {{ $('ProcessUserPreferences').item.json.days_available }}\n- Duracion de sesion: {{ $('ProcessUserPreferences').item.json.session_duration_mins }}\n- Estilo preferido: {{ $('ProcessUserPreferences').item.json.training_style }}\n\n**Personalizacion muscular:**\n- Musculos PRIORITARIOS (en ingles): {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- Musculos/ejercicios a EVITAR: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.disliked_muscles_en) }}\n- Texto original prioridades: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- Texto original evitar: {{ $('ProcessUserPreferences').item.json.disliked_exercises }}\n\n**Salud (codigos confirmados de tabla health_status):**\n- Estado: {{ $('ProcessUserPreferences').item.json.health_status }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_lower_body_impact ? '⚠️ CUIDADO TREN INFERIOR: Evitar alto impacto en rodillas, tobillos, cadera' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_upper_body_overhead ? '⚠️ CUIDADO TREN SUPERIOR: Evitar ejercicios overhead y estres en hombros, codos, munecas' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_spinal_loading ? '⚠️ CUIDADO ESPALDA: Evitar carga axial pesada, proteger lumbares y cervicales' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.special_condition ? '⚠️ CONDICION MEDICA ESPECIAL: Priorizar ejercicios de bajo riesgo y maquinas guiadas' : '' }}\n\n**Modificador de volumen:** {{ $('ProcessUserPreferences').item.json.processed.volume_modifier }}\n\n---\n\n## PROTOCOLO DE SELECCION DE EJERCICIOS\n\n### PASO 1: Analizar DAY REQUIREMENT\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\n### PASO 2: Seleccion Inteligente de AVAILABLE_EXERCISES\n\n**Reglas de priorizacion (en orden):**\n\n1. **EXCLUSION OBLIGATORIA** (Primero eliminar):\n   - Ejercicios donde `main_muscle` este en la lista de musculos a EVITAR\n   - Ejercicios cuyo `spanish_name` contenga terminos que el usuario rechazo\n   - Ejercicios que violen las restricciones de salud\n\n2. **PRIORIZACION POR MUSCULOS** (Preferir):\n   - Si hay musculos prioritarios, PREFERIR ejercicios donde:\n     - `main_muscle` coincide con la prioridad, O\n     - `secondary_muscles` INCLUYE algun musculo prioritario\n   - Esto permite trabajo indirecto del musculo prioritario\n\n3. **ADAPTACION POR SEXO BIOLOGICO** (activa):\n   - `F`: Priorizar ejercicios de Glutes, Hamstrings cuando el patron lo permita\n   - `M`: Priorizar ejercicios de Chest, Back, Shoulders cuando el patron lo permita\n   - Esto se aplica cuando hay multiples ejercicios validos para elegir\n\n4. **ADAPTACION POR EXPERIENCIA**:\n   - `beginner`: Preferir `equipment` = \"machine\" o \"bodyweight\", evitar tecnicas complejas\n   - `intermediate`: Balance entre maquinas y peso libre\n   - `advanced`: Priorizar compuestos con barbell/dumbbell\n\n5. **NIVEL DEL EJERCICIO**: Priorizar ejercicios con `level` = {{ $('ProcessUserPreferences').item.json.fitness_level }}\n\n6. **REGLA DE VOLUMEN**: Si `min_sets` > 4, seleccionar 2+ ejercicios para distribuir series\n\n### PASO 3: Aplicar Carga\nUsar datos de CARGA SEMANA cruzando `role` con el perfil de carga.\n- Si `volume_modifier` < 1.0: Reducir 1 serie en ejercicios isolation\n- Si `volume_modifier` > 1.0: Agregar 1 serie en ejercicios compound\n\n### PASO 4: Generar JSON\n\n---\n\n## REGLAS DE ORO\n- PROHIBIDO inventar ejercicios. Solo usar AVAILABLE_EXERCISES.\n- PROHIBIDO ignorar exclusiones de salud o musculos no deseados.\n- OBLIGATORIO personalizar segun el perfil completo.\n\n---\n\n## DATOS DE ENTRADA\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => ({\n  exercise_id: i.json.exercise_id,\n  spanish_name: i.json.spanish_name,\n  main_muscle: i.json.main_muscle,\n  secondary_muscles: i.json.secondary_muscles || [],\n  equipment: i.json.equipment,\n  level: i.json.level,\n  role: i.json.role\n})), null, 2) }}\n\nCARGA SEMANA:\n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n## FORMATO DE SALIDA (JSON Array estricto)\n\nResponder SOLO con un JSON Array valido. Sin texto adicional.\n\nUSER_ID A USAR: {{ $items('GetUser')[0].json.user_id }}\nGOAL A USAR: {{ $('LoadProfile').item.json.goal }}\nLEVEL A USAR: {{ $('LoadProfile').item.json.level }}\nDAY_NAME A USAR: {{ $('Loop Over Items').item.json.day_name }}\n\nESTRUCTURA POR OBJETO (usar los valores de arriba):\n{\n  \"user_id\": \"<USER_ID de arriba>\",\n  \"goal\": \"<GOAL de arriba>\",\n  \"level\": \"<LEVEL de arriba>\",\n  \"role\": \"compound/isolation/core\",\n  \"week_number\": 1,\n  \"day_name\": \"<DAY_NAME de arriba>\",\n  \"exercise_id\": \"exercise_id de AVAILABLE_EXERCISES\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
+          "systemMessage": "=Eres un Entrenador Personal de Elite. Tu mision es construir una rutina PERSONALIZADA para este usuario especifico.\n\n---\n\n## PERFIL COMPLETO DEL USUARIO\n\n**Datos personales:**\n- Edad: {{ $('ProcessUserPreferences').item.json.age }} anos\n- Sexo biologico: {{ $('ProcessUserPreferences').item.json.biological_sex }}\n- Altura: {{ $('ProcessUserPreferences').item.json.height_cm }} cm\n- Peso: {{ $('ProcessUserPreferences').item.json.weight_kg }} kg\n\n**Objetivos:**\n- Principal: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- Secundario: {{ $('ProcessUserPreferences').item.json.secondary_goal }}\n\n**Experiencia y nivel:**\n- Nivel: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- Experiencia: {{ $('ProcessUserPreferences').item.json.training_experience }}\n- Frecuencia actual: {{ $('ProcessUserPreferences').item.json.current_frequency }}\n- Tier de experiencia: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}\n\n**Preferencias de entrenamiento:**\n- Dias disponibles: {{ $('ProcessUserPreferences').item.json.days_available }}\n- Duracion de sesion: {{ $('ProcessUserPreferences').item.json.session_duration_mins }}\n- Estilo preferido: {{ $('ProcessUserPreferences').item.json.training_style }}\n\n**Personalizacion muscular:**\n- Musculos PRIORITARIOS (en ingles): {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- Musculos/ejercicios a EVITAR: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.disliked_muscles_en) }}\n- Texto original prioridades: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- Texto original evitar: {{ $('ProcessUserPreferences').item.json.disliked_exercises }}\n\n**Salud (codigos confirmados de tabla health_status):**\n- Estado: {{ $('ProcessUserPreferences').item.json.health_status }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_lower_body_impact ? '⚠️ CUIDADO TREN INFERIOR: Evitar alto impacto en rodillas, tobillos, cadera' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_upper_body_overhead ? '⚠️ CUIDADO TREN SUPERIOR: Evitar ejercicios overhead y estres en hombros, codos, munecas' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_spinal_loading ? '⚠️ CUIDADO ESPALDA: Evitar carga axial pesada, proteger lumbares y cervicales' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.special_condition ? '⚠️ CONDICION MEDICA ESPECIAL: Priorizar ejercicios de bajo riesgo y maquinas guiadas' : '' }}\n\n**Modificador de volumen:** {{ $('ProcessUserPreferences').item.json.processed.volume_modifier }}\n\n---\n\n## AMBIENTE DE ENTRENAMIENTO\n\n**Ambiente:** {{ $('ProcessUserPreferences').item.json.processed.environment }}\n{{ $('ProcessUserPreferences').item.json.processed.home.is_home ? `\n### CONFIGURACION HOME\n\n**Equipamiento disponible:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_list.join(', ')}\n**Tier de equipamiento:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_tier}\n\n**Flags de equipamiento:**\n- Barra de dominadas: ${$('ProcessUserPreferences').item.json.processed.home.has_pull_bar ? 'SI' : 'NO'}\n- Barbell: ${$('ProcessUserPreferences').item.json.processed.home.has_barbell ? 'SI' : 'NO'}\n- Mancuernas: ${$('ProcessUserPreferences').item.json.processed.home.has_dumbbells ? 'SI' : 'NO'}\n- Kettlebells: ${$('ProcessUserPreferences').item.json.processed.home.has_kettlebells ? 'SI' : 'NO'}\n- Banco: ${$('ProcessUserPreferences').item.json.processed.home.has_bench ? 'SI' : 'NO'}\n\n### REGLAS ESPECIALES HOME\n\n1. **Solo usar ejercicios de AVAILABLE_EXERCISES** - Ya estan pre-filtrados por equipamiento\n2. **Compensacion de gaps obligatoria** - Ver tabla de compensacion abajo\n3. **Priorizar variaciones** - Usar diferentes angulos/posiciones del mismo equipo\n4. **Creatividad con bodyweight** - Explotar ejercicios isometricos, excentricos, unilaterales\n\n### TABLA DE COMPENSACION DE GAPS\n\n| Gap Detectado | Patron Original | Compensacion |\n|---------------|-----------------|---------------|\n| pull_v limitado (sin barra dominadas) | pull_v | +2 series pull_h, +1 ejercicio arm (back) |\n| pull_v limitado (con barra dominadas) | pull_v | Priorizar chin-ups, pull-ups, variaciones |\n| Quads limitado (sin leg extension) | accessory (Quads) | +1 ejercicio squat unilateral, +1 lunge |\n| Hamstrings limitado (sin leg curl) | accessory (Hamstrings) | +2 series hinge, +1 ejercicio lunge posterior |\n| Calfs limitado | accessory (Calfs) | Incluir calf raises en cada dia de pierna |\n| Back limitado (sin cables) | accessory (Back) | +1 ejercicio pull_h, priorizar rows con dumbbell |\n\n### REGLAS DE VOLUMEN HOME\n\n- **Si equipment_tier = 'minimal'**: Reducir 1 serie por ejercicio, aumentar reps\n- **Si equipment_tier = 'basic'**: Mantener volumen, distribuir en mas ejercicios\n- **Si equipment_tier = 'intermediate/advanced'**: Volumen normal\n` : `\n### CONFIGURACION GYM\n\nAcceso completo a todo el equipamiento de gimnasio.\nNo aplican restricciones de equipamiento.\n` }}\n\n---\n\n## PROTOCOLO DE SELECCION DE EJERCICIOS\n\n### PASO 1: Analizar DAY REQUIREMENT\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\n### PASO 2: Seleccion Inteligente de AVAILABLE_EXERCISES\n\n**Reglas de priorizacion (en orden):**\n\n1. **EXCLUSION OBLIGATORIA** (Primero eliminar):\n   - Ejercicios donde `main_muscle` este en la lista de musculos a EVITAR\n   - Ejercicios cuyo `spanish_name` contenga terminos que el usuario rechazo\n   - Ejercicios que violen las restricciones de salud\n\n2. **PRIORIZACION POR MUSCULOS** (Preferir):\n   - Si hay musculos prioritarios, PREFERIR ejercicios donde:\n     - `main_muscle` coincide con la prioridad, O\n     - `secondary_muscles` INCLUYE algun musculo prioritario\n   - Esto permite trabajo indirecto del musculo prioritario\n\n3. **ADAPTACION POR SEXO BIOLOGICO** (activa):\n   - `F`: Priorizar ejercicios de Glutes, Hamstrings cuando el patron lo permita\n   - `M`: Priorizar ejercicios de Chest, Back, Shoulders cuando el patron lo permita\n   - Esto se aplica cuando hay multiples ejercicios validos para elegir\n\n4. **ADAPTACION POR EXPERIENCIA**:\n   - `beginner`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Priorizar bodyweight y mancuernas ligeras. Enfoque en forma y control antes que peso.' : '- GYM: Preferir `equipment` = \"machine\" o \"bodyweight\", evitar tecnicas complejas' }}\n   - `intermediate`: Balance entre ejercicios disponibles\n   - `advanced`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Maximizar intensidad con equipo disponible. Usar tecnicas avanzadas: tempo lento, isometricos, drop sets manuales.' : '- GYM: Priorizar compuestos con barbell/dumbbell' }}\n\n5. **NIVEL DEL EJERCICIO**: Priorizar ejercicios con `level` = {{ $('ProcessUserPreferences').item.json.fitness_level }}\n\n6. **REGLA DE VOLUMEN**: Si `min_sets` > 4, seleccionar 2+ ejercicios para distribuir series\n\n### PASO 3: Aplicar Carga\nUsar datos de CARGA SEMANA cruzando `role` con el perfil de carga.\n- Si `volume_modifier` < 1.0: Reducir 1 serie en ejercicios isolation\n- Si `volume_modifier` > 1.0: Agregar 1 serie en ejercicios compound\n\n### PASO 4: Generar JSON\n\n---\n\n## REGLAS DE ORO\n- PROHIBIDO inventar ejercicios. Solo usar AVAILABLE_EXERCISES.\n- PROHIBIDO ignorar exclusiones de salud o musculos no deseados.\n- OBLIGATORIO personalizar segun el perfil completo.\n- OBLIGATORIO compensar gaps si el ambiente es HOME (ver tabla de compensacion).\n- PROHIBIDO seleccionar ejercicios que requieran equipamiento no disponible.\n\n---\n\n## DATOS DE ENTRADA\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => ({\n  exercise_id: i.json.exercise_id,\n  spanish_name: i.json.spanish_name,\n  main_muscle: i.json.main_muscle,\n  secondary_muscles: i.json.secondary_muscles || [],\n  equipment: i.json.equipment,\n  level: i.json.level,\n  role: i.json.role\n})), null, 2) }}\n\nCARGA SEMANA:\n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n## FORMATO DE SALIDA (JSON Array estricto)\n\nResponder SOLO con un JSON Array valido. Sin texto adicional.\n\nUSER_ID A USAR: {{ $items('GetUser')[0].json.user_id }}\nGOAL A USAR: {{ $('LoadProfile').item.json.goal }}\nLEVEL A USAR: {{ $('LoadProfile').item.json.level }}\nDAY_NAME A USAR: {{ $('Loop Over Items').item.json.day_name }}\n\nESTRUCTURA POR OBJETO (usar los valores de arriba):\n{\n  \"user_id\": \"<USER_ID de arriba>\",\n  \"goal\": \"<GOAL de arriba>\",\n  \"level\": \"<LEVEL de arriba>\",\n  \"role\": \"compound/isolation/core\",\n  \"week_number\": 1,\n  \"day_name\": \"<DAY_NAME de arriba>\",\n  \"exercise_id\": \"exercise_id de AVAILABLE_EXERCISES\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -15,13 +15,13 @@
         208,
         272
       ],
-      "id": "4024436d-c96c-46cb-9872-b3ec91e323eb",
+      "id": "a50bcee6-d526-4bea-b41b-0a3cf79a362e",
       "name": "AI Agent",
       "executeOnce": true
     },
     {
       "parameters": {
-        "jsCode": "const profile = $('GetUserProfile').item.json;\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status)\n    }\n  }\n}];"
+        "jsCode": "const profile = $('GetUserProfile').item.json;\n\n// ============================================\n// FUNCION: parseHomeEquipment\n// PROPOSITO: Parsear equipamiento disponible en casa\n// INPUT: String con equipamiento separado por comas (espanol)\n// OUTPUT: Objeto con arrays y flags para queries\n// ============================================\n\nfunction parseHomeEquipment(equipmentStr, environment) {\n  // Si es GYM, retornar configuracion que no filtra\n  if (!environment || environment.toUpperCase() === 'GYM') {\n    return {\n      is_home: false,\n      equipment_list: [], // Vacio = no filtrar\n      home_equipment_sql: null,\n      has_pull_bar: true, // Asumimos acceso a todo en gym\n      has_barbell: true,\n      has_dumbbells: true,\n      has_kettlebells: true,\n      has_bench: true,\n      has_bands: true,\n      equipment_tier: 'full'\n    };\n  }\n\n  // Mapeo espanol -> canonico (valores en BD)\n  const equipmentMap = {\n    // Mancuernas\n    'mancuernas': 'dumbbell',\n    'mancuerna': 'dumbbell',\n    'dumbbells': 'dumbbell',\n    'dumbbell': 'dumbbell',\n    'pesas': 'dumbbell',\n\n    // Kettlebells\n    'kettlebell': 'kettlebell',\n    'kettlebells': 'kettlebell',\n    'pesa rusa': 'kettlebell',\n    'pesas rusas': 'kettlebell',\n\n    // Barra/Barbell\n    'barra': 'barbell',\n    'barras': 'barbell',\n    'barbell': 'barbell',\n    'barra olimpica': 'barbell',\n    'barra olímpica': 'barbell',\n\n    // Barra de dominadas\n    'barra de dominadas': 'pull_bar',\n    'barra dominadas': 'pull_bar',\n    'pull up bar': 'pull_bar',\n    'pullup bar': 'pull_bar',\n    'barra para dominadas': 'pull_bar',\n\n    // Bandas\n    'bandas': 'bands',\n    'bandas elasticas': 'bands',\n    'bandas elásticas': 'bands',\n    'ligas': 'bands',\n    'resistance bands': 'bands',\n\n    // Banco\n    'banco': 'bench',\n    'banco plano': 'bench',\n    'banco ajustable': 'bench'\n  };\n\n  // Parsear string de entrada\n  const normalized = (equipmentStr || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, ''); // Remover acentos\n\n  const equipmentSet = new Set(['bodyweight']); // Siempre incluir bodyweight\n  const flags = {\n    has_pull_bar: false,\n    has_barbell: false,\n    has_dumbbells: false,\n    has_kettlebells: false,\n    has_bench: false,\n    has_bands: false\n  };\n\n  // Buscar matches en el texto\n  for (const [spanish, canonical] of Object.entries(equipmentMap)) {\n    const normalizedSpanish = spanish\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g, '');\n\n    if (normalized.includes(normalizedSpanish)) {\n      if (canonical === 'pull_bar') {\n        flags.has_pull_bar = true;\n        // pull_bar habilita ejercicios bodyweight de pull_v\n      } else if (canonical === 'bands') {\n        flags.has_bands = true;\n        equipmentSet.add('resistance_band'); // Agregar resistance_band al filtro SQL\n      } else if (canonical === 'bench') {\n        flags.has_bench = true;\n      } else {\n        equipmentSet.add(canonical);\n        if (canonical === 'barbell') flags.has_barbell = true;\n        if (canonical === 'dumbbell') flags.has_dumbbells = true;\n        if (canonical === 'kettlebell') flags.has_kettlebells = true;\n      }\n    }\n  }\n\n  const equipmentList = Array.from(equipmentSet);\n\n  // Generar SQL para filtrado\n  // Formato: 'bodyweight', 'dumbbell', 'kettlebell'\n  const home_equipment_sql = equipmentList\n    .map(e => `'${e}'`)\n    .join(', ');\n\n  // Determinar tier de equipamiento\n  let equipment_tier = 'minimal'; // Solo bodyweight\n  if (flags.has_dumbbells || flags.has_kettlebells) {\n    equipment_tier = 'basic'; // Peso libre basico\n  }\n  if (flags.has_barbell) {\n    equipment_tier = 'intermediate'; // Tiene barra\n  }\n  if (flags.has_barbell && flags.has_dumbbells && flags.has_pull_bar) {\n    equipment_tier = 'advanced'; // Home gym completo\n  }\n\n  return {\n    is_home: true,\n    equipment_list: equipmentList,\n    home_equipment_sql: home_equipment_sql,\n    has_pull_bar: flags.has_pull_bar,\n    has_barbell: flags.has_barbell,\n    has_dumbbells: flags.has_dumbbells,\n    has_kettlebells: flags.has_kettlebells,\n    has_bench: flags.has_bench,\n    has_bands: flags.has_bands,\n    equipment_tier: equipment_tier\n  };\n}\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\n// Obtener environment del perfil (nuevo campo de users_gym_profile)\nconst environment = profile.training_environment || 'GYM';\nconst homeEquipment = parseHomeEquipment(profile.home_equipment, environment);\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      // Campos existentes (NO MODIFICAR)\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status),\n\n      // === NUEVOS CAMPOS PARA HOME ===\n      environment: environment.toUpperCase(),\n      home: homeEquipment\n    }\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -29,7 +29,7 @@
         -1600,
         144
       ],
-      "id": "6a5bf464-bd71-4132-bc0a-74c696032052",
+      "id": "e4c7fc86-c96a-430e-8890-72bea15dbc33",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
@@ -43,7 +43,7 @@
         848,
         144
       ],
-      "id": "37a02318-a6ac-42c7-854e-64ce91c87472",
+      "id": "f9e4cfca-9016-4e13-936b-fe045c90ad6f",
       "name": "Code in JavaScript1"
     },
     {
@@ -56,7 +56,7 @@
         -304,
         128
       ],
-      "id": "88ed0e1e-38c8-4580-854d-98c0cf7c79dd",
+      "id": "8ee178ce-78c9-436d-a347-2f1a7f4b6218",
       "name": "Loop Over Items"
     },
     {
@@ -71,7 +71,7 @@
         0,
         0
       ],
-      "id": "a1fbe8fd-64fa-4560-a894-490b640998fc",
+      "id": "524f1653-ebcf-4fe6-8a26-033234a3ab56",
       "name": "AI Transform"
     },
     {
@@ -84,14 +84,14 @@
         320,
         96
       ],
-      "id": "5e952ab7-ac29-4074-825b-abbe115cc908",
+      "id": "3d282911-f68f-4220-b93b-c0630e348fe7",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "select day_req.*, rt.template_id ,rt.goal, rt.level, rt.week_schedule\nfrom routine_templates rt\njoin template_days using(week_schedule)\njoin day_requirements as day_req using (template_day_id)  \nwhere days_per_week = {{ $items('ProcessUserPreferences')[0].json.days_available }}\nand goal = '{{ $items('ProcessUserPreferences')[0].json.primary_goal }}'\nand level = '{{ $items('ProcessUserPreferences')[0].json.fitness_level }}';",
+        "query": "select day_req.*, rt.template_id ,rt.goal, rt.level, rt.week_schedule\nfrom routine_templates rt\njoin template_days using(week_schedule)\njoin day_requirements as day_req using (template_day_id)  \nwhere days_per_week = {{ $items('ProcessUserPreferences')[0].json.days_available }}\nand goal = '{{ $items('ProcessUserPreferences')[0].json.primary_goal }}'\nand level = '{{ $items('ProcessUserPreferences')[0].json.fitness_level }}'\nand (rt.environment = '{{ $items('ProcessUserPreferences')[0].json.processed.environment }}' \n     OR (rt.environment IS NULL AND '{{ $items('ProcessUserPreferences')[0].json.processed.environment }}' = 'GYM'));",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
@@ -100,7 +100,7 @@
         -1232,
         144
       ],
-      "id": "432e9bec-6ca2-4e1a-9477-7541ef12f8b2",
+      "id": "0c1d73b9-cb7b-4b68-acb7-e43693a313cb",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -138,7 +138,7 @@
         -1376,
         144
       ],
-      "id": "9abf4850-7901-4dc5-8a35-883b87a44954",
+      "id": "cad61c82-5265-49ef-ad6a-303c8a0a6895",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -149,30 +149,23 @@
     },
     {
       "parameters": {
-        "operation": "get",
-        "tableId": "exercises",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "pattern",
-              "keyValue": "={{ $json.pattern }}"
-            }
-          ]
-        }
+        "operation": "executeQuery",
+        "query": "={{ (() => {\n  const isHome = $items('ProcessUserPreferences')[0].json.processed.home.is_home;\n  const equipmentSql = $items('ProcessUserPreferences')[0].json.processed.home.home_equipment_sql;\n  const pattern = $json.pattern;\n  const level = $items('ProcessUserPreferences')[0].json.fitness_level;\n\n  let query = `\n    SELECT\n      exercise_id,\n      spanish_name,\n      pattern,\n      role,\n      main_muscle,\n      secondary_muscles,\n      level,\n      link,\n      equipment\n    FROM exercises\n    WHERE pattern = '${pattern}'\n  `;\n\n  if (isHome && equipmentSql) {\n    query += ` AND equipment IN (${equipmentSql})`;\n  }\n\n  query += `\n    ORDER BY\n      CASE WHEN level = '${level}' THEN 0 ELSE 1 END,\n      role,\n      spanish_name\n  `;\n\n  return query;\n})() }}",
+        "options": {}
       },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
       "position": [
         -64,
         240
       ],
-      "id": "496ccd04-7780-490a-80e4-afff928f43c3",
+      "id": "1779924f-e7d0-4f78-982c-b02a6a2e9e26",
       "name": "GetExercisesByPattern",
       "executeOnce": true,
       "credentials": {
-        "supabaseApi": {
-          "id": "SkVWOQLDNqQulhao",
-          "name": "Supabase"
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
         }
       }
     },
@@ -219,7 +212,7 @@
         -704,
         480
       ],
-      "id": "4f9c2951-6c4d-4d78-8020-b843dddaa17a",
+      "id": "30b199ca-dea0-41f7-9cb9-47113412e024",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -260,7 +253,7 @@
         -880,
         352
       ],
-      "id": "d9c77fcb-4c94-4b81-819c-b079a5974dc4",
+      "id": "707d6f98-904a-417d-861f-dfbb408704c9",
       "name": "UserExists"
     },
     {
@@ -282,7 +275,7 @@
         -1040,
         256
       ],
-      "id": "67c2b200-39c9-48d6-bcd0-d8cdbaf9f0c4",
+      "id": "3f19399a-fda8-49ea-84fa-5a3b766bcdd7",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -335,7 +328,7 @@
         -656,
         304
       ],
-      "id": "e23269a8-25fa-48cf-826e-1da6e5335f18",
+      "id": "7431dee2-7e84-4ef7-81b4-d8b9172401ea",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -354,7 +347,7 @@
         -528,
         128
       ],
-      "id": "d10e7625-bf3f-430a-b6b3-7b1f57f7e9b7",
+      "id": "d8d9f62a-baaf-46a0-a2e2-4b59ff98a8e5",
       "name": "Merge"
     },
     {
@@ -420,7 +413,7 @@
         1312,
         144
       ],
-      "id": "7662ffe3-b5d5-4ad7-b047-55bda0c4efc8",
+      "id": "4b83267d-1c4d-46b9-87f0-ffa4da65090c",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -449,7 +442,7 @@
         592,
         144
       ],
-      "id": "f3a32a7f-d4e0-484c-9332-2a232a94f4f4",
+      "id": "6ad17a0c-9f10-4112-8ee2-1a47d17ab175",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -477,7 +470,7 @@
         -2000,
         144
       ],
-      "id": "91295f4c-8308-4a5b-851c-f668f8dce1b5",
+      "id": "c41d7e27-f74f-46c3-b2f2-111a7199bf73",
       "name": "input",
       "executeOnce": true
     },
@@ -500,7 +493,7 @@
         -1824,
         144
       ],
-      "id": "8675e0e4-80d8-49eb-9e66-f34e31bc7f0e",
+      "id": "080570e8-5691-4e0f-9298-f599c3639c5c",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -523,7 +516,7 @@
         1552,
         144
       ],
-      "id": "78efd42b-f66f-4bd8-9c94-b74c04f1ef18",
+      "id": "cfd10997-67aa-4767-82ca-9872cd4de273",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -544,7 +537,7 @@
         1056,
         144
       ],
-      "id": "e3658748-f1f9-4486-b8d6-f312538a55d1",
+      "id": "06edb982-b55d-4f4a-b314-e95a75881dba",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -557,7 +550,7 @@
         1760,
         160
       ],
-      "id": "5918adab-4e5f-41ef-9c6d-7536d5386556",
+      "id": "c379bae5-3d29-4065-b640-085c85a34d0e",
       "name": "Filtered Message2"
     },
     {
@@ -571,7 +564,7 @@
         80,
         480
       ],
-      "id": "b093d100-ac80-4d5a-ad01-80e67d628c4c",
+      "id": "7418d294-7f83-4f76-8faa-2d6eda199730",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -845,15 +838,15 @@
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false,
+    "availableInMCP": true,
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "2d066c3f-1352-4262-8e7e-54556bd43bf4",
+  "versionId": "59610a9d-bebb-40d4-a966-a70761bade17",
   "meta": {
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "523zkE5vZ7aVXJk5k4GAG",
+  "id": "oF9qSlkZta1AEOnIMf2_i",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",

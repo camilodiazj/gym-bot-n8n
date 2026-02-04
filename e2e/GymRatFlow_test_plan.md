@@ -1,4 +1,4 @@
-# Plan de Pruebas E2E - GymRatFlow_Supabase v4.0
+# Plan de Pruebas E2E - MAIN_FLOW v4.0
 
 ## Guia Rapida de Ejecucion
 
@@ -25,7 +25,7 @@ n8n/
 3. Configurar credenciales:
    - **Postgres:** Apuntar a Supabase
    - **OpenAI API:** Para TC002_FULL_KYC (usuario simulado)
-4. Verificar que el nodo "Execute GymRatFlow" apunte al workflow `GymRatFlow_Supabase`
+4. Verificar que el nodo "Execute GymRatFlow" apunte al workflow `MAIN_FLOW`
 
 ### Paso 3: Ejecutar Tests
 
@@ -37,7 +37,7 @@ n8n/
 ### Paso 4: Verificar Resultados
 
 ```
-*📊 Test Report - GymRatFlow*
+*📊 Test Report - MAIN_FLOW*
 ──────────────────────
 *Status:* ✅ PASS
 *Score:* 100% (9/9)

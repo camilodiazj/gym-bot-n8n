@@ -19,52 +19,75 @@
 -- ============================================
 -- SECCION 1: TEARDOWN (Limpiar datos de prueba)
 -- Ejecutar PRIMERO para estado limpio
--- IMPORTANTE: Incluye 570000000009 en TODAS las queries
+-- IMPORTANTE: Incluye TODOS los phones de prueba:
+--   GYM: 570000000001-004, 570000000009
+--   HOME: 570000000211, 570000000212, 570000000213
 -- ============================================
 
--- Eliminar pending_tasks de usuarios dummy
+-- Eliminar pending_tasks de usuarios dummy (GYM + HOME)
 DELETE FROM pending_tasks
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
+    WHERE full_phone_number::text IN (
+        '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+        '570000000211', '570000000212', '570000000213'
+    )
 );
 
--- Eliminar workouts de usuarios dummy
+-- Eliminar workouts de usuarios dummy (GYM + HOME)
 DELETE FROM workouts
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
+    WHERE full_phone_number::text IN (
+        '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+        '570000000211', '570000000212', '570000000213'
+    )
 );
 
--- Eliminar schedules de usuarios dummy
+-- Eliminar schedules de usuarios dummy (GYM + HOME)
 DELETE FROM user_weekly_schedule
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
+    WHERE full_phone_number::text IN (
+        '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+        '570000000211', '570000000212', '570000000213'
+    )
 );
 
--- Eliminar planes de usuarios dummy
+-- Eliminar planes de usuarios dummy (GYM + HOME)
 DELETE FROM users_plans
 WHERE user_id IN (
     SELECT user_id FROM users
-    WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009')
+    WHERE full_phone_number::text IN (
+        '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+        '570000000211', '570000000212', '570000000213'
+    )
 );
 
--- Eliminar usuarios dummy
+-- Eliminar usuarios dummy (GYM + HOME)
 DELETE FROM users
-WHERE full_phone_number::text IN ('570000000001', '570000000002', '570000000003', '570000000004', '570000000009');
+WHERE full_phone_number::text IN (
+    '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+    '570000000211', '570000000212', '570000000213'
+);
 
 -- Eliminar perfiles gym de usuarios dummy (whatsapp_id es BIGINT, no string)
 DELETE FROM users_gym_profile
-WHERE whatsapp_id IN (570000000001, 570000000002, 570000000003, 570000000004, 570000000009);
+WHERE whatsapp_id IN (
+    570000000001, 570000000002, 570000000003, 570000000004, 570000000009,
+    570000000211, 570000000212, 570000000213
+);
 
--- Limpiar memoria de chat de usuarios dummy
+-- Limpiar memoria de chat de usuarios dummy (GYM + HOME)
 DELETE FROM n8n_chat_histories
 WHERE session_id LIKE '%570000000001%'
    OR session_id LIKE '%570000000002%'
    OR session_id LIKE '%570000000003%'
    OR session_id LIKE '%570000000004%'
    OR session_id LIKE '%570000000009%'
+   OR session_id LIKE '%570000000211%'
+   OR session_id LIKE '%570000000212%'
+   OR session_id LIKE '%570000000213%'
    OR session_id LIKE '%e2e00001-0000-0000-0000-000000000001%'
    OR session_id LIKE '%e2e00002-0000-0000-0000-000000000002%'
    OR session_id LIKE '%e2e00003-0000-0000-0000-000000000003%'
@@ -394,16 +417,27 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 -- AND task_type = 'CONFIRMAR_RUTINA';
 
 -- ============================================
--- RESUMEN DE ESTADOS POST-SETUP (v4.0)
+-- RESUMEN DE ESTADOS POST-SETUP (v5.0)
 -- ============================================
 --
+-- GYM USERS (fixtures pre-poblados):
 -- | Usuario             | Phone        | Plan | Schedule | Workouts | Pending Task | Para Tests          |
 -- |---------------------|--------------|------|----------|----------|--------------|---------------------|
 -- | Test_NoSchedule     | 570000000001 | SI   | NO       | NO       | NO           | TC003               |
 -- | Test_RestDay        | 570000000002 | SI   | MANANA   | NO       | NO           | TC004               |
--- | Test_WithRoutine    | 570000000003 | SI   | HOY      | SI       | NO           | TC006, TC007        |
+-- | Test_WithRoutine    | 570000000003 | SI   | HOY      | SI       | NO           | TC006, TC007, TC013 |
 -- | Test_WithPendingTask| 570000000004 | SI   | HOY      | SI       | SI           | TC011, TC012        |
 -- | (dinamico)          | 570000000009 | -    | -        | -        | -            | TC002, TC002_FULL_KYC|
 --
+-- HOME USERS (creados dinamicamente por MULTI_TURN_AI, limpiados por teardown):
+-- | Usuario             | Phone        | Equipment              | Health | Para Tests      |
+-- |---------------------|--------------|------------------------|--------|-----------------|
+-- | Maria Lopez         | 570000000211 | mancuernas, bandas     | A      | TC_HOME_001     |
+-- | Carlos Rodriguez    | 570000000212 | peso corporal          | A      | TC_HOME_002     |
+-- | Ana Martinez        | 570000000213 | mancuernas, bandas     | C      | TC_HOME_003     |
+--
 -- TC001 no necesita usuario (es status update sin messages[])
+--
+-- NOTA: Los tests HOME usan MULTI_TURN_AI y crean sus datos dinamicamente durante el KYC.
+-- El teardown limpia estos usuarios para permitir re-ejecucion de tests.
 -- ============================================
