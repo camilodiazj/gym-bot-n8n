@@ -31,8 +31,8 @@ GymBot/
 
 | Workflow | Purpose |
 |----------|---------|
-| `GymRatFlow_Supabase_V2_Workout_Tracker.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
-| `GymRatForm Supabase v2.1.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
+| `MAIN_FLOW.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
+| `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
@@ -85,8 +85,25 @@ Agents use Postgres-based chat memory for conversation context persistence.
 | Table | Purpose | Key Columns |
 |-------|---------|-------------|
 | `users` | Core user identity | `user_id` (UUID PK), `full_name`, `email`, `cel_number`, `full_phone_number`, `timezone` |
-| `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (PK), fitness metrics, goals, preferences (22 columns) |
+| `users_gym_profile` | KYC profile data from onboarding | `whatsapp_id` (PK), fitness metrics, goals, preferences (24 columns) |
 | `users_plans` | Active training plan per user | `plan_id` (UUID PK), `user_id` -> `users`, `template_id`, `goal`, `level`, `status`, `mesocycle_number`, `last_renewal_date` |
+
+### users_gym_profile Enum Values
+
+**IMPORTANT**: When inserting into `users_gym_profile`, use these exact enum values:
+
+| Column | Enum Type | Valid Values |
+|--------|-----------|--------------|
+| `biological_sex` | `sex` | `M`, `F` |
+| `primary_goal` | `goal` | `Ganar masa muscular`, `Bajar grasa`, `Mejorar fuerza`, `Mejorar resistencia`, `Salud general / recomposición corporal` |
+| `training_experience` | `gym_experience` | `Nunca he entrenado`, `Menos de 6 meses`, `6 a 12 meses`, `1 a 3 años`, `Más de 3 años` |
+| `current_frequency` | `current_gym_frecuency` | `No entreno`, `1-2 días por semana`, `3-4 días por semana`, `5-6 días por semana` |
+| `preferred_schedule` | `usual_schedule` | `Mañana`, `Tarde`, `Noche` |
+| `training_style` | `workout_preferences` | `Pesas libres`, `Máquinas`, `Funcional`, `Mixto` |
+| `cardio_type` | `current_cardio` | `No`, `Caminata`, `Bicicleta`, `Running` |
+| `cardio_frequency` | `cardio_frequency` | `0`, `1-2`, `3-4`, `5 o más` |
+
+**Text columns** (NOT enums): `fitness_level`, `health_status`, `secondary_goal`, `priority_muscles`, `disliked_exercises`, `session_duration_mins`, `training_environment`, `home_equipment`
 
 ### Routine Template System
 
@@ -146,7 +163,7 @@ The `exercise_order` field in `workouts` ensures deterministic ordering:
 - **core** exercises: 5-6 (after main lifts)
 - **isolation** exercises: 7+ (accessories last)
 
-This is set programmatically in `GymRatForm Supabase v2.1.json` and queried with `ORDER BY exercise_order`.
+This is set programmatically in `WORKOUT_CREATOR.json` and queried with `ORDER BY exercise_order`.
 
 ### Entity Relationships
 
@@ -173,7 +190,7 @@ users_gym_profile ------------------------------>+
 
 ## n8n Workflow <-> Supabase Mapping
 
-### 1. GymRatFlow_Supabase (Main Orchestrator)
+### 1. MAIN_FLOW (Main Orchestrator)
 
 | Action | Tables Used | Operation |
 |--------|-------------|-----------|
@@ -184,7 +201,7 @@ users_gym_profile ------------------------------>+
 | Schedule creation | `user_weekly_schedule` | INSERT via tool |
 | Plan info | `users_plans` + `week_schedules` + `template_days` | JOIN query |
 
-### 2. GymRatForm Supabase v2 (Advanced Routine Generator)
+### 2. WORKOUT_CREATOR (Advanced Routine Generator)
 
 | Action | Tables Used | Operation |
 |--------|-------------|-----------|
@@ -249,7 +266,7 @@ New Code node that transforms user profile data for AI personalization:
 ```
 +---------------------------------------------------------------------+
 |                         USER ONBOARDING                              |
-|  WhatsApp -> KYC Agent -> users_gym_profile -> GymRatForm workflow  |
+|  WhatsApp -> KYC Agent -> users_gym_profile -> WORKOUT_CREATOR      |
 |                              |                                       |
 |            users + users_plans + workouts (4 weeks generated)        |
 +---------------------------------------------------------------------+
@@ -339,7 +356,7 @@ e2e/
 
 ### Test Runner
 
-`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 9 test cases:
+`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 12 test cases:
 
 | Test | Category | Description |
 |------|----------|-------------|
@@ -352,6 +369,9 @@ e2e/
 | TC007 | CHAT | General fitness questions answered |
 | TC011 | PENDING_TASK | User confirms workout completion |
 | TC012 | PENDING_TASK | User declines confirmation |
+| TC_HOME_001 | HOME_BASIC | HOME user with basic equipment sees routine |
+| TC_HOME_002 | HOME_BODYWEIGHT | HOME bodyweight-only user sees routine |
+| TC_HOME_003 | HOME_HEALTH | HOME user with health restriction C sees routine |
 
 ### Running Tests
 
@@ -362,6 +382,8 @@ e2e/
 
 ### Test Users (Reserved Phones)
 
+**GYM Users** (`57000000000X`) - Pre-populated fixtures:
+
 | Phone | User | Purpose |
 |-------|------|---------|
 | `570000000001` | Test_NoSchedule | TC003 |
@@ -370,7 +392,33 @@ e2e/
 | `570000000004` | Test_WithPendingTask | TC011, TC012 |
 | `570000000009` | Dynamic (created/deleted) | TC002, TC002_FULL_KYC |
 
-> **Important**: Phone numbers `57000000000X` are reserved for testing. Do not use for real users.
+**HOME Users** (`5700000002XX`) - Created dynamically by MULTI_TURN_AI tests:
+
+| Phone | User | Equipment | Health | Purpose |
+|-------|------|-----------|--------|---------|
+| `570000000211` | Maria Lopez | mancuernas, bandas | A | TC_HOME_001 |
+| `570000000212` | Carlos Rodriguez | peso corporal | A | TC_HOME_002 |
+| `570000000213` | Ana Martinez | mancuernas, bandas | C | TC_HOME_003 |
+
+> **Important**: Phone numbers `57000000000X` and `5700000002XX` are reserved for testing. Do not use for real users.
+
+### Teardown (Critical)
+
+The `test_data_setup.sql` script includes a **teardown section** that deletes ALL test users (GYM + HOME) before recreating fixtures. This ensures:
+
+1. **Clean state** before each test run
+2. **Re-runnable tests** - HOME users are deleted so MULTI_TURN_AI can recreate them
+3. **No stale data** - Old workouts/schedules don't pollute new test runs
+
+**When adding new test users**: Always add their phone numbers to BOTH:
+- The teardown DELETE statements (Section 1)
+- The summary table at the end of the script
+
+```sql
+-- Phones included in teardown:
+-- GYM: 570000000001, 570000000002, 570000000003, 570000000004, 570000000009
+-- HOME: 570000000211, 570000000212, 570000000213
+```
 
 ## Changelog
 
