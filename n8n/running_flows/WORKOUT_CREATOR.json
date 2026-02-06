@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        208,
-        272
+        5888,
+        1664
       ],
-      "id": "a50bcee6-d526-4bea-b41b-0a3cf79a362e",
+      "id": "b2f94dd5-df33-4b77-b18b-959cdd702909",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -26,10 +26,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1600,
-        144
+        4080,
+        1536
       ],
-      "id": "e4c7fc86-c96a-430e-8890-72bea15dbc33",
+      "id": "a795ee60-41e9-4030-9eb8-3d2b55948c91",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        848,
-        144
+        6528,
+        1536
       ],
-      "id": "f9e4cfca-9016-4e13-936b-fe045c90ad6f",
+      "id": "f3798958-c901-4407-8793-4d0f6183897d",
       "name": "Code in JavaScript1"
     },
     {
@@ -53,10 +53,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -304,
-        128
+        5376,
+        1520
       ],
-      "id": "8ee178ce-78c9-436d-a347-2f1a7f4b6218",
+      "id": "d9d3556f-3219-40db-8bb7-8d475531853b",
       "name": "Loop Over Items"
     },
     {
@@ -68,10 +68,10 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        5680,
+        1392
       ],
-      "id": "524f1653-ebcf-4fe6-8a26-033234a3ab56",
+      "id": "d83322e5-3ffe-4f73-b262-c5b500bcea71",
       "name": "AI Transform"
     },
     {
@@ -81,10 +81,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        320,
-        96
+        6000,
+        1488
       ],
-      "id": "3d282911-f68f-4220-b93b-c0630e348fe7",
+      "id": "e3a8a5ba-b1df-409a-8a85-6a1ea881de61",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -97,10 +97,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1232,
-        144
+        4448,
+        1536
       ],
-      "id": "0c1d73b9-cb7b-4b68-acb7-e43693a313cb",
+      "id": "95c2285e-9488-42bd-8377-ec18b57eca05",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1376,
-        144
+        4304,
+        1536
       ],
-      "id": "cad61c82-5265-49ef-ad6a-303c8a0a6895",
+      "id": "6a7fe2ce-46e9-4edf-89be-99c48bcb1614",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -156,10 +156,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -64,
-        240
+        5616,
+        1632
       ],
-      "id": "1779924f-e7d0-4f78-982c-b02a6a2e9e26",
+      "id": "293b7334-709e-449c-a026-d2c72264156e",
       "name": "GetExercisesByPattern",
       "executeOnce": true,
       "credentials": {
@@ -209,10 +209,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -704,
-        480
+        4976,
+        1872
       ],
-      "id": "30b199ca-dea0-41f7-9cb9-47113412e024",
+      "id": "91290487-9875-43f7-b3c4-46db5fcba5f7",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -250,10 +250,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -880,
-        352
+        4800,
+        1744
       ],
-      "id": "707d6f98-904a-417d-861f-dfbb408704c9",
+      "id": "10b851d1-f4b4-472b-a5c7-b0918a20fece",
       "name": "UserExists"
     },
     {
@@ -272,10 +272,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1040,
-        256
+        4640,
+        1648
       ],
-      "id": "3f19399a-fda8-49ea-84fa-5a3b766bcdd7",
+      "id": "2a8a1d80-633a-4ec4-bda3-4f01fd4d057f",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -325,10 +325,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -656,
-        304
+        5024,
+        1696
       ],
-      "id": "7431dee2-7e84-4ef7-81b4-d8b9172401ea",
+      "id": "65848a93-87dd-49b6-9eb6-ba7d25c42975",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -344,10 +344,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -528,
-        128
+        5152,
+        1520
       ],
-      "id": "d8d9f62a-baaf-46a0-a2e2-4b59ff98a8e5",
+      "id": "ad237b1b-1a42-49d6-b986-4395536102ae",
       "name": "Merge"
     },
     {
@@ -410,10 +410,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1312,
-        144
+        6992,
+        1536
       ],
-      "id": "4b83267d-1c4d-46b9-87f0-ffa4da65090c",
+      "id": "2435a236-384c-4fd1-b1b5-f57c3ba2fce1",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -439,10 +439,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        592,
-        144
+        6272,
+        1536
       ],
-      "id": "6ad17a0c-9f10-4112-8ee2-1a47d17ab175",
+      "id": "7fb0a461-a663-43a5-b720-99cbc8a0675a",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -467,10 +467,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -2000,
-        144
+        3680,
+        1536
       ],
-      "id": "c41d7e27-f74f-46c3-b2f2-111a7199bf73",
+      "id": "7680fd5c-b319-4b93-a97b-10d41674e957",
       "name": "input",
       "executeOnce": true
     },
@@ -490,10 +490,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1824,
-        144
+        3856,
+        1536
       ],
-      "id": "080570e8-5691-4e0f-9298-f599c3639c5c",
+      "id": "16ef252c-5a46-40c9-b010-5363c8a70f4a",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -507,16 +507,16 @@
         "operation": "send",
         "phoneNumberId": "914510145083991",
         "recipientPhoneNumber": "={{ String($items('ProcessUserPreferences')[0].json.whatsapp_id) }}",
-        "textBody": "=🎉 ¡Hola {{ $items('ProcessUserPreferences')[0].json.full_name }}!\n\n¡Tu rutina de entrenamiento de 4 semanas ha sido creada exitosamente! 💪\n\n📋 Tu plan está personalizado para:\n• Objetivo: {{ $items('ProcessUserPreferences')[0].json.primary_goal }}\n• Nivel: {{ $items('ProcessUserPreferences')[0].json.fitness_level }}\n• Días por semana: {{ $items('ProcessUserPreferences')[0].json.days_available }}\n• Músculos prioritarios: {{ $items('ProcessUserPreferences')[0].json.priority_muscles || 'Balanceado' }}\n\n¡Escríbeme cuando quieras ver tu rutina del día! 🚀",
+        "textBody": "=🎉 ¡Hola {{ $items('ProcessUserPreferences')[0].json.full_name }}!\n\n¡Tu rutina de entrenamiento de 4 semanas ha sido creada exitosamente! 💪\n\n📋 Tu plan está personalizado para:\n• Objetivo: {{ $items('ProcessUserPreferences')[0].json.primary_goal }}\n• Nivel: {{ $items('ProcessUserPreferences')[0].json.fitness_level }}\n• Días por semana: {{ $items('ProcessUserPreferences')[0].json.days_available }}\n• Músculos prioritarios: {{ $items('ProcessUserPreferences')[0].json.priority_muscles || 'Balanceado' }}\n\n📧 Ya te enviamos tu rutina de la Semana 1 a *{{ $items('ProcessUserPreferences')[0].json.email }}*. Revísala con calma para familiarizarte con cada ejercicio y su técnica.\n\n⚠️ Si no lo ves en tu bandeja de entrada, revisa la carpeta de SPAM o correo no deseado.\n\nCuando quieras, escríbeme y agendamos juntos tu semana de entrenamiento 📅",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1552,
-        144
+        7232,
+        1536
       ],
-      "id": "cfd10997-67aa-4767-82ca-9872cd4de273",
+      "id": "82a48ff3-01e9-42d8-a8a5-cbea7580b5a6",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -534,10 +534,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1056,
-        144
+        6736,
+        1536
       ],
-      "id": "06edb982-b55d-4f4a-b314-e95a75881dba",
+      "id": "3fab3c0f-8aad-4c11-a343-3ea159415c46",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -547,10 +547,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1760,
-        160
+        7440,
+        1552
       ],
-      "id": "c379bae5-3d29-4065-b640-085c85a34d0e",
+      "id": "b0f2bab3-1e16-41b6-a983-a40f199a8b0e",
       "name": "Filtered Message2"
     },
     {
@@ -561,10 +561,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        80,
-        480
+        5760,
+        1872
       ],
-      "id": "7418d294-7f83-4f76-8faa-2d6eda199730",
+      "id": "b17cb181-719e-4e85-a3b1-f60aab8f59dc",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -572,6 +572,103 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT w.day_name, w.exercise_order, w.sets, w.reps, w.rir, w.\"rest-seconds\" as rest_seconds, w.tempo, e.spanish_name, e.main_muscle, e.secondary_muscles, e.equipment, e.link, e.role FROM workouts w JOIN exercises e USING(exercise_id) JOIN users_plans up ON up.user_id = w.user_id AND up.status = 'active' JOIN template_days td ON td.week_schedule = up.week_schedule AND td.title = w.day_name WHERE w.user_id = '{{ $items('GetUser')[0].json.user_id }}' AND w.week = 1 ORDER BY td.day_number, w.exercise_order",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        7232,
+        1792
+      ],
+      "id": "ce81a6aa-42d9-4d8a-bdd8-52e567eddf87",
+      "name": "GetWeek1WithExercises",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// =============================================================================\n// GenerateRoutineHTML - n8n Code Node (JavaScript, typeVersion 2)\n// =============================================================================\n// Transforms exercise data + user profile into an email-safe HTML string.\n// All CSS is inline. No external resources. Table-based layout.\n// =============================================================================\n\n// ---------------------------------------------------------------------------\n// 1. TRANSLATION MAPS\n// ---------------------------------------------------------------------------\n\nconst equipmentMap = {\n  'barbell': 'Barra',\n  'dumbbell': 'Mancuerna',\n  'bodyweight': 'Peso corporal',\n  'machine': 'Maquina',\n  'cable': 'Cable',\n  'resistance_band': 'Banda elastica',\n  'kettlebell': 'Kettlebell',\n  'ez_bar': 'Barra EZ',\n  'smith_machine': 'Maquina Smith',\n  'pull_bar': 'Barra de dominadas',\n  'bench': 'Banco',\n  'trap_bar': 'Trap Bar',\n  'bands': 'Bandas',\n};\n\nconst muscleMap = {\n  'Chest': 'Pecho',\n  'Back': 'Espalda',\n  'Shoulders': 'Hombros',\n  'Biceps': 'Biceps',\n  'Triceps': 'Triceps',\n  'Quads': 'Cuadriceps',\n  'Hamstrings': 'Isquiotibiales',\n  'Glutes': 'Gluteos',\n  'Calfs': 'Pantorrillas',\n  'Abs': 'Abdominales',\n  'Core': 'Core',\n  'Forearms': 'Antebrazos',\n  'Traps': 'Trapecios',\n  'Lower back': 'Espalda baja',\n  'Lats': 'Dorsales',\n  'Hip Flexors': 'Flexores de cadera',\n  'Adductors': 'Aductores',\n  'Abductors': 'Abductores',\n  'Obliques': 'Oblicuos',\n  'Neck': 'Cuello',\n  'Serratus Anterior': 'Serrato Anterior',\n};\n\n// ---------------------------------------------------------------------------\n// 2. HELPER FUNCTIONS\n// ---------------------------------------------------------------------------\n\nfunction translateEquipment(eq) {\n  if (!eq) return '-';\n  return equipmentMap[eq] || eq.charAt(0).toUpperCase() + eq.slice(1).replace(/_/g, ' ');\n}\n\nfunction translateMuscle(muscle) {\n  if (!muscle) return '-';\n  return muscleMap[muscle] || muscle;\n}\n\nfunction formatRest(seconds) {\n  if (!seconds && seconds !== 0) return '-';\n  if (seconds >= 120) return `${seconds / 60} min`;\n  return `${seconds}s`;\n}\n\nfunction getDayEmoji(dayName) {\n  const lower = dayName.toLowerCase();\n  if (lower.includes('push')) return '\\u{1F3CB}\\u{FE0F}';\n  if (lower.includes('pull')) return '\\u{1F4AA}';\n  if (lower.includes('leg') || lower.includes('lower')) return '\\u{1F9B5}';\n  if (lower.includes('upper')) return '\\u{1F9BE}';\n  if (lower.includes('full')) return '\\u{26A1}';\n  if (lower.includes('glute')) return '\\u{1F351}';\n  return '\\u{1F525}';\n}\n\nfunction getRoleLabel(role) {\n  const labels = {\n    'compound': 'Ejercicios Compuestos',\n    'core': 'Core',\n    'isolation': 'Ejercicios de Aislamiento',\n  };\n  return labels[role] || role;\n}\n\nfunction getDayMuscles(exercises) {\n  const seen = new Set();\n  const muscles = [];\n  for (const ex of exercises) {\n    const translated = translateMuscle(ex.main_muscle);\n    if (!seen.has(translated)) {\n      seen.add(translated);\n      muscles.push(translated);\n    }\n  }\n  if (muscles.length === 0) return '';\n  if (muscles.length === 1) return muscles[0];\n  return muscles.slice(0, -1).join(', ') + ' y ' + muscles[muscles.length - 1];\n}\n\nfunction translateEquipmentList(list) {\n  if (!list || list.length === 0) return 'Peso corporal';\n  return list.map(e => translateEquipment(e)).join(', ');\n}\n\n// ---------------------------------------------------------------------------\n// 3. DATA LOADING\n// ---------------------------------------------------------------------------\n\nconst userProfile = $('ProcessUserPreferences').first().json;\nconst exercises = $input.all().map(item => item.json);\n\nconst fullName = userProfile.full_name || 'Atleta';\nconst email = userProfile.email || '';\nconst primaryGoal = userProfile.primary_goal || '-';\nconst fitnessLevel = userProfile.fitness_level || '-';\nconst daysAvailable = userProfile.days_available || '-';\nconst priorityMuscles = userProfile.priority_muscles || null;\nconst environment = userProfile.processed?.environment || 'GYM';\nconst isHome = userProfile.processed?.home?.is_home || false;\nconst homeEquipmentList = userProfile.processed?.home?.equipment_list || [];\n\nconst subject = `Tu Rutina Semana 1 - ${fullName} | Kairos`;\n\n// ---------------------------------------------------------------------------\n// 4. GROUP EXERCISES BY DAY (preserving insertion order)\n// ---------------------------------------------------------------------------\n\nconst dayMap = new Map();\nfor (const ex of exercises) {\n  const dayName = ex.day_name;\n  if (!dayMap.has(dayName)) {\n    dayMap.set(dayName, []);\n  }\n  dayMap.get(dayName).push(ex);\n}\n\n// Sort exercises within each day by exercise_order\nfor (const [, dayExercises] of dayMap) {\n  dayExercises.sort((a, b) => a.exercise_order - b.exercise_order);\n}\n\n// ---------------------------------------------------------------------------\n// 5. INLINE CSS CONSTANTS\n// ---------------------------------------------------------------------------\n\nconst CSS = {\n  body: 'font-family: Arial, Helvetica, sans-serif; max-width: 700px; margin: 0 auto; background-color: #f8f9fa; padding: 20px; color: #212529; line-height: 1.6;',\n  header: 'background: #1a1a2e; color: #ffffff; padding: 30px 20px; text-align: center; border-radius: 12px 12px 0 0;',\n  headerH1: 'margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: #ffffff;',\n  headerSub: 'margin: 0; font-size: 16px; color: #d1d5db; font-weight: 400;',\n  content: 'background: #ffffff; padding: 24px 20px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 12px 12px;',\n  sectionTitle: 'font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 28px 0 12px 0; padding-bottom: 8px; border-bottom: 3px solid #e63946;',\n  dayTitle: 'font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 32px 0 4px 0; padding-bottom: 8px; border-bottom: 3px solid #e63946;',\n  daySubtitle: 'margin: 0 0 16px 0; font-size: 14px; color: #6c757d; font-style: italic;',\n  roleHeader: 'font-size: 14px; font-weight: 700; color: #495057; margin: 16px 0 8px 0; padding: 8px 12px; background-color: #f1f3f5; border-radius: 6px; border-left: 4px solid #e63946;',\n  table: 'width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px;',\n  th: 'background-color: #f1f3f5; padding: 10px 8px; text-align: left; font-weight: 700; color: #495057; border: 1px solid #e9ecef; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;',\n  td: 'padding: 8px; border: 1px solid #e9ecef; vertical-align: top; color: #212529;',\n  tdCenter: 'padding: 8px; border: 1px solid #e9ecef; vertical-align: top; color: #212529; text-align: center;',\n  link: 'color: #e63946; text-decoration: none; font-weight: 600;',\n  profileTable: 'width: 100%; border-collapse: collapse; margin-bottom: 20px;',\n  profileLabel: 'padding: 8px 12px; font-weight: 700; color: #495057; background-color: #f8f9fa; border: 1px solid #e9ecef; width: 40%;',\n  profileValue: 'padding: 8px 12px; color: #212529; border: 1px solid #e9ecef;',\n  tipBox: 'background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 12px 0 20px 0; font-size: 13px; color: #664d03; border-radius: 0 6px 6px 0;',\n  noteH3: 'font-size: 15px; font-weight: 700; color: #1a1a2e; margin: 16px 0 8px 0;',\n  noteUl: 'margin: 0 0 12px 0; padding-left: 20px; font-size: 13px; color: #495057;',\n  noteLi: 'margin-bottom: 4px;',\n  quoteBox: 'background-color: #f8f9fa; border-left: 4px solid #e63946; padding: 16px 20px; margin: 24px 0; font-style: italic; color: #495057; font-size: 14px; border-radius: 0 6px 6px 0;',\n  footer: 'text-align: center; color: #868e96; font-size: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid #e9ecef;',\n  hr: 'border: none; border-top: 1px solid #e9ecef; margin: 24px 0;',\n  overviewTd: 'padding: 8px 12px; border: 1px solid #e9ecef; color: #212529;',\n  overviewTdBold: 'padding: 8px 12px; border: 1px solid #e9ecef; color: #212529; font-weight: 700;',\n};\n\n// ---------------------------------------------------------------------------\n// 6. HTML GENERATION FUNCTIONS\n// ---------------------------------------------------------------------------\n\nfunction buildProfileSection() {\n  let rows = '';\n  rows += `<tr><td style=\"${CSS.profileLabel}\">Objetivo</td><td style=\"${CSS.profileValue}\">${primaryGoal}</td></tr>`;\n  rows += `<tr><td style=\"${CSS.profileLabel}\">Nivel</td><td style=\"${CSS.profileValue}\">${fitnessLevel}</td></tr>`;\n  rows += `<tr><td style=\"${CSS.profileLabel}\">Dias/semana</td><td style=\"${CSS.profileValue}\">${daysAvailable} dias</td></tr>`;\n  rows += `<tr><td style=\"${CSS.profileLabel}\">Ambiente</td><td style=\"${CSS.profileValue}\">${environment === 'HOME' ? 'Casa (HOME)' : 'Gimnasio (GYM)'}</td></tr>`;\n\n  if (environment === 'HOME') {\n    const eqDisplay = translateEquipmentList(homeEquipmentList);\n    rows += `<tr><td style=\"${CSS.profileLabel}\">Equipo disponible</td><td style=\"${CSS.profileValue}\">${eqDisplay}</td></tr>`;\n  } else {\n    rows += `<tr><td style=\"${CSS.profileLabel}\">Equipo</td><td style=\"${CSS.profileValue}\">Gimnasio completo</td></tr>`;\n  }\n\n  if (priorityMuscles) {\n    rows += `<tr><td style=\"${CSS.profileLabel}\">Musculos prioritarios</td><td style=\"${CSS.profileValue}\">${priorityMuscles}</td></tr>`;\n  }\n\n  return `<table style=\"${CSS.profileTable}\">${rows}</table>`;\n}\n\nfunction buildQuickReference() {\n  return `\n    <h2 style=\"${CSS.sectionTitle}\">Guia Rapida</h2>\n    <table style=\"${CSS.table}\">\n      <tr>\n        <th style=\"${CSS.th}\">Termino</th>\n        <th style=\"${CSS.th}\">Significado</th>\n      </tr>\n      <tr>\n        <td style=\"${CSS.td}\"><strong>Sets</strong></td>\n        <td style=\"${CSS.td}\">Numero de series a realizar</td>\n      </tr>\n      <tr>\n        <td style=\"${CSS.td}\"><strong>Reps</strong></td>\n        <td style=\"${CSS.td}\">Repeticiones por serie</td>\n      </tr>\n      <tr>\n        <td style=\"${CSS.td}\"><strong>RIR</strong></td>\n        <td style=\"${CSS.td}\">Repeticiones en reserva (cuantas mas podrias hacer)</td>\n      </tr>\n      <tr>\n        <td style=\"${CSS.td}\"><strong>Descanso</strong></td>\n        <td style=\"${CSS.td}\">Tiempo de pausa entre series</td>\n      </tr>\n    </table>\n    <div style=\"${CSS.tipBox}\">\n      <strong>Tip:</strong> RIR 3 significa que al terminar cada serie, deberias sentir que podrias hacer 3 repeticiones mas. No llegues al fallo muscular.\n    </div>\n  `;\n}\n\nfunction buildWeeklyOverview() {\n  let rows = '';\n  let dayIndex = 1;\n  for (const [dayName, dayExercises] of dayMap) {\n    const muscles = getDayMuscles(dayExercises);\n    rows += `\n      <tr>\n        <td style=\"${CSS.overviewTd}\">${dayIndex}</td>\n        <td style=\"${CSS.overviewTdBold}\">${dayName}</td>\n        <td style=\"${CSS.overviewTd}\">${muscles}</td>\n      </tr>\n    `;\n    dayIndex++;\n  }\n\n  return `\n    <h2 style=\"${CSS.sectionTitle}\">Resumen de la Semana</h2>\n    <table style=\"${CSS.table}\">\n      <tr>\n        <th style=\"${CSS.th}\">Dia</th>\n        <th style=\"${CSS.th}\">Sesion</th>\n        <th style=\"${CSS.th}\">Enfoque Principal</th>\n      </tr>\n      ${rows}\n    </table>\n  `;\n}\n\nfunction buildRoleTable(roleExercises, role) {\n  if (!roleExercises || roleExercises.length === 0) return '';\n\n  const first = roleExercises[0];\n  const setsDisplay = first.sets || '-';\n  const repsDisplay = first.reps || '-';\n  const rirDisplay = first.rir || '-';\n  const restDisplay = formatRest(first.rest_seconds);\n  const roleLabel = getRoleLabel(role);\n\n  const headerText = `${roleLabel} (${setsDisplay} sets x ${repsDisplay} reps | RIR ${rirDisplay} | ${restDisplay} descanso)`;\n\n  let exerciseRows = '';\n  for (const ex of roleExercises) {\n    const musclePrimary = translateMuscle(ex.main_muscle);\n    const secondaryArr = ex.secondary_muscles || [];\n    const secondaryStr = secondaryArr.map(m => translateMuscle(m)).join(', ');\n    const muscleDisplay = secondaryStr ? `${musclePrimary}, ${secondaryStr}` : musclePrimary;\n    const equipDisplay = translateEquipment(ex.equipment);\n    const linkCell = ex.link\n      ? `<a href=\"${ex.link}\" style=\"${CSS.link}\" target=\"_blank\">Ver tecnica</a>`\n      : '-';\n\n    exerciseRows += `\n      <tr>\n        <td style=\"${CSS.tdCenter}\">${ex.exercise_order}</td>\n        <td style=\"${CSS.td}\">${ex.spanish_name}</td>\n        <td style=\"${CSS.td}\">${muscleDisplay}</td>\n        <td style=\"${CSS.td}\">${equipDisplay}</td>\n        <td style=\"${CSS.tdCenter}\">${linkCell}</td>\n      </tr>\n    `;\n  }\n\n  return `\n    <div style=\"${CSS.roleHeader}\">${headerText}</div>\n    <table style=\"${CSS.table}\">\n      <tr>\n        <th style=\"${CSS.th}; width: 30px;\">#</th>\n        <th style=\"${CSS.th}\">Ejercicio</th>\n        <th style=\"${CSS.th}\">Musculo Principal</th>\n        <th style=\"${CSS.th}\">Equipo</th>\n        <th style=\"${CSS.th}; width: 90px;\">Video</th>\n      </tr>\n      ${exerciseRows}\n    </table>\n  `;\n}\n\nfunction buildDaySection(dayName, dayExercises) {\n  const emoji = getDayEmoji(dayName);\n  const muscles = getDayMuscles(dayExercises);\n\n  const roleOrder = ['compound', 'core', 'isolation'];\n  const byRole = {};\n  for (const ex of dayExercises) {\n    const role = ex.role || 'compound';\n    if (!byRole[role]) byRole[role] = [];\n    byRole[role].push(ex);\n  }\n\n  let roleSections = '';\n  for (const role of roleOrder) {\n    if (byRole[role] && byRole[role].length > 0) {\n      roleSections += buildRoleTable(byRole[role], role);\n    }\n  }\n\n  for (const role of Object.keys(byRole)) {\n    if (!roleOrder.includes(role)) {\n      roleSections += buildRoleTable(byRole[role], role);\n    }\n  }\n\n  return `\n    <h2 style=\"${CSS.dayTitle}\">${emoji} ${dayName}</h2>\n    <p style=\"${CSS.daySubtitle}\">${muscles}</p>\n    ${roleSections}\n    <hr style=\"${CSS.hr}\" />\n  `;\n}\n\nfunction buildNotesSection() {\n  return `\n    <h2 style=\"${CSS.sectionTitle}\">Notas Importantes</h2>\n\n    <h3 style=\"${CSS.noteH3}\">Calentamiento (5-10 min antes de cada sesion)</h3>\n    <ul style=\"${CSS.noteUl}\">\n      <li style=\"${CSS.noteLi}\">Movilidad articular general</li>\n      <li style=\"${CSS.noteLi}\">5 minutos de cardio ligero (caminar, saltar suave)</li>\n      <li style=\"${CSS.noteLi}\">1 serie ligera del primer ejercicio</li>\n    </ul>\n\n    <h3 style=\"${CSS.noteH3}\">Progresion</h3>\n    <ul style=\"${CSS.noteUl}\">\n      <li style=\"${CSS.noteLi}\"><strong>Semana 1-2:</strong> Enfocate en aprender la tecnica correcta</li>\n      <li style=\"${CSS.noteLi}\"><strong>Semana 3:</strong> Intensificacion (mayor carga o volumen)</li>\n      <li style=\"${CSS.noteLi}\"><strong>Semana 4:</strong> Semana de descarga para recuperacion activa</li>\n    </ul>\n\n    <h3 style=\"${CSS.noteH3}\">Hidratacion y Nutricion</h3>\n    <ul style=\"${CSS.noteUl}\">\n      <li style=\"${CSS.noteLi}\">Bebe agua antes, durante y despues del entrenamiento</li>\n      <li style=\"${CSS.noteLi}\">Come algo ligero 1-2 horas antes de entrenar</li>\n      <li style=\"${CSS.noteLi}\">Proteina despues del entrenamiento para recuperacion</li>\n    </ul>\n  `;\n}\n\nfunction buildMotivationalQuote() {\n  const biologicalSex = userProfile.biological_sex || 'M';\n  const adjective = biologicalSex === 'F' ? 'perfecta' : 'perfecto';\n  return `\n    <div style=\"${CSS.quoteBox}\">\n      \"No se trata de ser ${adjective}, se trata de ser constante. Cada repeticion cuenta, cada dia que te presentas es una victoria.\"\n    </div>\n  `;\n}\n\n// ---------------------------------------------------------------------------\n// 7. ASSEMBLE FULL HTML\n// ---------------------------------------------------------------------------\n\nlet daySections = '';\nfor (const [dayName, dayExercises] of dayMap) {\n  daySections += buildDaySection(dayName, dayExercises);\n}\n\nconst html = `<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>${subject}</title>\n</head>\n<body style=\"${CSS.body}\">\n  <div style=\"max-width: 700px; margin: 0 auto;\">\n\n    <!-- HEADER -->\n    <div style=\"${CSS.header}\">\n      <h1 style=\"${CSS.headerH1}\">Plan de Entrenamiento - Semana 1</h1>\n      <p style=\"${CSS.headerSub}\">${fullName}</p>\n    </div>\n\n    <!-- CONTENT BODY -->\n    <div style=\"${CSS.content}\">\n\n      <!-- Profile Summary -->\n      ${buildProfileSection()}\n\n      <!-- Quick Reference Guide -->\n      ${buildQuickReference()}\n\n      <!-- Weekly Overview -->\n      ${buildWeeklyOverview()}\n\n      <!-- Horizontal Rule -->\n      <hr style=\"${CSS.hr}\" />\n\n      <!-- Per-Day Sections -->\n      ${daySections}\n\n      <!-- Notes Section -->\n      ${buildNotesSection()}\n\n      <!-- Motivational Quote -->\n      ${buildMotivationalQuote()}\n\n      <!-- Footer -->\n      <p style=\"${CSS.footer}\">\n        Generado por Kairos Personal Trainer\n      </p>\n\n    </div>\n\n  </div>\n</body>\n</html>`;\n\n// ---------------------------------------------------------------------------\n// 8. RETURN OUTPUT\n// ---------------------------------------------------------------------------\n\nreturn [{ json: { html, email, subject, fullName } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7440,
+        1792
+      ],
+      "id": "31ef9e4e-c2ba-487a-83bc-9f18658dcd05",
+      "name": "GenerateRoutineHTML"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c3d4e5f6-email-cond-0001",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        7648,
+        1792
+      ],
+      "id": "a8e12d82-a7c5-48f9-9215-ddd7ec4cf022",
+      "name": "HasEmail"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false,
+          "bccList": "camilodiazjaimes@gmail.com, lulusofia.72@gmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        7856,
+        1792
+      ],
+      "id": "53fbfb01-a31c-4f1c-a609-96639bec53cb",
+      "name": "SendRoutineEmail",
+      "executeOnce": true,
+      "webhookId": "7ce92ef4-643b-4662-8e05-2295bd893835",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H1GF1YdmcaZ0gfWB",
+          "name": "Gmail Kai.Ros"
+        }
+      },
+      "continueOnFail": true
     }
   ],
   "pinData": {
@@ -808,6 +905,11 @@
             "node": "NotifyRoutineCreated",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "GetWeek1WithExercises",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -817,6 +919,39 @@
         [
           {
             "node": "Filtered Message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetWeek1WithExercises": {
+      "main": [
+        [
+          {
+            "node": "GenerateRoutineHTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GenerateRoutineHTML": {
+      "main": [
+        [
+          {
+            "node": "HasEmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HasEmail": {
+      "main": [
+        [
+          {
+            "node": "SendRoutineEmail",
             "type": "main",
             "index": 0
           }
@@ -842,8 +977,9 @@
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "59610a9d-bebb-40d4-a966-a70761bade17",
+  "versionId": "4ddf4c84-4c5d-4e00-b86d-33d77c2de49d",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
   "id": "oF9qSlkZta1AEOnIMf2_i",
