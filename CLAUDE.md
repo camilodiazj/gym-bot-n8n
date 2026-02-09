@@ -35,7 +35,9 @@ GymBot/
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
-| `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows |
+| `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows (parallel multi-turn execution) |
+| `GymRatFlow_MultiTurnExecutor.json` | Sub-workflow for isolated multi-turn test execution (called by test runner) |
+| `MesocycleRenewal_E2E_TestRunner.json` | E2E test suite for mesocycle renewal scenarios (3 test cases: auto-detect, MANTENER, manual intent) |
 | `GymBotWorkoutCompletion_E2E_TestRunner.json` | E2E test suite for workout completion workflow (4 test cases) |
 
 ### Workout Tracker (Web App)
@@ -155,6 +157,7 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 | `health_status` | Health condition codes (A-E) |
 | `routine_environments` | Training location (GYM) |
 | `n8n_chat_histories` | AI conversation memory storage |
+| `e2e_test_run_results` | Temporary storage for parallel E2E test results (`run_id`, `test_id`, `result` JSONB) |
 
 ### Exercise Ordering
 
@@ -344,6 +347,15 @@ Workflows are JSON files—import directly into n8n instance and configure crede
 - `alwaysOutputData: true` preserves data flow through false conditions
 - `executeOnce: true` prevents duplicate processing on loops
 
+### n8n Code Node Sandbox Restrictions
+
+n8n Code nodes run in a sandboxed environment. **These globals are NOT available**:
+- `crypto` - Use `$execution.id` for unique IDs, or `Date.now().toString(36) + Math.random().toString(36).slice(2)` for random strings
+- `process`, `require`, `Buffer` - No Node.js built-ins
+- `fetch` - Use `this.helpers.httpRequest()` instead (only in "Run Once for All Items" mode)
+
+**Available n8n globals**: `$input`, `$json`, `$execution`, `$node`, `$env`, `$now`, `$today`, `DateTime` (Luxon), `console.log`
+
 ## E2E Testing
 
 The `/e2e/` directory contains automated end-to-end tests:
@@ -356,7 +368,7 @@ e2e/
 
 ### Test Runner
 
-`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 12 test cases:
+`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 16 test cases. It uses parallel execution for multi-turn tests: 11 SINGLE tests run sequentially, while 5 multi-turn tests (MULTI_TURN / MULTI_TURN_AI) each run in a parallel lane via `GymRatFlow_MultiTurnExecutor.json` sub-workflow:
 
 | Test | Category | Description |
 |------|----------|-------------|
@@ -369,16 +381,21 @@ e2e/
 | TC007 | CHAT | General fitness questions answered |
 | TC011 | PENDING_TASK | User confirms workout completion |
 | TC012 | PENDING_TASK | User declines confirmation |
-| TC_HOME_001 | HOME_BASIC | HOME user with basic equipment sees routine |
-| TC_HOME_002 | HOME_BODYWEIGHT | HOME bodyweight-only user sees routine |
-| TC_HOME_003 | HOME_HEALTH | HOME user with health restriction C sees routine |
+| TC013 | BUTTON_INPUT | Button input - VER_RUTINA_DE_HOY via interactive reply |
+| TC_HOME_FULL_BASIC | HOME_BASIC | AI-simulated HOME user with basic equipment completes KYC |
+| TC_HOME_FULL_BODYWEIGHT | HOME_BODYWEIGHT | AI-simulated HOME bodyweight-only user completes KYC |
+| TC_HOME_FULL_HEALTH_C | HOME_HEALTH | AI-simulated HOME user with health restriction C completes KYC |
+| TC_MESO_001 | MESOCYCLE_RENEWAL | Auto-detection of W4 completion triggers renewal |
+| TC_MESO_002 | MESOCYCLE_RENEWAL | MANTENER_RUTINA flow completes successfully |
+| TC_MESO_003 | MESOCYCLE_RENEWAL | Manual RENOVAR_MESOCICLO intent detected |
 
 ### Running Tests
 
 1. **First time setup**: Run `e2e/test_data_setup.sql` in Supabase to create fixture users
-2. **Import workflow**: Import `GymRatFlow_E2E_TestRunner.json` into n8n
-3. **Configure credentials**: Postgres (Supabase), OpenAI API
-4. **Execute**: Click "Test Workflow" - results appear in "Generate Report" node
+2. **Import sub-workflow first**: Import `GymRatFlow_MultiTurnExecutor.json` into n8n
+3. **Import test runner**: Import `GymRatFlow_E2E_TestRunner.json` (the 5 "Execute MT Lane" nodes already reference the sub-workflow ID)
+4. **Configure credentials**: Postgres (Supabase), OpenAI API
+5. **Execute**: Click "Test Workflow" - multi-turn tests run in parallel, results appear in "Generate Report" node
 
 ### Test Users (Reserved Phones)
 
@@ -396,11 +413,19 @@ e2e/
 
 | Phone | User | Equipment | Health | Purpose |
 |-------|------|-----------|--------|---------|
-| `570000000211` | Maria Lopez | mancuernas, bandas | A | TC_HOME_001 |
-| `570000000212` | Carlos Rodriguez | peso corporal | A | TC_HOME_002 |
-| `570000000213` | Ana Martinez | mancuernas, bandas | C | TC_HOME_003 |
+| `570000000211` | Maria Lopez | mancuernas, bandas | A | TC_HOME_FULL_BASIC |
+| `570000000212` | Carlos Rodriguez | peso corporal | A | TC_HOME_FULL_BODYWEIGHT |
+| `570000000213` | Ana Martinez | mancuernas, bandas | C | TC_HOME_FULL_HEALTH_C |
 
-> **Important**: Phone numbers `57000000000X` and `5700000002XX` are reserved for testing. Do not use for real users.
+**MESOCYCLE Users** (`5700000005XX`) - Pre-populated fixtures:
+
+| Phone | User | Purpose |
+|-------|------|---------|
+| `570000000051` | Test_MesoDetect | TC_MESO_001 |
+| `570000000052` | Test_MesoMantener | TC_MESO_002 |
+| `570000000053` | Test_MesoManual | TC_MESO_003 |
+
+> **Important**: Phone numbers `57000000000X`, `5700000002XX`, and `5700000005XX` are reserved for testing. Do not use for real users.
 
 ### Teardown (Critical)
 
@@ -418,6 +443,7 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- Phones included in teardown:
 -- GYM: 570000000001, 570000000002, 570000000003, 570000000004, 570000000009
 -- HOME: 570000000211, 570000000212, 570000000213
+-- MESOCYCLE: 570000000051, 570000000052, 570000000053
 ```
 
 ## Changelog
