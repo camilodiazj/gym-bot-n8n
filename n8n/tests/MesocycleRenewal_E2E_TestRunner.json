@@ -1,0 +1,597 @@
+{
+  "name": "MesocycleRenewal_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d0091629-5220-4047-91c7-17aabd37f0ef",
+      "name": "Run All Tests",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCases = [\n  {\n    order: 1,\n    id: \"TC_MESO_001\",\n    name: \"Deteccion automatica mesociclo completo\",\n    priority: \"CRITICAL\",\n    category: \"MESOCYCLE_RENEWAL\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('mesociclo') || output.includes('opciones') || output.includes('Felicidades') || output.includes('completaste')\",\n      description: \"Bot detects W4 completion and offers renewal options\"\n    },\n    input: [{\n      messaging_product: \"whatsapp\",\n      metadata: { display_phone_number: \"573213413664\", phone_number_id: \"914510145083991\" },\n      contacts: [{ profile: { name: \"Test MesoDetect\" }, wa_id: \"570000000051\" }],\n      messages: [{\n        from: \"570000000051\",\n        id: \"wamid.E2E-TC_MESO_001\",\n        timestamp: String(Math.floor(Date.now() / 1000)),\n        text: { body: \"Hola, quiero agendar mi semana\" },\n        type: \"text\"\n      }],\n      field: \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%e2e00051%';\"\n    ]\n  },\n  {\n    order: 2,\n    id: \"TC_MESO_002\",\n    name: \"MANTENER_RUTINA - mesociclo incrementado\",\n    priority: \"HIGH\",\n    category: \"MESOCYCLE_RENEWAL\",\n    testType: \"MULTI_TURN\",\n    turns: [\n      { turn: 1, message: \"Hola, quiero organizar mi semana\", expectContains: [\"mesociclo\", \"opciones\", \"mantener\", \"completaste\", \"Felicidades\"] },\n      { turn: 2, message: \"Quiero mantener mi rutina igual\", expectContains: [\"mesociclo\", \"agendar\", \"mantener\", \"listo\", \"semana\"] }\n    ],\n    input: [{\n      messaging_product: \"whatsapp\",\n      metadata: { display_phone_number: \"573213413664\", phone_number_id: \"914510145083991\" },\n      contacts: [{ profile: { name: \"Test MesoMantener\" }, wa_id: \"570000000052\" }],\n      messages: [{ from: \"570000000052\", id: \"wamid.E2E-TC_MESO_002\", timestamp: String(Math.floor(Date.now() / 1000)), text: { body: \"\" }, type: \"text\" }],\n      field: \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%e2e00052%';\",\n      \"UPDATE users_plans SET mesocycle_number = 1, last_renewal_date = NULL, start_date = NOW() - INTERVAL '28 days' WHERE user_id = 'e2e00052-0000-0000-0000-000000000052';\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00052-0000-0000-0000-000000000052';\",\n      \"INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00052-0000-0000-0000-000000000052', 1, 'Lunes', 'Full Body A', (CURRENT_DATE - INTERVAL '27 days')::text, (CURRENT_DATE - INTERVAL '27 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 1, 'Miercoles', 'Full Body B', (CURRENT_DATE - INTERVAL '25 days')::text, (CURRENT_DATE - INTERVAL '25 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 1, 'Viernes', 'Full Body C', (CURRENT_DATE - INTERVAL '23 days')::text, (CURRENT_DATE - INTERVAL '23 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 2, 'Lunes', 'Full Body A', (CURRENT_DATE - INTERVAL '20 days')::text, (CURRENT_DATE - INTERVAL '20 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 2, 'Miercoles', 'Full Body B', (CURRENT_DATE - INTERVAL '18 days')::text, (CURRENT_DATE - INTERVAL '18 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 2, 'Viernes', 'Full Body C', (CURRENT_DATE - INTERVAL '16 days')::text, (CURRENT_DATE - INTERVAL '16 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 3, 'Lunes', 'Full Body A', (CURRENT_DATE - INTERVAL '13 days')::text, (CURRENT_DATE - INTERVAL '13 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 3, 'Miercoles', 'Full Body B', (CURRENT_DATE - INTERVAL '11 days')::text, (CURRENT_DATE - INTERVAL '11 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 3, 'Viernes', 'Full Body C', (CURRENT_DATE - INTERVAL '9 days')::text, (CURRENT_DATE - INTERVAL '9 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 4, 'Lunes', 'Full Body A', (CURRENT_DATE - INTERVAL '6 days')::text, (CURRENT_DATE - INTERVAL '6 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 4, 'Miercoles', 'Full Body B', (CURRENT_DATE - INTERVAL '4 days')::text, (CURRENT_DATE - INTERVAL '4 days')::timestamp AT TIME ZONE 'America/Bogota', true), ('e2e00052-0000-0000-0000-000000000052', 4, 'Viernes', 'Full Body C', (CURRENT_DATE - INTERVAL '2 days')::text, (CURRENT_DATE - INTERVAL '2 days')::timestamp AT TIME ZONE 'America/Bogota', true);\"\n    ],\n    verification: {\n      queries: [\n        { sql: \"SELECT mesocycle_number as cnt FROM users_plans WHERE user_id = 'e2e00052-0000-0000-0000-000000000052'\", expected: 2 },\n        { sql: \"SELECT COUNT(*) as cnt FROM workouts WHERE user_id = 'e2e00052-0000-0000-0000-000000000052'\", expected: 1 }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"MANTENER flow increments mesocycle and preserves workouts\"\n    }\n  },\n  {\n    order: 3,\n    id: \"TC_MESO_003\",\n    name: \"Intencion manual RENOVAR_MESOCICLO\",\n    priority: \"HIGH\",\n    category: \"MESOCYCLE_RENEWAL\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('mesociclo') || output.includes('opciones') || output.includes('rutina')\",\n      description: \"Bot detects RENOVAR_MESOCICLO intent and offers renewal options\"\n    },\n    input: [{\n      messaging_product: \"whatsapp\",\n      metadata: { display_phone_number: \"573213413664\", phone_number_id: \"914510145083991\" },\n      contacts: [{ profile: { name: \"Test MesoManual\" }, wa_id: \"570000000053\" }],\n      messages: [{\n        from: \"570000000053\",\n        id: \"wamid.E2E-TC_MESO_003\",\n        timestamp: String(Math.floor(Date.now() / 1000)),\n        text: { body: \"Quiero cambiar mi rutina y hacer nuevos ejercicios\" },\n        type: \"text\"\n      }],\n      field: \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%e2e00053%';\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00053-0000-0000-0000-000000000053' AND planned_day = CURRENT_DATE::text;\",\n      \"INSERT INTO user_weekly_schedule (user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00053-0000-0000-0000-000000000053', 1, CASE EXTRACT(DOW FROM CURRENT_DATE) WHEN 0 THEN 'Domingo' WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes' WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes' WHEN 6 THEN 'Sabado' END, 'Full Body A', CURRENT_DATE::text, CURRENT_DATE::timestamp AT TIME ZONE 'America/Bogota', false);\"\n    ]\n  }\n];\n\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', String(sortedTests.length));\n$execution.customData.set('testResults', '[]');\nconsole.log(`\\u{1F4CB} Tests cargados: ${sortedTests.map(t => t.id).join(' -> ')}`);\nreturn sortedTests.map(tc => ({ json: tc }));"
+      },
+      "id": "da78684c-a307-4113-9d6a-f018415bf2dd",
+      "name": "Load Test Cases",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a9ef665c-beb0-4d4f-8f9e-62dbd3e76f44",
+      "name": "Loop Tests",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2640,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $input.first().json;\nconsole.log(`\\n========================================`);\nconsole.log(`\\u{1F9EA} [${testCase.order}/${$execution.customData.get('totalTests')}] ${testCase.id} - ${testCase.name}`);\nconsole.log(`   Categoria: ${testCase.category}`);\nconsole.log(`   Prioridad: ${testCase.priority}`);\nconsole.log(`========================================`);\nreturn [{ json: testCase }];"
+      },
+      "id": "fbf87c81-3211-44dc-8ef3-91e2d7029bed",
+      "name": "Pre-Test Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.cleanup ? $json.cleanup.join('; ') : 'SELECT 1;' }}",
+        "options": {}
+      },
+      "id": "70aaae99-bc34-4da8-8127-5ea7b4746156",
+      "name": "Run Cleanup SQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3088,
+        1264
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "is-multi-turn",
+              "leftValue": "={{ $('Pre-Test Log').first().json.testType }}",
+              "rightValue": "MULTI_TURN",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dcfe00f4-038c-47fc-a5a9-26f515393b57",
+      "name": "Is Multi-Turn?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3296,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst whatsappInput = testCase.input[0];\nreturn [{ json: whatsappInput }];"
+      },
+      "id": "454ca5e6-07f1-4aba-9dff-218eb0a48add",
+      "name": "Extract Test Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3488,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CKw15AtLk4-zAKdT_X5ZZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/CKw15AtLk4-zAKdT_X5ZZ",
+          "cachedResultName": "Learning Project — MAIN_FLOW"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "5a6740e9-9f1f-41dc-8acb-6fb5a3849e29",
+      "name": "Execute GymRatFlow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3696,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst workflowResult = $input.first().json;\nlet output = '';\ntry {\n  if (workflowResult.output) output = workflowResult.output;\n  else if (workflowResult.text) output = workflowResult.text;\n  else if (typeof workflowResult === 'string') output = workflowResult;\n  else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) { output = ''; }\nlet passed = false;\nlet error = null;\ntry {\n  const rule = testCase.metrics.rule;\n  passed = eval(rule);\n} catch (e) { error = e.message; passed = false; }\nconst result = {\n  order: testCase.order, testId: testCase.id, testName: testCase.name,\n  category: testCase.category, priority: testCase.priority, passed,\n  output: output ? output.substring(0, 500) : '(empty)',\n  expectedRule: testCase.metrics.rule, ruleDescription: testCase.metrics.description,\n  error, executedAt: new Date().toISOString()\n};\nlet allResults = [];\ntry { const existing = $execution.customData.get('testResults'); if (existing) allResults = JSON.parse(existing); } catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\nconsole.log(`${passed ? '\\u2705 PASSED' : '\\u274C FAILED'}: [${testCase.order}] ${testCase.id} - ${testCase.name}`);\nreturn [{ json: result }];"
+      },
+      "id": "a8fd70ff-166a-4025-9d0a-b9396e357081",
+      "name": "Evaluate Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3888,
+        1472
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\n$execution.customData.set('turnResults', '[]');\nconsole.log(`\\n\\u{1F504} Iniciando test multi-turno: ${testCase.turns.length} turnos`);\nreturn testCase.turns.map((turn, index) => ({ json: { turnIndex: index, ...turn } }));"
+      },
+      "id": "ccda38d0-cf79-4176-bc9d-69d26eec5367",
+      "name": "Prepare Turns",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3488,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7b10f1bb-8cdd-4a61-839f-e1ab248521ad",
+      "name": "Multi-Turn Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3696,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst currentTurn = $input.first().json;\nconst phone = testCase.input[0].contacts[0].wa_id;\nconst name = testCase.input[0].contacts[0].profile.name;\nconsole.log(`   \\u{1F4E4} Turn ${currentTurn.turn}: \"${currentTurn.message.substring(0, 50)}...\"`);\nreturn [{\n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: { display_phone_number: \"573213413664\", phone_number_id: \"914510145083991\" },\n    contacts: [{ profile: { name }, wa_id: phone }],\n    messages: [{\n      from: phone,\n      id: `wamid.E2E-${testCase.id}-TURN${currentTurn.turn}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: currentTurn.message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
+      },
+      "id": "3a79babd-337a-48d9-9904-ab958d07d924",
+      "name": "Build Turn Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3888,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CKw15AtLk4-zAKdT_X5ZZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/CKw15AtLk4-zAKdT_X5ZZ",
+          "cachedResultName": "Learning Project — MAIN_FLOW"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "35e15d4e-eb24-4002-8e5f-a09ea60e9f50",
+      "name": "Execute GymRatFlow Multi",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        4096,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst buildTurnInput = $('Build Turn Input').first().json;\nconst workflowResult = $input.first().json;\nconst currentMessage = buildTurnInput.messages[0].text.body;\nconst turn = testCase.turns.find(t => t.message === currentMessage);\nif (!turn) throw new Error(`Turn not found for message: ${currentMessage}`);\nlet output = '';\ntry {\n  if (workflowResult.output) output = workflowResult.output;\n  else if (workflowResult.text) output = workflowResult.text;\n  else if (typeof workflowResult === 'string') output = workflowResult;\n  else {\n    const findOutput = (obj) => {\n      if (!obj || typeof obj !== 'object') return '';\n      if (obj.output) return obj.output;\n      if (obj.text) return obj.text;\n      for (const key of Object.keys(obj)) {\n        const found = findOutput(obj[key]);\n        if (found) return found;\n      }\n      return '';\n    };\n    output = findOutput(workflowResult);\n  }\n} catch (e) { output = ''; }\nlet whatsappSent = false;\nif (!output && workflowResult.messaging_product === 'whatsapp' && Array.isArray(workflowResult.messages)) {\n  whatsappSent = true;\n  output = '[WhatsApp message sent: ' + (workflowResult.messages[0] && workflowResult.messages[0].id || 'unknown') + ']';\n  console.log('   Detected WhatsApp API response - message was sent successfully');\n}\nconst outputLower = output.toLowerCase();\nconst passed = turn.expectContains.some(keyword => outputLower.includes(keyword.toLowerCase())) || whatsappSent;\nconst emoji = passed ? '\\u2705' : '\\u274C';\nconsole.log(`   ${emoji} Turn ${turn.turn}: ${passed ? 'PASSED' : 'FAILED'}`);\nif (!passed) {\n  console.log(`      Expected one of: ${turn.expectContains.join(', ')}`);\n  console.log(`      Got: ${output.substring(0, 100)}...`);\n}\nconst turnResult = { turn: turn.turn, message: turn.message, passed, output: output.substring(0, 300), expected: turn.expectContains };\n$execution.customData.set('turnResult_' + turn.turn, JSON.stringify(turnResult));\nreturn [{ json: { turn: turn.turn, passed, output: output.substring(0, 300) } }];"
+      },
+      "id": "fc861abe-0302-4311-a864-be02bd91f37e",
+      "name": "Evaluate Turn Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4288,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.verification.queries.map(q => q.sql).join('; ') }}",
+        "options": {}
+      },
+      "id": "c05e8287-a6e4-432a-b001-8320122fa4d9",
+      "name": "Run DB Verification",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        4096,
+        864
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nlet turnResults = [];\nfor (let i = 1; i <= testCase.turns.length; i++) {\n  try {\n    const data = $execution.customData.get('turnResult_' + i);\n    if (data) turnResults.push(JSON.parse(data));\n  } catch(e) {\n    console.log('Could not read turnResult_' + i + ': ' + e.message);\n  }\n}\nif (turnResults.length === 0 && testCase.turns.length > 0) {\n  console.log('WARNING: No turn results captured for ' + testCase.turns.length + ' expected turns');\n  turnResults = testCase.turns.map(t => ({\n    turn: t.turn, message: t.message, passed: false,\n    output: '[Turn result not captured]', expected: t.expectContains\n  }));\n}\nconst dbResults = $input.all();\nconst verification = testCase.verification;\nlet dbPassed = true;\nlet dbDetails = [];\nif (verification && verification.queries) {\n  verification.queries.forEach((query, idx) => {\n    const result = dbResults[idx];\n    let actualValue = 0;\n    if (result && result.json) {\n      actualValue = result.json.cnt || result.json.count || Object.values(result.json)[0] || 0;\n    }\n    const queryPassed = Number(actualValue) >= query.expected;\n    dbPassed = dbPassed && queryPassed;\n    dbDetails.push({ query: query.sql.substring(0, 50) + '...', expected: query.expected, actual: actualValue, passed: queryPassed });\n    const emoji = queryPassed ? '\\u2705' : '\\u274C';\n    console.log(`   ${emoji} DB Check ${idx + 1}: expected ${query.expected}, got ${actualValue}`);\n  });\n}\nconst allTurnsPassed = turnResults.every(t => t.passed);\nconst overallPassed = allTurnsPassed && dbPassed;\nconst passedTurns = turnResults.filter(t => t.passed).length;\nconst totalTurns = turnResults.length;\nconsole.log(`\\n\\u{1F4CA} Resultado Multi-Turn:`);\nconsole.log(`   Turnos: ${passedTurns}/${totalTurns}`);\nconsole.log(`   DB Verification: ${dbPassed ? 'PASSED' : 'FAILED'}`);\nconsole.log(`   Overall: ${overallPassed ? '\\u2705 PASSED' : '\\u274C FAILED'}`);\nconst result = {\n  testId: testCase.id, testName: testCase.name, order: testCase.order, category: testCase.category,\n  priority: testCase.priority, passed: overallPassed,\n  output: `Turns: ${passedTurns}/${totalTurns} passed. DB: ${dbPassed ? 'OK' : 'FAIL'}`,\n  expectedRule: testCase.metrics.rule, ruleDescription: testCase.metrics.description,\n  error: overallPassed ? null : `Failed turns: ${turnResults.filter(t => !t.passed).map(t => t.turn).join(', ')}`,\n  executedAt: new Date().toISOString(),\n  details: { turns: turnResults, dbVerification: dbDetails }\n};\nlet allResults = [];\ntry { const existing = $execution.customData.get('testResults'); if (existing) allResults = JSON.parse(existing); } catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\nreturn [{ json: result }];"
+      },
+      "id": "cc25a084-d4af-47cd-8219-d913dc0cb185",
+      "name": "Aggregate Multi-Turn Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4288,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "id": "86de8032-0964-4a38-907c-b8d75aa23d25",
+      "name": "Collect Results",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4400,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let results = [];\nif (items && items.length > 0 && items[0].json && Array.isArray(items[0].json.results)) {\n  results = items[0].json.results;\n} else if (items && items.length > 0 && Array.isArray(items[0].json)) {\n  results = items[0].json;\n}\nconst total = results.length;\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\nconst passRateRaw = total > 0 ? (passed.length / total) * 100 : 0;\nconst passRate = passRateRaw % 1 === 0 ? passRateRaw.toFixed(0) : passRateRaw.toFixed(1);\nconst byCategory = results.reduce((acc, curr) => {\n  const cat = curr.category || 'UNCATEGORIZED';\n  if (!acc[cat]) acc[cat] = { total: 0, passed: 0, failed: 0 };\n  acc[cat].total++;\n  curr.passed ? acc[cat].passed++ : acc[cat].failed++;\n  return acc;\n}, {});\nlet statusEmoji = failed.length === 0 ? '\\u2705' : '\\u274C';\nif (total === 0) statusEmoji = '\\u26A0\\uFE0F';\nlet mdReport = `*\\u{1F4CA} Test Report - Mesocycle Renewal*\\n`;\nmdReport += `\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\n`;\nmdReport += `*Status:* ${statusEmoji} ${failed.length === 0 ? 'PASS' : 'FAIL'}\\n`;\nmdReport += `*Score:* ${passRate}% (${passed.length}/${total})\\n`;\nmdReport += `*Time:* ${new Date().toLocaleString('es-CO')}\\n\\n`;\nmdReport += `*\\u{1F4C2} Categor\\u00EDas:*\\n`;\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const icon = c.failed === 0 ? '\\u2714' : '\\u2757';\n  mdReport += `${icon} ${cat}: ${c.passed}/${c.total}\\n`;\n});\nif (failed.length > 0) {\n  mdReport += `\\n*\\u{1F6A8} Fallos Detectados:*\\n`;\n  failed.forEach(f => {\n    mdReport += `\\u2022 *[${f.priority}] ${f.testName}*\\n`;\n    mdReport += `  _Exp:_ ${f.ruleDescription}\\n`;\n    const cleanOutput = (f.output || 'null').replace(/\\n/g, ' ').substring(0, 80);\n    mdReport += `  _Got:_ ${cleanOutput}...\\n`;\n  });\n}\nconsole.log('\\n\\u2554\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2557');\nconsole.log(`\\u2551 STATUS: ${statusEmoji}  RATE: ${passRate}% (${passed.length}/${total})`.padEnd(47) + '\\u2551');\nconsole.log('\\u2560\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2563');\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const bar = c.failed === 0 ? 'OK' : 'FAIL';\n  console.log(`\\u2551 ${cat.padEnd(20)}: ${c.passed}/${c.total} ${bar.padStart(13)} \\u2551`);\n});\nconsole.log('\\u255A\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u255D');\nreturn [{\n  json: {\n    meta: { timestamp: new Date().toISOString(), totalTests: total, success: failed.length === 0 },\n    markdownReport: mdReport,\n    stats: { passed: passed.length, failed: failed.length, rate: parseFloat(passRate), byCategory },\n    failures: failed.map(r => ({ testId: r.testId, name: r.testName, category: r.category, reason: r.ruleDescription, output: r.output }))\n  }\n}];"
+      },
+      "id": "4ca716d0-ce30-4c0b-a836-ba5a728d622a",
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4592,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-failed",
+              "leftValue": "={{ $json.failures }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0bad9c89-baa1-45f3-b7c1-8f4edb45f6c5",
+      "name": "Has Failures?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4800,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \\u{1F9EA} Mesocycle Renewal E2E Test Runner\n\n### Tests:\n- **TC_MESO_001**: Auto-detection W4 completion \\u2192 renewal options (SINGLE)\n- **TC_MESO_002**: MANTENER_RUTINA flow \\u2192 mesocycle increment (MULTI_TURN)\n- **TC_MESO_003**: Manual RENOVAR_MESOCICLO intent detection (SINGLE)\n\n### Prerequisites:\n1. Run `e2e/test_data_setup.sql` in Supabase (creates test users 051-053)\n2. Configure Postgres credential (Supabase Memory)\n3. Execute GymRatFlow points to MAIN_FLOW\n\n### Test Users:\n| Phone | User | Purpose |\n|-------|------|---------|\n| 570000000051 | Test_MesoDetect | TC_MESO_001 |\n| 570000000052 | Test_MesoMantener | TC_MESO_002 |\n| 570000000053 | Test_MesoManual | TC_MESO_003 |",
+        "height": 400,
+        "width": 448,
+        "color": 5
+      },
+      "id": "cbd23972-d708-472b-8924-9855e5191316",
+      "name": "Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        608
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [
+        [
+          {
+            "node": "Load Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Tests": {
+      "main": [
+        [
+          {
+            "node": "Collect Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre-Test Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [
+        [
+          {
+            "node": "Run Cleanup SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Cleanup SQL": {
+      "main": [
+        [
+          {
+            "node": "Is Multi-Turn?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Multi-Turn?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Turns",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Test Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Result": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Turns": {
+      "main": [
+        [
+          {
+            "node": "Multi-Turn Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Multi-Turn Loop": {
+      "main": [
+        [
+          {
+            "node": "Run DB Verification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Turn Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Turn Input": {
+      "main": [
+        [
+          {
+            "node": "Execute GymRatFlow Multi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute GymRatFlow Multi": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Turn Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Turn Result": {
+      "main": [
+        [
+          {
+            "node": "Multi-Turn Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run DB Verification": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Multi-Turn Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Multi-Turn Results": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Has Failures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "7ecc9b89-cdd7-4b56-972d-adfae9f5818d",
+  "meta": {
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "QpjE-crlQskwZ2UcS1wQ2",
+  "tags": []
+}

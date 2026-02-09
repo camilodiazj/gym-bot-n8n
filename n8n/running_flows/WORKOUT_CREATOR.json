@@ -12,24 +12,24 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5888,
-        1664
+        5008,
+        576
       ],
-      "id": "b2f94dd5-df33-4b77-b18b-959cdd702909",
+      "id": "cdf4b2d2-d446-46d9-8464-25a26844dc0a",
       "name": "AI Agent",
       "executeOnce": true
     },
     {
       "parameters": {
-        "jsCode": "const profile = $('GetUserProfile').item.json;\n\n// ============================================\n// FUNCION: parseHomeEquipment\n// PROPOSITO: Parsear equipamiento disponible en casa\n// INPUT: String con equipamiento separado por comas (espanol)\n// OUTPUT: Objeto con arrays y flags para queries\n// ============================================\n\nfunction parseHomeEquipment(equipmentStr, environment) {\n  // Si es GYM, retornar configuracion que no filtra\n  if (!environment || environment.toUpperCase() === 'GYM') {\n    return {\n      is_home: false,\n      equipment_list: [], // Vacio = no filtrar\n      home_equipment_sql: null,\n      has_pull_bar: true, // Asumimos acceso a todo en gym\n      has_barbell: true,\n      has_dumbbells: true,\n      has_kettlebells: true,\n      has_bench: true,\n      has_bands: true,\n      equipment_tier: 'full'\n    };\n  }\n\n  // Mapeo espanol -> canonico (valores en BD)\n  const equipmentMap = {\n    // Mancuernas\n    'mancuernas': 'dumbbell',\n    'mancuerna': 'dumbbell',\n    'dumbbells': 'dumbbell',\n    'dumbbell': 'dumbbell',\n    'pesas': 'dumbbell',\n\n    // Kettlebells\n    'kettlebell': 'kettlebell',\n    'kettlebells': 'kettlebell',\n    'pesa rusa': 'kettlebell',\n    'pesas rusas': 'kettlebell',\n\n    // Barra/Barbell\n    'barra': 'barbell',\n    'barras': 'barbell',\n    'barbell': 'barbell',\n    'barra olimpica': 'barbell',\n    'barra olímpica': 'barbell',\n\n    // Barra de dominadas\n    'barra de dominadas': 'pull_bar',\n    'barra dominadas': 'pull_bar',\n    'pull up bar': 'pull_bar',\n    'pullup bar': 'pull_bar',\n    'barra para dominadas': 'pull_bar',\n\n    // Bandas\n    'bandas': 'bands',\n    'bandas elasticas': 'bands',\n    'bandas elásticas': 'bands',\n    'ligas': 'bands',\n    'resistance bands': 'bands',\n\n    // Banco\n    'banco': 'bench',\n    'banco plano': 'bench',\n    'banco ajustable': 'bench'\n  };\n\n  // Parsear string de entrada\n  const normalized = (equipmentStr || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, ''); // Remover acentos\n\n  const equipmentSet = new Set(['bodyweight']); // Siempre incluir bodyweight\n  const flags = {\n    has_pull_bar: false,\n    has_barbell: false,\n    has_dumbbells: false,\n    has_kettlebells: false,\n    has_bench: false,\n    has_bands: false\n  };\n\n  // Buscar matches en el texto\n  for (const [spanish, canonical] of Object.entries(equipmentMap)) {\n    const normalizedSpanish = spanish\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g, '');\n\n    if (normalized.includes(normalizedSpanish)) {\n      if (canonical === 'pull_bar') {\n        flags.has_pull_bar = true;\n        // pull_bar habilita ejercicios bodyweight de pull_v\n      } else if (canonical === 'bands') {\n        flags.has_bands = true;\n        equipmentSet.add('resistance_band'); // Agregar resistance_band al filtro SQL\n      } else if (canonical === 'bench') {\n        flags.has_bench = true;\n      } else {\n        equipmentSet.add(canonical);\n        if (canonical === 'barbell') flags.has_barbell = true;\n        if (canonical === 'dumbbell') flags.has_dumbbells = true;\n        if (canonical === 'kettlebell') flags.has_kettlebells = true;\n      }\n    }\n  }\n\n  const equipmentList = Array.from(equipmentSet);\n\n  // Generar SQL para filtrado\n  // Formato: 'bodyweight', 'dumbbell', 'kettlebell'\n  const home_equipment_sql = equipmentList\n    .map(e => `'${e}'`)\n    .join(', ');\n\n  // Determinar tier de equipamiento\n  let equipment_tier = 'minimal'; // Solo bodyweight\n  if (flags.has_dumbbells || flags.has_kettlebells) {\n    equipment_tier = 'basic'; // Peso libre basico\n  }\n  if (flags.has_barbell) {\n    equipment_tier = 'intermediate'; // Tiene barra\n  }\n  if (flags.has_barbell && flags.has_dumbbells && flags.has_pull_bar) {\n    equipment_tier = 'advanced'; // Home gym completo\n  }\n\n  return {\n    is_home: true,\n    equipment_list: equipmentList,\n    home_equipment_sql: home_equipment_sql,\n    has_pull_bar: flags.has_pull_bar,\n    has_barbell: flags.has_barbell,\n    has_dumbbells: flags.has_dumbbells,\n    has_kettlebells: flags.has_kettlebells,\n    has_bench: flags.has_bench,\n    has_bands: flags.has_bands,\n    equipment_tier: equipment_tier\n  };\n}\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\n// Obtener environment del perfil (nuevo campo de users_gym_profile)\nconst environment = profile.training_environment || 'GYM';\nconst homeEquipment = parseHomeEquipment(profile.home_equipment, environment);\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      // Campos existentes (NO MODIFICAR)\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status),\n\n      // === NUEVOS CAMPOS PARA HOME ===\n      environment: environment.toUpperCase(),\n      home: homeEquipment\n    }\n  }\n}];"
+        "jsCode": "const profile = $('GetUserProfile').item.json;\n\n// ============================================\n// FUNCION: parseHomeEquipment\n// PROPOSITO: Parsear equipamiento disponible en casa\n// INPUT: String con equipamiento separado por comas (espanol)\n// OUTPUT: Objeto con arrays y flags para queries\n// ============================================\n\nfunction parseHomeEquipment(equipmentStr, environment) {\n  // Si es GYM, retornar configuracion que no filtra\n  if (!environment || environment.toUpperCase() === 'GYM') {\n    return {\n      is_home: false,\n      equipment_list: [], // Vacio = no filtrar\n      home_equipment_sql: null,\n      has_pull_bar: true, // Asumimos acceso a todo en gym\n      has_barbell: true,\n      has_dumbbells: true,\n      has_kettlebells: true,\n      has_bench: true,\n      has_bands: true,\n      equipment_tier: 'full'\n    };\n  }\n\n  // Mapeo espanol -> canonico (valores en BD)\n  const equipmentMap = {\n    // Mancuernas\n    'mancuernas': 'dumbbell',\n    'mancuerna': 'dumbbell',\n    'dumbbells': 'dumbbell',\n    'dumbbell': 'dumbbell',\n    'pesas': 'dumbbell',\n\n    // Kettlebells\n    'kettlebell': 'kettlebell',\n    'kettlebells': 'kettlebell',\n    'pesa rusa': 'kettlebell',\n    'pesas rusas': 'kettlebell',\n\n    // Barra/Barbell\n    'barra': 'barbell',\n    'barras': 'barbell',\n    'barbell': 'barbell',\n    'barra olimpica': 'barbell',\n    'barra olímpica': 'barbell',\n\n    // Barra de dominadas\n    'barra de dominadas': 'pull_bar',\n    'barra dominadas': 'pull_bar',\n    'pull up bar': 'pull_bar',\n    'pullup bar': 'pull_bar',\n    'barra para dominadas': 'pull_bar',\n\n    // Bandas\n    'bandas': 'bands',\n    'bandas elasticas': 'bands',\n    'bandas elásticas': 'bands',\n    'ligas': 'bands',\n    'resistance bands': 'bands',\n\n    // Banco\n    'banco': 'bench',\n    'banco plano': 'bench',\n    'banco ajustable': 'bench'\n  };\n\n  // Parsear string de entrada\n  const normalized = (equipmentStr || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, ''); // Remover acentos\n\n  const equipmentSet = new Set(['bodyweight']); // Siempre incluir bodyweight\n  const flags = {\n    has_pull_bar: false,\n    has_barbell: false,\n    has_dumbbells: false,\n    has_kettlebells: false,\n    has_bench: false,\n    has_bands: false\n  };\n\n  // Buscar matches en el texto\n  for (const [spanish, canonical] of Object.entries(equipmentMap)) {\n    const normalizedSpanish = spanish\n      .normalize('NFD')\n      .replace(/[\\u0300-\\u036f]/g, '');\n\n    if (normalized.includes(normalizedSpanish)) {\n      if (canonical === 'pull_bar') {\n        flags.has_pull_bar = true;\n        // pull_bar habilita ejercicios bodyweight de pull_v\n      } else if (canonical === 'bands') {\n        flags.has_bands = true;\n        equipmentSet.add('resistance_band'); // Agregar resistance_band al filtro SQL\n      } else if (canonical === 'bench') {\n        flags.has_bench = true;\n      } else {\n        equipmentSet.add(canonical);\n        if (canonical === 'barbell') flags.has_barbell = true;\n        if (canonical === 'dumbbell') flags.has_dumbbells = true;\n        if (canonical === 'kettlebell') flags.has_kettlebells = true;\n      }\n    }\n  }\n\n  const equipmentList = Array.from(equipmentSet);\n\n  // Generar SQL para filtrado\n  // Formato: 'bodyweight', 'dumbbell', 'kettlebell'\n  const home_equipment_sql = equipmentList\n    .map(e => `'${e}'`)\n    .join(', ');\n\n  // Determinar tier de equipamiento\n  let equipment_tier = 'minimal'; // Solo bodyweight\n  if (flags.has_dumbbells || flags.has_kettlebells) {\n    equipment_tier = 'basic'; // Peso libre basico\n  }\n  if (flags.has_barbell) {\n    equipment_tier = 'intermediate'; // Tiene barra\n  }\n  if (flags.has_barbell && flags.has_dumbbells && flags.has_pull_bar) {\n    equipment_tier = 'advanced'; // Home gym completo\n  }\n\n  return {\n    is_home: true,\n    equipment_list: equipmentList,\n    home_equipment_sql: home_equipment_sql,\n    has_pull_bar: flags.has_pull_bar,\n    has_barbell: flags.has_barbell,\n    has_dumbbells: flags.has_dumbbells,\n    has_kettlebells: flags.has_kettlebells,\n    has_bench: flags.has_bench,\n    has_bands: flags.has_bands,\n    equipment_tier: equipment_tier\n  };\n}\n\n// Diccionario de mapeo espanol -> ingles\nconst muscleMap = {\n  \"abdomen\": [\"Abs\", \"Core\"],\n  \"abdominales\": [\"Abs\"],\n  \"espalda\": [\"Back\"],\n  \"pecho\": [\"Chest\"],\n  \"gluteo\": [\"Glutes\"],\n  \"glúteo\": [\"Glutes\"],\n  \"gluteos\": [\"Glutes\"],\n  \"glúteos\": [\"Glutes\"],\n  \"pierna\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"piernas\": [\"Quads\", \"Hamstrings\", \"Glutes\", \"Calfs\"],\n  \"cuadriceps\": [\"Quads\"],\n  \"cuádriceps\": [\"Quads\"],\n  \"femorales\": [\"Hamstrings\"],\n  \"isquiotibiales\": [\"Hamstrings\"],\n  \"pantorrillas\": [\"Calfs\"],\n  \"hombros\": [\"Shoulders\"],\n  \"hombro\": [\"Shoulders\"],\n  \"biceps\": [\"Biceps\"],\n  \"bíceps\": [\"Biceps\"],\n  \"triceps\": [\"Triceps\"],\n  \"tríceps\": [\"Triceps\"],\n  \"brazos\": [\"Biceps\", \"Triceps\", \"Forearms\"],\n  \"antebrazos\": [\"Forearms\"],\n  \"trapecio\": [\"Traps\"],\n  \"espalda baja\": [\"Lower back\"],\n  \"lumbar\": [\"Lower back\"],\n  \"lumbares\": [\"Lower back\"]\n};\n\nfunction mapMuscles(spanishText) {\n  if (!spanishText || spanishText.toLowerCase().includes('todo') || spanishText.toLowerCase().includes('ninguno') || spanishText.toLowerCase().includes('no tengo')) {\n    return [];\n  }\n  const normalized = spanishText.toLowerCase()\n    .normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\"); // Remove accents\n  const results = new Set();\n\n  for (const [spanish, english] of Object.entries(muscleMap)) {\n    const normalizedSpanish = spanish.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n    if (normalized.includes(normalizedSpanish)) {\n      (Array.isArray(english) ? english : [english]).forEach(m => results.add(m));\n    }\n  }\n  return Array.from(results);\n}\n\nfunction getExperienceTier(exp) {\n  if (!exp) return 'intermediate';\n  if (['Nunca he entrenado', 'Menos de 6 meses'].includes(exp)) return 'beginner';\n  if (['Mas de 3 anos', 'Más de 3 años'].includes(exp)) return 'advanced';\n  return 'intermediate';\n}\n\nfunction getVolumeModifier(duration) {\n  if (!duration) return 1.0;\n  if (duration === '45-60 minutos' || duration.includes('45')) return 0.85;\n  if (duration === 'Mas de 75 minutos' || duration.includes('75') || duration.includes('90')) return 1.15;\n  return 1.0;\n}\n\nfunction getHealthRestrictions(status) {\n  return {\n    has_restrictions: ['B', 'C', 'D', 'E'].includes(status),\n    avoid_lower_body_impact: status === 'B',\n    avoid_upper_body_overhead: status === 'C',\n    avoid_spinal_loading: status === 'D',\n    special_condition: status === 'E'\n  };\n}\n\n// Obtener environment del perfil (nuevo campo de users_gym_profile)\nconst environment = profile.training_environment || 'GYM';\nconst homeEquipment = parseHomeEquipment(profile.home_equipment, environment);\n\n// === OVERRIDE FOR RENEWAL ===\nconst rawOverrideDays = $items('input')[0].json.override_days_available;\nconst overrideDays = typeof rawOverrideDays === 'number' ? rawOverrideDays : parseInt(rawOverrideDays, 10);\nif (!isNaN(overrideDays) && overrideDays >= 2 && overrideDays <= 6) {\n  const scheduleMap = { 2: 'fb_2', 3: 'fb_3', 4: 'ua_4', 5: 'ppl_5', 6: 'ppl_6' };\n  profile.days_available = overrideDays;\n  profile.week_schedule = scheduleMap[overrideDays] || profile.week_schedule;\n}\n\nreturn [{\n  json: {\n    ...profile,\n    processed: {\n      // Campos existentes (NO MODIFICAR)\n      priority_muscles_en: mapMuscles(profile.priority_muscles),\n      disliked_muscles_en: mapMuscles(profile.disliked_exercises),\n      experience_tier: getExperienceTier(profile.training_experience),\n      volume_modifier: getVolumeModifier(profile.session_duration_mins),\n      health: getHealthRestrictions(profile.health_status),\n\n      // === NUEVOS CAMPOS PARA HOME ===\n      environment: environment.toUpperCase(),\n      home: homeEquipment\n    }\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4080,
-        1536
+        3200,
+        448
       ],
-      "id": "a795ee60-41e9-4030-9eb8-3d2b55948c91",
+      "id": "0d254b45-f4c8-40ee-95c6-27e96af394e3",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
@@ -40,10 +40,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6528,
-        1536
+        5648,
+        448
       ],
-      "id": "f3798958-c901-4407-8793-4d0f6183897d",
+      "id": "6c5260a3-5b87-4235-911b-1b181adfb61f",
       "name": "Code in JavaScript1"
     },
     {
@@ -53,10 +53,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        5376,
-        1520
+        4496,
+        432
       ],
-      "id": "d9d3556f-3219-40db-8bb7-8d475531853b",
+      "id": "f1a08936-cb8d-4bd2-9d87-c60c2450d1fc",
       "name": "Loop Over Items"
     },
     {
@@ -68,10 +68,10 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        5680,
-        1392
+        4800,
+        304
       ],
-      "id": "d83322e5-3ffe-4f73-b262-c5b500bcea71",
+      "id": "2973447c-64d8-4380-8dd4-35409a564335",
       "name": "AI Transform"
     },
     {
@@ -81,10 +81,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6000,
-        1488
+        5120,
+        400
       ],
-      "id": "e3a8a5ba-b1df-409a-8a85-6a1ea881de61",
+      "id": "e4feabe9-660d-489d-ae4a-d489884e86cf",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -97,10 +97,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4448,
-        1536
+        3568,
+        448
       ],
-      "id": "95c2285e-9488-42bd-8377-ec18b57eca05",
+      "id": "24e1cf3a-067e-422c-96df-08084d86a389",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4304,
-        1536
+        3424,
+        448
       ],
-      "id": "6a7fe2ce-46e9-4edf-89be-99c48bcb1614",
+      "id": "37f52e9d-464d-46de-ad20-0d3a88ee1bd3",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -156,10 +156,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        5616,
-        1632
+        4736,
+        544
       ],
-      "id": "293b7334-709e-449c-a026-d2c72264156e",
+      "id": "6239f1ba-017e-4d4b-9c20-9dc6c093183f",
       "name": "GetExercisesByPattern",
       "executeOnce": true,
       "credentials": {
@@ -209,10 +209,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4976,
-        1872
+        4096,
+        784
       ],
-      "id": "91290487-9875-43f7-b3c4-46db5fcba5f7",
+      "id": "c17844f7-ba51-4611-8679-03e7f6f9dcd6",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -250,10 +250,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4800,
-        1744
+        3920,
+        656
       ],
-      "id": "10b851d1-f4b4-472b-a5c7-b0918a20fece",
+      "id": "861127b9-0fb6-446f-b51a-0951e4fdd4f7",
       "name": "UserExists"
     },
     {
@@ -272,10 +272,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4640,
-        1648
+        3760,
+        560
       ],
-      "id": "2a8a1d80-633a-4ec4-bda3-4f01fd4d057f",
+      "id": "ce34c6d2-9bd3-450e-99b5-55b0ae17b2db",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -325,10 +325,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5024,
-        1696
+        4144,
+        608
       ],
-      "id": "65848a93-87dd-49b6-9eb6-ba7d25c42975",
+      "id": "bf438d93-32d0-4665-85d6-02c4de58a76f",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -344,10 +344,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        5152,
-        1520
+        4272,
+        432
       ],
-      "id": "ad237b1b-1a42-49d6-b986-4395536102ae",
+      "id": "c28bdd95-3c8a-41f6-90c7-2906580a85ae",
       "name": "Merge"
     },
     {
@@ -410,10 +410,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6992,
-        1536
+        6112,
+        448
       ],
-      "id": "2435a236-384c-4fd1-b1b5-f57c3ba2fce1",
+      "id": "6289a876-6149-44ae-8bdb-3fa457cde4fa",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -439,10 +439,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6272,
-        1536
+        5392,
+        448
       ],
-      "id": "7fb0a461-a663-43a5-b720-99cbc8a0675a",
+      "id": "9f4d92f8-1109-4977-b72f-dc77254156f3",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -460,6 +460,13 @@
             {
               "name": "whatsapp_id",
               "type": "number"
+            },
+            {
+              "name": "is_renewal"
+            },
+            {
+              "name": "override_days_available",
+              "type": "number"
             }
           ]
         }
@@ -467,10 +474,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        3680,
-        1536
+        2800,
+        448
       ],
-      "id": "7680fd5c-b319-4b93-a97b-10d41674e957",
+      "id": "f0320238-0321-4643-92c1-82831a4cf4e4",
       "name": "input",
       "executeOnce": true
     },
@@ -490,10 +497,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3856,
-        1536
+        2976,
+        448
       ],
-      "id": "16ef252c-5a46-40c9-b010-5363c8a70f4a",
+      "id": "aecc24b3-8826-4f8e-9eaf-6060b0867aa3",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -513,10 +520,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        7232,
-        1536
+        6352,
+        448
       ],
-      "id": "82a48ff3-01e9-42d8-a8a5-cbea7580b5a6",
+      "id": "98b3d10c-7a38-436f-84e8-2c94710ba3cb",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -534,10 +541,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6736,
-        1536
+        5856,
+        448
       ],
-      "id": "3fab3c0f-8aad-4c11-a343-3ea159415c46",
+      "id": "db095e1f-1b73-425f-8841-fbeb28073419",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -547,10 +554,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7440,
-        1552
+        6560,
+        464
       ],
-      "id": "b0f2bab3-1e16-41b6-a983-a40f199a8b0e",
+      "id": "9ae8e480-73c2-4af3-bbb0-d6b4d5430016",
       "name": "Filtered Message2"
     },
     {
@@ -561,10 +568,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        5760,
-        1872
+        4880,
+        784
       ],
-      "id": "b17cb181-719e-4e85-a3b1-f60aab8f59dc",
+      "id": "db421c34-c541-43c0-a0f4-e6036ac08307",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -582,10 +589,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7232,
-        1792
+        6352,
+        704
       ],
-      "id": "ce81a6aa-42d9-4d8a-bdd8-52e567eddf87",
+      "id": "5f29bdcc-4795-481c-8143-3e564cef3854",
       "name": "GetWeek1WithExercises",
       "executeOnce": true,
       "credentials": {
@@ -602,10 +609,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7440,
-        1792
+        6560,
+        704
       ],
-      "id": "31ef9e4e-c2ba-487a-83bc-9f18658dcd05",
+      "id": "c77a7d4f-ee96-46f4-ac3b-8287aadcf8cc",
       "name": "GenerateRoutineHTML"
     },
     {
@@ -636,10 +643,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        7648,
-        1792
+        6768,
+        704
       ],
-      "id": "a8e12d82-a7c5-48f9-9215-ddd7ec4cf022",
+      "id": "e95c937a-e0f9-4ec1-8bff-3ee6429771c6",
       "name": "HasEmail"
     },
     {
@@ -648,17 +655,16 @@
         "subject": "={{ $json.subject }}",
         "message": "={{ $json.html }}",
         "options": {
-          "appendAttribution": false,
-          "bccList": "camilodiazjaimes@gmail.com, lulusofia.72@gmail.com"
+          "appendAttribution": false
         }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        7856,
-        1792
+        6976,
+        704
       ],
-      "id": "53fbfb01-a31c-4f1c-a609-96639bec53cb",
+      "id": "f7a1bcd6-f058-4002-9615-ad832a050ee7",
       "name": "SendRoutineEmail",
       "executeOnce": true,
       "webhookId": "7ce92ef4-643b-4662-8e05-2295bd893835",
@@ -669,6 +675,140 @@
         }
       },
       "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "r3n3wal-cond-0001",
+              "leftValue": "={{ $items('input')[0].json.is_renewal }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3312,
+        448
+      ],
+      "id": "c977ac77-970c-409c-b827-4a48a6e606fb",
+      "name": "If_Is_Renewal",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM workouts\nWHERE user_id = (\n  SELECT user_id FROM users\n  WHERE full_phone_number = '{{ $items('input')[0].json.whatsapp_id }}'\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3312,
+        192
+      ],
+      "id": "de367568-e701-428d-88cf-ae296847aea8",
+      "name": "Clear_Old_Workouts",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM user_weekly_schedule\nWHERE user_id = (\n  SELECT user_id FROM users\n  WHERE full_phone_number = '{{ $items('input')[0].json.whatsapp_id }}'\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3520,
+        192
+      ],
+      "id": "a742adc4-ee7f-4d5c-932a-49f8ed76cd1f",
+      "name": "Clear_Old_Schedule",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE users_plans\nSET mesocycle_number = COALESCE(mesocycle_number, 1) + 1,\n    last_renewal_date = NOW(),\n    week_schedule = '{{ $items('ProcessUserPreferences')[0].json.week_schedule }}',\n    start_date = NOW()\nWHERE user_id = (\n  SELECT user_id FROM users\n  WHERE full_phone_number = '{{ $items('input')[0].json.whatsapp_id }}'\n)\n  AND status = 'active';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3728,
+        192
+      ],
+      "id": "69cf2ccb-811b-432f-bedd-4ca1c849c4fd",
+      "name": "UpdatePlan",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "skip-create-renewal-cond-0001",
+              "leftValue": "={{ $items('input')[0].json.is_renewal }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3664,
+        448
+      ],
+      "id": "a40e7a5d-4fa2-4d5c-a35e-2cb92e3c1769",
+      "name": "If_Skip_Create_For_Renewal",
+      "executeOnce": true
     }
   ],
   "pinData": {
@@ -736,12 +876,30 @@
       "main": [
         [
           {
-            "node": "GetUser",
+            "node": "If_Skip_Create_For_Renewal",
             "type": "main",
             "index": 0
           },
           {
             "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Skip_Create_For_Renewal": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "GetUser",
             "type": "main",
             "index": 0
           }
@@ -891,6 +1049,57 @@
       "main": [
         [
           {
+            "node": "If_Is_Renewal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Is_Renewal": {
+      "main": [
+        [
+          {
+            "node": "Clear_Old_Workouts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LoadProfile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear_Old_Workouts": {
+      "main": [
+        [
+          {
+            "node": "Clear_Old_Schedule",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear_Old_Schedule": {
+      "main": [
+        [
+          {
+            "node": "UpdatePlan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdatePlan": {
+      "main": [
+        [
+          {
             "node": "LoadProfile",
             "type": "main",
             "index": 0
@@ -977,7 +1186,7 @@
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "4ddf4c84-4c5d-4e00-b86d-33d77c2de49d",
+  "versionId": "f7c5e8a7-4288-4cf5-8497-a454e9206d51",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -80,
-        704
+        -3584,
+        1664
       ],
-      "id": "93154951-7842-4879-84c8-21e7370d8892",
+      "id": "dfc30d14-9ac9-41b2-a871-07eabfde8d62",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        928,
-        704
+        -2576,
+        1664
       ],
-      "id": "6b815f8c-29b0-4f66-b5b0-2b391d30b7bf",
+      "id": "0a6008ca-c323-4822-9e3d-451d10f96f46",
       "name": "Send message",
       "webhookId": "10fb6670-6b0a-4139-b31e-e009fca86100",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -1168,
-        1344
+        -4688,
+        2128
       ],
-      "id": "86dff5b8-8fec-46a8-9c6c-e4a1a58c36b9",
+      "id": "3fd53dd3-08fb-4ed9-b3d1-47ddbbec8e57",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -1376,
-        1552
+        -4656,
+        2384
       ],
-      "id": "d3757308-3229-4819-8cdf-2b3966673e32",
+      "id": "4204d71a-aa82-4a8e-b1a1-bd6a1a5151f3",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -784,
-        1312
+        -4304,
+        2144
       ],
-      "id": "05561979-063b-49f4-a50b-350742ce74e6",
+      "id": "6c9a72b1-a08b-4f13-a00a-dfb5cb8a80ca",
       "name": "Send message2",
       "webhookId": "16f0732e-1b44-4c37-9a47-4d32112c6e78",
       "retryOnFail": true,
@@ -122,10 +122,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -3920,
-        1264
+        -7424,
+        2224
       ],
-      "id": "5ae47024-9420-4ca4-8a82-bc6c84aa91fb",
+      "id": "4c071f23-347c-49a0-8f38-bb6838c25d7b",
       "name": "WhatsApp_Trigger1",
       "webhookId": "8bf52a73-7fd4-4762-ba3f-f77e5b9b8f7a",
       "credentials": {
@@ -151,10 +151,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -3072,
-        1280
+        -6576,
+        2240
       ],
-      "id": "cab3b537-9348-48c7-94c6-b253bb80eedd",
+      "id": "21439280-b52a-46e7-93e5-43136c2b9098",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -181,10 +181,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2576,
-        1248
+        -6080,
+        2208
       ],
-      "id": "574cf97c-8213-4e10-a065-cf7ed25c045c",
+      "id": "8b9fbeb8-8122-40f0-9993-f3b93eca8cb2",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -205,10 +205,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -1040,
-        976
+        -4544,
+        1936
       ],
-      "id": "6bbb867d-511d-498e-b75d-41b70e08fcea",
+      "id": "727a1405-867c-4e84-b8dd-b9a8badc812c",
       "name": "Send message1",
       "webhookId": "45dd2929-4021-4904-ae82-c5f878f9a340",
       "executeOnce": true,
@@ -228,10 +228,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        128,
-        944
+        -3376,
+        1904
       ],
-      "id": "b3c0846b-1169-4c0e-a6a8-62da23abecc6",
+      "id": "1400c77e-78e7-4151-a0ba-7c5e7b6e800f",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -245,16 +245,16 @@
         "promptType": "define",
         "text": "={{ $('Normalize_Message').item.json.message_body }}",
         "options": {
-          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY o CHAT), sin explicación adicional."
+          "systemMessage": "=Eres un agente encargado de evaluar la intención del usuario según el mensaje que recibes.\n\nINTENCIONES VÁLIDAS:\n- VER_RUTINA_DE_HOY\n- RENOVAR_MESOCICLO\n- CHAT\n\nVER_RUTINA_DE_HOY: El usuario quiere ver su rutina/entrenamiento del día.\nEjemplos: \"Muéstrame mi rutina\", \"Qué me toca hoy\", \"Mi entrenamiento\", \"Dame mi workout\"\n\n- RENOVAR_MESOCICLO: El usuario menciona explicitamente querer cambiar su rutina, rotar ejercicios, renovar su mesociclo, o empezar un nuevo ciclo de entrenamiento.\n  Ejemplos: \"Quiero cambiar mi rutina\", \"Nuevos ejercicios\", \"Renovar mesociclo\", \"Cambiar dias\", \"Quiero rotar ejercicios\", \"Nuevo ciclo\", \"Ya termine las 4 semanas\", \"Quiero empezar otro ciclo\"\n\nCHAT: Cualquier otra pregunta, comentario o conversación general sobre fitness.\nEjemplos: \"Qué ejercicio es mejor para biceps\", \"Hola\", \"Gracias\"\n\nNOTA: Las confirmaciones de rutina completada se manejan por otro flujo (pending_tasks). Si el usuario dice que terminó su rutina, responde CHAT.\n\nRetorna SOLO la intención (VER_RUTINA_DE_HOY, RENOVAR_MESOCICLO o CHAT), sin explicación adicional."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -864,
-        304
+        -4368,
+        1264
       ],
-      "id": "6585ceae-b041-42d6-8ad6-dde7b5a7e796",
+      "id": "76069c11-7fcd-4d12-b030-f8bf99ff75ac",
       "name": "Intention_Agent"
     },
     {
@@ -270,10 +270,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -896,
-        608
+        -4400,
+        1568
       ],
-      "id": "6337c97e-93cf-425e-9a83-41988f7f6779",
+      "id": "37e3022a-ec57-4599-b554-e5f6ce2bf23f",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -358,6 +358,30 @@
               },
               "renameOutput": true,
               "outputKey": "VER_RUTINA_DE_HOY"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f8a1b2c3-d4e5-6789-abcd-ef0123456789",
+                    "leftValue": "={{ $json.output.trim() }}",
+                    "rightValue": "RENOVAR_MESOCICLO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "RENOVAR_MESOCICLO"
             }
           ]
         },
@@ -366,10 +390,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -496,
-        240
+        -4000,
+        1200
       ],
-      "id": "32fe3b73-f3bc-4acc-9f4b-323675bae4ac",
+      "id": "c52fed62-47f5-49fb-b0e4-f05f42c29abf",
       "name": "Switch"
     },
     {
@@ -383,10 +407,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        144,
-        208
+        -3360,
+        1168
       ],
-      "id": "de8ec4cf-c86c-4609-bbdd-d25b3ec20934",
+      "id": "4264c009-3393-4805-977c-9c1ae3d551a0",
       "name": "Send message3",
       "webhookId": "d91b39ce-c157-41c0-806d-e89f891c234b",
       "credentials": {
@@ -405,10 +429,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -736,
-        592
+        -4240,
+        1552
       ],
-      "id": "5991d6dc-41ce-407c-820e-dbb3de6ef8fa",
+      "id": "34436dac-a610-474e-9ae8-d8e52017b76a",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -426,10 +450,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -48,
-        400
+        -3552,
+        1360
       ],
-      "id": "66df7de8-fda6-436c-9ca1-db43864a3531",
+      "id": "29c701cc-c2e2-4392-8302-b81fdab9af57",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -446,10 +470,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -48,
-        944
+        -3552,
+        1904
       ],
-      "id": "e604250c-0405-459b-9633-7287a4e27025",
+      "id": "52a35a4c-7c8b-4b90-a3f2-52feffb82f26",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -486,11 +510,46 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1440,
-        848
+        -4944,
+        1808
       ],
-      "id": "8f55a853-092a-40f7-bdb4-a34b42d0ce31",
+      "id": "4d6a2a7f-7a14-48e9-846b-0f0b9db4b448",
       "name": "userHasRoutineForToday",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b2c3d4e5-f6a7-8901-bcde-f01234567890",
+              "leftValue": "={{ Object.keys($('Filter_Today_Routine').first().json).length > 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3808,
+        1664
+      ],
+      "id": "bde9873d-6709-4baa-8d56-7f4905b6e66b",
+      "name": "If_Has_Routine_Today",
       "executeOnce": true
     },
     {
@@ -502,10 +561,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1840,
-        1408
+        -5344,
+        2368
       ],
-      "id": "6bdbcd72-a8a6-40a3-ac1c-4775bd1985b3",
+      "id": "b3e7526e-02d2-449d-b8cd-b74fc471ebd5",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -523,10 +582,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1632,
-        1504
+        -5136,
+        2544
       ],
-      "id": "fe3ce589-087a-46b7-82ab-dffc7277013b",
+      "id": "076d5864-3c3f-4369-830c-22e6941d8b4d",
       "name": "Merge"
     },
     {
@@ -557,10 +616,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2240,
-        1248
+        -5744,
+        2208
       ],
-      "id": "8d647997-6577-4af1-b4cf-f8a8418569fe",
+      "id": "18f22ff2-5f12-4bcf-9a11-03a7e03bd13b",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -585,10 +644,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1856,
-        1616
+        -5360,
+        2576
       ],
-      "id": "db42f76d-95e5-4e86-8805-5b08da887380",
+      "id": "c4c32a13-9090-4576-aea8-b157f6b87aa4",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -607,10 +666,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1872,
-        1824
+        -5376,
+        2784
       ],
-      "id": "bbd3f887-4c21-4788-9ba8-ecef0ceabb15",
+      "id": "17c200f6-b350-4a8b-8dba-75c4c67af86c",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -628,10 +687,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -1152,
-        1552
+        -4512,
+        2384
       ],
-      "id": "6671a9d7-8ade-45ba-9ed7-f6f7cb9534a9",
+      "id": "b8035180-d303-4ec6-aaad-2a66b46f355f",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -675,10 +734,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -1008,
-        1552
+        -4368,
+        2384
       ],
-      "id": "961c9075-b550-4943-b070-3ee3b7a40c8c",
+      "id": "4ea3e5e6-ae61-47db-9985-fcbd313263c1",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -689,16 +748,16 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.0-flash",
+        "modelName": "models/gemini-3-flash-preview",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2544,
-        2368
+        -6048,
+        3328
       ],
-      "id": "98a52820-4fd2-4543-8924-3df53e520140",
+      "id": "369b7b8c-8f58-473e-a90d-473fe14b6ef4",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -716,10 +775,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -2384,
-        2368
+        -5888,
+        3328
       ],
-      "id": "d47c38a4-fc63-4c31-9c32-d034a420f582",
+      "id": "44b7c2e3-fc6a-472a-98ce-411bfd5edd71",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -756,10 +815,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2864,
-        1280
+        -6368,
+        2240
       ],
-      "id": "f019651f-cd82-4345-a739-e074993342c0",
+      "id": "857189a3-91d7-4f5b-b697-2f84c8a1155e",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -774,10 +833,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2096,
-        2112
+        -5600,
+        3072
       ],
-      "id": "1ec370ac-cb92-4ba4-8b3a-62011d98d694",
+      "id": "b0ee5853-a170-47f8-b919-1f23a937b7f8",
       "name": "Send message4",
       "webhookId": "62006b73-0285-4ac9-ad46-2b327a2d5be5",
       "credentials": {
@@ -792,16 +851,16 @@
         "promptType": "define",
         "text": "={{ $items('Normalize_Message')[0].json.message_body }}",
         "options": {
-          "systemMessage": "=# ROL DEL AGENTE\nEres \"Kairos Personal Trainer\", un asistente de entrenamiento personal amigable, entusiasta y motivador. Tu misión es conocer a fondo al usuario para diseñar su rutina de gimnasio perfecta.\n\n# TONO Y ESTILO\n* **Cercano y Humano:** No uses lenguaje corporativo ni frases como \"rellene el campo\". Usa frases como \"¡Queremos conocerte!\", \"¿Qué te motiva?\", \"¡Vamos a darle forma a tu plan!\".\n* **Conversacional:** Haz las preguntas una por una (o máximo dos si están muy relacionadas). Espera siempre la respuesta del usuario antes de continuar.\n* **Claro:** Cuando haya opciones múltiples, preséntalas con viñetas o emojis para que sean fáciles de leer y elegir.\n* **Empático:** Valida las respuestas del usuario con breves comentarios positivos (ej: \"¡Excelente meta!\", \"Entendido, vamos a trabajar en eso\", \"Perfecto, tomamos nota\").\n* **Transparencia Técnica Cero:** Nunca menciones al usuario términos como \"tools\", \"funciones\", \"base de datos\" o \"JSON\". Para el usuario, tú eres simplemente su coach pensando en su rutina.\n\n# GESTIÓN DE ERRORES Y VALIDACIÓN DE RESPUESTAS (PRIORITARIO)\nComo coach, debes asegurar que los datos sean precisos. Si el usuario se confunde, guíalo con amabilidad:\n\n1.  **Opciones Múltiples Excluyentes:** Si en una pregunta de opciones (A, B, C...) el usuario responde seleccionando dos letras contradictorias (ej: \"A y D\") o elige más de una cuando solo se pide una, **NO aceptes la respuesta**.\n    * *Respuesta del Agente:* \"¡Ojo! 🛑 Para ajustar tu plan con precisión, necesito que elijas **solo una** opción principal por ahora. ¿Cuál define mejor tu situación actual?\"\n2.  **Opción No Válida:** Si el usuario responde algo que no está en el menú (ej: responde \"G\" cuando las opciones son A, B, C).\n    * *Respuesta del Agente:* \"Mmm, esa opción no la tengo en mi lista 🤔. Por favor, elige una de las opciones de arriba para poder continuar.\"\n\n# INSTRUCCIONES DE INTERACCIÓN\nTu objetivo es completar la información del \"Formulario de Rutina Personalizada\". No te saltes preguntas. Sigue este flujo lógico:\n\n## FASE 1: El Saludo y Contacto (Romper el hielo)\nSaluda con energía y explica que quieres conocerlo/a para armar un plan a su medida.\n* Pide su **Nombre completo**.\n* Pide su **Correo electrónico**.\n*(Nota: Puedes pedir estos dos en un solo bloque inicial suave).*\n\n## FASE 2: Perfil Físico (Datos Bio)\nDile que necesitas unos datos básicos para calibrar la rutina.\n* **Edad**.\n* **Sexo** (Opciones: M / F).\n* **Estatura** (Pide el dato en cm, ej: 170).\n* **Peso** (Pide el dato en kg, sin puntos ni comas).\n\n## FASE 3: Tus Objetivos (El \"Por qué\")\nPregunta qué quiere lograr.\n* **Objetivo Principal** (Muestra estas opciones exactas):\n    - 🟢 Ganar masa muscular\n    - 🔵 Bajar grasa\n    - 🔴 Mejorar fuerza\n    - 🟣 Mejorar resistencia\n    - 🟡 Salud general / recomposición corporal\n* **Objetivo Secundario:** (Pregunta abierta: \"¿Tienes alguna otra meta en mente?\").\n\n## FASE 4: Tu Experiencia (El Historial)\nIndaga sobre su pasado en el gym.\n* **Tiempo entrenando:**\n    - Nunca he entrenado\n    - Menos de 6 meses\n    - 6 a 12 meses\n    - 1 a 3 años\n    - Más de 3 años\n* **Frecuencia actual:**\n    - No entreno\n    - 1-2 días por semana\n    - 3-4 días por semana\n    - 5-6 días por semana\n* **Nivel autopercibido:**\n    - Principiante\n    - Intermedio\n    - Avanzado\n* **Estado de Salud / Lesiones:** (Pregunta: \"¡La seguridad es lo primero! 🛡️ ¿Cómo te sientes físicamente hoy? Selecciona una opción para adaptar los ejercicios\"):\n    A) 💪 Estoy al 100% (Sin dolor ni lesiones)\n    B) 🦵 Cuidado en Tren Inferior (Rodillas, tobillos, cadera)\n    C) 🦾 Cuidado en Tren Superior (Hombros, codos, muñecas)\n    D) 🦴 Cuidado en Espalda (Lumbares o cervicales)\n    E) 🩺 Condición Médica Especial\n\n* **VALIDACIÓN ESTRICTA FASE 4:**\n    * Si el usuario responde combinaciones como **\"A y D\"** (Estoy sano Y tengo dolor de espalda) o **\"B y C\"**, recuérdale amablemente: *\"Para diseñar la rutina más segura, necesito que selecciones **solo una** opción. Si tienes varias molestias, elige la que sea más limitante o importante hoy.\"*\n    * Solo avanza cuando tengas una única letra (A, B, C, D o E).\n\n*VALIDACIÓN POSTERIOR:* Después de obtener una única respuesta válida de salud, confirma de forma empática que la rutina se ajustará teniendo en cuenta esta información antes de avanzar.\n\n## FASE 5: Logística (Tu Tiempo)\nPregunta cómo encajar el gym en su vida.\n* **Días disponibles para entrenar:** (Opciones: 2, 3, 4, 5, 6).\n* **Tiempo por sesión:**\n    - 30-45 minutos\n    - 45-60 minutos\n    - 60-75 minutos\n    - Más de 75 minutos\n* **Horario habitual:** (Mañana, Tarde o Noche).\n\n## FASE 6: Preferencias (Tus Gustos)\nAsegúrate de que disfrute el proceso.\n* **Tipo de entrenamiento preferido:**\n    - Pesas libres\n    - Máquinas\n    - Funcional\n    - Mixto\n* **Prioridades:** ¿Qué partes del cuerpo le gustaría priorizar? (Pregunta abierta).\n* **Desafíos:** ¿Qué partes le cuesta más entrenar o no le gustan? (Pregunta abierta).\n\n## FASE 6.5: Tu Espacio de Entrenamiento (El Lugar)\nAhora necesitamos saber donde vas a entrenar.\n\n* **Ambiente de entrenamiento:**\n    Pregunta: \"Donde prefieres entrenar? Esto me ayudara a disenar ejercicios adecuados para ti.\"\n    - Gimnasio (tienes acceso a maquinas, pesas, barras, etc.)\n    - Casa (entrenas desde tu hogar)\n\n* **VALIDACION AMBIENTE:**\n    * Si el usuario responde \"ambos\", \"los dos\", \"a veces gym a veces casa\" o similar:\n      *Respuesta del Agente:* \"Entiendo que a veces alternas! Para disenar tu rutina base, necesito que elijas **uno principal**. Donde pasas la mayoria de tus entrenamientos: Gimnasio o Casa?\"\n    * Si el usuario responde algo ambiguo como \"donde pueda\":\n      *Respuesta del Agente:* \"Sin problema! Pero para personalizar bien tu plan, dime: si tuvieras que elegir uno, seria Gimnasio o Casa?\"\n\n* **Seguimiento para Casa (OBLIGATORIO si elige Casa):**\n    Si el usuario selecciona \"Casa\", pregunta inmediatamente:\n    \"Genial, entrenar en casa es super conveniente! Cuentame, que equipamiento tienes disponible? Por ejemplo:\"\n    - Mancuernas o pesas\n    - Bandas elasticas / ligas de resistencia\n    - Barra de dominadas (pull-up bar)\n    - Banco de pesas\n    - TRX o suspension trainer\n    - Kettlebells\n    - Solo peso corporal (sin equipamiento)\n    - Otro (especifica)\n\n    *Nota para el agente:* Permite respuestas multiples. Si el usuario dice \"solo mi cuerpo\" o \"nada\", guarda \"Peso corporal\".\n\n* **VALIDACION EQUIPAMIENTO:**\n    * Si el usuario elige Casa pero no especifica equipamiento despues de 2 intentos:\n      *Respuesta del Agente:* \"No te preocupes! Asumire que entrenaras con peso corporal por ahora. Siempre podemos ajustar despues.\"\n      Guardar: `home_equipment = \"Peso corporal\"`\n\n* **REGLA FASE 6.5 (AMBIENTE):**\n    - Si el usuario elige \"Gimnasio\": guarda `training_environment = \"GYM\"` y `home_equipment = null`\n    - Si el usuario elige \"Casa\": guarda `training_environment = \"HOME\"` y pregunta por equipamiento\n    - Despues de obtener el ambiente (y equipamiento si aplica), continua con FASE 7 (Cardio)\n\n## FASE 7: El Cardio (El remate)\n* **¿Realizas cardio actualmente?:**\n    - No\n    - Caminata\n    - Bicicleta\n    - Running\nREGLA FASE 7 (CARDIO)\n- Si el usuario responde \"No\", guarda: cardio_actual=\"No\" y frecuencia_cardio=\"0\".\n- Luego continúa con la siguiente pregunta del flujo o con el cierre (si ya era la última).\n- NO llames Tool_Create_Routine hasta haber confirmado que no falta ningún dato previo.\n\n* **Frecuencia de cardio:** (Días a la semana: 0, 1-2, 3-4, 5 o más).\n\n---\n\n# PROTOCOLO DE FINALIZACIÓN Y EJECUCIÓN (LÓGICA ESTRICTA)\n\nTu trabajo NO termina al recibir la respuesta de la FASE 7. En ese momento exacto, se activa el siguiente protocolo obligatorio que debes ejecutar antes de cerrar la conversación.\n\n**CONDICIÓN DE DISPARO:**\nEl usuario ha respondido la última pregunta (Frecuencia de Cardio) y tienes los datos completos.\n\n**ACCIONES OBLIGATORIAS (EN ESTE ORDEN):**\n\n1.  **INVOCACIÓN DE TOOLS (PRIORIDAD MÁXIMA):**\n    Antes de despedirte, debes invocar internamente la siguiente función con los datos recolectados. Es imperativo que esta accion quede registrada en tu salida:\n    * Llamar a `Tool_Create_User_Profile`\n\n2.  **MENSAJE DE CIERRE AL USUARIO:**\n    Solamente cuando hayas asegurado la invocación de la tool en tu proceso interno, envía este mensaje final (sin mencionar nada técnico):\n\n    > \"¡Perfecto, [Nombre del usuario]! 🎉 Ya tengo todo lo que necesito.\n    >\n    > Me pongo manos a la obra ahora mismo para diseñar tu rutina 100% personalizada y segura. En breve recibirás tu plan para que empieces con todo. ¡Estoy emocionado por ver tu progreso! 💪🚀\"\n\n**ADVERTENCIA DE FALLO:**\nSi envías el mensaje de despedida sin haber activado la tool `Tool_Create_User_Profile`, la rutina no se creará y habrás fallado en tu misión. **Asegúrate de ejecutar la tool junto con tu respuesta final.**\n\n# REGLAS CRÍTICAS (NO ROMPER)\n1) Nunca ejecutes el tool `Tool_Create_User_Profile` mientras el formulario KYC NO esté 100% completo.\n2) Respuestas como \"no\", \"ninguna\", \"no hago cardio\", \"no tengo lesiones\" NO significan que el usuario terminó el formulario. Solo son la respuesta a esa pregunta.\n3) Si falta al menos 1 dato requerido, debes:\n   - validar con empatía\n   - guardar/recordar la respuesta\n   - y hacer la siguiente pregunta del flujo\n   - SIN llamar tools de creación de rutina.\n4) Solo puedes ejecutar `Tool_Create_User_Profile` cuando tengas TODOS estos campos completos y no nulos:\n   - nombre_completo\n   - email\n   - edad\n   - sexo\n   - estatura_cm\n   - peso_kg\n   - objetivo_principal\n   - objetivo_secundario (si no hay, guardar \"N/A\")\n   - tiempo_entrenando\n   - frecuencia_actual\n   - nivel\n   - estado_salud_lesiones\n   - dias_disponibles\n   - tiempo_por_sesion\n   - horario_habitual\n   - tipo_entrenamiento_preferido\n   - prioridades\n   - desafios\n   - ambiente_entrenamiento (obligatorio: \"GYM\" o \"HOME\")\n   - equipamiento_disponible (solo si ambiente_entrenamiento = \"HOME\", de lo contrario null)\n   - cardio_actual (si no hace, guardar \"No\")\n   - frecuencia_cardio (si no hace, guardar \"0\")\n5) Al finalizar, LUEGO de llamar `Tool_Create_User_Profile`, confirma en 1 frase que ya tienes todo.\n6) **UNICIDAD DE RESPUESTA:** Si el usuario da más de una opción en preguntas de selección única (especialmente en Salud/Lesiones), detente y pide aclaración amablemente. Solo una opción es válida por campo.\n7) El peso y la estatura deben ser números enteros, por ejemplo si el usuario para su estatura responde 1.57, puedes inferir que quiere decir 157, si no estás seguro tienes la opción de confirmar con el usuario."
+          "systemMessage": "=Eres \"Kairos Personal Trainer\", un asistente de entrenamiento personal amigable, entusiasta y eficiente. Tu misión es diseñar la rutina perfecta con la menor fricción posible para el usuario.\n\n# TONO Y ESTILO\n* **Cercano y Seguro:** Usa frases motivadoras pero directas.\n* **Eficiente (ANTI-TEXTO LARGO):** Formula preguntas que se puedan responder con una letra, un número o una palabra.\n* **Agrupador:** Para datos demográficos simples, haz 2 o 3 preguntas en un solo mensaje para agilizar el proceso.\n* **Empático:** Valida las respuestas brevemente (\"¡Entendido!\", \"¡Vamos a por ello!\").\n* **Cero Tecnicismos:** Tú eres un coach, no un software.\n\n# REGLAS DE PRIVACIDAD Y DATOS (CRÍTICO)\n1. **Disclaimer Inicial:** En tu PRIMER mensaje, debes informar explícitamente: *\"Tus datos son privados y se usarán únicamente para personalizar tu rutina. No se compartirán con terceros.\"*\n2. **Manejo de Errores de Formato (Peso/Altura):**\n   - El sistema requiere ENTEROS (cm y kg).\n   - **Regla de Inferencia:** Si el usuario escribe \"1.75\" o \"1,75\" para la altura, asume inteligentemente que son **175 cm**. No le preguntes de nuevo, corrígelo internamente. Si escribe \"70.5\" kg, redondéalo o asume 70/71 internamente. Solo pregunta si el dato es absurdo (ej: altura \"10\").\n\n# INSTRUCCIONES DE INTERACCIÓN (FLUJO)\n\n## FASE 1: Saludo, Privacidad y Contacto\nSaluda con energía y **muestra inmediatamente el disclaimer de privacidad**.\n* Pide en el mismo mensaje:\n  1. **Nombre completo**.\n  2. **Correo electrónico**.\n\n* **VALIDACIÓN DE EMAIL:**\n  - Cuando el usuario te de el correo, repíteselo y pregúntale: *\"¿Es correcto este correo: [email del usuario]? Es importante para enviarte el plan.\"*\n  - Solo avanza si confirma que está bien escrito.\n\n## FASE 2: Perfil Bio (Datos Rápidos)\nPara que el usuario escriba poco, pide estos 4 datos en **un solo mensaje**, pidiendo que los separe por comas o espacios:\n1. **Edad**\n2. **Sexo** (H / M)\n3. **Estatura** (en cm, ej: 170)\n4. **Peso** (en kg)\n\n*Ejemplo de petición:* \"Ahora, para calibrar tus cargas, respóndeme esto en una sola línea: Edad, Sexo, Estatura (cm) y Peso (kg).\"\n\n## FASE 3: Tus Objetivos\nPresenta las opciones con **letras** y pide que responda **SOLO con la letra**.\n* **Objetivo Principal:**\n    A) 🟢 Ganar masa muscular\n    B) 🔵 Bajar grasa\n    C) 🔴 Mejorar fuerza\n    D) 🟣 Mejorar resistencia\n    E) 🟡 Salud general\n* **Objetivo Secundario:** (Pregunta abierta breve).\n\n## FASE 4: Experiencia (Bloque Rápido)\nAgrupa estas dos preguntas en un solo turno para velocidad:\n1. **Tiempo entrenando** (Nunca / -6 meses / 6-12 meses / +1 año / +3 años).\n2. **Nivel actual** (Principiante / Intermedio / Avanzado).\n\n*Una vez responda, pregunta por:*\n* **Estado de Salud / Lesiones:**\n    A) 💪 Todo en orden (100%)\n    B) 🦵 Lesión Tren Inferior\n    C) 🦾 Lesión Tren Superior\n    D) 🦴 Dolor de Espalda\n    E) 🩺 Condición Médica\n    *Regla:* Si elige varias opciones contradictorias (A y B), pide amablemente que elija la **limitante principal** hoy.\n\n## FASE 5: Logística (Bloque Rápido)\nAgrupa Logística en un mensaje:\n\"¡Ya casi estamos! Cuéntame sobre tu disponibilidad:\"\n1. **Días por semana** (2 a 6).\n2. **Tiempo por sesión** (30min / 45min / 60min / +75min).\n3. **Horario** (Mañana / Tarde / Noche).\n\n## FASE 6: Preferencias y Lugar\n* **Tipo de entreno:** (Pesas / Máquinas / Funcional / Mixto).\n* **Prioridad:** ¿Qué zona del cuerpo quieres mejorar más?\n\n* **Ambiente (CRÍTICO):** \"¿Entrenas en **Gimnasio** o en **Casa**?\"\n    - Si responde \"Gimnasio\": Asume que tiene todo el equipo.\n    - Si responde \"Casa\": Pregunta **inmediatamente** qué equipo tiene (Mancuernas, Bandas, Barra, Banco, TRX, Solo cuerpo).\n    - *Nota:* Si dice \"ambos\", pide que elija el principal para esta rutina base.\n\n## FASE 7: Cardio\n* **Cardio:** ¿Haces cardio? (No / Caminar / Bici / Correr).\n* **Frecuencia:** (Si respondió que sí, pregunta cuántos días).\n\n---\n\n# PROTOCOLO DE FINALIZACIÓN (TOOL EXECUTION)\n\nUna vez tengas el último dato (Cardio):\n\n1. **REVISIÓN INTERNA:** Asegúrate de tener todos los campos obligatorios.\n2. **INVOCACIÓN DE TOOL:** Ejecuta la función `Tool_Create_User_Profile` con los datos sanitizados (ej: altura 175, no 1.75).\n3. **DESPEDIDA:**\n   > \"¡Perfecto, [Nombre]! 🎉 He recopilado toda tu información.\n   >\n   > Me pongo a trabajar ya mismo en tu rutina personalizada. ¡Prepárate para darlo todo! 💪🚀\"\n\n# REGLAS CRÍTICAS DE VALIDACIÓN\n1. **Unicidad:** En preguntas de selección múltiple (A, B, C), si el usuario da dos opciones contradictorias, pide aclaración.\n2. **Inferencia Inteligente:** Si el usuario dice \"mido uno setenta\", guarda `170`. Si dice \"peso ochenta\", guarda `80`. No obligues al usuario a reescribir si puedes entender el dato.\n3. **No avanzar sin datos:** Si falta un dato del bloque (ej: dio edad y peso, pero olvidó estatura), pídelo amablemente antes de pasar a la siguiente fase."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -2400,
-        2112
+        -5904,
+        3072
       ],
-      "id": "302ec43f-b2a2-44d3-9559-48a7ff55b8ff",
+      "id": "97b050ce-a7f5-499b-a90f-faf6e823f367",
       "name": "KYC Agent",
       "retryOnFail": true
     },
@@ -816,10 +875,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -192,
-        208
+        -3696,
+        1168
       ],
-      "id": "d8e463af-657f-493b-a4bd-0a0b89e84f82",
+      "id": "17170c5e-f587-48ae-9be7-f554d46d8978",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -930,10 +989,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -2224,
-        2368
+        -5728,
+        3328
       ],
-      "id": "b692e66f-d429-41a2-a8c5-41569717c1c5",
+      "id": "0294cad9-a6ef-406d-b599-73e346d4af11",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -949,10 +1008,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -208,
-        912
+        -3712,
+        1872
       ],
-      "id": "5ef54586-c473-4dd9-ab7f-6543c2364191",
+      "id": "9c93f60a-02b1-46ab-aef3-fa751ee206e2",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -968,10 +1027,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1840,
-        848
+        -5344,
+        1808
       ],
-      "id": "7730a4b5-af10-45df-b069-bf87a07d7436",
+      "id": "6fa59f91-2fe2-4b0e-9c6e-4da1b80d9dee",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1012,10 +1071,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3600,
-        1312
+        -7104,
+        2272
       ],
-      "id": "06f06c42-b8f6-48d4-8e60-b14754ed769a",
+      "id": "70b33d00-4a4e-41eb-b614-30e357a1a29a",
       "name": "If"
     },
     {
@@ -1025,10 +1084,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3296,
-        1280
+        -6800,
+        2240
       ],
-      "id": "debf7eab-d763-4287-922f-ce3f00d44eae",
+      "id": "5b4d303a-58ab-431e-a2f4-a502a7e7658f",
       "name": "Normalize_Message"
     },
     {
@@ -1055,10 +1114,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -2768,
-        1088
+        -6272,
+        2048
       ],
-      "id": "0f2dc396-2f14-4ffe-a0cf-fbb5c90a518c",
+      "id": "7e9fca08-0498-4a14-9545-0917ad04528c",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1096,10 +1155,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2576,
-        1088
+        -6080,
+        2048
       ],
-      "id": "d31be29e-0471-4940-bd7b-dea0d1e5e3e6",
+      "id": "cb080391-e7a2-4a49-8512-e822041e6a0a",
       "name": "Has_Pending_Task"
     },
     {
@@ -1111,10 +1170,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        0,
-        0
+        -3504,
+        960
       ],
-      "id": "a0409eff-c485-4b97-92e0-e25710913e9e",
+      "id": "0d44f3ff-fe70-4c55-9299-e7889a460b9e",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1130,10 +1189,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -3808,
-        1488
+        -7312,
+        2448
       ],
-      "id": "4125ec1b-733c-47fb-8446-4ecb35be1b91",
+      "id": "37ede993-cd9a-4b1f-adb2-4f05f41061af",
       "name": "When Executed by Another Workflow",
       "disabled": true
     },
@@ -1144,10 +1203,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3072,
-        1472
+        -6576,
+        2432
       ],
-      "id": "b1b0967d-9ff4-467c-b4e1-570796cd8c3a",
+      "id": "d0606d8d-1d92-48d1-a34b-977a5d8fa94f",
       "name": "Filtered Message"
     },
     {
@@ -1157,10 +1216,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1136,
-        704
+        -2368,
+        1664
       ],
-      "id": "82167f37-b411-45b7-a5cf-1254539c7895",
+      "id": "1dab48d7-0a9d-41da-a9bd-fb129fb52b46",
       "name": "Filtered Message1"
     },
     {
@@ -1170,10 +1229,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1104,
-        2144
+        -4608,
+        3104
       ],
-      "id": "1e1dd21c-643b-4867-b613-8470c7f9c5cd",
+      "id": "bdeb37ee-dcc5-4076-bb9b-6cc244c7d49a",
       "name": "Filtered Message2"
     },
     {
@@ -1183,10 +1242,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        336,
-        208
+        -3168,
+        1168
       ],
-      "id": "70a07ef3-da07-45e1-a455-1270e7c4e5a9",
+      "id": "ee71b176-2ec6-4757-8d82-7fb3b7140277",
       "name": "Filtered Message3"
     },
     {
@@ -1196,10 +1255,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -576,
-        1312
+        -4064,
+        2144
       ],
-      "id": "bd228311-c4f7-480e-9f42-5dbb975405be",
+      "id": "9856298a-2117-417f-8744-b846de9f5a9d",
       "name": "Filtered Message4"
     },
     {
@@ -1209,10 +1268,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -800,
-        976
+        -4304,
+        1936
       ],
-      "id": "b2b5308b-992b-4e20-82f5-fe934563f50a",
+      "id": "dc8a7bba-2b63-4c80-87eb-57c0e02db7d2",
       "name": "Filtered Message5"
     },
     {
@@ -1231,10 +1290,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -1888,
-        2112
+        -5392,
+        3072
       ],
-      "id": "be384fd0-7e54-43c8-97d9-2b2de3a031b7",
+      "id": "327a365c-3679-4708-9df0-fb7057859af8",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1272,10 +1331,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1696,
-        2112
+        -5200,
+        3072
       ],
-      "id": "4f90460a-5ad0-48f2-b92f-69f6900b712c",
+      "id": "5203a566-72aa-455f-aa9c-18e6c1e397af",
       "name": "If1"
     },
     {
@@ -1315,10 +1374,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -1392,
-        1968
+        -4896,
+        2928
       ],
-      "id": "6de1c131-2560-4604-a0e2-78d9088e3cec",
+      "id": "6657db3a-c556-48cc-80e4-eb2e5173af3a",
       "name": "Call 'WORKOUT_CREATOR'",
       "alwaysOutputData": true
     },
@@ -1331,10 +1390,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        288,
-        816
+        -3216,
+        1776
       ],
-      "id": "ce90f739-af77-4410-85e9-ab94b0b4d5f9",
+      "id": "a4214867-513f-4eee-b7d7-b562ccb71cba",
       "name": "Create Magic Link",
       "credentials": {
         "postgres": {
@@ -1350,10 +1409,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        480,
-        816
+        -3024,
+        1776
       ],
-      "id": "26b9efe8-0c46-4d08-a00e-9ca46fd6825c",
+      "id": "cee51560-b374-4019-942d-772256e62792",
       "name": "Build URL"
     },
     {
@@ -1365,11 +1424,276 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        736,
-        704
+        -2768,
+        1664
       ],
-      "id": "5e197b91-2abe-4d3f-ab4e-968949e2b290",
+      "id": "2c0128f2-e678-43cb-8e29-36e692d91abc",
       "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT up.user_id, ws.days_per_week, up.mesocycle_number, up.week_schedule\nFROM users_plans up\nJOIN week_schedules ws ON up.week_schedule = ws.schedule_type\nWHERE up.user_id = '{{ $items('GetUser')[0].json.user_id }}'\n  AND up.status = 'active'\nORDER BY up.start_date DESC\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -3744,
+        752
+      ],
+      "id": "906fc80c-854a-479f-8470-4449892b2c19",
+      "name": "Fetch_Plan_For_Renewal",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yo79srG4dsYbVVSecQ3B-",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yo79srG4dsYbVVSecQ3B-",
+          "cachedResultName": "Learning Project — GymBotMesocycleRenewal"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $items('GetUser')[0].json.user_id }}",
+            "full_name": "={{ $items('GetUser')[0].json.full_name }}",
+            "whatsapp_id": "={{ $items('If')[0].json.contacts[0].wa_id }}",
+            "phone_number_id": "={{ $items('If')[0].json.metadata.phone_number_id }}",
+            "user_message": "={{ $items('Normalize_Message')[0].json.message_body }}",
+            "days_per_week": "={{ $json.days_per_week }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "phone_number_id",
+              "displayName": "phone_number_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "days_per_week",
+              "displayName": "days_per_week",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -3504,
+        752
+      ],
+      "id": "54fdfbc2-e837-4b74-94e3-316848477179",
+      "name": "Execute_Mesocycle_Renewal_Manual",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Verificar si el mesociclo esta completo (semana 4)\nconst weekSchedule = $items('Week_Schedule')[0]?.json;\nconst daysPerWeek = weekSchedule?.days_per_week || 0;\n\nconst finishedWorkouts = $('User_Finished_Workouts').all();\n\nconst week4Completed = finishedWorkouts.filter(\n  w => w.json.week === 4 && w.json.Completed === true\n).length;\n\nconst mesocycleComplete = daysPerWeek > 0 && week4Completed >= daysPerWeek;\n\nreturn [{\n  json: {\n    mesocycle_complete: mesocycleComplete,\n    week4_completed: week4Completed,\n    days_per_week: daysPerWeek,\n    user_id: weekSchedule?.user_id\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4896,
+        2560
+      ],
+      "id": "3ae151ca-b546-4485-8541-40ed01192521",
+      "name": "Check_Mesocycle_Complete",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "mesocycle-complete-check-001",
+              "leftValue": "={{ $json.mesocycle_complete }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4672,
+        2560
+      ],
+      "id": "d72e22e9-d728-450f-94eb-d96d909cc78a",
+      "name": "If_Mesocycle_Complete",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yo79srG4dsYbVVSecQ3B-",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yo79srG4dsYbVVSecQ3B-",
+          "cachedResultName": "Learning Project — GymBotMesocycleRenewal"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $items('GetUser')[0].json.user_id }}",
+            "full_name": "={{ $items('GetUser')[0].json.full_name }}",
+            "whatsapp_id": "={{ $items('If')[0].json.contacts[0].wa_id }}",
+            "phone_number_id": "={{ $items('If')[0].json.metadata.phone_number_id }}",
+            "user_message": "={{ $items('Normalize_Message')[0].json.message_body }}",
+            "days_per_week": "={{ $items('Week_Schedule')[0].json.days_per_week }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "phone_number_id",
+              "displayName": "phone_number_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "user_message",
+              "displayName": "user_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "days_per_week",
+              "displayName": "days_per_week",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -4368,
+        2688
+      ],
+      "id": "7fede148-2c46-4f34-acd3-6cb6e4b60696",
+      "name": "Execute_Mesocycle_Renewal",
+      "alwaysOutputData": true
     }
   ],
   "pinData": {
@@ -1592,7 +1916,14 @@
         ],
         [
           {
-            "node": "AI Agent",
+            "node": "If_Has_Routine_Today",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fetch_Plan_For_Renewal",
             "type": "main",
             "index": 0
           }
@@ -1648,7 +1979,7 @@
         ],
         [
           {
-            "node": "Send message1",
+            "node": "Intention_Agent",
             "type": "main",
             "index": 0
           }
@@ -1720,7 +2051,7 @@
       "main": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Check_Mesocycle_Complete",
             "type": "main",
             "index": 0
           }
@@ -1968,6 +2299,24 @@
         ]
       ]
     },
+    "If_Has_Routine_Today": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "GetNewUserProfile": {
       "main": [
         [
@@ -2051,6 +2400,46 @@
           }
         ]
       ]
+    },
+    "Fetch_Plan_For_Renewal": {
+      "main": [
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal_Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check_Mesocycle_Complete": {
+      "main": [
+        [
+          {
+            "node": "If_Mesocycle_Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Mesocycle_Complete": {
+      "main": [
+        [
+          {
+            "node": "Execute_Mesocycle_Renewal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -2058,7 +2447,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "7418b459-b2fa-4a1b-a726-31e3ca285337",
+  "versionId": "adddac76-0748-43e5-896d-8545f488c682",
   "meta": {
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
