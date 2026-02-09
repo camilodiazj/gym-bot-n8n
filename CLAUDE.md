@@ -19,15 +19,21 @@ GymBot/
 ├── n8n/                       # n8n workflow automation
 │   ├── running_flows/         # Active production workflows
 │   ├── tests/                 # E2E test runners
-│   ├── wip/                   # Work-in-progress workflows
-│   └── system_prompts/        # AI agent system prompts
+│   └── archived/              # Archived workflow versions
 ├── workout-tracker/           # React/TypeScript frontend (Vite)
 ├── workout-tracker-back/      # Go/Gin backend (hexagonal architecture)
 ├── e2e/                       # E2E test fixtures and documentation
-└── exercises/                 # Exercise data and utilities
+├── exercises/                 # Exercise data and utilities
+├── spec/                      # Feature specifications (home-training, mesocycle-renewal, email)
+├── docs/                      # Deployment guides and feature docs
+└── ActionBody/                # Gym equipment photos (ActionBody inventory)
 ```
 
+> **Note**: `n8n-mcp/` is gitignored — it's a local n8n MCP server dependency, not part of the GymBot codebase.
+
 ### n8n Workflows
+
+**Production workflows** (`n8n/running_flows/`):
 
 | Workflow | Purpose |
 |----------|---------|
@@ -35,10 +41,15 @@ GymBot/
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
+
+**Test workflows** (`n8n/tests/`):
+
+| Workflow | Purpose |
+|----------|---------|
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows (parallel multi-turn execution) |
-| `GymRatFlow_MultiTurnExecutor.json` | Sub-workflow for isolated multi-turn test execution (called by test runner) |
 | `MesocycleRenewal_E2E_TestRunner.json` | E2E test suite for mesocycle renewal scenarios (3 test cases: auto-detect, MANTENER, manual intent) |
-| `GymBotWorkoutCompletion_E2E_TestRunner.json` | E2E test suite for workout completion workflow (4 test cases) |
+
+> `GymRatFlow_MultiTurnExecutor.json` is deployed directly in the n8n instance (not in the repo). It's the sub-workflow called by test runners for isolated multi-turn test execution.
 
 ### Workout Tracker (Web App)
 
@@ -368,7 +379,7 @@ e2e/
 
 ### Test Runner
 
-`GymRatFlow_E2E_TestRunner.json` is an n8n workflow that runs 16 test cases. It uses parallel execution for multi-turn tests: 11 SINGLE tests run sequentially, while 5 multi-turn tests (MULTI_TURN / MULTI_TURN_AI) each run in a parallel lane via `GymRatFlow_MultiTurnExecutor.json` sub-workflow:
+`GymRatFlow_E2E_TestRunner.json` runs test cases using parallel execution for multi-turn tests: SINGLE tests run sequentially, while multi-turn tests (MULTI_TURN / MULTI_TURN_AI) each run in a parallel lane via `GymRatFlow_MultiTurnExecutor.json` sub-workflow:
 
 | Test | Category | Description |
 |------|----------|-------------|
@@ -445,6 +456,18 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- HOME: 570000000211, 570000000212, 570000000213
 -- MESOCYCLE: 570000000051, 570000000052, 570000000053
 ```
+
+## Feature Specifications
+
+The `spec/` directory contains detailed implementation specs for major features:
+
+| Feature | Directory | Contents |
+|---------|-----------|----------|
+| HOME Training | `spec/home-training-feature/` | KYC mods, DB templates, testing guide, training guidelines |
+| Mesocycle Renewal | `spec/Mesocycle_Renewal/` | Architecture, domain logic, implementation plan |
+| Email Routine | `spec/email-routine-week1/` | Workflow spec, HTML template, QA test plan |
+
+The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 
 ## Changelog
 
