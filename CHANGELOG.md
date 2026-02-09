@@ -2,6 +2,51 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.2.0] - 2026-02-08
+
+### Added - Mesocycle Renewal (v5.0)
+
+- **Nuevo subflow `GymBotMesocycleRenewal.json`**: Maneja la conversación multi-turno de renovación de mesociclo (4 semanas)
+  - **Path A (Auto-detección)**: Cuando el usuario completa todas las sesiones de W4, el sistema detecta automáticamente y ofrece opciones de renovación
+  - **Path B (Manual)**: El usuario puede escribir "renovar" o similar → intención `RENOVAR_MESOCICLO` detectada por el Intention Agent
+  - **Opciones de renovación**: Mantener rutina actual (MANTENER_RUTINA), cambiar días, rotar ejercicios
+  - **Renewal Agent**: Nuevo AI agent especializado en la conversación de renovación (en español)
+
+### Changed - MAIN_FLOW
+
+- **Detección de mesociclo completo**: Nuevos nodos en el branch FALSE de `has_planned_workouts` para verificar si W4 está completa
+  - Query `Week_Schedule` + `User_Finished_Workouts` + `Template_Days` → `Check_Mesocycle_Complete`
+  - Si mesociclo completo → ejecuta `GymBotMesocycleRenewal` subflow
+- **Nueva intención `RENOVAR_MESOCICLO`**: Agregada al Intention Agent para activación manual del flujo de renovación
+
+### Changed - WORKOUT_CREATOR
+
+- **Nodo `If_Skip_Create_For_Renewal`**: Previene creación duplicada de plan cuando se ejecuta desde renovación de mesociclo
+- **Soporte para `mesocycle_number`**: Incremento automático del contador de mesociclo en `users_plans`
+
+### Added - E2E Tests para Mesocycle Renewal
+
+- **`MesocycleRenewal_E2E_TestRunner.json`**: 3 test cases de renovación
+  - TC_MESO_001: Auto-detección de W4 completada activa renovación
+  - TC_MESO_002: Flujo MANTENER_RUTINA completa exitosamente
+  - TC_MESO_003: Intención manual RENOVAR_MESOCICLO detectada correctamente
+- **Usuarios de prueba** (`5700000005X`): 3 fixtures pre-poblados en `test_data_setup.sql`
+
+### Added - Especificaciones de Arquitectura
+
+- **`spec/Mesocycle_Renewal/`**: Documentación completa del feature
+  - `00_ARCHITECTURE.md`: Diagrama de sistema, contratos de interfaz, inventario de nodos
+  - `01_DOMAIN_LOGIC.md`: Reglas de negocio, criterios de detección, lógica de renovación
+  - `02_IMPLEMENTATION_PLAN.md`: Plan de implementación paso a paso
+
+### Changed - Reorganización del Repositorio
+
+- **Eliminado `n8n/wip/`**: Workflows WIP movidos o eliminados
+- **Eliminado `n8n/system_prompts/`**: Prompts ahora embebidos directamente en los workflows
+- **Nuevo `n8n/archived/`**: Versiones archivadas de workflows
+- **Eliminado `GymBotWorkoutCompletion_E2E_TestRunner.json`**: Tests de completion consolidados
+- **Actualizado CLAUDE.md**: Refleja estructura actual del proyecto
+
 ## [1.8.0] - 2026-02-03
 
 ### Fixed - Band Exercise Equipment Classification
