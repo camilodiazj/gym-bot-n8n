@@ -20,6 +20,14 @@ interface Step {
   text: string
 }
 
+interface AlternativeExercise {
+  name: string
+  rir: string
+  restSeconds?: number
+  videoLink: string
+  sets: SetData[]
+}
+
 interface ExerciseData {
   id: string
   name: string
@@ -31,6 +39,7 @@ interface ExerciseData {
   restSeconds?: number
   videoLink?: string
   instructionsExpanded?: boolean
+  alternativeExercises?: AlternativeExercise[]
 }
 
 interface WorkoutResponse {
@@ -67,6 +76,110 @@ function App() {
         // Parse auth from URL (?c=shortcode)
         const params = new URLSearchParams(window.location.search)
         const code = params.get('c')
+
+        // Demo mode: show mock exercises with alternative exercise feature
+        if (params.has('demo')) {
+          setExercises([
+            {
+              id: 'demo-1',
+              name: 'Sentadilla con barra',
+              badgeColor: '#374151',
+              rir: '3',
+              restSeconds: 120,
+              videoLink: 'https://www.youtube.com/watch?v=demo-squat',
+              instructionsExpanded: true,
+              sets: [
+                { setNumber: 1, reps: 8, kg: '-', completed: false },
+                { setNumber: 2, reps: 9, kg: '-', completed: false },
+                { setNumber: 3, reps: 10, kg: '-', completed: false },
+              ],
+              tips: [],
+              steps: [],
+              alternativeExercises: [
+                {
+                  name: 'Goblet Squat',
+                  rir: '3',
+                  restSeconds: 120,
+                  videoLink: 'https://www.youtube.com/watch?v=example1',
+                  sets: [
+                    { setNumber: 1, reps: 10, kg: '-', completed: false },
+                    { setNumber: 2, reps: 10, kg: '-', completed: false },
+                    { setNumber: 3, reps: 10, kg: '-', completed: false },
+                  ],
+                },
+                {
+                  name: 'Hack Squat',
+                  rir: '2-3',
+                  restSeconds: 120,
+                  videoLink: 'https://www.youtube.com/watch?v=example2',
+                  sets: [
+                    { setNumber: 1, reps: 10, kg: '-', completed: false },
+                    { setNumber: 2, reps: 10, kg: '-', completed: false },
+                    { setNumber: 3, reps: 10, kg: '-', completed: false },
+                  ],
+                },
+              ],
+            } as ExerciseData,
+            {
+              id: 'demo-2',
+              name: 'Press banca',
+              badgeColor: '#374151',
+              rir: '2-3',
+              restSeconds: 90,
+              videoLink: 'https://www.youtube.com/watch?v=demo-bench',
+              instructionsExpanded: false,
+              sets: [
+                { setNumber: 1, reps: 10, kg: '-', completed: false },
+                { setNumber: 2, reps: 10, kg: '-', completed: false },
+                { setNumber: 3, reps: 10, kg: '-', completed: false },
+              ],
+              tips: [],
+              steps: [],
+              alternativeExercises: [
+                {
+                  name: 'Press inclinado con mancuernas',
+                  rir: '2-3',
+                  restSeconds: 90,
+                  videoLink: 'https://www.youtube.com/watch?v=example3',
+                  sets: [
+                    { setNumber: 1, reps: 12, kg: '-', completed: false },
+                    { setNumber: 2, reps: 12, kg: '-', completed: false },
+                    { setNumber: 3, reps: 12, kg: '-', completed: false },
+                  ],
+                },
+                {
+                  name: 'Aperturas con mancuernas',
+                  rir: '2-3',
+                  restSeconds: 75,
+                  videoLink: 'https://www.youtube.com/watch?v=example4',
+                  sets: [
+                    { setNumber: 1, reps: 15, kg: '-', completed: false },
+                    { setNumber: 2, reps: 15, kg: '-', completed: false },
+                    { setNumber: 3, reps: 15, kg: '-', completed: false },
+                  ],
+                },
+              ],
+            } as ExerciseData,
+            {
+              id: 'demo-3',
+              name: 'Plancha',
+              badgeColor: '#374151',
+              rir: '1-2',
+              videoLink: 'https://www.youtube.com/watch?v=demo-plank',
+              instructionsExpanded: false,
+              sets: [
+                { setNumber: 1, reps: 30, kg: '-', completed: false },
+                { setNumber: 2, reps: 30, kg: '-', completed: false },
+              ],
+              tips: [],
+              steps: [],
+            } as ExerciseData,
+          ])
+          setSessionName('Demo - Alternativas')
+          setSessionId('demo')
+          setLoading(false)
+          return
+        }
 
         // Build the API URL based on auth method
         let apiUrl: string
