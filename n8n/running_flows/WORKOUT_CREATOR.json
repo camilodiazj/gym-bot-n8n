@@ -6,16 +6,16 @@
         "promptType": "define",
         "text": "=Genera la rutina semanal para el usuario:\n\n- **Objetivo**: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- **Nivel**: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- **Dias**: {{ $('ProcessUserPreferences').item.json.days_available }}\n- **Prioridades**: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- **Musculos prioritarios (EN)**: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- **Tier experiencia**: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}",
         "options": {
-          "systemMessage": "=Eres \"Kairos Personal Trainer\", un Entrenador Personal de Elite. Tu mision es construir una rutina PERSONALIZADA para este usuario especifico.\n\n---\n\n## PERFIL COMPLETO DEL USUARIO\n\n**Datos personales:**\n- Edad: {{ $('ProcessUserPreferences').item.json.age }} anos\n- Sexo biologico: {{ $('ProcessUserPreferences').item.json.biological_sex }}\n- Altura: {{ $('ProcessUserPreferences').item.json.height_cm }} cm\n- Peso: {{ $('ProcessUserPreferences').item.json.weight_kg }} kg\n\n**Objetivos:**\n- Principal: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- Secundario: {{ $('ProcessUserPreferences').item.json.secondary_goal }}\n\n**Experiencia y nivel:**\n- Nivel: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- Experiencia: {{ $('ProcessUserPreferences').item.json.training_experience }}\n- Frecuencia actual: {{ $('ProcessUserPreferences').item.json.current_frequency }}\n- Tier de experiencia: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}\n\n**Preferencias de entrenamiento:**\n- Dias disponibles: {{ $('ProcessUserPreferences').item.json.days_available }}\n- Duracion de sesion: {{ $('ProcessUserPreferences').item.json.session_duration_mins }}\n- Estilo preferido: {{ $('ProcessUserPreferences').item.json.training_style }}\n\n**Personalizacion muscular:**\n- Musculos PRIORITARIOS (en ingles): {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- Musculos/ejercicios a EVITAR: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.disliked_muscles_en) }}\n- Texto original prioridades: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- Texto original evitar: {{ $('ProcessUserPreferences').item.json.disliked_exercises }}\n\n**Salud (codigos confirmados de tabla health_status):**\n- Estado: {{ $('ProcessUserPreferences').item.json.health_status }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_lower_body_impact ? '⚠️ CUIDADO TREN INFERIOR: Evitar alto impacto en rodillas, tobillos, cadera' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_upper_body_overhead ? '⚠️ CUIDADO TREN SUPERIOR: Evitar ejercicios overhead y estres en hombros, codos, munecas' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_spinal_loading ? '⚠️ CUIDADO ESPALDA: Evitar carga axial pesada, proteger lumbares y cervicales' : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.special_condition ? '⚠️ CONDICION MEDICA ESPECIAL: Priorizar ejercicios de bajo riesgo y maquinas guiadas' : '' }}\n\n**Modificador de volumen:** {{ $('ProcessUserPreferences').item.json.processed.volume_modifier }}\n\n---\n\n## AMBIENTE DE ENTRENAMIENTO\n\n**Ambiente:** {{ $('ProcessUserPreferences').item.json.processed.environment }}\n{{ $('ProcessUserPreferences').item.json.processed.home.is_home ? `\n### CONFIGURACION HOME\n\n**Equipamiento disponible:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_list.join(', ')}\n**Tier de equipamiento:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_tier}\n\n**Flags de equipamiento:**\n- Barra de dominadas: ${$('ProcessUserPreferences').item.json.processed.home.has_pull_bar ? 'SI' : 'NO'}\n- Barbell: ${$('ProcessUserPreferences').item.json.processed.home.has_barbell ? 'SI' : 'NO'}\n- Mancuernas: ${$('ProcessUserPreferences').item.json.processed.home.has_dumbbells ? 'SI' : 'NO'}\n- Kettlebells: ${$('ProcessUserPreferences').item.json.processed.home.has_kettlebells ? 'SI' : 'NO'}\n- Banco: ${$('ProcessUserPreferences').item.json.processed.home.has_bench ? 'SI' : 'NO'}\n\n### REGLAS ESPECIALES HOME\n\n1. **Solo usar ejercicios de AVAILABLE_EXERCISES** - Ya estan pre-filtrados por equipamiento\n2. **Compensacion de gaps obligatoria** - Ver tabla de compensacion abajo\n3. **Priorizar variaciones** - Usar diferentes angulos/posiciones del mismo equipo\n4. **Creatividad con bodyweight** - Explotar ejercicios isometricos, excentricos, unilaterales\n\n### TABLA DE COMPENSACION DE GAPS\n\n| Gap Detectado | Patron Original | Compensacion |\n|---------------|-----------------|---------------|\n| pull_v limitado (sin barra dominadas) | pull_v | +2 series pull_h, +1 ejercicio arm (back) |\n| pull_v limitado (con barra dominadas) | pull_v | Priorizar chin-ups, pull-ups, variaciones |\n| Quads limitado (sin leg extension) | accessory (Quads) | +1 ejercicio squat unilateral, +1 lunge |\n| Hamstrings limitado (sin leg curl) | accessory (Hamstrings) | +2 series hinge, +1 ejercicio lunge posterior |\n| Calfs limitado | accessory (Calfs) | Incluir calf raises en cada dia de pierna |\n| Back limitado (sin cables) | accessory (Back) | +1 ejercicio pull_h, priorizar rows con dumbbell |\n\n### REGLAS DE VOLUMEN HOME\n\n- **Si equipment_tier = 'minimal'**: Reducir 1 serie por ejercicio, aumentar reps\n- **Si equipment_tier = 'basic'**: Mantener volumen, distribuir en mas ejercicios\n- **Si equipment_tier = 'intermediate/advanced'**: Volumen normal\n` : `\n### CONFIGURACION GYM\n\nAcceso completo a todo el equipamiento de gimnasio.\nNo aplican restricciones de equipamiento.\n` }}\n\n---\n\n## PROTOCOLO DE SELECCION DE EJERCICIOS\n\n### PASO 1: Analizar DAY REQUIREMENT\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\n### PASO 2: Seleccion Inteligente de AVAILABLE_EXERCISES\n\n**Reglas de priorizacion (en orden):**\n\n1. **EXCLUSION OBLIGATORIA** (Primero eliminar):\n   - Ejercicios donde `main_muscle` este en la lista de musculos a EVITAR\n   - Ejercicios cuyo `spanish_name` contenga terminos que el usuario rechazo\n   - Ejercicios que violen las restricciones de salud\n\n2. **PRIORIZACION POR MUSCULOS** (Preferir):\n   - Si hay musculos prioritarios, PREFERIR ejercicios donde:\n     - `main_muscle` coincide con la prioridad, O\n     - `secondary_muscles` INCLUYE algun musculo prioritario\n   - Esto permite trabajo indirecto del musculo prioritario\n\n3. **ADAPTACION POR SEXO BIOLOGICO** (activa):\n   - `F`: Priorizar ejercicios de Glutes, Hamstrings cuando el patron lo permita\n   - `M`: Priorizar ejercicios de Chest, Back, Shoulders cuando el patron lo permita\n   - Esto se aplica cuando hay multiples ejercicios validos para elegir\n\n4. **ADAPTACION POR EXPERIENCIA**:\n   - `beginner`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Priorizar bodyweight y mancuernas ligeras. Enfoque en forma y control antes que peso.' : '- GYM: Preferir `equipment` = \"machine\" o \"bodyweight\", evitar tecnicas complejas' }}\n   - `intermediate`: Balance entre ejercicios disponibles\n   - `advanced`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Maximizar intensidad con equipo disponible. Usar tecnicas avanzadas: tempo lento, isometricos, drop sets manuales.' : '- GYM: Priorizar compuestos con barbell/dumbbell' }}\n\n5. **NIVEL DEL EJERCICIO**: Priorizar ejercicios con `level` = {{ $('ProcessUserPreferences').item.json.fitness_level }}\n\n6. **REGLA DE VOLUMEN**: Si `min_sets` > 4, seleccionar 2+ ejercicios para distribuir series\n\n### PASO 3: Aplicar Carga\nUsar datos de CARGA SEMANA cruzando `role` con el perfil de carga.\n- Si `volume_modifier` < 1.0: Reducir 1 serie en ejercicios isolation\n- Si `volume_modifier` > 1.0: Agregar 1 serie en ejercicios compound\n\n### PASO 4: Generar JSON\n\n---\n\n## REGLAS DE ORO\n- PROHIBIDO inventar ejercicios. Solo usar AVAILABLE_EXERCISES.\n- PROHIBIDO ignorar exclusiones de salud o musculos no deseados.\n- OBLIGATORIO personalizar segun el perfil completo.\n- OBLIGATORIO compensar gaps si el ambiente es HOME (ver tabla de compensacion).\n- PROHIBIDO seleccionar ejercicios que requieran equipamiento no disponible.\n\n---\n\n## DATOS DE ENTRADA\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => ({\n  exercise_id: i.json.exercise_id,\n  spanish_name: i.json.spanish_name,\n  main_muscle: i.json.main_muscle,\n  secondary_muscles: i.json.secondary_muscles || [],\n  equipment: i.json.equipment,\n  level: i.json.level,\n  role: i.json.role\n})), null, 2) }}\n\nCARGA SEMANA:\n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n## FORMATO DE SALIDA (JSON Array estricto)\n\nResponder SOLO con un JSON Array valido. Sin texto adicional.\n\nUSER_ID A USAR: {{ $items('GetUser')[0].json.user_id }}\nGOAL A USAR: {{ $('LoadProfile').item.json.goal }}\nLEVEL A USAR: {{ $('LoadProfile').item.json.level }}\nDAY_NAME A USAR: {{ $('Loop Over Items').item.json.day_name }}\n\nESTRUCTURA POR OBJETO (usar los valores de arriba):\n{\n  \"user_id\": \"<USER_ID de arriba>\",\n  \"goal\": \"<GOAL de arriba>\",\n  \"level\": \"<LEVEL de arriba>\",\n  \"role\": \"compound/isolation/core\",\n  \"week_number\": 1,\n  \"day_name\": \"<DAY_NAME de arriba>\",\n  \"exercise_id\": \"exercise_id de AVAILABLE_EXERCISES\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
+          "systemMessage": "=Eres \"Kairos Personal Trainer\", un Entrenador Personal de Elite. Tu mision es construir una rutina PERSONALIZADA para este usuario especifico.\n\n---\n\n## PERFIL COMPLETO DEL USUARIO\n\n**Datos personales:**\n- Edad: {{ $('ProcessUserPreferences').item.json.age }} anos\n- Sexo biologico: {{ $('ProcessUserPreferences').item.json.biological_sex }}\n- Altura: {{ $('ProcessUserPreferences').item.json.height_cm }} cm\n- Peso: {{ $('ProcessUserPreferences').item.json.weight_kg }} kg\n\n**Objetivos:**\n- Principal: {{ $('ProcessUserPreferences').item.json.primary_goal }}\n- Secundario: {{ $('ProcessUserPreferences').item.json.secondary_goal }}\n\n**Experiencia y nivel:**\n- Nivel: {{ $('ProcessUserPreferences').item.json.fitness_level }}\n- Experiencia: {{ $('ProcessUserPreferences').item.json.training_experience }}\n- Frecuencia actual: {{ $('ProcessUserPreferences').item.json.current_frequency }}\n- Tier de experiencia: {{ $('ProcessUserPreferences').item.json.processed.experience_tier }}\n\n**Preferencias de entrenamiento:**\n- Dias disponibles: {{ $('ProcessUserPreferences').item.json.days_available }}\n- Duracion de sesion: {{ $('ProcessUserPreferences').item.json.session_duration_mins }}\n- Estilo preferido: {{ $('ProcessUserPreferences').item.json.training_style }}\n\n**Personalizacion muscular:**\n- Musculos PRIORITARIOS (en ingles): {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.priority_muscles_en) }}\n- Musculos/ejercicios a EVITAR: {{ JSON.stringify($('ProcessUserPreferences').item.json.processed.disliked_muscles_en) }}\n- Texto original prioridades: {{ $('ProcessUserPreferences').item.json.priority_muscles }}\n- Texto original evitar: {{ $('ProcessUserPreferences').item.json.disliked_exercises }}\n\n**Salud (codigos confirmados de tabla health_status):**\n- Estado: {{ $('ProcessUserPreferences').item.json.health_status }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_lower_body_impact ? `\n### EXCLUSIONES OBLIGATORIAS - SALUD B (Tren Inferior)\nLos siguientes ejercicios ya fueron ELIMINADOS de AVAILABLE_EXERCISES por el filtro SQL.\nSi alguno aparece en la lista, NO SELECCIONARLO:\n- Ejercicios con saltos (jump squats, box jumps, burpees)\n- Ejercicios de alto impacto en rodillas, tobillos o cadera\n- PREFERIR: maquinas guiadas para pierna, ejercicios sentados, movimientos controlados\n` : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_upper_body_overhead ? `\n### EXCLUSIONES OBLIGATORIAS - SALUD C (Tren Superior)\nLos siguientes ejercicios ya fueron ELIMINADOS de AVAILABLE_EXERCISES por el filtro SQL.\nSi alguno aparece en la lista, NO SELECCIONARLO:\n- Press militar, press de hombro, overhead press (cualquier variante)\n- Snatch, push press, jerk, press Arnold\n- Cualquier movimiento que lleve las manos por encima de la cabeza con carga\n- PREFERIR: press inclinado con mancuerna (angulo <60), elevaciones laterales, face pulls\n` : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.avoid_spinal_loading ? `\n### EXCLUSIONES OBLIGATORIAS - SALUD D (Columna)\nLos siguientes ejercicios ya fueron ELIMINADOS de AVAILABLE_EXERCISES por el filtro SQL.\nSi alguno aparece en la lista, NO SELECCIONARLO:\n- Peso muerto convencional, peso muerto rumano, peso muerto sumo\n- Good mornings / Buenos dias\n- Cualquier ejercicio con main_muscle = Lower back\n- Sentadilla con barra en espalda (preferir sentadilla goblet o en maquina)\n- PREFERIR: ejercicios con soporte lumbar, maquinas, cables\n` : '' }}\n{{ $('ProcessUserPreferences').item.json.processed.health.special_condition ? `\n### EXCLUSIONES OBLIGATORIAS - SALUD E (Condicion Especial)\nLos siguientes ejercicios ya fueron ELIMINADOS de AVAILABLE_EXERCISES por el filtro SQL.\nSi alguno aparece en la lista, NO SELECCIONARLO:\n- Cualquier ejercicio con equipment = barbell\n- Ejercicios con alta demanda tecnica o riesgo de lesion\n- PREFERIR: maquinas guiadas, cables, peso corporal con soporte\n- PRIORIZAR: movimientos controlados, rangos de movimiento seguros\n` : '' }}\n\n**Modificador de volumen:** {{ $('ProcessUserPreferences').item.json.processed.volume_modifier }}\n\n---\n\n## AMBIENTE DE ENTRENAMIENTO\n\n**Ambiente:** {{ $('ProcessUserPreferences').item.json.processed.environment }}\n{{ $('ProcessUserPreferences').item.json.processed.home.is_home ? `\n### CONFIGURACION HOME\n\n**Equipamiento disponible:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_list.join(', ')}\n**Tier de equipamiento:** ${$('ProcessUserPreferences').item.json.processed.home.equipment_tier}\n\n**Flags de equipamiento:**\n- Barra de dominadas: ${$('ProcessUserPreferences').item.json.processed.home.has_pull_bar ? 'SI' : 'NO'}\n- Barbell: ${$('ProcessUserPreferences').item.json.processed.home.has_barbell ? 'SI' : 'NO'}\n- Mancuernas: ${$('ProcessUserPreferences').item.json.processed.home.has_dumbbells ? 'SI' : 'NO'}\n- Kettlebells: ${$('ProcessUserPreferences').item.json.processed.home.has_kettlebells ? 'SI' : 'NO'}\n- Banco: ${$('ProcessUserPreferences').item.json.processed.home.has_bench ? 'SI' : 'NO'}\n\n### REGLAS ESPECIALES HOME\n\n1. **Solo usar ejercicios de AVAILABLE_EXERCISES** - Ya estan pre-filtrados por equipamiento\n2. **Compensacion de gaps obligatoria** - Ver tabla de compensacion abajo\n3. **Priorizar variaciones** - Usar diferentes angulos/posiciones del mismo equipo\n4. **Creatividad con bodyweight** - Explotar ejercicios isometricos, excentricos, unilaterales\n\n### TABLA DE COMPENSACION DE GAPS\n\n| Gap Detectado | Patron Original | Compensacion |\n|---------------|-----------------|---------------|\n| pull_v limitado (sin barra dominadas) | pull_v | +2 series pull_h, +1 ejercicio arm (back) |\n| pull_v limitado (con barra dominadas) | pull_v | Priorizar chin-ups, pull-ups, variaciones |\n| Quads limitado (sin leg extension) | accessory (Quads) | +1 ejercicio squat unilateral, +1 lunge |\n| Hamstrings limitado (sin leg curl) | accessory (Hamstrings) | +2 series hinge, +1 ejercicio lunge posterior |\n| Calfs limitado | accessory (Calfs) | Incluir calf raises en cada dia de pierna |\n| Back limitado (sin cables) | accessory (Back) | +1 ejercicio pull_h, priorizar rows con dumbbell |\n\n### REGLAS DE VOLUMEN HOME\n\n- **Si equipment_tier = 'minimal'**: Reducir 1 serie por ejercicio, aumentar reps\n- **Si equipment_tier = 'basic'**: Mantener volumen, distribuir en mas ejercicios\n- **Si equipment_tier = 'intermediate/advanced'**: Volumen normal\n` : `\n### CONFIGURACION GYM\n\nAcceso completo a todo el equipamiento de gimnasio.\nNo aplican restricciones de equipamiento.\n` }}\n\n---\n\n## PROTOCOLO DE SELECCION DE EJERCICIOS\n\n### PASO 1: Analizar DAY REQUIREMENT\npattern: {{ $('Loop Over Items').item.json.pattern }}\nmin_sets: {{ $('Loop Over Items').item.json.min_sets }}\nday_name: {{ $('Loop Over Items').item.json.day_name }}\n\n### PASO 2: Seleccion Inteligente de AVAILABLE_EXERCISES\n\n**Reglas de priorizacion (en orden):**\n\n1. **EXCLUSION OBLIGATORIA** (Primero eliminar):\n   - Ejercicios donde `main_muscle` este en la lista de musculos a EVITAR\n   - Ejercicios cuyo `spanish_name` contenga terminos que el usuario rechazo\n   - Ejercicios que violen las restricciones de salud\n\n2. **PRIORIZACION POR MUSCULOS** (Preferir):\n   - Si hay musculos prioritarios, PREFERIR ejercicios donde:\n     - `main_muscle` coincide con la prioridad, O\n     - `secondary_muscles` INCLUYE algun musculo prioritario\n   - Esto permite trabajo indirecto del musculo prioritario\n\n3. **ADAPTACION POR SEXO BIOLOGICO** (activa):\n   - `F`: Priorizar ejercicios de Glutes, Hamstrings cuando el patron lo permita\n   - `M`: Priorizar ejercicios de Chest, Back, Shoulders cuando el patron lo permita\n   - Esto se aplica cuando hay multiples ejercicios validos para elegir\n\n4. **ADAPTACION POR EXPERIENCIA**:\n   - `beginner`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Priorizar bodyweight y mancuernas ligeras. Enfoque en forma y control antes que peso.' : '- GYM: Preferir `equipment` = \"machine\" o \"bodyweight\", evitar tecnicas complejas' }}\n   - `intermediate`: Balance entre ejercicios disponibles\n   - `advanced`:\n     {{ $('ProcessUserPreferences').item.json.processed.home.is_home ? '- HOME: Maximizar intensidad con equipo disponible. Usar tecnicas avanzadas: tempo lento, isometricos, drop sets manuales.' : '- GYM: Priorizar compuestos con barbell/dumbbell' }}\n\n5. **NIVEL DEL EJERCICIO**: Priorizar ejercicios con `level` = {{ $('ProcessUserPreferences').item.json.fitness_level }}\n\n6. **REGLA DE VOLUMEN**: Si `min_sets` > 4, seleccionar 2+ ejercicios para distribuir series\n\n### PASO 3: Aplicar Carga\nUsar datos de CARGA SEMANA cruzando `role` con el perfil de carga.\n- Si `volume_modifier` < 1.0: Reducir 1 serie en ejercicios isolation\n- Si `volume_modifier` > 1.0: Agregar 1 serie en ejercicios compound\n\n### PASO 3.5: Manejo de Ejercicios Cardio\n\nSi AVAILABLE_EXERCISES contiene ejercicios con `role = 'cardio'`:\n- Usarlos como **finisher** al final de la sesion (despues de isolation)\n- Maximo 1-2 ejercicios cardio por dia\n- La carga para cardio viene de CARGA SEMANA con role = 'cardio'\n- El campo `reps` en cardio representa SEGUNDOS de trabajo (no repeticiones)\n- El campo `tempo` para cardio es 'N/A' (no aplica)\n- Si el day_requirement no incluye un patron cardio, NO agregar cardio por tu cuenta\n\n### PASO 4: Generar JSON\n\n---\n\n## REGLAS DE ORO\n- PROHIBIDO inventar ejercicios. Solo usar AVAILABLE_EXERCISES.\n- PROHIBIDO ignorar exclusiones de salud o musculos no deseados.\n- OBLIGATORIO personalizar segun el perfil completo.\n- OBLIGATORIO compensar gaps si el ambiente es HOME (ver tabla de compensacion).\n- PROHIBIDO seleccionar ejercicios que requieran equipamiento no disponible.\n- PROHIBIDO repetir el mismo exercise_id en el mismo dia. Cada ejercicio debe aparecer UNA SOLA VEZ por dia.\n- PROHIBIDO seleccionar variantes casi identicas del mismo movimiento en el mismo dia (ejemplo: NO poner 3 tipos de curl de biceps, NO poner remo con barra + remo con barra T + remo invertido en el mismo dia). Buscar VARIEDAD de angulos, equipos y musculos secundarios.\n\n---\n\n## DATOS DE ENTRADA\n\nAVAILABLE_EXERCISES:\n{{ JSON.stringify($('GetExercisesByPattern').all().map(i => ({\n  exercise_id: i.json.exercise_id,\n  spanish_name: i.json.spanish_name,\n  main_muscle: i.json.main_muscle,\n  secondary_muscles: i.json.secondary_muscles || [],\n  equipment: i.json.equipment,\n  level: i.json.level,\n  role: i.json.role\n})), null, 2) }}\n\nCARGA SEMANA:\n{{ JSON.stringify($('LoadProfile').all().map(i => i.json), null, 2) }}\n\n---\n\n## FORMATO DE SALIDA (JSON Array estricto)\n\nResponder SOLO con un JSON Array valido. Sin texto adicional.\n\nUSER_ID A USAR: {{ $items('GetUser')[0].json.user_id }}\nGOAL A USAR: {{ $('LoadProfile').item.json.goal }}\nLEVEL A USAR: {{ $('LoadProfile').item.json.level }}\nDAY_NAME A USAR: {{ $('Loop Over Items').item.json.day_name }}\n\nESTRUCTURA POR OBJETO (usar los valores de arriba):\n{\n  \"user_id\": \"<USER_ID de arriba>\",\n  \"goal\": \"<GOAL de arriba>\",\n  \"level\": \"<LEVEL de arriba>\",\n  \"role\": \"compound/isolation/core/cardio\",\n  \"week_number\": 1,\n  \"day_name\": \"<DAY_NAME de arriba>\",\n  \"exercise_id\": \"exercise_id de AVAILABLE_EXERCISES\",\n  \"sets\": \"Valor de Perfil de Carga\",\n  \"reps\": \"Valor de Perfil de Carga\",\n  \"rir\": \"Valor de Perfil de Carga\",\n  \"rest_seconds\": \"Valor de Perfil de Carga\",\n  \"tempo\": \"Valor de Perfil de Carga\"\n}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        5008,
-        576
+        7376,
+        144
       ],
-      "id": "cdf4b2d2-d446-46d9-8464-25a26844dc0a",
+      "id": "c607367f-f2ca-4311-be36-10a4423c938c",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -26,24 +26,24 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3200,
-        448
+        5568,
+        16
       ],
-      "id": "0d254b45-f4c8-40ee-95c6-27e96af394e3",
+      "id": "eb2187df-30dc-43ae-b41d-e7a3697ce56d",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
     {
       "parameters": {
-        "jsCode": "const week1Exercises = $(\"Code in JavaScript\").all().map(item => item.json);\nconst allProfiles = $input.all().map(item => item.json);\n\n// Role priority: compound first, then core, then isolation\nconst rolePriority = { compound: 1, core: 2, isolation: 3 };\n\n// Group exercises by day_name\nconst exercisesByDay = {};\nfor (const ex of week1Exercises) {\n  if (!exercisesByDay[ex.day_name]) {\n    exercisesByDay[ex.day_name] = [];\n  }\n  exercisesByDay[ex.day_name].push(ex);\n}\n\n// Sort each day's exercises by role priority, then assign exercise_order\nconst sortedExercises = [];\nfor (const dayName of Object.keys(exercisesByDay)) {\n  const dayExercises = exercisesByDay[dayName];\n  // Sort by role: compound (1) -> core (2) -> isolation (3)\n  dayExercises.sort((a, b) => {\n    const priorityA = rolePriority[a.role?.toLowerCase()] || 4;\n    const priorityB = rolePriority[b.role?.toLowerCase()] || 4;\n    return priorityA - priorityB;\n  });\n  // Assign sequential exercise_order\n  dayExercises.forEach((ex, index) => {\n    ex.exercise_order = index + 1;\n  });\n  sortedExercises.push(...dayExercises);\n}\n\nlet full4WeekPlan = [];\n\nfor (const ex of sortedExercises) {\n  for (let w = 1; w <= 4; w++) {\n    // Buscamos el perfil comparando texto limpio\n    const profile = allProfiles.find(p => \n      p.goal?.toString().trim().toLowerCase() === ex.goal?.toString().trim().toLowerCase() &&\n      p.level?.toString().trim().toLowerCase() === ex.level?.toString().trim().toLowerCase() &&\n      p.role?.toString().trim().toLowerCase() === ex.role?.toString().trim().toLowerCase() &&\n      p.week?.toString() === w.toString()\n    );\n\n    if (profile) {\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        sets: profile.sets,\n        reps: profile.reps,\n        rir: profile.rir,\n        rest_seconds: profile.rest_sec,\n        tempo: profile.tempo,\n        notes: profile.notes || \"\"\n      });\n    } else {\n      // Diagnóstico: Te dirá qué intentó buscar\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        notes: `No match para: ${ex.goal} | ${ex.level} | ${ex.role} | Sem:${w}`\n      });\n    }\n  }\n}\n\n// Return each workout as a separate item\nreturn full4WeekPlan.map(workout => ({ json: workout }));"
+        "jsCode": "const week1Exercises = $(\"Code in JavaScript\").all().map(item => item.json);\nconst allProfiles = $input.all().map(item => item.json);\n\n// Role priority: compound first, then core, then isolation\nconst rolePriority = { compound: 1, core: 2, isolation: 3, cardio: 4 };\n\n// Group exercises by day_name\nconst exercisesByDay = {};\nfor (const ex of week1Exercises) {\n  if (!exercisesByDay[ex.day_name]) {\n    exercisesByDay[ex.day_name] = [];\n  }\n  exercisesByDay[ex.day_name].push(ex);\n}\n\n// Sort each day's exercises by role priority, then assign exercise_order\nconst sortedExercises = [];\nfor (const dayName of Object.keys(exercisesByDay)) {\n  const dayExercises = exercisesByDay[dayName];\n  // Sort by role: compound (1) -> core (2) -> isolation (3)\n  dayExercises.sort((a, b) => {\n    const priorityA = rolePriority[a.role?.toLowerCase()] || 4;\n    const priorityB = rolePriority[b.role?.toLowerCase()] || 4;\n    return priorityA - priorityB;\n  });\n  // Assign sequential exercise_order\n  dayExercises.forEach((ex, index) => {\n    ex.exercise_order = index + 1;\n  });\n  sortedExercises.push(...dayExercises);\n}\n\nlet full4WeekPlan = [];\n\nfor (const ex of sortedExercises) {\n  for (let w = 1; w <= 4; w++) {\n    // Buscamos el perfil comparando texto limpio\n    const profile = allProfiles.find(p => \n      p.goal?.toString().trim().toLowerCase() === ex.goal?.toString().trim().toLowerCase() &&\n      p.level?.toString().trim().toLowerCase() === ex.level?.toString().trim().toLowerCase() &&\n      p.role?.toString().trim().toLowerCase() === ex.role?.toString().trim().toLowerCase() &&\n      p.week?.toString() === w.toString()\n    );\n\n    if (profile) {\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        sets: profile.sets,\n        reps: profile.reps,\n        rir: profile.rir,\n        rest_seconds: profile.rest_sec,\n        tempo: profile.tempo,\n        notes: profile.notes || \"\"\n      });\n    } else {\n      // Diagnóstico: Te dirá qué intentó buscar\n      full4WeekPlan.push({\n        ...ex,\n        week_number: w,\n        notes: `No match para: ${ex.goal} | ${ex.level} | ${ex.role} | Sem:${w}`\n      });\n    }\n  }\n}\n\n// Return each workout as a separate item\nreturn full4WeekPlan.map(workout => ({ json: workout }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5648,
-        448
+        8016,
+        16
       ],
-      "id": "6c5260a3-5b87-4235-911b-1b181adfb61f",
+      "id": "39a12449-5312-4be1-865b-f099e3e43abd",
       "name": "Code in JavaScript1"
     },
     {
@@ -53,10 +53,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        4496,
-        432
+        6864,
+        0
       ],
-      "id": "f1a08936-cb8d-4bd2-9d87-c60c2450d1fc",
+      "id": "b2cd4076-5831-4d42-86ee-cfe8e5b6a810",
       "name": "Loop Over Items"
     },
     {
@@ -68,23 +68,23 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        4800,
-        304
+        7168,
+        -128
       ],
-      "id": "2973447c-64d8-4380-8dd4-35409a564335",
+      "id": "c2b22e4e-6729-4b8a-8c3b-eb93741e51fc",
       "name": "AI Transform"
     },
     {
       "parameters": {
-        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los ítems de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        let outputStr = entry.output;\n        \n        // Limpiar los bloques de código markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n        \n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n        \n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algún output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// Retornamos cada ejercicio como un ítem independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
+        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los items de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        let outputStr = entry.output;\n\n        // Limpiar los bloques de codigo markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n\n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n\n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algun output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// === DEDUPLICATION GUARD ===\n// Remove duplicate exercise_ids within the same day_name.\nconst deduplicatedExercises = [];\nconst seenByDay = {};\n\nfor (const ex of allExercises) {\n  const dayKey = ex.day_name || 'unknown';\n  if (!seenByDay[dayKey]) {\n    seenByDay[dayKey] = new Set();\n  }\n  if (seenByDay[dayKey].has(ex.exercise_id)) {\n    console.log(`DEDUP: Removed duplicate exercise_id=${ex.exercise_id} from day=${dayKey}`);\n    continue;\n  }\n  seenByDay[dayKey].add(ex.exercise_id);\n  deduplicatedExercises.push(ex);\n}\n\nconst dupCount = allExercises.length - deduplicatedExercises.length;\nif (dupCount > 0) {\n  console.log(`DEDUP: Removed ${dupCount} duplicate exercises total`);\n}\n\nallExercises = deduplicatedExercises;\n\n// Retornamos cada ejercicio como un item independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5120,
-        400
+        7488,
+        -32
       ],
-      "id": "e4feabe9-660d-489d-ae4a-d489884e86cf",
+      "id": "8d40634a-5911-4640-84a5-3233b9837207",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -97,10 +97,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        3568,
-        448
+        5936,
+        16
       ],
-      "id": "24e1cf3a-067e-422c-96df-08084d86a389",
+      "id": "56f1413c-c470-40ed-9871-d69ac9f345f5",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -135,10 +135,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3424,
-        448
+        5792,
+        16
       ],
-      "id": "37f52e9d-464d-46de-ad20-0d3a88ee1bd3",
+      "id": "73fe1184-72ea-4806-bca4-1eb3a0204900",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -150,16 +150,16 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "={{ (() => {\n  const isHome = $items('ProcessUserPreferences')[0].json.processed.home.is_home;\n  const equipmentSql = $items('ProcessUserPreferences')[0].json.processed.home.home_equipment_sql;\n  const pattern = $json.pattern;\n  const level = $items('ProcessUserPreferences')[0].json.fitness_level;\n\n  let query = `\n    SELECT\n      exercise_id,\n      spanish_name,\n      pattern,\n      role,\n      main_muscle,\n      secondary_muscles,\n      level,\n      link,\n      equipment\n    FROM exercises\n    WHERE pattern = '${pattern}'\n  `;\n\n  if (isHome && equipmentSql) {\n    query += ` AND equipment IN (${equipmentSql})`;\n  }\n\n  query += `\n    ORDER BY\n      CASE WHEN level = '${level}' THEN 0 ELSE 1 END,\n      role,\n      spanish_name\n  `;\n\n  return query;\n})() }}",
+        "query": "={{ (() => {\n  const isHome = $items('ProcessUserPreferences')[0].json.processed.home.is_home;\n  const equipmentSql = $items('ProcessUserPreferences')[0].json.processed.home.home_equipment_sql;\n  const pattern = $json.pattern;\n  const level = $items('ProcessUserPreferences')[0].json.fitness_level;\n  const healthStatus = $items('ProcessUserPreferences')[0].json.health_status || 'A';\n\n  let query = `\n    SELECT\n      exercise_id,\n      spanish_name,\n      pattern,\n      role,\n      main_muscle,\n      secondary_muscles,\n      level,\n      link,\n      equipment\n    FROM exercises\n    WHERE pattern = '${pattern}'\n  `;\n\n  if (isHome && equipmentSql) {\n    query += ` AND equipment IN (${equipmentSql})`;\n  }\n\n  // === HEALTH STATUS SQL ENFORCEMENT ===\n\n  // Health B (lower body issues): exclude high-impact jumps and plyometrics\n  if (healthStatus === 'B') {\n    query += `\n      AND spanish_name NOT ILIKE '%salto%'\n      AND spanish_name NOT ILIKE '%jump%'\n      AND spanish_name NOT ILIKE '%burpee%'\n      AND spanish_name NOT ILIKE '%box jump%'\n      AND spanish_name NOT ILIKE '%sentadilla bulgara%'\n    `;\n  }\n\n  // Health C (upper body issues): exclude overhead pressing and shoulder stress\n  if (healthStatus === 'C') {\n    query += `\n      AND spanish_name NOT ILIKE '%press militar%'\n      AND spanish_name NOT ILIKE '%overhead%'\n      AND spanish_name NOT ILIKE '%snatch%'\n      AND spanish_name NOT ILIKE '%press de hombro%'\n      AND spanish_name NOT ILIKE '%push press%'\n      AND spanish_name NOT ILIKE '%press arnold%'\n    `;\n  }\n\n  // Health D (spine issues): exclude lower back exercises and heavy axial loading\n  if (healthStatus === 'D') {\n    query += `\n      AND main_muscle NOT IN ('Lower back')\n      AND spanish_name NOT ILIKE '%peso muerto%'\n      AND spanish_name NOT ILIKE '%deadlift%'\n      AND spanish_name NOT ILIKE '%buenos dias%'\n      AND spanish_name NOT ILIKE '%good morning%'\n    `;\n  }\n\n  // Health E (special condition): exclude free barbell exercises\n  if (healthStatus === 'E') {\n    query += `\n      AND equipment NOT IN ('barbell')\n    `;\n  }\n\n  query += `\n    ORDER BY\n      CASE WHEN level = '${level}' THEN 0 ELSE 1 END,\n      role,\n      spanish_name\n  `;\n\n  return query;\n})() }}",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        4736,
-        544
+        7104,
+        112
       ],
-      "id": "6239f1ba-017e-4d4b-9c20-9dc6c093183f",
+      "id": "bfac1016-1807-463e-ab0a-23ea9f5fb349",
       "name": "GetExercisesByPattern",
       "executeOnce": true,
       "credentials": {
@@ -209,10 +209,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4096,
-        784
+        6464,
+        352
       ],
-      "id": "c17844f7-ba51-4611-8679-03e7f6f9dcd6",
+      "id": "14724d38-c96c-438f-b222-6b925d78441a",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -250,10 +250,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3920,
-        656
+        6288,
+        224
       ],
-      "id": "861127b9-0fb6-446f-b51a-0951e4fdd4f7",
+      "id": "c31c697d-bee4-4bc2-a87a-a13fd70648e7",
       "name": "UserExists"
     },
     {
@@ -272,10 +272,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3760,
-        560
+        6128,
+        128
       ],
-      "id": "ce34c6d2-9bd3-450e-99b5-55b0ae17b2db",
+      "id": "6ab69b8d-5940-452e-9dfe-4235484ff85c",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -325,10 +325,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4144,
-        608
+        6512,
+        176
       ],
-      "id": "bf438d93-32d0-4665-85d6-02c4de58a76f",
+      "id": "42a7cee2-52e0-4fdc-b929-0579921280cf",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -344,10 +344,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4272,
-        432
+        6640,
+        0
       ],
-      "id": "c28bdd95-3c8a-41f6-90c7-2906580a85ae",
+      "id": "48bdf4fe-c4cd-477c-8602-c1c216b12a81",
       "name": "Merge"
     },
     {
@@ -410,10 +410,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6112,
-        448
+        8480,
+        16
       ],
-      "id": "6289a876-6149-44ae-8bdb-3fa457cde4fa",
+      "id": "30b17401-febd-4cfd-9ba9-2f3d127b670e",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -439,10 +439,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5392,
-        448
+        7760,
+        16
       ],
-      "id": "9f4d92f8-1109-4977-b72f-dc77254156f3",
+      "id": "3417ded0-4e2e-4830-a05d-390e344b97ae",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -474,10 +474,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        2800,
-        448
+        5168,
+        16
       ],
-      "id": "f0320238-0321-4643-92c1-82831a4cf4e4",
+      "id": "69434978-3986-48db-9a88-f7d0960d8aad",
       "name": "input",
       "executeOnce": true
     },
@@ -497,10 +497,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2976,
-        448
+        5344,
+        16
       ],
-      "id": "aecc24b3-8826-4f8e-9eaf-6060b0867aa3",
+      "id": "5d961c0f-cbf2-4049-9244-3d4df3652b92",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -520,10 +520,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        6352,
-        448
+        8720,
+        16
       ],
-      "id": "98b3d10c-7a38-436f-84e8-2c94710ba3cb",
+      "id": "762dfcc3-e59b-45fc-9569-30d22967171d",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -536,15 +536,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// ============================================\n// NODO: ValidateWorkoutDuration\n// PROPÓSITO: Validar que rutinas diarias caben en tiempo disponible\n// VERSIÓN: 2.0 - Priorización muscular + eliminación de ejercicios\n// ============================================\n\nconst userProfile = $('ProcessUserPreferences').first().json;\n\n// Get all workout items from input\nconst allWorkouts = $input.all().map(item => item.json);\n\n// Get priority muscles from user profile\nconst priorityMuscles = userProfile.processed?.priority_muscles_en || [];\n\n// Build exercise lookup from GetExercisesByPattern (for main_muscle, secondary_muscles)\nconst exerciseLookup = {};\ntry {\n  $('GetExercisesByPattern').all().forEach(item => {\n    const ex = item.json;\n    exerciseLookup[ex.exercise_id] = {\n      main_muscle: ex.main_muscle,\n      secondary_muscles: ex.secondary_muscles || [],\n      role: ex.role\n    };\n  });\n} catch (e) {\n  console.log('Warning: Could not build exercise lookup:', e.message);\n}\n\n// === CONFIGURACIÓN ===\nconst WARMUP_BUFFER = 600; // 10 min calentamiento\nconst TRANSITION_TIME = 120; // 2 min entre ejercicios (cambio de máquina/setup)\nconst MIN_EXERCISES = 4; // Nunca dejar menos de 4 ejercicios por día\n\n// === HELPERS ===\n\nfunction parseSessionDuration(durationStr) {\n  if (!durationStr) return 70;\n  if (durationStr.includes('45')) return 55;\n  if (durationStr.includes('60') || durationStr.includes('75')) return 70;\n  if (durationStr.includes('90') || durationStr.includes('Mas de 75')) return 85;\n  return 70;\n}\n\nfunction parseTempo(tempoStr) {\n  if (!tempoStr || typeof tempoStr !== 'string') return 4;\n  return tempoStr.split('-')\n    .map(n => parseInt(n, 10) || 0)\n    .reduce((sum, phase) => sum + phase, 0);\n}\n\nfunction calculateExerciseTime(exercise) {\n  const sets = parseInt(exercise.sets, 10) || 3;\n  const reps = parseInt(exercise.reps, 10) || 10;\n  const restSeconds = parseInt(exercise['rest-seconds'] || exercise.rest_seconds, 10) || 60;\n  const tempoPerRep = parseTempo(exercise.tempo);\n\n  const workTime = sets * reps * tempoPerRep;\n  const restTime = (sets - 1) * restSeconds;\n\n  return workTime + restTime;\n}\n\nfunction calculateDayDuration(exercises) {\n  if (!exercises || exercises.length === 0) return 0;\n  \n  const exerciseTime = exercises.reduce((sum, ex) =>\n    sum + calculateExerciseTime(ex), 0\n  );\n  const transitions = (exercises.length - 1) * TRANSITION_TIME;\n  return (exerciseTime + transitions + WARMUP_BUFFER) / 60;\n}\n\n// Nueva función: Calcular prioridad de un ejercicio\n// Mayor score = más protegido (reducir/eliminar ÚLTIMO)\nfunction getPriorityScore(exercise, priorityMuscles, exerciseLookup) {\n  const exInfo = exerciseLookup[exercise.exercise_id] || {};\n  const mainMuscle = exInfo.main_muscle || '';\n  const secondaryMuscles = exInfo.secondary_muscles || [];\n  \n  const mainMatch = priorityMuscles.includes(mainMuscle);\n  const secondaryMatch = secondaryMuscles.some(m => priorityMuscles.includes(m));\n  const isPriority = mainMatch || secondaryMatch;\n\n  // Base score por rol: isolation=0, core=20, compound=40\n  const roleBase = { isolation: 0, core: 20, compound: 40 };\n  // Bonus si es músculo prioritario: +10\n  const priorityBonus = isPriority ? 10 : 0;\n\n  return (roleBase[exercise.role] || 20) + priorityBonus;\n}\n\nfunction reduceWorkout(exercises, targetMin, priorityMuscles, weekNumber, exerciseLookup) {\n  let currentDuration = calculateDayDuration(exercises);\n  let iterations = 0;\n  const MAX_ITER = 30;\n  \n  // Mínimo de series: 3 para semanas 1-3 (hipertrofia), 2 para semana 4 (descarga)\n  const MIN_SETS = weekNumber === 4 ? 2 : 3;\n  \n  const reductionLog = [];\n\n  // === FASE 1: Reducir series hasta mínimo ===\n  while (currentDuration > targetMin && iterations < MAX_ITER) {\n    const reducible = exercises\n      .map((ex, idx) => ({\n        idx,\n        sets: parseInt(ex.sets, 10),\n        min: MIN_SETS,\n        role: ex.role,\n        exercise_id: ex.exercise_id,\n        priorityScore: getPriorityScore(ex, priorityMuscles, exerciseLookup),\n        impact: calculateExerciseTime({...ex, sets: \"1\"})\n      }))\n      .filter(r => r.sets > r.min)\n      .sort((a, b) => {\n        // Menor score = reducir primero (menos protegido)\n        if (a.priorityScore !== b.priorityScore) {\n          return a.priorityScore - b.priorityScore;\n        }\n        // Mismo score: mayor impacto primero (más ahorro de tiempo)\n        return b.impact - a.impact;\n      });\n\n    if (reducible.length === 0) break;\n\n    const target = reducible[0];\n    const oldSets = target.sets;\n    exercises[target.idx].sets = String(target.sets - 1);\n    currentDuration = calculateDayDuration(exercises);\n    iterations++;\n    \n    reductionLog.push({\n      phase: 1,\n      action: 'reduce_sets',\n      exercise_id: target.exercise_id,\n      from_sets: oldSets,\n      to_sets: oldSets - 1,\n      priority_score: target.priorityScore\n    });\n  }\n\n  // === FASE 2: Eliminar ejercicios si aún excede ===\n  let removedExercises = [];\n  \n  while (currentDuration > targetMin && exercises.length > MIN_EXERCISES) {\n    // Encontrar ejercicio de menor prioridad para eliminar\n    const removable = exercises\n      .map((ex, idx) => {\n        const priorityScore = getPriorityScore(ex, priorityMuscles, exerciseLookup);\n        const exInfo = exerciseLookup[ex.exercise_id] || {};\n        const isCompoundPriority = ex.role === 'compound' && \n          priorityMuscles.includes(exInfo.main_muscle);\n        \n        return {\n          idx,\n          exercise_id: ex.exercise_id,\n          priorityScore,\n          isCompoundPriority,\n          timeImpact: calculateExerciseTime(ex) + TRANSITION_TIME\n        };\n      })\n      // NUNCA eliminar compound prioritarios\n      .filter(r => !r.isCompoundPriority)\n      .sort((a, b) => {\n        // Menor score = eliminar primero\n        if (a.priorityScore !== b.priorityScore) {\n          return a.priorityScore - b.priorityScore;\n        }\n        // Mismo score: mayor impacto de tiempo primero\n        return b.timeImpact - a.timeImpact;\n      });\n\n    if (removable.length === 0) break;\n\n    // Eliminar el de menor prioridad\n    const toRemove = removable[0];\n    const removedEx = exercises.splice(toRemove.idx, 1)[0];\n    removedExercises.push(removedEx.exercise_id);\n    currentDuration = calculateDayDuration(exercises);\n    \n    reductionLog.push({\n      phase: 2,\n      action: 'remove_exercise',\n      exercise_id: toRemove.exercise_id,\n      priority_score: toRemove.priorityScore,\n      time_saved_sec: toRemove.timeImpact\n    });\n  }\n\n  return {\n    exercises,\n    duration: currentDuration,\n    adjusted: iterations > 0 || removedExercises.length > 0,\n    meetsTarget: currentDuration <= targetMin,\n    reductionLog,\n    removedExercises,\n    setsReduced: iterations,\n    minSetsUsed: MIN_SETS\n  };\n}\n\n// === PROCESAMIENTO ===\n\nconst targetMinutes = parseSessionDuration(userProfile.session_duration_mins);\n\n// Agrupar workouts por semana y día\nconst grouped = {};\nallWorkouts.forEach(w => {\n  const key = `W${w.week_number}-${w.day_name}`;\n  if (!grouped[key]) grouped[key] = [];\n  grouped[key].push(w);\n});\n\n// Validar cada día\nconst processedWorkouts = [];\nconst validationLog = [];\n\nfor (const [key, dayWorkouts] of Object.entries(grouped)) {\n  const [week, dayName] = key.split('-');\n  const weekNumber = parseInt(week.replace('W', ''), 10);\n  const initialDuration = calculateDayDuration(dayWorkouts);\n  const initialExerciseCount = dayWorkouts.length;\n\n  if (initialDuration > targetMinutes) {\n    const result = reduceWorkout(dayWorkouts, targetMinutes, priorityMuscles, weekNumber, exerciseLookup);\n\n    validationLog.push({\n      week,\n      day: dayName,\n      initial_min: Math.round(initialDuration),\n      final_min: Math.round(result.duration),\n      target_min: targetMinutes,\n      initial_exercises: initialExerciseCount,\n      final_exercises: result.exercises.length,\n      sets_reduced: result.setsReduced,\n      exercises_removed: result.removedExercises,\n      min_sets_used: result.minSetsUsed,\n      adjusted: result.adjusted,\n      status: result.meetsTarget ? 'OK' : 'OVER_TARGET'\n    });\n\n    processedWorkouts.push(...result.exercises);\n  } else {\n    validationLog.push({\n      week,\n      day: dayName,\n      duration_min: Math.round(initialDuration),\n      target_min: targetMinutes,\n      exercises: dayWorkouts.length,\n      status: 'OK_NO_CHANGE'\n    });\n\n    processedWorkouts.push(...dayWorkouts);\n  }\n}\n\n// Log de validación\nconsole.log('=== WORKOUT TIME VALIDATION v2.0 ===');\nconsole.log('User:', userProfile.whatsapp_id);\nconsole.log('Target Session:', targetMinutes, 'min');\nconsole.log('Priority Muscles:', priorityMuscles.join(', ') || 'None');\nconsole.log('Input items:', allWorkouts.length);\nconsole.log('Results:', JSON.stringify(validationLog, null, 2));\nconsole.log('Total workouts procesados:', processedWorkouts.length);\n\n// Retornar workouts procesados - cada uno como item separado\nreturn processedWorkouts.map(w => ({ json: w }));\n"
+        "jsCode": "// ============================================\n// NODO: ValidateWorkoutDuration\n// PROPÓSITO: Validar que rutinas diarias caben en tiempo disponible\n// VERSIÓN: 2.0 - Priorización muscular + eliminación de ejercicios\n// ============================================\n\nconst userProfile = $('ProcessUserPreferences').first().json;\n\n// Get all workout items from input\nconst allWorkouts = $input.all().map(item => item.json);\n\n// Get priority muscles from user profile\nconst priorityMuscles = userProfile.processed?.priority_muscles_en || [];\n\n// Build exercise lookup from GetExercisesByPattern (for main_muscle, secondary_muscles)\nconst exerciseLookup = {};\ntry {\n  $('GetExercisesByPattern').all().forEach(item => {\n    const ex = item.json;\n    exerciseLookup[ex.exercise_id] = {\n      main_muscle: ex.main_muscle,\n      secondary_muscles: ex.secondary_muscles || [],\n      role: ex.role\n    };\n  });\n} catch (e) {\n  console.log('Warning: Could not build exercise lookup:', e.message);\n}\n\n// === CONFIGURACIÓN ===\nconst WARMUP_BUFFER = 600; // 10 min calentamiento\nconst TRANSITION_TIME = 120; // 2 min entre ejercicios (cambio de máquina/setup)\nconst MIN_EXERCISES = 4; // Nunca dejar menos de 4 ejercicios por día\n\n// === HELPERS ===\n\nfunction parseSessionDuration(durationStr) {\n  if (!durationStr) return 70;\n  if (durationStr.includes('45')) return 55;\n  if (durationStr.includes('60') || durationStr.includes('75')) return 70;\n  if (durationStr.includes('90') || durationStr.includes('Mas de 75')) return 85;\n  return 70;\n}\n\nfunction parseTempo(tempoStr) {\n  if (!tempoStr || typeof tempoStr !== 'string') return 4;\n  return tempoStr.split('-')\n    .map(n => parseInt(n, 10) || 0)\n    .reduce((sum, phase) => sum + phase, 0);\n}\n\nfunction calculateExerciseTime(exercise) {\n  const sets = parseInt(exercise.sets, 10) || 3;\n  const reps = parseInt(exercise.reps, 10) || 10;\n  const restSeconds = parseInt(exercise['rest-seconds'] || exercise.rest_seconds, 10) || 60;\n  const role = (exercise.role || '').toLowerCase();\n\n  let workTime;\n  if (role === 'cardio') {\n    // Cardio: reps = seconds of work per set, no tempo multiplier\n    workTime = sets * reps;\n  } else {\n    // Standard: sets * reps * tempo\n    const tempoPerRep = parseTempo(exercise.tempo);\n    workTime = sets * reps * tempoPerRep;\n  }\n\n  const restTime = (sets - 1) * restSeconds;\n  return workTime + restTime;\n}\n\nfunction calculateDayDuration(exercises) {\n  if (!exercises || exercises.length === 0) return 0;\n  \n  const exerciseTime = exercises.reduce((sum, ex) =>\n    sum + calculateExerciseTime(ex), 0\n  );\n  const transitions = (exercises.length - 1) * TRANSITION_TIME;\n  return (exerciseTime + transitions + WARMUP_BUFFER) / 60;\n}\n\n// Nueva función: Calcular prioridad de un ejercicio\n// Mayor score = más protegido (reducir/eliminar ÚLTIMO)\nfunction getPriorityScore(exercise, priorityMuscles, exerciseLookup) {\n  const exInfo = exerciseLookup[exercise.exercise_id] || {};\n  const mainMuscle = exInfo.main_muscle || '';\n  const secondaryMuscles = exInfo.secondary_muscles || [];\n  \n  const mainMatch = priorityMuscles.includes(mainMuscle);\n  const secondaryMatch = secondaryMuscles.some(m => priorityMuscles.includes(m));\n  const isPriority = mainMatch || secondaryMatch;\n\n  // Base score por rol: isolation=0, core=20, compound=40\n  const roleBase = { isolation: 0, core: 20, compound: 40 };\n  // Bonus si es músculo prioritario: +10\n  const priorityBonus = isPriority ? 10 : 0;\n\n  return (roleBase[exercise.role] || 20) + priorityBonus;\n}\n\nfunction reduceWorkout(exercises, targetMin, priorityMuscles, weekNumber, exerciseLookup) {\n  let currentDuration = calculateDayDuration(exercises);\n  let iterations = 0;\n  const MAX_ITER = 30;\n  \n  // Mínimo de series: 3 para semanas 1-3 (hipertrofia), 2 para semana 4 (descarga)\n  const MIN_SETS = weekNumber === 4 ? 2 : 3;\n  \n  const reductionLog = [];\n\n  // === FASE 1: Reducir series hasta mínimo ===\n  while (currentDuration > targetMin && iterations < MAX_ITER) {\n    const reducible = exercises\n      .map((ex, idx) => ({\n        idx,\n        sets: parseInt(ex.sets, 10),\n        min: MIN_SETS,\n        role: ex.role,\n        exercise_id: ex.exercise_id,\n        priorityScore: getPriorityScore(ex, priorityMuscles, exerciseLookup),\n        impact: calculateExerciseTime({...ex, sets: \"1\"})\n      }))\n      .filter(r => r.sets > r.min)\n      .sort((a, b) => {\n        // Menor score = reducir primero (menos protegido)\n        if (a.priorityScore !== b.priorityScore) {\n          return a.priorityScore - b.priorityScore;\n        }\n        // Mismo score: mayor impacto primero (más ahorro de tiempo)\n        return b.impact - a.impact;\n      });\n\n    if (reducible.length === 0) break;\n\n    const target = reducible[0];\n    const oldSets = target.sets;\n    exercises[target.idx].sets = String(target.sets - 1);\n    currentDuration = calculateDayDuration(exercises);\n    iterations++;\n    \n    reductionLog.push({\n      phase: 1,\n      action: 'reduce_sets',\n      exercise_id: target.exercise_id,\n      from_sets: oldSets,\n      to_sets: oldSets - 1,\n      priority_score: target.priorityScore\n    });\n  }\n\n  // === FASE 2: Eliminar ejercicios si aún excede ===\n  let removedExercises = [];\n  \n  while (currentDuration > targetMin && exercises.length > MIN_EXERCISES) {\n    // Encontrar ejercicio de menor prioridad para eliminar\n    const removable = exercises\n      .map((ex, idx) => {\n        const priorityScore = getPriorityScore(ex, priorityMuscles, exerciseLookup);\n        const exInfo = exerciseLookup[ex.exercise_id] || {};\n        const isCompoundPriority = ex.role === 'compound' && \n          priorityMuscles.includes(exInfo.main_muscle);\n        \n        return {\n          idx,\n          exercise_id: ex.exercise_id,\n          priorityScore,\n          isCompoundPriority,\n          timeImpact: calculateExerciseTime(ex) + TRANSITION_TIME\n        };\n      })\n      // NUNCA eliminar compound prioritarios\n      .filter(r => !r.isCompoundPriority)\n      .sort((a, b) => {\n        // Menor score = eliminar primero\n        if (a.priorityScore !== b.priorityScore) {\n          return a.priorityScore - b.priorityScore;\n        }\n        // Mismo score: mayor impacto de tiempo primero\n        return b.timeImpact - a.timeImpact;\n      });\n\n    if (removable.length === 0) break;\n\n    // Eliminar el de menor prioridad\n    const toRemove = removable[0];\n    const removedEx = exercises.splice(toRemove.idx, 1)[0];\n    removedExercises.push(removedEx.exercise_id);\n    currentDuration = calculateDayDuration(exercises);\n    \n    reductionLog.push({\n      phase: 2,\n      action: 'remove_exercise',\n      exercise_id: toRemove.exercise_id,\n      priority_score: toRemove.priorityScore,\n      time_saved_sec: toRemove.timeImpact\n    });\n  }\n\n  return {\n    exercises,\n    duration: currentDuration,\n    adjusted: iterations > 0 || removedExercises.length > 0,\n    meetsTarget: currentDuration <= targetMin,\n    reductionLog,\n    removedExercises,\n    setsReduced: iterations,\n    minSetsUsed: MIN_SETS\n  };\n}\n\n// === PROCESAMIENTO ===\n\nconst targetMinutes = parseSessionDuration(userProfile.session_duration_mins);\n\n// Agrupar workouts por semana y día\nconst grouped = {};\nallWorkouts.forEach(w => {\n  const key = `W${w.week_number}-${w.day_name}`;\n  if (!grouped[key]) grouped[key] = [];\n  grouped[key].push(w);\n});\n\n// Validar cada día\nconst processedWorkouts = [];\nconst validationLog = [];\n\nfor (const [key, dayWorkouts] of Object.entries(grouped)) {\n  const [week, dayName] = key.split('-');\n  const weekNumber = parseInt(week.replace('W', ''), 10);\n  const initialDuration = calculateDayDuration(dayWorkouts);\n  const initialExerciseCount = dayWorkouts.length;\n\n  if (initialDuration > targetMinutes) {\n    const result = reduceWorkout(dayWorkouts, targetMinutes, priorityMuscles, weekNumber, exerciseLookup);\n\n    validationLog.push({\n      week,\n      day: dayName,\n      initial_min: Math.round(initialDuration),\n      final_min: Math.round(result.duration),\n      target_min: targetMinutes,\n      initial_exercises: initialExerciseCount,\n      final_exercises: result.exercises.length,\n      sets_reduced: result.setsReduced,\n      exercises_removed: result.removedExercises,\n      min_sets_used: result.minSetsUsed,\n      adjusted: result.adjusted,\n      status: result.meetsTarget ? 'OK' : 'OVER_TARGET'\n    });\n\n    processedWorkouts.push(...result.exercises);\n  } else {\n    validationLog.push({\n      week,\n      day: dayName,\n      duration_min: Math.round(initialDuration),\n      target_min: targetMinutes,\n      exercises: dayWorkouts.length,\n      status: 'OK_NO_CHANGE'\n    });\n\n    processedWorkouts.push(...dayWorkouts);\n  }\n}\n\n// === VOLUME CAP: Ensure W2-W4 never exceed W1 exercise count per day ===\n\n// Step 1: Count W1 exercises per day_name\nconst w1CountByDay = {};\nfor (const w of processedWorkouts) {\n  if (w.week_number === 1) {\n    if (!w1CountByDay[w.day_name]) w1CountByDay[w.day_name] = 0;\n    w1CountByDay[w.day_name]++;\n  }\n}\n\n// Step 2: For each day in W2-W4, trim excess exercises\nconst volumeCapLog = [];\nconst volumeCappedWorkouts = [];\n\n// Group processed workouts by week+day for volume cap check\nconst groupedForCap = {};\nfor (const w of processedWorkouts) {\n  const capKey = `W${w.week_number}-${w.day_name}`;\n  if (!groupedForCap[capKey]) groupedForCap[capKey] = [];\n  groupedForCap[capKey].push(w);\n}\n\nfor (const [capKey, capDayWorkouts] of Object.entries(groupedForCap)) {\n  const [weekStr, capDayName] = capKey.split('-');\n  const capWeekNumber = parseInt(weekStr.replace('W', ''), 10);\n  const maxExercises = w1CountByDay[capDayName];\n\n  // W1 or no W1 reference: keep as-is\n  if (capWeekNumber === 1 || !maxExercises || capDayWorkouts.length <= maxExercises) {\n    volumeCappedWorkouts.push(...capDayWorkouts);\n    continue;\n  }\n\n  // W2-W4 exceeds W1 count: remove lowest-priority exercises\n  const sorted = capDayWorkouts\n    .map(ex => ({\n      ...ex,\n      _priorityScore: getPriorityScore(ex, priorityMuscles, exerciseLookup)\n    }))\n    .sort((a, b) => b._priorityScore - a._priorityScore); // highest first = keep\n\n  const kept = sorted.slice(0, maxExercises);\n  const removed = sorted.slice(maxExercises);\n\n  volumeCapLog.push({\n    week: weekStr,\n    day: capDayName,\n    w1_count: maxExercises,\n    before_count: capDayWorkouts.length,\n    after_count: kept.length,\n    removed_ids: removed.map(r => r.exercise_id)\n  });\n\n  // Clean up temp field and push kept exercises\n  kept.forEach(ex => { delete ex._priorityScore; });\n  volumeCappedWorkouts.push(...kept);\n}\n\nif (volumeCapLog.length > 0) {\n  console.log('=== VOLUME CAP APPLIED ===');\n  console.log(JSON.stringify(volumeCapLog, null, 2));\n}\n\n// Log de validación\nconsole.log('=== WORKOUT TIME VALIDATION v2.0 ===');\nconsole.log('User:', userProfile.whatsapp_id);\nconsole.log('Target Session:', targetMinutes, 'min');\nconsole.log('Priority Muscles:', priorityMuscles.join(', ') || 'None');\nconsole.log('Input items:', allWorkouts.length);\nconsole.log('Results:', JSON.stringify(validationLog, null, 2));\nconsole.log('Total workouts procesados:', volumeCappedWorkouts.length);\n\n// Retornar workouts procesados - cada uno como item separado\nreturn volumeCappedWorkouts.map(w => ({ json: w }));\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5856,
-        448
+        8224,
+        16
       ],
-      "id": "db095e1f-1b73-425f-8841-fbeb28073419",
+      "id": "ff744a27-133d-44ab-8d93-c511631d250d",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -554,10 +554,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6560,
-        464
+        8928,
+        32
       ],
-      "id": "9ae8e480-73c2-4af3-bbb0-d6b4d5430016",
+      "id": "c296a69c-3de5-40a7-a08f-94e731f7fda6",
       "name": "Filtered Message2"
     },
     {
@@ -568,10 +568,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        4880,
-        784
+        7248,
+        352
       ],
-      "id": "db421c34-c541-43c0-a0f4-e6036ac08307",
+      "id": "9f4af93f-b0d2-42bf-8d9d-2b08365857f0",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -589,10 +589,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        6352,
-        704
+        8720,
+        272
       ],
-      "id": "5f29bdcc-4795-481c-8143-3e564cef3854",
+      "id": "611cebc8-bb49-4bf9-a6dc-c1bf1ff531f1",
       "name": "GetWeek1WithExercises",
       "executeOnce": true,
       "credentials": {
@@ -609,10 +609,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6560,
-        704
+        8928,
+        272
       ],
-      "id": "c77a7d4f-ee96-46f4-ac3b-8287aadcf8cc",
+      "id": "4df1a1ad-1dc0-4c7f-92a5-6c26b1644d8c",
       "name": "GenerateRoutineHTML"
     },
     {
@@ -643,10 +643,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6768,
-        704
+        9136,
+        272
       ],
-      "id": "e95c937a-e0f9-4ec1-8bff-3ee6429771c6",
+      "id": "3269c6b7-a3a7-4bb2-a910-203788f232a6",
       "name": "HasEmail"
     },
     {
@@ -655,16 +655,17 @@
         "subject": "={{ $json.subject }}",
         "message": "={{ $json.html }}",
         "options": {
-          "appendAttribution": false
+          "appendAttribution": false,
+          "bccList": "lulusofia.72@gmail.com"
         }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        6976,
-        704
+        9344,
+        272
       ],
-      "id": "f7a1bcd6-f058-4002-9615-ad832a050ee7",
+      "id": "7c29b6c8-e047-4576-a184-a070b96704fe",
       "name": "SendRoutineEmail",
       "executeOnce": true,
       "webhookId": "7ce92ef4-643b-4662-8e05-2295bd893835",
@@ -703,10 +704,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3312,
-        448
+        5680,
+        16
       ],
-      "id": "c977ac77-970c-409c-b827-4a48a6e606fb",
+      "id": "58a6147a-915e-4feb-a230-2b342ceb3653",
       "name": "If_Is_Renewal",
       "executeOnce": true
     },
@@ -719,10 +720,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        3312,
-        192
+        5680,
+        -240
       ],
-      "id": "de367568-e701-428d-88cf-ae296847aea8",
+      "id": "161dde87-f80b-4dff-be1f-9ef4fb7d53f8",
       "name": "Clear_Old_Workouts",
       "executeOnce": true,
       "credentials": {
@@ -741,10 +742,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        3520,
-        192
+        5888,
+        -240
       ],
-      "id": "a742adc4-ee7f-4d5c-932a-49f8ed76cd1f",
+      "id": "39fd31b4-0259-47ce-8e55-0b51de2e3c8e",
       "name": "Clear_Old_Schedule",
       "executeOnce": true,
       "credentials": {
@@ -763,10 +764,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        3728,
-        192
+        6096,
+        -240
       ],
-      "id": "69cf2ccb-811b-432f-bedd-4ca1c849c4fd",
+      "id": "a50cfa0f-95d7-4803-8e49-ed246d4e537f",
       "name": "UpdatePlan",
       "executeOnce": true,
       "credentials": {
@@ -803,10 +804,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3664,
-        448
+        6032,
+        16
       ],
-      "id": "a40e7a5d-4fa2-4d5c-a35e-2cb92e3c1769",
+      "id": "91de35f7-08b8-4e34-bd53-49ca4f99337e",
       "name": "If_Skip_Create_For_Renewal",
       "executeOnce": true
     }
@@ -1186,7 +1187,7 @@
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "f7c5e8a7-4288-4cf5-8497-a454e9206d51",
+  "versionId": "9ff21dc2-01e4-4792-afcf-fa4b05e98260",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

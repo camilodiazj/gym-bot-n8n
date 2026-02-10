@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        1456,
-        624
+        0,
+        0
       ],
-      "id": "9211191c-e8aa-4358-acd0-7b27c80a0c42",
+      "id": "0c4925dd-0a28-41db-bf91-c567a8126c5a",
       "name": "Schedule Trigger1"
     },
     {
@@ -42,10 +42,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1856,
-        624
+        400,
+        0
       ],
-      "id": "e93c80a0-b161-48c2-b2e5-b341582641da",
+      "id": "25b653fc-65d4-4429-8852-74960b03725f",
       "name": "Send template",
       "webhookId": "21c6af23-a721-439e-9a25-b77d22bf95e4",
       "executeOnce": false,
@@ -65,10 +65,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1648,
-        624
+        192,
+        0
       ],
-      "id": "dce4aa5c-3261-404c-9ef6-98c3b3c6e7a0",
+      "id": "166b660e-1601-408b-9cc2-56eb9da697f5",
       "name": "Get Today Workouts1",
       "credentials": {
         "postgres": {
@@ -108,7 +108,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "1396afa4-8930-4e14-a85b-339ce02ffd61",
+  "versionId": "2c82c39c-7a5c-4d18-8709-846fda2766f2",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

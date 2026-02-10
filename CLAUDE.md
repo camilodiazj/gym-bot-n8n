@@ -48,6 +48,7 @@ GymBot/
 |----------|---------|
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows (parallel multi-turn execution) |
 | `MesocycleRenewal_E2E_TestRunner.json` | E2E test suite for mesocycle renewal scenarios (3 test cases: auto-detect, MANTENER, manual intent) |
+| `QualityFixes_E2E_TestRunner.json` | E2E test suite for WORKOUT_CREATOR quality fixes (QF-1 through QF-5) |
 
 > `GymRatFlow_MultiTurnExecutor.json` is deployed directly in the n8n instance (not in the repo). It's the sub-workflow called by test runners for isolated multi-turn test execution.
 
@@ -367,6 +368,18 @@ n8n Code nodes run in a sandboxed environment. **These globals are NOT available
 
 **Available n8n globals**: `$input`, `$json`, `$execution`, `$node`, `$env`, `$now`, `$today`, `DateTime` (Luxon), `console.log`
 
+### n8n Known Pitfalls
+
+**Switch node with 6+ outputs**: Switch v3.2 unreliably routes to the last output when there are 6+ outputs. **Workaround**: Use If node + SplitInBatches loop instead of Switch for parallel routing.
+
+**Task runner capacity**: Code nodes require a "task runner" slot. Running 5+ parallel sub-workflows with Code nodes can exhaust all runner slots. **Fix**: Replace Code-based logic with Postgres nodes + If nodes where possible (no runners needed).
+
+**customData after Wait node**: `$execution.customData.get()` does NOT work after Wait node resume — in ANY node type (Postgres SQL, If conditions, and Code nodes all fail). **Best fix**: Avoid Wait nodes entirely. Use `this.helpers.httpRequest()` in a Code node to poll an external API (e.g., Supabase REST API) with an `await sleep()` loop, keeping all state in local JS variables.
+
+### n8n Credentials Reference
+
+- **Postgres (Supabase)**: Credential ID `vZLJtIWG5nYXMez4` — use this when configuring Postgres nodes in workflows
+
 ## E2E Testing
 
 The `/e2e/` directory contains automated end-to-end tests:
@@ -466,6 +479,7 @@ The `spec/` directory contains detailed implementation specs for major features:
 | HOME Training | `spec/home-training-feature/` | KYC mods, DB templates, testing guide, training guidelines |
 | Mesocycle Renewal | `spec/Mesocycle_Renewal/` | Architecture, domain logic, implementation plan |
 | Email Routine | `spec/email-routine-week1/` | Workflow spec, HTML template, QA test plan |
+| Quality Fixes | `spec/workout_creator_quality_fixes/` | WORKOUT_CREATOR defect fixes (QF-1 through QF-5): volume inflation, dedup, misclassified exercises, cardio role, health enforcement |
 
 The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 

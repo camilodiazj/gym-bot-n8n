@@ -1,0 +1,367 @@
+{
+  "name": "QualityFixes_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f1a23b4c-5d6e-7f89-0a1b-2c3d4e5f6a7b",
+      "name": "Run All Tests",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCases = [\n  {\n    order: 1,\n    id: \"TC_QF_HEALTH_B\",\n    name: \"Health B \\u2014 Sin impacto tren inferior\",\n    priority: \"CRITICAL\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000061,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000061')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000061')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000061')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000061'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000061%'\"\n    ],\n    validations: [\n      {\n        id: \"T-401\",\n        description: \"No saltos/jumps/burpees para Health B\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000061' AND (e.spanish_name ILIKE '%salto%' OR e.spanish_name ILIKE '%jump%' OR e.spanish_name ILIKE '%burpee%' OR e.spanish_name ILIKE '%box jump%' OR e.spanish_name ILIKE '%sentadilla b\\u00falgara%')\",\n        expected: 0,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 2,\n    id: \"TC_QF_HEALTH_C\",\n    name: \"Health C \\u2014 Sin overhead/press militar\",\n    priority: \"CRITICAL\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000062,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000062')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000062')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000062')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000062'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000062%'\"\n    ],\n    validations: [\n      {\n        id: \"T-402\",\n        description: \"No overhead/press militar para Health C\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000062' AND (e.spanish_name ILIKE '%press militar%' OR e.spanish_name ILIKE '%overhead%' OR e.spanish_name ILIKE '%snatch%' OR e.spanish_name ILIKE '%press de hombro%' OR e.spanish_name ILIKE '%push press%' OR e.spanish_name ILIKE '%press arnold%')\",\n        expected: 0,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 3,\n    id: \"TC_QF_HEALTH_D\",\n    name: \"Health D \\u2014 Sin carga axial/deadlifts\",\n    priority: \"CRITICAL\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000063,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000063')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000063')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000063')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000063'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000063%'\"\n    ],\n    validations: [\n      {\n        id: \"T-401b\",\n        description: \"No deadlifts/lower back para Health D\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000063' AND (e.main_muscle = 'Lower back' OR e.spanish_name ILIKE '%peso muerto%' OR e.spanish_name ILIKE '%deadlift%' OR e.spanish_name ILIKE '%buenos d\\u00edas%' OR e.spanish_name ILIKE '%good morning%')\",\n        expected: 0,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 4,\n    id: \"TC_QF_HEALTH_E\",\n    name: \"Health E \\u2014 Solo maquinas/cables (no barbell)\",\n    priority: \"CRITICAL\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000064,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000064')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000064')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000064')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000064'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000064%'\"\n    ],\n    validations: [\n      {\n        id: \"T-401c\",\n        description: \"No barbell equipment para Health E\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000064' AND e.equipment = 'barbell'\",\n        expected: 0,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 5,\n    id: \"TC_QF_STANDARD\",\n    name: \"Standard 3-Day \\u2014 Dedup, VolCap, Cardio, Pattern\",\n    priority: \"HIGH\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000065,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000065')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000065')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000065')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000065'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000065%'\"\n    ],\n    validations: [\n      {\n        id: \"T-403\",\n        description: \"No ejercicios duplicados por dia\",\n        sql: \"SELECT COUNT(*) as cnt FROM (SELECT w.day_name, w.week, w.exercise_id FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000065' GROUP BY w.day_name, w.week, w.exercise_id HAVING COUNT(*) > 1) dups\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-404\",\n        description: \"Volume cap: W2-W4 no excede W1\",\n        sql: \"WITH ec AS (SELECT w.day_name, w.week, COUNT(DISTINCT w.exercise_id) as cnt FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000065' GROUP BY w.day_name, w.week), w1 AS (SELECT day_name, cnt as w1_cnt FROM ec WHERE week = 1) SELECT COUNT(*) as cnt FROM ec JOIN w1 USING(day_name) WHERE ec.cnt > w1.w1_cnt\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-404b\",\n        description: \"Deload: W4 sets no mayor a 3\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000065' AND w.week = 4 AND CAST(SUBSTRING(w.sets FROM '([0-9]+)$') AS INTEGER) > 3\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-405c\",\n        description: \"Cardio no tiene params de isolation\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000065' AND e.role = 'cardio' AND w.tempo NOT IN ('--', 'N/A', 'continuous')\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-QF3\",\n        description: \"No pattern mismatch (Abs en Push, Back en Push, Chest en Pull)\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000065' AND ((w.day_name ILIKE '%push%' AND e.main_muscle = 'Abs') OR (w.day_name ILIKE '%push%' AND e.main_muscle IN ('Back', 'Lats')) OR (w.day_name ILIKE '%pull%' AND e.main_muscle = 'Chest'))\",\n        expected: 0,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 6,\n    id: \"TC_QF_5DAY\",\n    name: \"5-Day Advanced \\u2014 Validacion completa\",\n    priority: \"HIGH\",\n    category: \"QUALITY_FIX\",\n    whatsapp_id: 570000000066,\n    cleanup: [\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000066')\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000066')\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number::text = '570000000066')\",\n      \"DELETE FROM users WHERE full_phone_number::text = '570000000066'\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '%570000000066%'\"\n    ],\n    validations: [\n      {\n        id: \"T-406a\",\n        description: \"No duplicados por dia (5-day)\",\n        sql: \"SELECT COUNT(*) as cnt FROM (SELECT w.day_name, w.week, w.exercise_id FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000066' GROUP BY w.day_name, w.week, w.exercise_id HAVING COUNT(*) > 1) dups\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-406b\",\n        description: \"Volume cap W2-W4 no excede W1 (5-day)\",\n        sql: \"WITH ec AS (SELECT w.day_name, w.week, COUNT(DISTINCT w.exercise_id) as cnt FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000066' GROUP BY w.day_name, w.week), w1 AS (SELECT day_name, cnt as w1_cnt FROM ec WHERE week = 1) SELECT COUNT(*) as cnt FROM ec JOIN w1 USING(day_name) WHERE ec.cnt > w1.w1_cnt\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-406c\",\n        description: \"Deload W4 sets no mayor a 3 (5-day)\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000066' AND w.week = 4 AND CAST(SUBSTRING(w.sets FROM '([0-9]+)$') AS INTEGER) > 3\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-406e\",\n        description: \"Cardio no tiene params de isolation (5-day)\",\n        sql: \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e USING(exercise_id) JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000066' AND e.role = 'cardio' AND w.tempo NOT IN ('--', 'N/A', 'continuous')\",\n        expected: 0,\n        operator: \"=\"\n      },\n      {\n        id: \"T-406f\",\n        description: \"Tiene 5 dias distintos en W1\",\n        sql: \"SELECT COUNT(DISTINCT w.day_name) as cnt FROM workouts w JOIN users u USING(user_id) WHERE u.full_phone_number::text = '570000000066' AND w.week = 1\",\n        expected: 5,\n        operator: \"=\"\n      }\n    ]\n  }\n];\n\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', String(sortedTests.length));\n$execution.customData.set('testResults', '[]');\nconsole.log(`\\u{1F4CB} QF Tests cargados: ${sortedTests.map(t => t.id).join(' -> ')}`);\nreturn sortedTests.map(tc => ({ json: tc }));"
+      },
+      "id": "a2b34c5d-6e7f-8901-a2b3-c4d5e6f7a8b9",
+      "name": "Load Test Cases",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b3c45d6e-7f80-9012-b3c4-d5e6f7a8b9c0",
+      "name": "Loop Tests",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2640,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $input.first().json;\nconsole.log(`\\n========================================`);\nconsole.log(`\\u{1F9EA} [${testCase.order}/${$execution.customData.get('totalTests')}] ${testCase.id} - ${testCase.name}`);\nconsole.log(`   Categoria: ${testCase.category}`);\nconsole.log(`   Prioridad: ${testCase.priority}`);\nconsole.log(`   Phone: ${testCase.whatsapp_id}`);\nconsole.log(`========================================`);\nreturn [{ json: testCase }];"
+      },
+      "id": "c4d56e7f-8091-0123-c4d5-e6f7a8b9c0d1",
+      "name": "Pre-Test Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.cleanup.join('; ') }}",
+        "options": {}
+      },
+      "id": "d5e67f80-9102-1234-d5e6-f7a8b9c0d1e2",
+      "name": "Run Cleanup SQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3088,
+        1264
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "oF9qSlkZta1AEOnIMf2_i",
+          "mode": "list",
+          "cachedResultName": "WORKOUT_CREATOR"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "whatsapp_id": "={{ $('Pre-Test Log').first().json.whatsapp_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "whatsapp_id",
+              "displayName": "whatsapp_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "e6f78091-0213-2345-e6f7-a8b9c0d1e2f3",
+      "name": "Execute WORKOUT_CREATOR",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3296,
+        1264
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.validations.map((v, i) => 'SELECT \\'' + v.id + '\\' as vid, cnt FROM (' + v.sql + ') _v' + i).join(' UNION ALL ') }}",
+        "options": {}
+      },
+      "id": "f7a89102-1324-3456-f7a8-b9c0d1e2f3a4",
+      "name": "Run Validations",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3504,
+        1264
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst dbResults = $input.all();\nlet allPassed = true;\nlet details = [];\nlet failedValidations = [];\n\ntestCase.validations.forEach((validation, idx) => {\n  const result = dbResults[idx];\n  let actualValue = 0;\n  if (result && result.json) {\n    actualValue = result.json.cnt !== undefined ? Number(result.json.cnt) : 0;\n  }\n  \n  let passed = false;\n  if (validation.operator === '=') {\n    passed = actualValue === validation.expected;\n  } else if (validation.operator === '>=') {\n    passed = actualValue >= validation.expected;\n  } else {\n    passed = actualValue === validation.expected;\n  }\n  \n  if (!passed) {\n    allPassed = false;\n    failedValidations.push(validation.id);\n  }\n  \n  details.push({\n    id: validation.id,\n    description: validation.description,\n    expected: validation.expected,\n    actual: actualValue,\n    operator: validation.operator || '=',\n    passed\n  });\n  \n  const emoji = passed ? '\\u2705' : '\\u274C';\n  console.log(`   ${emoji} ${validation.id}: expected ${validation.operator || '='} ${validation.expected}, got ${actualValue} \\u2014 ${validation.description}`);\n});\n\nconst result = {\n  order: testCase.order,\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  passed: allPassed,\n  output: `Validations: ${details.filter(d => d.passed).length}/${details.length} passed`,\n  error: allPassed ? null : `Failed: ${failedValidations.join(', ')}`,\n  executedAt: new Date().toISOString(),\n  details\n};\n\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nconsole.log(`${allPassed ? '\\u2705 PASSED' : '\\u274C FAILED'}: [${testCase.order}] ${testCase.id} \\u2014 ${details.filter(d => d.passed).length}/${details.length} validations`);\n\nreturn [{ json: result }];"
+      },
+      "id": "a8b90213-2435-4567-a8b9-c0d1e2f3a4b5",
+      "name": "Evaluate Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3696,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "id": "b9c01324-3546-5678-b9c0-d1e2f3a4b5c6",
+      "name": "Collect Results",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3888,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let results = [];\nif (items && items.length > 0 && items[0].json && Array.isArray(items[0].json.results)) {\n  results = items[0].json.results;\n}\nconst total = results.length;\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\nconst passRateRaw = total > 0 ? (passed.length / total) * 100 : 0;\nconst passRate = passRateRaw % 1 === 0 ? passRateRaw.toFixed(0) : passRateRaw.toFixed(1);\n\nconst byCategory = results.reduce((acc, curr) => {\n  const cat = curr.category || 'UNCATEGORIZED';\n  if (!acc[cat]) acc[cat] = { total: 0, passed: 0, failed: 0 };\n  acc[cat].total++;\n  curr.passed ? acc[cat].passed++ : acc[cat].failed++;\n  return acc;\n}, {});\n\nlet statusEmoji = failed.length === 0 ? '\\u2705' : '\\u274C';\nif (total === 0) statusEmoji = '\\u26A0\\uFE0F';\n\nlet mdReport = `*\\u{1F4CA} Test Report \\u2014 WORKOUT_CREATOR Quality Fixes*\\n`;\nmdReport += `\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\n`;\nmdReport += `*Status:* ${statusEmoji} ${failed.length === 0 ? 'ALL PASS' : 'HAS FAILURES'}\\n`;\nmdReport += `*Score:* ${passRate}% (${passed.length}/${total})\\n`;\nmdReport += `*Time:* ${new Date().toLocaleString('es-CO')}\\n\\n`;\n\nmdReport += `*\\u{1F4C2} Results:*\\n`;\nresults.forEach(r => {\n  const icon = r.passed ? '\\u2705' : '\\u274C';\n  mdReport += `${icon} *${r.testId}* \\u2014 ${r.testName}\\n`;\n  if (r.details) {\n    r.details.forEach(d => {\n      const dIcon = d.passed ? '\\u2714' : '\\u2757';\n      mdReport += `   ${dIcon} ${d.id}: ${d.description} (${d.actual}/${d.expected})\\n`;\n    });\n  }\n});\n\nif (failed.length > 0) {\n  mdReport += `\\n*\\u{1F6A8} Failures:*\\n`;\n  failed.forEach(f => {\n    mdReport += `\\u2022 *[${f.priority}] ${f.testName}*: ${f.error}\\n`;\n  });\n}\n\n// Console box report\nconsole.log('\\n\\u2554' + '\\u2550'.repeat(52) + '\\u2557');\nconsole.log(`\\u2551 WORKOUT_CREATOR Quality Fixes Test Report`.padEnd(53) + '\\u2551');\nconsole.log('\\u2560' + '\\u2550'.repeat(52) + '\\u2563');\nconsole.log(`\\u2551 STATUS: ${statusEmoji}  RATE: ${passRate}% (${passed.length}/${total})`.padEnd(53) + '\\u2551');\nconsole.log('\\u2560' + '\\u2550'.repeat(52) + '\\u2563');\nObject.keys(byCategory).forEach(cat => {\n  const c = byCategory[cat];\n  const bar = c.failed === 0 ? 'OK' : 'FAIL';\n  console.log(`\\u2551 ${cat.padEnd(24)}: ${c.passed}/${c.total} ${bar.padStart(13)} \\u2551`);\n});\nconsole.log('\\u255A' + '\\u2550'.repeat(52) + '\\u255D');\n\n// Individual test details\nresults.forEach(r => {\n  const icon = r.passed ? '\\u2705' : '\\u274C';\n  console.log(`\\n${icon} ${r.testId} \\u2014 ${r.testName}`);\n  if (r.details) {\n    r.details.forEach(d => {\n      const dIcon = d.passed ? '  \\u2714' : '  \\u2757';\n      console.log(`${dIcon} ${d.id}: expected ${d.operator} ${d.expected}, got ${d.actual}`);\n    });\n  }\n});\n\nreturn [{\n  json: {\n    meta: { timestamp: new Date().toISOString(), totalTests: total, success: failed.length === 0 },\n    markdownReport: mdReport,\n    stats: { passed: passed.length, failed: failed.length, rate: parseFloat(passRate), byCategory },\n    failures: failed.map(r => ({ testId: r.testId, name: r.testName, category: r.category, error: r.error, details: r.details }))\n  }\n}];"
+      },
+      "id": "c0d12435-4657-6789-c0d1-e2f3a4b5c6d7",
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4096,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-failed",
+              "leftValue": "={{ $json.failures }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d1e23546-5768-7890-d1e2-f3a4b5c6d7e8",
+      "name": "Has Failures?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4288,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## \\u{1F9EA} WORKOUT_CREATOR Quality Fixes Test Runner\n\n### Quality Fixes Validated:\n- **QF-1**: W4 volume cap (W2-W4 \\u2264 W1 exercise count)\n- **QF-2**: Deduplication (no repeated exercise_id per day)\n- **QF-3**: Pattern fixes (exercises correctly classified)\n- **QF-4**: Cardio role (correct params: reps in seconds, tempo='--')\n- **QF-5**: Health SQL enforcement (B/C/D/E restrictions)\n\n### Prerequisites:\n1. Run `e2e/quality_fixes_test_data.sql` in Supabase\n2. Import WORKOUT_CREATOR.json in n8n\n3. \\u26A0\\uFE0F Update workflow ID in \"Execute WORKOUT_CREATOR\" node\n\n### Test Users:\n| Phone | Health | Purpose |\n|-------|--------|--------|\n| 570000000061 | B | No saltos/impacto |\n| 570000000062 | C | No overhead press |\n| 570000000063 | D | No deadlifts |\n| 570000000064 | E | No barbell |\n| 570000000065 | A | Dedup, VolCap, Cardio |\n| 570000000066 | A | 5-day full validation |",
+        "height": 420,
+        "width": 520,
+        "color": 5
+      },
+      "id": "e2f34657-6879-8901-e2f3-a4b5c6d7e8f9",
+      "name": "Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        608
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [
+        [
+          {
+            "node": "Load Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Tests": {
+      "main": [
+        [
+          {
+            "node": "Collect Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre-Test Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [
+        [
+          {
+            "node": "Run Cleanup SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Cleanup SQL": {
+      "main": [
+        [
+          {
+            "node": "Execute WORKOUT_CREATOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute WORKOUT_CREATOR": {
+      "main": [
+        [
+          {
+            "node": "Run Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Validations": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Result": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Has Failures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "meta": {
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "QF-E2E-TestRunner-001",
+  "tags": []
+}
