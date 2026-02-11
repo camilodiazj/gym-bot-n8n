@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	_ "github.com/lib/pq" // PostgreSQL driver
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/stdlib"
 )
 
 // Config holds database connection configuration
@@ -33,10 +34,13 @@ func NewConnection(cfg Config) (*Connection, error) {
 		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Database, cfg.SSLMode,
 	)
 
-	db, err := sql.Open("postgres", dsn)
+	connConfig, err := pgx.ParseConfig(dsn)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
+		return nil, fmt.Errorf("failed to parse database config: %w", err)
 	}
+	connConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	db := stdlib.OpenDB(*connConfig)
 
 	// Configure connection pool
 	db.SetMaxOpenConns(cfg.MaxOpenConns)
@@ -51,12 +55,16 @@ func NewConnection(cfg Config) (*Connection, error) {
 	return &Connection{DB: db}, nil
 }
 
-// NewConnectionFromURL creates a new database connection from a URL string
+// NewConnectionFromURL creates a new database connection from a URL string.
+// Uses pgx with simple protocol to avoid PgBouncer prepared statement issues.
 func NewConnectionFromURL(databaseURL string) (*Connection, error) {
-	db, err := sql.Open("postgres", databaseURL)
+	connConfig, err := pgx.ParseConfig(databaseURL)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
+		return nil, fmt.Errorf("failed to parse database URL: %w", err)
 	}
+	connConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	db := stdlib.OpenDB(*connConfig)
 
 	// Configure connection pool with defaults
 	db.SetMaxOpenConns(25)

@@ -167,8 +167,8 @@ describe('App', () => {
       render(<App />)
 
       await waitFor(() => {
-        // First exercise should have its instructions expanded (tips are prefixed with "- ")
-        expect(screen.getByText(/- Mantener espalda recta/)).toBeInTheDocument()
+        // First exercise should have its instructions expanded (shows RIR info)
+        expect(screen.getByText(/RIR: 2-3/)).toBeInTheDocument()
       })
     })
   })
@@ -238,6 +238,11 @@ describe('App', () => {
   })
 
   describe('Complete button', () => {
+    beforeEach(() => {
+      // Mock window.confirm (jsdom doesn't implement it)
+      vi.spyOn(window, 'confirm').mockReturnValue(true)
+    })
+
     it('should show celebration when complete button is clicked successfully', async () => {
       // First call returns workout data, second call completes the workout
       mockFetch

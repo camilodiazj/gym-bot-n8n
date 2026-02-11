@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"sort"
 	"testing"
 	"time"
 
@@ -178,5 +179,162 @@ func TestTimezoneFromUTC(t *testing.T) {
 	}
 	if bogota.Day() != 31 {
 		t.Errorf("Expected day 31, got %d", bogota.Day())
+	}
+}
+
+// --- Smart Alternative Exercises Filtering Tests ---
+
+func TestStripAccents(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"Mañana", "Manana"},
+		{"Glúteo", "Gluteo"},
+		{"días", "dias"},
+		{"Más de 3 años", "Mas de 3 anos"},
+		{"bandas elásticas", "bandas elasticas"},
+		{"no accents", "no accents"},
+		{"", ""},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			result := stripAccents(tt.input)
+			if result != tt.expected {
+				t.Errorf("stripAccents(%q) = %q, want %q", tt.input, result, tt.expected)
+			}
+		})
+	}
+}
+
+func TestLevelHierarchy(t *testing.T) {
+	tests := []struct {
+		level    string
+		expected []string
+	}{
+		{"Principiante", []string{"Principiante"}},
+		{"Intermedio", []string{"Principiante", "Intermedio"}},
+		{"Avanzado", []string{"Principiante", "Intermedio", "Avanzado"}},
+		{"unknown", nil},
+		{"", nil},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.level, func(t *testing.T) {
+			result := levelHierarchy(tt.level)
+			if len(result) != len(tt.expected) {
+				t.Fatalf("levelHierarchy(%q) returned %d items, want %d", tt.level, len(result), len(tt.expected))
+			}
+			for i, v := range result {
+				if v != tt.expected[i] {
+					t.Errorf("levelHierarchy(%q)[%d] = %q, want %q", tt.level, i, v, tt.expected[i])
+				}
+			}
+		})
+	}
+}
+
+func TestParseHomeEquipment(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		mustHave []string // these canonical values must be present
+	}{
+		{
+			"mancuernas y bandas",
+			"mancuernas, bandas",
+			[]string{"dumbbell", "resistance_band", "bodyweight", "Peso Corporal"},
+		},
+		{
+			"mancuernas con Mancuerna Spanish match",
+			"mancuernas, bandas",
+			[]string{"Mancuerna"}, // Spanish DB equivalent of dumbbell
+		},
+		{
+			"peso corporal only",
+			"peso corporal",
+			[]string{"bodyweight", "Peso Corporal"},
+		},
+		{
+			"solo cuerpo",
+			"Solo cuerpo",
+			[]string{"bodyweight", "Peso Corporal"},
+		},
+		{
+			"empty always has bodyweight",
+			"",
+			[]string{"bodyweight", "Peso Corporal"},
+		},
+		{
+			"null string always has bodyweight",
+			"null",
+			[]string{"bodyweight", "Peso Corporal"},
+		},
+		{
+			"kettlebell and barbell",
+			"kettlebell, barra",
+			[]string{"kettlebell", "barbell", "Barra", "bodyweight"},
+		},
+		{
+			"accented bandas elasticas",
+			"Bandas elásticas",
+			[]string{"resistance_band", "bodyweight"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := parseHomeEquipment(tt.input)
+			resultSet := map[string]bool{}
+			for _, v := range result {
+				resultSet[v] = true
+			}
+			for _, must := range tt.mustHave {
+				if !resultSet[must] {
+					t.Errorf("parseHomeEquipment(%q) missing %q, got %v", tt.input, must, result)
+				}
+			}
+		})
+	}
+}
+
+func TestParseDislikedMuscles(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected []string
+	}{
+		{"pantorrillas", "Pantorrillas", []string{"Calfs"}},
+		{"las pantorrillas", "Las pantorrillas", []string{"Calfs"}},
+		{"abdomen", "Abdomen", []string{"Abs", "Core"}},
+		{"pecho", "Pecho", []string{"Chest"}},
+		{"brazos", "Brazos", []string{"Biceps", "Triceps", "Forearms"}},
+		{"piernas", "Piernas", []string{"Quads", "Hamstrings", "Glutes", "Calfs"}},
+		{"empty", "", nil},
+		{"ninguno", "Ninguno", nil}, // handled upstream, but parseDislikedMuscles returns empty
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := parseDislikedMuscles(tt.input)
+			if len(tt.expected) == 0 {
+				if len(result) != 0 {
+					t.Errorf("parseDislikedMuscles(%q) = %v, want empty", tt.input, result)
+				}
+				return
+			}
+			sort.Strings(result)
+			sort.Strings(tt.expected)
+			if len(result) != len(tt.expected) {
+				t.Fatalf("parseDislikedMuscles(%q) returned %d items %v, want %d items %v",
+					tt.input, len(result), result, len(tt.expected), tt.expected)
+			}
+			for i, v := range result {
+				if v != tt.expected[i] {
+					t.Errorf("parseDislikedMuscles(%q)[%d] = %q, want %q", tt.input, i, v, tt.expected[i])
+				}
+			}
+		})
 	}
 }

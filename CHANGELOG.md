@@ -2,6 +2,28 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.3.0] - 2026-02-10
+
+### Added - Alternative Exercises (Flip Card)
+
+- **Frontend flip card UI**: 3D card flip animation to swap between primary and alternative exercises
+  - Auto-detects which exercise the user was working on (survives page reload)
+  - Lock swap once any set is completed (user committed to an exercise)
+  - Swap tip tooltip on first render
+  - Skip CSS transition on mount when starting on an alternative
+- **Backend alternative exercises API**: New `alternativeExercises` field in workout response
+  - `AlternativeExercise` domain entity and `AlternativeExerciseDTO`
+  - Repository queries alternatives by matching pattern, role, and main muscle
+  - User profile-aware filtering: training environment, equipment, health status, fitness level, disliked muscles
+  - Equipment mapping for HOME users (Spanish tokens to canonical DB values)
+- **Database driver migration**: Replaced `lib/pq` with `pgx/v5` for better performance and connection pooling
+- **Dockerfile fix**: Updated Go version from 1.23 to 1.24 to match `go.mod` requirement
+
+### Changed - CLAUDE.md
+
+- Added magic link URL format documentation
+- Added SQL template for creating test users manually with all NOT NULL columns documented
+
 ## [0.2.0] - 2026-02-08
 
 ### Added - Mesocycle Renewal (v5.0)

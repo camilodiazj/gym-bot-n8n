@@ -328,13 +328,36 @@ const ExerciseCard: React.FC<{
   onUpdateAltReps: (altIndex: number, setNumber: number, reps: number) => void;
   onUpdateAltKg: (altIndex: number, setNumber: number, kg: string) => void;
 }> = ({ exercise, onToggleInstructions, onToggleSet, onUpdateReps, onUpdateKg, onToggleAltSet, onUpdateAltReps, onUpdateAltKg }) => {
-  const [flipCount, setFlipCount] = React.useState(0);
-  const [isFlipping, setIsFlipping] = React.useState(false);
-  const [showSwapTip, setShowSwapTip] = React.useState(false);
-
   const alts = exercise.alternativeExercises || [];
   const hasAlternatives = alts.length > 0;
   const totalViews = 1 + alts.length; // original + alternatives
+
+  // Auto-detect which exercise the user was working on (survives page reload).
+  // If an alternative has completed sets but the primary doesn't, start on that alternative.
+  // Only one exercise can have completed sets due to the anySetCompleted lock.
+  // Deps: [exercise.id] is intentional — initialIndex only feeds useState (which ignores
+  // subsequent changes), so recomputing on set changes would be wasted work.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const initialIndex = React.useMemo(() => {
+    const primaryHasCompleted = exercise.sets.some((s) => s.completed);
+    if (primaryHasCompleted || !hasAlternatives) return 0;
+    const altIdx = alts.findIndex((alt) => alt.sets.some((s) => s.completed));
+    return altIdx >= 0 ? altIdx + 1 : 0; // +1 because index 0 = primary
+  }, [exercise.id]);
+
+  const [flipCount, setFlipCount] = React.useState(initialIndex);
+  const [isFlipping, setIsFlipping] = React.useState(false);
+  const [showSwapTip, setShowSwapTip] = React.useState(false);
+
+  // Suppress the CSS transition on mount when starting on an alternative
+  // so the card doesn't animate a flip when the page loads.
+  const [skipTransition, setSkipTransition] = React.useState(initialIndex > 0);
+  React.useEffect(() => {
+    if (initialIndex > 0) {
+      const frameId = requestAnimationFrame(() => setSkipTransition(false));
+      return () => cancelAnimationFrame(frameId);
+    }
+  }, [initialIndex]);
 
   // Lock swap once any set is completed (user committed to an exercise)
   const anySetCompleted = exercise.sets.some((s) => s.completed)
@@ -597,7 +620,10 @@ const ExerciseCard: React.FC<{
     <div className="flip-container w-full">
       <div
         className="flip-card w-full"
-        style={{ transform: `rotateY(${flipCount * 180}deg)` }}
+        style={{
+          transform: `rotateY(${flipCount * 180}deg)`,
+          ...(skipTransition ? { transition: 'none' } : {}),
+        }}
       >
         {renderFace(frontIndex, false, isFrontVisible)}
         {renderFace(backIndex, true, !isFrontVisible)}
