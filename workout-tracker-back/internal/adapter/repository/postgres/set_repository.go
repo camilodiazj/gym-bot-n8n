@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -24,6 +25,47 @@ func NewSetRepository(conn *Connection) *SetRepository {
 	return &SetRepository{conn: conn}
 }
 
+type parsedSetID struct {
+	workoutID     string
+	exerciseID    string // empty for primary sets
+	setNumber     int
+	isAlternative bool
+}
+
+func parseSetID(setID string) (parsedSetID, error) {
+	if strings.Contains(setID, ":") {
+		parts := strings.SplitN(setID, ":", 3)
+		if len(parts) != 3 {
+			return parsedSetID{}, fmt.Errorf("invalid alternative set_id format")
+		}
+		setNum, err := strconv.Atoi(parts[2])
+		if err != nil {
+			return parsedSetID{}, fmt.Errorf("invalid set number in alternative set_id")
+		}
+		return parsedSetID{
+			workoutID:     parts[0],
+			exerciseID:    parts[1],
+			setNumber:     setNum,
+			isAlternative: true,
+		}, nil
+	}
+
+	lastDash := strings.LastIndex(setID, "-")
+	if lastDash == -1 || lastDash == len(setID)-1 {
+		return parsedSetID{}, fmt.Errorf("invalid set_id format")
+	}
+	setNum, err := strconv.Atoi(setID[lastDash+1:])
+	if err != nil {
+		return parsedSetID{}, fmt.Errorf("invalid set number")
+	}
+	return parsedSetID{
+		workoutID:     setID[:lastDash],
+		exerciseID:    "",
+		setNumber:     setNum,
+		isAlternative: false,
+	}, nil
+}
+
 // GetByID retrieves a set by its ID
 // Note: In the current schema, sets are part of the workouts table
 // This implementation assumes sets are tracked separately or derived from workout data
@@ -37,23 +79,44 @@ func (r *SetRepository) GetByID(ctx context.Context, setID string) (*entity.Set,
 }
 
 // MarkComplete marks a set as completed
-// Note: This requires a separate tracking mechanism as the current schema
-// only tracks workout completion, not individual set completion
 func (r *SetRepository) MarkComplete(ctx context.Context, setID string) error {
-	// TODO: Create a proper sets tracking table or add set completion to workouts
-	// For now, we'll create a simple implementation that would work with a sets table
+	parsed, err := parseSetID(setID)
+	if err != nil {
+		return apperror.NewValidationError(err.Error())
+	}
 
+	var exerciseID, userID string
+	if parsed.isAlternative {
+		exerciseID = parsed.exerciseID
+		if exerciseID == "" {
+			return apperror.NewValidationError("alternative set_id missing exercise_id")
+		}
+		err = r.conn.DB.QueryRowContext(ctx,
+			`SELECT user_id FROM workouts WHERE id = $1`,
+			parsed.workoutID).Scan(&userID)
+	} else {
+		err = r.conn.DB.QueryRowContext(ctx,
+			`SELECT exercise_id, user_id FROM workouts WHERE id = $1`,
+			parsed.workoutID).Scan(&exerciseID, &userID)
+	}
+	if err == sql.ErrNoRows {
+		return apperror.NewNotFoundError("workout not found")
+	}
+	if err != nil {
+		return apperror.NewInternalError("failed to lookup workout", err)
+	}
+
+	// Upsert a completed marker into set_values
 	query := `
-		INSERT INTO workout_set_completions (set_id, completed_at)
-		VALUES ($1, NOW())
-		ON CONFLICT (set_id) DO UPDATE SET completed_at = NOW()
+		INSERT INTO set_values (user_id, exercise_id, workout_id, set_number, actual_weight, actual_reps, recorded_at)
+		VALUES ($1, $2, $3, $4, '-', NULL, NOW())
+		ON CONFLICT (workout_id, exercise_id, set_number) DO UPDATE SET
+			recorded_at = NOW()
 	`
 
-	_, err := r.conn.DB.ExecContext(ctx, query, setID)
+	_, err = r.conn.DB.ExecContext(ctx, query, userID, exerciseID, parsed.workoutID, parsed.setNumber)
 	if err != nil {
-		// If table doesn't exist, log and return success for demo purposes
-		// In production, you'd want proper error handling
-		return nil
+		return apperror.NewInternalError("failed to mark set complete", err)
 	}
 
 	return nil
@@ -61,22 +124,25 @@ func (r *SetRepository) MarkComplete(ctx context.Context, setID string) error {
 
 // Update updates a set's reps and/or weight
 func (r *SetRepository) Update(ctx context.Context, setID string, reps *int, weight *string) error {
-	// Parse setID format: "workoutID-setNumber" where workoutID is a UUID (contains dashes)
-	// Find the last dash to separate UUID from set number
-	lastDashIdx := strings.LastIndex(setID, "-")
-	if lastDashIdx == -1 || lastDashIdx == len(setID)-1 {
-		return apperror.NewValidationError("invalid set_id format, expected workoutID-setNumber")
-	}
-	workoutID := setID[:lastDashIdx]
-	setNumber, err := strconv.Atoi(setID[lastDashIdx+1:])
+	parsed, err := parseSetID(setID)
 	if err != nil {
-		return apperror.NewValidationError("invalid set number in set_id")
+		return apperror.NewValidationError(err.Error())
 	}
 
-	// Get exercise_id and user_id from workouts table
 	var exerciseID, userID string
-	lookupQuery := `SELECT exercise_id, user_id FROM workouts WHERE id = $1`
-	err = r.conn.DB.QueryRowContext(ctx, lookupQuery, workoutID).Scan(&exerciseID, &userID)
+	if parsed.isAlternative {
+		exerciseID = parsed.exerciseID
+		if exerciseID == "" {
+			return apperror.NewValidationError("alternative set_id missing exercise_id")
+		}
+		err = r.conn.DB.QueryRowContext(ctx,
+			`SELECT user_id FROM workouts WHERE id = $1`,
+			parsed.workoutID).Scan(&userID)
+	} else {
+		err = r.conn.DB.QueryRowContext(ctx,
+			`SELECT exercise_id, user_id FROM workouts WHERE id = $1`,
+			parsed.workoutID).Scan(&exerciseID, &userID)
+	}
 	if err == sql.ErrNoRows {
 		return apperror.NewNotFoundError("workout not found")
 	}
@@ -85,16 +151,16 @@ func (r *SetRepository) Update(ctx context.Context, setID string, reps *int, wei
 	}
 
 	// Upsert into set_values table
+	// ON CONFLICT uses the 3-column constraint (workout_id, exercise_id, set_number)
 	query := `
 		INSERT INTO set_values (user_id, exercise_id, workout_id, set_number, actual_weight, actual_reps, recorded_at)
 		VALUES ($1, $2, $3, $4, $5, $6, NOW())
-		ON CONFLICT (workout_id, set_number) DO UPDATE SET
+		ON CONFLICT (workout_id, exercise_id, set_number) DO UPDATE SET
 			actual_weight = COALESCE($5, set_values.actual_weight),
 			actual_reps = COALESCE($6, set_values.actual_reps),
 			recorded_at = NOW()
 	`
 
-	// Handle nil values - default weight to "-" if not provided
 	weightVal := "-"
 	if weight != nil {
 		weightVal = *weight
@@ -105,7 +171,7 @@ func (r *SetRepository) Update(ctx context.Context, setID string, reps *int, wei
 		repsVal = sql.NullInt64{Int64: int64(*reps), Valid: true}
 	}
 
-	_, err = r.conn.DB.ExecContext(ctx, query, userID, exerciseID, workoutID, setNumber, weightVal, repsVal)
+	_, err = r.conn.DB.ExecContext(ctx, query, userID, exerciseID, parsed.workoutID, parsed.setNumber, weightVal, repsVal)
 	if err != nil {
 		return apperror.NewInternalError("failed to update set values", err)
 	}

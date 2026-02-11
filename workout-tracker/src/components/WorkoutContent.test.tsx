@@ -69,9 +69,9 @@ describe('WorkoutContent', () => {
     it('should show expanded exercise instructions', () => {
       render(<WorkoutContent exercises={mockExercises} />)
 
-      // First exercise is expanded - tips and steps are prefixed with "- "
-      expect(screen.getByText(/- Mantener espalda recta/)).toBeInTheDocument()
-      expect(screen.getByText(/- Bajar controladamente/)).toBeInTheDocument()
+      // First exercise is expanded - shows RIR and rest info
+      expect(screen.getByText(/RIR: 2-3/)).toBeInTheDocument()
+      expect(screen.getByText(/1:30 min entre series/)).toBeInTheDocument()
     })
 
     it('should show RIR badge for expanded exercise', () => {
@@ -111,12 +111,12 @@ describe('WorkoutContent', () => {
     it('should toggle exercise instructions on chevron click', async () => {
       render(<WorkoutContent exercises={mockExercises} />)
 
-      // Find the chevron buttons (they contain ChevronUp/ChevronDown icons)
+      // Find the chevron buttons
       const exerciseCards = screen.getAllByText('Exercise')
       const firstCard = exerciseCards[0].closest('div[class*="bg-"]')
 
-      // Initially expanded - should show tips with "- " prefix
-      expect(screen.getByText(/- Mantener espalda recta/)).toBeInTheDocument()
+      // Initially expanded - should show RIR info
+      expect(screen.getByText(/RIR: 2-3/)).toBeInTheDocument()
 
       // Find the toggle button within the first card header
       const toggleButton = firstCard!.querySelector('button')
@@ -125,16 +125,16 @@ describe('WorkoutContent', () => {
       // Click to collapse
       fireEvent.click(toggleButton!)
 
-      // After collapse, tips should be hidden
+      // After collapse, RIR info should be hidden
       await waitFor(() => {
-        expect(screen.queryByText(/- Mantener espalda recta/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/RIR: 2-3/)).not.toBeInTheDocument()
       })
 
       // Click to expand again
       fireEvent.click(toggleButton!)
 
       await waitFor(() => {
-        expect(screen.getByText(/- Mantener espalda recta/)).toBeInTheDocument()
+        expect(screen.getByText(/RIR: 2-3/)).toBeInTheDocument()
       })
     })
   })
@@ -438,6 +438,189 @@ describe('WorkoutContent', () => {
       expect(videoLink).toHaveAttribute('href', 'https://example.com/video')
       expect(videoLink).toHaveAttribute('target', '_blank')
       expect(videoLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+  })
+
+  describe('Alternative exercises - flip card', () => {
+    beforeEach(() => {
+      // Mock localStorage for swap-tip feature (jsdom doesn't always support it fully)
+      const store: Record<string, string> = {}
+      Object.defineProperty(window, 'localStorage', {
+        value: {
+          getItem: vi.fn((key: string) => store[key] ?? null),
+          setItem: vi.fn((key: string, value: string) => { store[key] = value }),
+          removeItem: vi.fn((key: string) => { delete store[key] }),
+          clear: vi.fn(() => { Object.keys(store).forEach(k => delete store[k]) }),
+          length: 0,
+          key: vi.fn(),
+        },
+        writable: true,
+        configurable: true,
+      })
+    })
+
+    const makeAlt = (name: string, completed: boolean) => ({
+      name,
+      rir: '2-3',
+      restSeconds: 90,
+      videoLink: 'https://example.com/alt',
+      sets: [
+        { setNumber: 1, reps: 10, kg: '-', completed },
+        { setNumber: 2, reps: 10, kg: '-', completed: false },
+      ],
+    })
+
+    const exerciseWithAlts = (primaryCompleted: boolean, alt1Completed: boolean, alt2Completed = false) => [{
+      id: 'ex-alt',
+      name: 'Sentadilla con barra',
+      badgeColor: '#374151',
+      rir: '2-3',
+      restSeconds: 120,
+      instructionsExpanded: true,
+      sets: [
+        { id: 'set-1', setNumber: 1, reps: 10, kg: '50', completed: primaryCompleted },
+        { id: 'set-2', setNumber: 2, reps: 10, kg: '50', completed: false },
+      ],
+      tips: [],
+      steps: [],
+      alternativeExercises: [
+        makeAlt('Sentadilla búlgara', alt1Completed),
+        makeAlt('Hack Squat', alt2Completed),
+      ],
+    }]
+
+    it('should show primary exercise by default when no sets completed', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      expect(screen.getByText('Sentadilla con barra')).toBeInTheDocument()
+    })
+
+    it('should show swap button when no sets completed', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      expect(screen.getByText('Ver alternativa')).toBeInTheDocument()
+    })
+
+    it('should hide swap button when primary has completed sets', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(true, false)} />)
+
+      expect(screen.queryByText('Ver alternativa')).not.toBeInTheDocument()
+    })
+
+    it('should show primary when primary has completed sets (initialIndex = 0)', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(true, false)} />)
+
+      expect(screen.getByText('Sentadilla con barra')).toBeInTheDocument()
+    })
+
+    it('should show first alternative when it has completed sets but primary does not', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, true)} />)
+
+      // The alternative name should be visible
+      expect(screen.getByText('Sentadilla búlgara')).toBeInTheDocument()
+      expect(screen.getByText('Alternativa 1 de 2')).toBeInTheDocument()
+    })
+
+    it('should show second alternative when it has completed sets but primary and first do not', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, false, true)} />)
+
+      expect(screen.getByText('Hack Squat')).toBeInTheDocument()
+      expect(screen.getByText('Alternativa 2 de 2')).toBeInTheDocument()
+    })
+
+    it('should show primary when both primary and alternative have no completed sets', () => {
+      const { container } = render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      // Primary exercise name visible
+      expect(screen.getByText('Sentadilla con barra')).toBeInTheDocument()
+      // Flip card starts at 0deg (front face visible = primary)
+      const flipCard = container.querySelector('.flip-card')
+      expect(flipCard!.getAttribute('style')).toContain('rotateY(0deg)')
+    })
+
+    it('should prefer primary when primary has completed sets even if alt does too', () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(true, true)} />)
+
+      // Primary takes precedence
+      expect(screen.getByText('Sentadilla con barra')).toBeInTheDocument()
+    })
+
+    it('should not show flip animation on mount when starting on alternative', () => {
+      const { container } = render(<WorkoutContent exercises={exerciseWithAlts(false, true)} />)
+
+      const flipCard = container.querySelector('.flip-card')
+      expect(flipCard).toBeInTheDocument()
+      // On initial render, transition should be suppressed
+      expect(flipCard!.getAttribute('style')).toContain('transition: none')
+    })
+
+    it('should show flip animation on mount when starting on primary (no suppression needed)', () => {
+      const { container } = render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      const flipCard = container.querySelector('.flip-card')
+      expect(flipCard).toBeInTheDocument()
+      // No transition suppression when starting on primary
+      expect(flipCard!.getAttribute('style')).not.toContain('transition: none')
+    })
+
+    it('should cycle to alternative on swap button click', async () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      const swapButton = screen.getByText('Ver alternativa')
+      fireEvent.click(swapButton)
+
+      await waitFor(() => {
+        expect(screen.getByText('Sentadilla búlgara')).toBeInTheDocument()
+        expect(screen.getByText('Alternativa 1 de 2')).toBeInTheDocument()
+      })
+    })
+
+    it('should toggle alternative set completion', async () => {
+      render(<WorkoutContent exercises={exerciseWithAlts(false, false)} />)
+
+      // Flip to first alternative
+      const swapButton = screen.getByText('Ver alternativa')
+      fireEvent.click(swapButton)
+
+      await waitFor(() => {
+        expect(screen.getByText('Sentadilla búlgara')).toBeInTheDocument()
+      })
+
+      // Find set rows in the alternative view and click to complete
+      const setRows = screen.getAllByText('1')
+      const firstSetRow = setRows[0].closest('div[class*="grid"]')
+      expect(firstSetRow).toBeInTheDocument()
+
+      fireEvent.click(firstSetRow!)
+
+      // After completing a set, swap button should disappear
+      await waitFor(() => {
+        expect(screen.queryByText('Siguiente alternativa')).not.toBeInTheDocument()
+        expect(screen.queryByText('Volver al original')).not.toBeInTheDocument()
+      })
+    })
+
+    it('should render exercise without alternatives as simple card (no flip container)', () => {
+      const simpleExercise = [{
+        ...mockExercises[0],
+        alternativeExercises: undefined,
+      }]
+
+      const { container } = render(<WorkoutContent exercises={simpleExercise} />)
+
+      expect(container.querySelector('.flip-container')).not.toBeInTheDocument()
+      expect(screen.getByText('Sentadilla')).toBeInTheDocument()
+    })
+
+    it('should render exercise with empty alternatives as simple card', () => {
+      const simpleExercise = [{
+        ...mockExercises[0],
+        alternativeExercises: [],
+      }]
+
+      const { container } = render(<WorkoutContent exercises={simpleExercise} />)
+
+      expect(container.querySelector('.flip-container')).not.toBeInTheDocument()
     })
   })
 })
