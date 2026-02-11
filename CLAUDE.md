@@ -160,6 +160,8 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 |-------|---------|-------------|
 | `magic_links` | Passwordless auth via WhatsApp deep links | `code` (VARCHAR PK), `user_id`, `created_at`, `expires_at` (24h default), `used_at` |
 
+**Magic link URL format**: `https://workout-tracker-69b08.web.app/w?c={code}` (local: `http://localhost:5173/w?c={code}`). The `code` is a short hex string (e.g., `7fda02`). Do NOT use `/auth?code=` — that path does not exist.
+
 ### Reference/Lookup Tables
 
 | Table | Purpose |
@@ -469,6 +471,74 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- HOME: 570000000211, 570000000212, 570000000213
 -- MESOCYCLE: 570000000051, 570000000052, 570000000053
 ```
+
+### Creating Test Users Manually (SQL Template)
+
+When creating ad-hoc test users (e.g., to replicate a real user's workout for local testing), use the following template. Many columns are NOT NULL without defaults — omitting them causes hard-to-debug insert failures.
+
+**Required NOT NULL columns per table:**
+
+| Table | Column | Type | Gotcha |
+|-------|--------|------|--------|
+| `users` | `created_at` | timestamptz | No default — must supply `NOW()` |
+| `users` | `country_indicative` | bigint | No default — use `57` for Colombia |
+| `users_plans` | `start_date` | timestamptz | No default — use `NOW()` |
+| `users_plans` | `week_schedule` | text | FK to `week_schedules.schedule_type` — valid values: `fb_2`, `fb_3`, `ul_4`, `ppl_5`, `ppl_6` |
+| `user_weekly_schedule` | `planned_day` | text | NOT NULL — use `TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD')` |
+| `user_weekly_schedule` | `planned_day_utc` | timestamptz | Separate from `planned_day` — use `DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'` |
+| `workouts` | `created_at` | timestamptz | No default — must supply `NOW()` |
+| `workouts` | `notes` | text | NOT NULL — use `''` (empty string) |
+| `magic_links` | `code` | varchar(8) | Max 8 chars |
+
+**Full SQL template:**
+
+```sql
+-- Variables (change these)
+-- user_id:  e2e00010-0000-0000-0000-000000000010
+-- phone:    570000000010
+-- plan_id:  e2e01000-0000-0000-0000-000000000010
+-- sched_id: e2e01010-0000-0000-0000-000000000010
+
+-- 1. User
+INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative)
+VALUES ('e2e00010-0000-0000-0000-000000000010', 'Test User Name', 570000000010, '570000000010', 'test@test.com', 'America/Bogota', NOW(), 57);
+
+-- 2. Gym profile (copy from source user, change whatsapp_id)
+INSERT INTO users_gym_profile (submission_date, whatsapp_id, full_name, email, age, biological_sex, height_cm, weight_kg, primary_goal, secondary_goal, training_experience, current_frequency, fitness_level, health_status, days_available, session_duration_mins, preferred_schedule, training_style, priority_muscles, disliked_exercises, cardio_type, cardio_frequency, training_environment, home_equipment)
+VALUES (NOW(), 570000000010, 'Test User Name', 'test@test.com', 27, 'M', 171, 67, 'Ganar masa muscular', 'Mejorar fuerza', 'Más de 3 años', '1-2 días por semana', 'Intermedio', 'A', 3, '60-75 minutos', 'Mañana', 'Pesas libres', 'Los brazos', 'Las pantorrillas', 'No', '0', 'GYM', NULL);
+
+-- 3. Plan (week_schedule must be valid FK: fb_2, fb_3, ul_4, ppl_5, ppl_6)
+INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule)
+VALUES ('e2e01000-0000-0000-0000-000000000010', 'e2e00010-0000-0000-0000-000000000010', 'tpl_fb_3_hyp_int', NOW(), 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3');
+
+-- 4. Today's schedule (needs BOTH planned_day text AND planned_day_utc timestamptz)
+INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
+VALUES ('e2e01010-0000-0000-0000-000000000010', 'e2e00010-0000-0000-0000-000000000010', 1, 'Martes', 'Full Body A',
+  TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD'),
+  (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'),
+  false);
+
+-- 5. Workouts (needs created_at + notes, exercise_order determines display order)
+INSERT INTO workouts (id, user_id, week, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, created_at, notes, exercise_order)
+VALUES (gen_random_uuid(), 'e2e00010-0000-0000-0000-000000000010', 1, 'Full Body A', 'ex_barbell_squat', '3', '8–10', '1–2', 150, '2-0-1', NOW(), '', 1);
+
+-- 6. Magic link for frontend access (code max 8 chars, expires in 24h)
+INSERT INTO magic_links (code, user_id, created_at, expires_at)
+VALUES ('testcode', 'e2e00010-0000-0000-0000-000000000010', NOW(), NOW() + INTERVAL '24 hours');
+-- Frontend URL: http://localhost:5173/?c=testcode
+
+-- 7. Cleanup (run when done)
+DELETE FROM workouts WHERE user_id = 'e2e00010-0000-0000-0000-000000000010';
+DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00010-0000-0000-0000-000000000010';
+DELETE FROM users_plans WHERE user_id = 'e2e00010-0000-0000-0000-000000000010';
+DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000010;
+DELETE FROM magic_links WHERE user_id = 'e2e00010-0000-0000-0000-000000000010';
+DELETE FROM users WHERE user_id = 'e2e00010-0000-0000-0000-000000000010';
+```
+
+> **UUID format**: All IDs must be valid hex UUIDs. `e2e00010-plan-0000-...` is **invalid** (`plan` is not hex). Use patterns like `e2e01000-...` instead.
+
+> **Enum values reminder**: `week_day` is an enum — valid values: `Lunes`, `Martes`, `Miercoles`, `Jueves`, `Viernes`, `Sabado`, `Domingo`.
 
 ## Feature Specifications
 

@@ -76,6 +76,30 @@ func (uc *GetTodayWorkoutUseCase) Execute(ctx context.Context, userID string) (*
 			exerciseDTO.Steps = append(exerciseDTO.Steps, dto.StepDTO{Text: step.Text})
 		}
 
+		if len(exercise.Alternatives) > 0 {
+			altDTOs := make([]dto.AlternativeExerciseDTO, 0, len(exercise.Alternatives))
+			for _, alt := range exercise.Alternatives {
+				altDTO := dto.AlternativeExerciseDTO{
+					Name:        alt.Name,
+					RIR:         alt.RIR,
+					RestSeconds: alt.RestSeconds,
+					VideoLink:   alt.Link,
+					Sets:        make([]dto.SetDTO, 0, len(alt.Sets)),
+				}
+				for _, set := range alt.Sets {
+					altDTO.Sets = append(altDTO.Sets, dto.SetDTO{
+						ID:        set.ID,
+						SetNumber: set.SetNumber,
+						Reps:      set.Reps,
+						Kg:        set.Weight,
+						Completed: set.Completed,
+					})
+				}
+				altDTOs = append(altDTOs, altDTO)
+			}
+			exerciseDTO.AlternativeExercises = altDTOs
+		}
+
 		response.Exercises = append(response.Exercises, exerciseDTO)
 	}
 
