@@ -486,6 +486,8 @@ When creating ad-hoc test users (e.g., to replicate a real user's workout for lo
 | `users_plans` | `week_schedule` | text | FK to `week_schedules.schedule_type` — valid values: `fb_2`, `fb_3`, `ul_4`, `ppl_5`, `ppl_6` |
 | `user_weekly_schedule` | `planned_day` | text | NOT NULL — use `TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD')` |
 | `user_weekly_schedule` | `planned_day_utc` | timestamptz | Separate from `planned_day` — use `DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'` |
+
+> **CRITICAL — `planned_day` format inconsistency**: Fixture SQL writes `planned_day` in ISO format (`2026-02-15`) and populates `planned_day_utc`. But the MAIN_FLOW scheduling tool (`Tool_Update_User_Weekly_Schedule`) writes `planned_day` in `DD/MM` format (e.g., `"30/10"`) and leaves `planned_day_utc` as **NULL**. When querying records created by the scheduling tool, do NOT filter on `planned_day_utc` (it's NULL) or compare `planned_day` with `CURRENT_DATE::text` (format mismatch). Instead, filter by `user_id` + `week` or just `user_id`.
 | `workouts` | `created_at` | timestamptz | No default — must supply `NOW()` |
 | `workouts` | `notes` | text | NOT NULL — use `''` (empty string) |
 | `magic_links` | `code` | varchar(8) | Max 8 chars |
