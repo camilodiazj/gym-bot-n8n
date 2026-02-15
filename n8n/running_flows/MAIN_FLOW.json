@@ -24,7 +24,7 @@
         "operation": "send",
         "phoneNumberId": "={{$items(\"If\")[0].json.metadata.phone_number_id}}",
         "recipientPhoneNumber": "={{$items(\"If\")[0].json.contacts[0].wa_id}}",
-        "textBody": "={{ $json.output }}\n\nEmpezar mi rutina 👉 {{ $json.workout_url }}",
+        "textBody": "=Empezar mi rutina 👉 {{ $json.workout_url }}\n\n{{ $json.output }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
