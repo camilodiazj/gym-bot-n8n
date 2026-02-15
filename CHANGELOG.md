@@ -2,6 +2,17 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.4.0] - 2026-02-15
+
+### Added - Weekly Scheduling Prompt (KAN-61)
+
+- **New n8n workflow**: `WeeklySchedulingPrompt.json` — daily 8 PM trigger that detects users whose training week (1-3) has ended and sends a WhatsApp nudge to schedule the next week
+- **3 message variants** based on completion rate: Celebration (100%), Growth Mindset (partial), Re-engagement (0%)
+- **Smart dedup**: SQL-level `NOT EXISTS` excludes users who already scheduled next week; 3-day window prevents indefinite messaging
+- **`DISTINCT ON` + `::int` casts**: Prevents duplicate messages for multi-week users and fixes n8n type comparison issues
+- **Zero backend/frontend/DB changes**: Entirely self-contained workflow reading existing tables
+- **Spec & diagrams**: Architecture doc, implementation phases, and 6 Mermaid diagrams (flow, sequence, SQL logic, dedup strategy, integration map, message variants)
+
 ## [0.3.0] - 2026-02-10
 
 ### Added - Alternative Exercises (Flip Card)
