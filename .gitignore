@@ -17,7 +17,6 @@
 .claude/settings.local.json
 .claude/debug/
 .claude/.DS_Store
-.claude/skills/
 
 # Separate projects
 n8n-mcp/
