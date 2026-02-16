@@ -394,7 +394,7 @@ Both `Execute_Mesocycle_Renewal` (Path A) and `Execute_Mesocycle_Renewal_Manual`
   "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "full_name": "Juan Perez",
   "whatsapp_id": "573001234567",
-  "phone_number_id": "914510145083991",
+  "phone_number_id": "YOUR_PHONE_NUMBER_ID",
   "user_message": "Ya termine las 4 semanas!",
   "days_per_week": 4
 }

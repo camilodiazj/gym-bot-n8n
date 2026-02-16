@@ -4,8 +4,8 @@
 
 | Componente | Servicio | URL |
 |------------|----------|-----|
-| Frontend | Firebase Hosting | https://workout-tracker-69b08.web.app |
-| Backend API | Google Cloud Run | https://workout-api-148665080566.us-central1.run.app |
+| Frontend | Firebase Hosting | https://[FIREBASE_PROJECT_ID].web.app |
+| Backend API | Google Cloud Run | https://workout-api-[GCP_PROJECT_NUMBER].us-central1.run.app |
 | Database | Supabase (PostgreSQL) | (ya configurado) |
 
 ---
@@ -56,7 +56,7 @@ gcloud run deploy workout-api --image gcr.io/[PROJECT_ID]/workout-api --region u
 ### 1.3 Verificar
 
 ```bash
-curl https://workout-api-148665080566.us-central1.run.app/api/v1/health
+curl https://workout-api-[GCP_PROJECT_NUMBER].us-central1.run.app/api/v1/health
 # Debe retornar: {"success":true,"data":{"status":"ok"}}
 ```
 
@@ -69,7 +69,7 @@ curl https://workout-api-148665080566.us-central1.run.app/api/v1/health
 Editar `workout-tracker/src/App.tsx`:
 
 ```typescript
-const API_BASE_URL = 'https://workout-api-148665080566.us-central1.run.app/api/v1'
+const API_BASE_URL = 'https://workout-api-[GCP_PROJECT_NUMBER].us-central1.run.app/api/v1'
 ```
 
 ### 2.2 Build y Deploy
@@ -86,7 +86,7 @@ firebase deploy --only hosting
 
 ### 2.3 Verificar
 
-Abrir: https://workout-tracker-69b08.web.app
+Abrir: https://[FIREBASE_PROJECT_ID].web.app
 
 ---
 
@@ -105,7 +105,7 @@ Importar `n8n/running_flows/MorningReminder-WorkoutTracker.json`
 
 En el nodo "Send WhatsApp", actualizar la URL:
 ```
-https://workout-tracker-69b08.web.app/w?t={{ $json.token }}
+https://[FIREBASE_PROJECT_ID].web.app/w?t={{ $json.token }}
 ```
 
 ---
@@ -134,7 +134,7 @@ gcloud run domain-mappings create \
 
 ### Re-deploy Backend
 ```bash
-cd workout-tracker-back && gcloud run deploy workout-api --source . --region us-central1 --project gen-lang-client-0432163259
+cd workout-tracker-back && gcloud run deploy workout-api --source . --region us-central1 --project [GCP_PROJECT_ID]
 ```
 
 ### Re-deploy Frontend

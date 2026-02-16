@@ -512,7 +512,7 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "914510145083991",
+        "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
         "recipientPhoneNumber": "={{ String($items('ProcessUserPreferences')[0].json.whatsapp_id) }}",
         "textBody": "=🎉 ¡Hola {{ $items('ProcessUserPreferences')[0].json.full_name }}!\n\n¡Tu rutina de entrenamiento de 4 semanas ha sido creada exitosamente! 💪\n\n📋 Tu plan está personalizado para:\n• Objetivo: {{ $items('ProcessUserPreferences')[0].json.primary_goal }}\n• Nivel: {{ $items('ProcessUserPreferences')[0].json.fitness_level }}\n• Días por semana: {{ $items('ProcessUserPreferences')[0].json.days_available }}\n• Músculos prioritarios: {{ $items('ProcessUserPreferences')[0].json.priority_muscles || 'Balanceado' }}\n\n📧 Ya te enviamos tu rutina de la Semana 1 a *{{ $items('ProcessUserPreferences')[0].json.email }}*. Revísala con calma para familiarizarte con cada ejercicio y su técnica.\n\n⚠️ Si no lo ves en tu bandeja de entrada, revisa la carpeta de SPAM o correo no deseado.\n\nCuando quieras, escríbeme y agendamos juntos tu semana de entrenamiento 📅",
         "additionalFields": {}

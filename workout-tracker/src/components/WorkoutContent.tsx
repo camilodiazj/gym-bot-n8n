@@ -1,6 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Check, ChevronDown, ChevronUp, Play, CheckCircle, Circle, ExternalLink, Repeat2, Info } from 'lucide-react';
 import { updateSetWeight } from '../services/api';
+import { useRestTimer } from '../hooks/useRestTimer';
+import { RestTimerOverlay } from './RestTimerOverlay';
 
 // Types
 interface SetData {
@@ -57,6 +59,7 @@ const defaultExercises: ExerciseData[] = [
     badgeColor: '#374151',
     instructionsExpanded: false,
     rir: '3-4',
+    restSeconds: 120,
     tips: [
       { text: 'Mantener la espalda recta y el core activado durante todo el ejercicio.' },
       { text: 'Mantener los talones en contacto con el suelo durante todo el movimiento.' },
@@ -107,6 +110,7 @@ const defaultExercises: ExerciseData[] = [
     badgeColor: '#374151',
     instructionsExpanded: true,
     rir: '2-3',
+    restSeconds: 90,
     tips: [
       { text: 'Mantener la espalda recta y el torso erguido durante todo el movimiento.' },
       { text: 'La rodilla delantera no debe sobrepasar la punta del pie.' },
@@ -182,7 +186,8 @@ const SetsTable: React.FC<{
   onUpdateReps?: (setNumber: number, reps: number) => void;
   onUpdateKg?: (setNumber: number, kg: string) => void;
   readOnly?: boolean;
-}> = ({ sets, onToggleSet, onUpdateReps, onUpdateKg, readOnly = false }) => {
+  isRestActive?: boolean;
+}> = ({ sets, onToggleSet, onUpdateReps, onUpdateKg, readOnly = false, isRestActive = false }) => {
   const [editingReps, setEditingReps] = React.useState<number | null>(null);
   const [editingKg, setEditingKg] = React.useState<number | null>(null);
   const [editValue, setEditValue] = React.useState<string>('');
@@ -203,12 +208,19 @@ const SetsTable: React.FC<{
       </div>
 
       {/* Set Rows */}
-      {sets.map((set) => (
+      {sets.map((set) => {
+        // Block interaction on uncompleted sets while rest timer is active
+        const isBlocked = isRestActive && !set.completed;
+        return (
         <div
           key={set.setNumber}
-          onClick={() => !readOnly && onToggleSet?.(set.setNumber)}
-          className={`grid grid-cols-3 py-3 border-b border-[#E5E7EB] last:border-b-0 transition-colors ${
-            readOnly ? '' : 'cursor-pointer hover:bg-[#E8F5E9]'
+          onClick={() => !readOnly && !isBlocked && onToggleSet?.(set.setNumber)}
+          className={`grid grid-cols-3 py-3 border-b border-[#E5E7EB] last:border-b-0 transition-all ${
+            isBlocked
+              ? 'opacity-50 pointer-events-none'
+              : readOnly
+              ? ''
+              : 'cursor-pointer hover:bg-[#E8F5E9]'
           } ${set.completed ? 'bg-[#F0FDF4]' : ''}`}
         >
           <div className="flex items-center justify-center gap-2">
@@ -304,7 +316,8 @@ const SetsTable: React.FC<{
             )}
           </div>
         </div>
-      ))}
+      );
+      })}
     </div>
   );
 };
@@ -327,7 +340,8 @@ const ExerciseCard: React.FC<{
   onToggleAltSet: (altIndex: number, setNumber: number) => void;
   onUpdateAltReps: (altIndex: number, setNumber: number, reps: number) => void;
   onUpdateAltKg: (altIndex: number, setNumber: number, kg: string) => void;
-}> = ({ exercise, onToggleInstructions, onToggleSet, onUpdateReps, onUpdateKg, onToggleAltSet, onUpdateAltReps, onUpdateAltKg }) => {
+  isRestActive?: boolean;
+}> = ({ exercise, onToggleInstructions, onToggleSet, onUpdateReps, onUpdateKg, onToggleAltSet, onUpdateAltReps, onUpdateAltKg, isRestActive = false }) => {
   const alts = exercise.alternativeExercises || [];
   const hasAlternatives = alts.length > 0;
   const totalViews = 1 + alts.length; // original + alternatives
@@ -489,6 +503,7 @@ const ExerciseCard: React.FC<{
         onToggleSet={(setNumber) => onToggleAltSet(viewIdx - 1, setNumber)}
         onUpdateReps={(setNumber, reps) => onUpdateAltReps(viewIdx - 1, setNumber, reps)}
         onUpdateKg={(setNumber, kg) => onUpdateAltKg(viewIdx - 1, setNumber, kg)}
+        isRestActive={isRestActive}
       />
     </div>
   );
@@ -601,6 +616,7 @@ const ExerciseCard: React.FC<{
         onToggleSet={onToggleSet}
         onUpdateReps={onUpdateReps}
         onUpdateKg={onUpdateKg}
+        isRestActive={isRestActive}
       />
     </div>
   );
@@ -642,6 +658,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
 }) => {
   const [exerciseList, setExerciseList] = useState<ExerciseData[]>(exercises);
   const exerciseRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { timerState, startTimer, dismissTimer } = useRestTimer();
 
   // Notify parent when exercises change
   useEffect(() => {
@@ -674,6 +691,10 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   }, []);
 
   const handleToggleSet = (exerciseId: string, setNumber: number) => {
+    const exercise = exerciseList.find(ex => ex.id === exerciseId);
+    const set = exercise?.sets.find(s => s.setNumber === setNumber);
+    const wasCompleted = set?.completed ?? false;
+
     setExerciseList((prev) => {
       let newList = prev.map((ex) =>
         ex.id === exerciseId
@@ -719,6 +740,16 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
 
       return newList;
     });
+
+    // Start rest timer when completing a non-last set
+    if (!wasCompleted && exercise?.restSeconds) {
+      const allOtherCompleted = exercise.sets.every(s =>
+        s.setNumber === setNumber ? true : s.completed
+      );
+      if (!allOtherCompleted) {
+        startTimer(exercise.restSeconds, exercise.name);
+      }
+    }
   };
 
   const handleUpdateReps = (exerciseId: string, setNumber: number, reps: number) => {
@@ -756,6 +787,11 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   };
 
   const handleToggleAltSet = (exerciseId: string, altIndex: number, setNumber: number) => {
+    const exercise = exerciseList.find(ex => ex.id === exerciseId);
+    const alt = exercise?.alternativeExercises?.[altIndex];
+    const set = alt?.sets.find(s => s.setNumber === setNumber);
+    const wasCompleted = set?.completed ?? false;
+
     setExerciseList((prev) => {
       let newList = prev.map((ex) =>
         ex.id === exerciseId && ex.alternativeExercises
@@ -802,6 +838,16 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
 
       return newList;
     });
+
+    // Start rest timer when completing a non-last set on alternative exercise
+    if (!wasCompleted && alt?.restSeconds) {
+      const allOtherCompleted = alt.sets.every(s =>
+        s.setNumber === setNumber ? true : s.completed
+      );
+      if (!allOtherCompleted) {
+        startTimer(alt.restSeconds, alt.name);
+      }
+    }
   };
 
   const handleUpdateAltReps = (exerciseId: string, altIndex: number, setNumber: number, reps: number) => {
@@ -839,7 +885,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full pb-8">
+    <div className={`flex flex-col gap-6 w-full ${timerState.isActive ? 'pb-[140px]' : 'pb-8'}`}>
       {/* Exercise Cards */}
       <div className="flex flex-col gap-6 w-full">
         {exerciseList.map((exercise) => (
@@ -856,6 +902,7 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
               onToggleAltSet={(altIndex, setNumber) => handleToggleAltSet(exercise.id, altIndex, setNumber)}
               onUpdateAltReps={(altIndex, setNumber, reps) => handleUpdateAltReps(exercise.id, altIndex, setNumber, reps)}
               onUpdateAltKg={(altIndex, setNumber, kg) => handleUpdateAltKg(exercise.id, altIndex, setNumber, kg)}
+              isRestActive={timerState.isActive}
             />
           </div>
         ))}
@@ -896,6 +943,16 @@ export const WorkoutContent: React.FC<WorkoutContentProps> = ({
           </>
         )}
       </button>
+
+      {timerState.isActive && (
+        <RestTimerOverlay
+          remainingSeconds={timerState.remainingSeconds}
+          totalSeconds={timerState.totalSeconds}
+          exerciseName={timerState.exerciseName}
+          isFinished={timerState.isFinished}
+          onDismiss={dismissTimer}
+        />
+      )}
     </div>
   );
 };
