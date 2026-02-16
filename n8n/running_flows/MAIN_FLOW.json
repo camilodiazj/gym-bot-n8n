@@ -1378,7 +1378,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://[FIREBASE_PROJECT_ID].web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
+        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = $vars.FRONTEND_URL;\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
