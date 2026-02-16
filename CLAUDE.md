@@ -160,7 +160,7 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 |-------|---------|-------------|
 | `magic_links` | Passwordless auth via WhatsApp deep links | `code` (VARCHAR PK), `user_id`, `created_at`, `expires_at` (24h default), `used_at` |
 
-**Magic link URL format**: `https://workout-tracker-69b08.web.app/w?c={code}` (local: `http://localhost:5173/w?c={code}`). The `code` is a short hex string (e.g., `7fda02`). Do NOT use `/auth?code=` — that path does not exist.
+**Magic link URL format**: `https://[FIREBASE_PROJECT_ID].web.app/w?c={code}` (local: `http://localhost:5173/w?c={code}`). The `code` is a short hex string (e.g., `7fda02`). Do NOT use `/auth?code=` — that path does not exist.
 
 ### Reference/Lookup Tables
 
@@ -334,7 +334,7 @@ make dev                 # Hot reload (requires air)
 
 - **Frontend**: Firebase Hosting (manual deploy via Firebase CLI)
 - **Backend**: Google Cloud Run (deploy via `gcloud run deploy`)
-- **Production API**: `https://workout-api-148665080566.us-central1.run.app/api/v1`
+- **Production API**: `https://workout-api-[GCP_PROJECT_NUMBER].us-central1.run.app/api/v1`
 
 ### n8n Workflows
 

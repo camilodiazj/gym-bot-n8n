@@ -1404,7 +1404,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://workout-tracker-69b08.web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
+        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://[FIREBASE_PROJECT_ID].web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1702,8 +1702,8 @@
         "json": {
           "messaging_product": "whatsapp",
           "metadata": {
-            "display_phone_number": "573213413664",
-            "phone_number_id": "914510145083991"
+            "display_phone_number": "550000000000",
+            "phone_number_id": "YOUR_PHONE_NUMBER_ID"
           },
           "contacts": [
             {
@@ -1736,7 +1736,7 @@
         "json": {
           "code": "8e230d",
           "user_id": "5d3b501c-8ac5-4dfd-9c0d-4ef9a8a15f9c",
-          "workout_url": "https://workout-tracker-69b08.web.app/w?c=8e230d"
+          "workout_url": "https://[FIREBASE_PROJECT_ID].web.app/w?c=8e230d"
         },
         "pairedItem": {
           "item": 0
@@ -1758,20 +1758,20 @@
         "json": {
           "messaging_product": "whatsapp",
           "metadata": {
-            "display_phone_number": "573213413664",
-            "phone_number_id": "914510145083991"
+            "display_phone_number": "550000000000",
+            "phone_number_id": "YOUR_PHONE_NUMBER_ID"
           },
           "contacts": [
             {
               "profile": {
                 "name": "Helena Jaimes"
               },
-              "wa_id": "573208780020"
+              "wa_id": "550000000000"
             }
           ],
           "messages": [
             {
-              "from": "573208780020",
+              "from": "550000000000",
               "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUM1NTRBRTE4NkMwODk3QUVEOTkxNzY1NTdEQURBNUUA",
               "timestamp": "1770038182",
               "text": {

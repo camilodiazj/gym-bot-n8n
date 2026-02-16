@@ -251,7 +251,7 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "914510145083991",
+        "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
         "recipientPhoneNumber": "={{ $json.full_phone_number }}",
         "textBody": "={{ $json.message }}",
         "additionalFields": {}

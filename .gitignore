@@ -13,13 +13,21 @@
 
 # n8n
 .n8n/
-# Claude Code (track agents, exclude private/local files)
+# Claude Code (keep agents/ and skills/, exclude local settings and debug)
 .claude/settings.local.json
 .claude/debug/
 .claude/.DS_Store
+
+# Cursor / Junie
+.cursor/
+.junie/
 
 # Separate projects
 n8n-mcp/
 
 # Temp test files
 test/
+
+# TestSprite
+workout-tracker/testsprite_tests/tmp/
+.testsprite/

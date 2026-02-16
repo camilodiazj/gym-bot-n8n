@@ -244,12 +244,12 @@ All notable changes to GymBot will be documented in this file.
 - Updated `GymRatFlow_test_plan.md` to v4.0 with step-by-step execution guide, architecture diagram, and troubleshooting section
 
 ## [1.3.2] - 2026-01-22
-https://gym-rat.atlassian.net/browse/KAN-49
+https://[JIRA_INSTANCE].atlassian.net/browse/KAN-49
 Automated tests with "TestRunner"
 
 
 ## [1.3.1] - 2026-01-22
-https://gym-rat.atlassian.net/browse/KAN-49
+https://[JIRA_INSTANCE].atlassian.net/browse/KAN-49
 Added e2e tests for gym rat flow
 
 ## [1.3.0] - 2026-01-21

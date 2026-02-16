@@ -23,7 +23,7 @@
 | 7 | `set_celebration_msg` | `set` | Celebration template + next_week calc |
 | 8 | `set_growth_msg` | `set` | Growth mindset template |
 | 9 | `set_reengagement_msg` | `set` | Re-engagement template |
-| 10 | `send_whatsapp` | `whatsApp` (v1.1) | Credential `xIjy4zDHyjIvGQT4`, phoneNumberId `914510145083991` |
+| 10 | `send_whatsapp` | `whatsApp` (v1.1) | Credential `xIjy4zDHyjIvGQT4`, phoneNumberId `YOUR_PHONE_NUMBER_ID` |
 
 **Core SQL** (node 2):
 ```sql
