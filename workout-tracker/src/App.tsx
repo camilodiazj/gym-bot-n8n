@@ -237,10 +237,16 @@ function App() {
   const handleComplete = async () => {
     if (isCompleting || isCompleted || !sessionId) return
 
-    // Check if all sets are completed
-    const totalSets = exercises.reduce((sum, ex) => sum + ex.sets.length, 0)
+    // Check if all sets are completed (count active exercise: primary or alternative)
+    const getActiveSets = (ex: ExerciseData) => {
+      const altWithCompleted = ex.alternativeExercises?.find((alt) =>
+        alt.sets.some((s) => s.completed)
+      )
+      return altWithCompleted ? altWithCompleted.sets : ex.sets
+    }
+    const totalSets = exercises.reduce((sum, ex) => sum + getActiveSets(ex).length, 0)
     const completedSets = exercises.reduce(
-      (sum, ex) => sum + ex.sets.filter((s) => s.completed).length,
+      (sum, ex) => sum + getActiveSets(ex).filter((s) => s.completed).length,
       0
     )
 
