@@ -10,8 +10,8 @@
     "testIds": [],
     "additionalInstruction": "CRITICAL AUTHENTICATION INSTRUCTIONS:\n\n1. For tests TC001, TC002, TC003 (magic link tests): Use URL http://localhost:5173/?c=TEST01 - this code is intentionally expired/used for testing error handling.\n\n2. For ALL OTHER TESTS (TC004 onwards - functional tests): Use URL http://localhost:5173/ WITHOUT any ?c= parameter. The app will automatically authenticate using VITE_DEV_USER_ID environment variable. This provides stable authentication that won't expire.\n\nDO NOT use ?c=TEST01 for functional tests - only use the base URL http://localhost:5173/",
     "envs": {
-      "API_KEY": "REDACTED_TESTSPRITE_API_KEY"
+      "API_KEY": "sk-user-Ht07lWBvXGTAdDk13P5YcVyjj4DvR4aXXMzFGJRea2gLTbJNyQhpPmJpHy5Npf6NId_Oa3Hy_IZ9edZNuX82Hxn9eMOoSpKKoEVQPTZ84Hd2UCYwXspo2TkooOrCmnao45U"
     }
   },
-  "proxy": "REDACTED_PROXY_URL"
+  "proxy": "http://61299d60-0e1e-4b90-ae38-85a95d7aa17e:X7Npn7Tabdhd5ly36zrib2iuuWOeiwwx@tun.testsprite.com:8080"
 }

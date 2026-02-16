@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3584,
-        1664
+        -9504,
+        4384
       ],
-      "id": "dfc30d14-9ac9-41b2-a871-07eabfde8d62",
+      "id": "fb3efdcb-63c7-4971-bfc7-8d524102742f",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2576,
-        1664
+        -8496,
+        4384
       ],
-      "id": "0a6008ca-c323-4822-9e3d-451d10f96f46",
+      "id": "99e2252b-3b1b-42f9-ad9d-b69e3865a25e",
       "name": "Send message",
       "webhookId": "10fb6670-6b0a-4139-b31e-e009fca86100",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -4688,
-        2128
+        -10608,
+        4848
       ],
-      "id": "3fd53dd3-08fb-4ed9-b3d1-47ddbbec8e57",
+      "id": "80c3edac-63f5-4b2c-a60c-d73e92bbba4e",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -4656,
-        2384
+        -10576,
+        5104
       ],
-      "id": "4204d71a-aa82-4a8e-b1a1-bd6a1a5151f3",
+      "id": "f9fd2a13-4a38-4ffc-a2da-a00bf77601c3",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -4304,
-        2144
+        -10224,
+        4864
       ],
-      "id": "6c9a72b1-a08b-4f13-a00a-dfb5cb8a80ca",
+      "id": "dda228d4-af75-440b-b898-d5fb4dc82bee",
       "name": "Send message2",
       "webhookId": "16f0732e-1b44-4c37-9a47-4d32112c6e78",
       "retryOnFail": true,
@@ -122,10 +122,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -7424,
-        2224
+        -13344,
+        4944
       ],
-      "id": "4c071f23-347c-49a0-8f38-bb6838c25d7b",
+      "id": "8ae352bf-420d-409d-adba-587467bd39d2",
       "name": "WhatsApp_Trigger1",
       "webhookId": "8bf52a73-7fd4-4762-ba3f-f77e5b9b8f7a",
       "credentials": {
@@ -151,10 +151,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6576,
-        2240
+        -12496,
+        4960
       ],
-      "id": "21439280-b52a-46e7-93e5-43136c2b9098",
+      "id": "53e9b66c-6a22-4ea3-a07d-1ec73f438973",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -181,10 +181,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6080,
-        2208
+        -12000,
+        4928
       ],
-      "id": "8b9fbeb8-8122-40f0-9993-f3b93eca8cb2",
+      "id": "e87f19dc-41cd-42c4-b00d-03cb8050aec1",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -205,10 +205,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -4544,
-        1936
+        -10464,
+        4656
       ],
-      "id": "727a1405-867c-4e84-b8dd-b9a8badc812c",
+      "id": "234c41e0-7233-4788-83d7-bcad6baef93d",
       "name": "Send message1",
       "webhookId": "45dd2929-4021-4904-ae82-c5f878f9a340",
       "executeOnce": true,
@@ -228,10 +228,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -3376,
-        1904
+        -9296,
+        4624
       ],
-      "id": "1400c77e-78e7-4151-a0ba-7c5e7b6e800f",
+      "id": "9cfa4957-3ce3-45b1-8f4a-31a31fade359",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -251,10 +251,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -4368,
-        1264
+        -10288,
+        3984
       ],
-      "id": "76069c11-7fcd-4d12-b030-f8bf99ff75ac",
+      "id": "7a1abf80-9243-4a47-ae8d-82c6380ede89",
       "name": "Intention_Agent"
     },
     {
@@ -270,10 +270,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -4400,
-        1568
+        -10320,
+        4288
       ],
-      "id": "37e3022a-ec57-4599-b554-e5f6ce2bf23f",
+      "id": "1c4dcc1f-238b-41c8-8a74-b5abf25b5363",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -390,10 +390,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -4000,
-        1200
+        -9920,
+        3920
       ],
-      "id": "c52fed62-47f5-49fb-b0e4-f05f42c29abf",
+      "id": "7f357449-d321-49b9-a926-664f53dc2321",
       "name": "Switch"
     },
     {
@@ -407,10 +407,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -3360,
-        1168
+        -9280,
+        3888
       ],
-      "id": "4264c009-3393-4805-977c-9c1ae3d551a0",
+      "id": "3c504556-3747-40ba-9da5-ae1475b3e374",
       "name": "Send message3",
       "webhookId": "d91b39ce-c157-41c0-806d-e89f891c234b",
       "credentials": {
@@ -429,10 +429,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -4240,
-        1552
+        -10160,
+        4272
       ],
-      "id": "34436dac-a610-474e-9ae8-d8e52017b76a",
+      "id": "46fabb59-cbb1-4e57-8156-56e8bd3e0ca2",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -450,10 +450,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -3552,
-        1360
+        -9472,
+        4080
       ],
-      "id": "29c701cc-c2e2-4392-8302-b81fdab9af57",
+      "id": "71989388-9819-4cf8-a502-c592b2aaf938",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -470,10 +470,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -3552,
-        1904
+        -9472,
+        4624
       ],
-      "id": "52a35a4c-7c8b-4b90-a3f2-52feffb82f26",
+      "id": "fae95f22-c6c6-4884-87f4-533512463ba2",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -510,10 +510,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -4944,
-        1808
+        -10864,
+        4528
       ],
-      "id": "4d6a2a7f-7a14-48e9-846b-0f0b9db4b448",
+      "id": "0d859799-5519-41e4-9493-5d34a8f079f9",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -545,10 +545,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3808,
-        1664
+        -9728,
+        4384
       ],
-      "id": "bde9873d-6709-4baa-8d56-7f4905b6e66b",
+      "id": "a38abe6b-888c-411f-bedb-a22464bea847",
       "name": "If_Has_Routine_Today",
       "executeOnce": true
     },
@@ -561,10 +561,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -5344,
-        2368
+        -11264,
+        5088
       ],
-      "id": "b3e7526e-02d2-449d-b8cd-b74fc471ebd5",
+      "id": "fe889952-74a2-4f58-9c2e-9faacfa96fe3",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -582,10 +582,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -5136,
-        2544
+        -11056,
+        5264
       ],
-      "id": "076d5864-3c3f-4369-830c-22e6941d8b4d",
+      "id": "04985148-eb9a-4890-97f5-5b7f8c65eec8",
       "name": "Merge"
     },
     {
@@ -616,10 +616,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -5744,
-        2208
+        -11664,
+        4928
       ],
-      "id": "18f22ff2-5f12-4bcf-9a11-03a7e03bd13b",
+      "id": "15281d69-cecd-4085-b6ff-56828b8238e1",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -644,10 +644,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5360,
-        2576
+        -11280,
+        5296
       ],
-      "id": "c4c32a13-9090-4576-aea8-b157f6b87aa4",
+      "id": "c52f6f5c-bf9e-41b7-9134-d7d946218229",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -666,10 +666,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -5376,
-        2784
+        -11296,
+        5504
       ],
-      "id": "17c200f6-b350-4a8b-8dba-75c4c67af86c",
+      "id": "79d62367-11e2-4349-8db5-1d39ba15b7de",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -687,10 +687,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -4512,
-        2384
+        -10432,
+        5104
       ],
-      "id": "b8035180-d303-4ec6-aaad-2a66b46f355f",
+      "id": "0568b418-b61a-47bb-9fbd-a451a9f25797",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -734,10 +734,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -4368,
-        2384
+        -10288,
+        5104
       ],
-      "id": "4ea3e5e6-ae61-47db-9985-fcbd313263c1",
+      "id": "36a94a4e-6e8b-45b2-9c8c-4771c4ac3e83",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "supabaseApi": {
@@ -754,10 +754,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -6048,
-        3328
+        -11968,
+        6048
       ],
-      "id": "369b7b8c-8f58-473e-a90d-473fe14b6ef4",
+      "id": "48379908-704c-4806-8b99-a2082a67160e",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -775,10 +775,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -5888,
-        3328
+        -11808,
+        6048
       ],
-      "id": "44b7c2e3-fc6a-472a-98ce-411bfd5edd71",
+      "id": "7baf0393-9bcb-417a-ba34-31e7ad79f96a",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -815,10 +815,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -6368,
-        2240
+        -12288,
+        4960
       ],
-      "id": "857189a3-91d7-4f5b-b697-2f84c8a1155e",
+      "id": "8e7e0875-c5b4-45e9-a093-edb087c8039d",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -833,10 +833,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -5600,
-        3072
+        -11520,
+        5792
       ],
-      "id": "b0ee5853-a170-47f8-b919-1f23a937b7f8",
+      "id": "46af2b31-d5f8-4921-92d6-2272597b8515",
       "name": "Send message4",
       "webhookId": "62006b73-0285-4ac9-ad46-2b327a2d5be5",
       "credentials": {
@@ -857,10 +857,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -5904,
-        3072
+        -11824,
+        5792
       ],
-      "id": "97b050ce-a7f5-499b-a90f-faf6e823f367",
+      "id": "353a9e50-bc69-477e-8484-8e15c5aa5dba",
       "name": "KYC Agent",
       "retryOnFail": true
     },
@@ -875,10 +875,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3696,
-        1168
+        -9616,
+        3888
       ],
-      "id": "17170c5e-f587-48ae-9be7-f554d46d8978",
+      "id": "3c484be8-8fa7-47a7-ac68-f0b131f0bb9b",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -989,10 +989,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -5728,
-        3328
+        -11648,
+        6048
       ],
-      "id": "0294cad9-a6ef-406d-b599-73e346d4af11",
+      "id": "02744db2-297f-40ac-8723-6bfcdd0d07f3",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -1008,10 +1008,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -3712,
-        1872
+        -9632,
+        4592
       ],
-      "id": "9c93f60a-02b1-46ab-aef3-fa751ee206e2",
+      "id": "3695eddb-d559-480e-8457-8a8007af59e2",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -1027,10 +1027,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -5344,
-        1808
+        -11264,
+        4528
       ],
-      "id": "6fa59f91-2fe2-4b0e-9c6e-4da1b80d9dee",
+      "id": "e46f0388-6add-4a0e-9462-f754329b0a78",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1071,10 +1071,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -7104,
-        2272
+        -13024,
+        4992
       ],
-      "id": "70b33d00-4a4e-41eb-b614-30e357a1a29a",
+      "id": "4b09c748-fab5-4a88-b986-a1a854e5bf00",
       "name": "If"
     },
     {
@@ -1084,10 +1084,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -6800,
-        2240
+        -12720,
+        4960
       ],
-      "id": "5b4d303a-58ab-431e-a2f4-a502a7e7658f",
+      "id": "59c45082-a953-4fa0-826c-ba8643e736e8",
       "name": "Normalize_Message"
     },
     {
@@ -1114,10 +1114,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6272,
-        2048
+        -12192,
+        4768
       ],
-      "id": "7e9fca08-0498-4a14-9545-0917ad04528c",
+      "id": "4605375a-37a6-405a-9327-6a5a0cb8e9b2",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1155,10 +1155,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -6080,
-        2048
+        -12000,
+        4768
       ],
-      "id": "cb080391-e7a2-4a49-8512-e822041e6a0a",
+      "id": "a3ff10be-764a-422c-b40f-00e710e6fba9",
       "name": "Has_Pending_Task"
     },
     {
@@ -1170,10 +1170,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -3504,
-        960
+        -9424,
+        3680
       ],
-      "id": "0d44f3ff-fe70-4c55-9299-e7889a460b9e",
+      "id": "f3087ec5-39e8-45cb-959b-b375dac6db96",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1189,10 +1189,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -7312,
-        2448
+        -13232,
+        5168
       ],
-      "id": "37ede993-cd9a-4b1f-adb2-4f05f41061af",
+      "id": "5d753845-c508-4789-bee7-d4e762b89fe1",
       "name": "When Executed by Another Workflow",
       "disabled": true
     },
@@ -1203,10 +1203,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -6576,
-        2432
+        -12496,
+        5152
       ],
-      "id": "d0606d8d-1d92-48d1-a34b-977a5d8fa94f",
+      "id": "3ac6dd00-b973-4ca6-b409-2e2dc4c82d6a",
       "name": "Filtered Message"
     },
     {
@@ -1216,10 +1216,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2368,
-        1664
+        -8288,
+        4384
       ],
-      "id": "1dab48d7-0a9d-41da-a9bd-fb129fb52b46",
+      "id": "4b4b39a7-a1d6-4b83-af06-3cd3a7f4f75c",
       "name": "Filtered Message1"
     },
     {
@@ -1229,10 +1229,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4608,
-        3104
+        -10528,
+        5824
       ],
-      "id": "bdeb37ee-dcc5-4076-bb9b-6cc244c7d49a",
+      "id": "55f09724-a5f5-473e-be23-4ae779e1bdda",
       "name": "Filtered Message2"
     },
     {
@@ -1242,10 +1242,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3168,
-        1168
+        -9088,
+        3888
       ],
-      "id": "ee71b176-2ec6-4757-8d82-7fb3b7140277",
+      "id": "1232f8af-48b2-48bf-a72b-397873ad7ee5",
       "name": "Filtered Message3"
     },
     {
@@ -1255,10 +1255,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4064,
-        2144
+        -9984,
+        4864
       ],
-      "id": "9856298a-2117-417f-8744-b846de9f5a9d",
+      "id": "4b22bb25-a392-47d9-8a53-b04588fdcad4",
       "name": "Filtered Message4"
     },
     {
@@ -1268,10 +1268,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4304,
-        1936
+        -10224,
+        4656
       ],
-      "id": "dc8a7bba-2b63-4c80-87eb-57c0e02db7d2",
+      "id": "bea23f72-f24e-418a-8169-76a6452e6052",
       "name": "Filtered Message5"
     },
     {
@@ -1290,10 +1290,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5392,
-        3072
+        -11312,
+        5792
       ],
-      "id": "327a365c-3679-4708-9df0-fb7057859af8",
+      "id": "ecd006c1-7067-4934-9a2b-42bed5df7502",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1331,10 +1331,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -5200,
-        3072
+        -11120,
+        5792
       ],
-      "id": "5203a566-72aa-455f-aa9c-18e6c1e397af",
+      "id": "119c0181-2f6d-4366-b475-7aeb45a9500d",
       "name": "If1"
     },
     {
@@ -1374,10 +1374,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -4896,
-        2928
+        -10816,
+        5648
       ],
-      "id": "6657db3a-c556-48cc-80e4-eb2e5173af3a",
+      "id": "d0c208ab-6777-4800-a89f-d2a352add84e",
       "name": "Call 'WORKOUT_CREATOR'",
       "alwaysOutputData": true
     },
@@ -1390,10 +1390,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -3216,
-        1776
+        -9136,
+        4496
       ],
-      "id": "a4214867-513f-4eee-b7d7-b562ccb71cba",
+      "id": "b301f732-fc79-48f7-9386-dc221dd09f38",
       "name": "Create Magic Link",
       "credentials": {
         "postgres": {
@@ -1409,10 +1409,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3024,
-        1776
+        -8944,
+        4496
       ],
-      "id": "cee51560-b374-4019-942d-772256e62792",
+      "id": "9d463cb6-e3f4-4f61-929c-9478a80531f7",
       "name": "Build URL"
     },
     {
@@ -1424,10 +1424,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -2768,
-        1664
+        -8688,
+        4384
       ],
-      "id": "2c0128f2-e678-43cb-8e29-36e692d91abc",
+      "id": "22644200-63ca-4dd2-ba35-c9608d9d7bfb",
       "name": "Merge1"
     },
     {
@@ -1439,10 +1439,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -3744,
-        752
+        -9664,
+        3472
       ],
-      "id": "906fc80c-854a-479f-8470-4449892b2c19",
+      "id": "ec7af6bc-b31d-4002-b372-9f9608cec412",
       "name": "Fetch_Plan_For_Renewal",
       "executeOnce": true,
       "credentials": {
@@ -1542,10 +1542,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -3504,
-        752
+        -9424,
+        3472
       ],
-      "id": "54fdfbc2-e837-4b74-94e3-316848477179",
+      "id": "91eb56b6-2be8-438e-ab3a-a476e2ca78eb",
       "name": "Execute_Mesocycle_Renewal_Manual",
       "alwaysOutputData": true
     },
@@ -1556,10 +1556,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4896,
-        2560
+        -10816,
+        5280
       ],
-      "id": "3ae151ca-b546-4485-8541-40ed01192521",
+      "id": "b16d1dea-6deb-4313-a172-cee43feea120",
       "name": "Check_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1591,10 +1591,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -4672,
-        2560
+        -10592,
+        5280
       ],
-      "id": "d72e22e9-d728-450f-94eb-d96d909cc78a",
+      "id": "43d60bdb-0d97-498f-bedc-20596f06e56a",
       "name": "If_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1688,49 +1688,161 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -4368,
-        2688
+        -10288,
+        5408
       ],
-      "id": "7fede148-2c46-4f34-acd3-6cb6e4b60696",
+      "id": "7b991567-bc35-48e5-9529-afd4a85216f1",
       "name": "Execute_Mesocycle_Renewal",
       "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $('AI Agent1').first().json.output }}",
+              "rightValue": "agendada",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -10000,
+        5120
+      ],
+      "id": "988ab21a-1f1d-4475-967d-7f9b665a4398",
+      "name": "IsScheduleComplete"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT uws.day_routine_id, uws.week, uws.week_day, uws.session_name, uws.planned_day, u.email, u.full_name, ugp.preferred_schedule, ugp.session_duration_mins, ugp.training_environment, w.day_name, w.exercise_order, w.sets, w.reps, w.rir, w.\"rest-seconds\" AS rest_seconds, e.spanish_name, e.role FROM user_weekly_schedule uws JOIN users u ON uws.user_id = u.user_id LEFT JOIN users_gym_profile ugp ON u.cel_number = ugp.whatsapp_id LEFT JOIN workouts w ON w.user_id = uws.user_id AND w.week = uws.week AND w.day_name = uws.session_name LEFT JOIN exercises e ON w.exercise_id = e.exercise_id WHERE uws.user_id = '{{ $items(\"GetUser\")[0].json.user_id }}' AND uws.\"Completed\" = false AND uws.week = (SELECT MAX(week) FROM user_weekly_schedule WHERE user_id = '{{ $items(\"GetUser\")[0].json.user_id }}') ORDER BY uws.planned_day, w.exercise_order",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -9760,
+        5120
+      ],
+      "id": "99511a3c-c44e-4e5d-9c41-c9c00f1205c7",
+      "name": "GetCalendarData",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO magic_links (code, user_id, expires_at) VALUES (substr(md5(random()::text || '{{ $items(\"GetUser\")[0].json.user_id }}' || now()::text), 1, 6), '{{ $items(\"GetUser\")[0].json.user_id }}', NOW() + INTERVAL '7 days') ON CONFLICT (code) DO UPDATE SET user_id = EXCLUDED.user_id, created_at = NOW(), expires_at = NOW() + INTERVAL '7 days', used_at = NULL RETURNING code",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -9520,
+        5120
+      ],
+      "id": "0bd9a3da-450a-4fd7-b8ba-e6f3779fe29a",
+      "name": "CreateCalendarMagicLink",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------- INPUT ----------\nconst allRows = $('GetCalendarData').all().map(i => i.json);\nconst magicCode = $('CreateCalendarMagicLink').first().json.code;\nconst magicUrl = `https://workout-tracker-69b08.web.app/w?c=${magicCode}`;\n\nconsole.log('[PrepareCalendarEvents] rows:', allRows.length);\nfor (let i = 0; i < allRows.length; i++) {\n  console.log(`[PrepareCalendarEvents] row[${i}] planned_day:`, JSON.stringify(allRows[i].planned_day), 'type:', typeof allRows[i].planned_day, 'session_duration_mins:', JSON.stringify(allRows[i].session_duration_mins));\n}\n\nif (allRows.length === 0) return [];\n\n// ---------- CONFIG ----------\nconst timeMap = { 'Mañana': '06:00', 'Tarde': '16:00', 'Noche': '19:00' };\nconst roleLabels = { compound: 'EJERCICIOS COMPUESTOS', core: 'CORE', isolation: 'AISLAMIENTO' };\nconst roleOrder = ['compound', 'core', 'isolation'];\n\nfunction parseDuration(str) {\n  if (!str) return 60;\n  const s = String(str);\n  const match = s.match(/(\\d+)\\s*[-\\u2013\\u2014]\\s*(\\d+)/);\n  if (match) return parseInt(match[2]);\n  const single = s.match(/(\\d+)/);\n  return single ? parseInt(single[1]) : 60;\n}\n\nfunction parseDate(dateStr) {\n  const now = DateTime.now().setZone('America/Bogota');\n  if (!dateStr && dateStr !== 0) return now;\n  const s = String(dateStr).trim();\n  if (!s || s === 'null' || s === 'undefined') return now;\n\n  console.log('[parseDate] input:', JSON.stringify(s));\n\n  // ISO format: YYYY-MM-DD (must start with 4 digits)\n  const isoMatch = s.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);\n  if (isoMatch) {\n    const yr = parseInt(isoMatch[1]);\n    const mo = parseInt(isoMatch[2]);\n    const dy = parseInt(isoMatch[3]);\n    console.log('[parseDate] ISO parsed -> year:', yr, 'month:', mo, 'day:', dy);\n    return DateTime.fromObject({ year: yr, month: mo, day: dy }, { zone: 'America/Bogota' });\n  }\n\n  // DD/MM or DD/MM/YYYY\n  const slashMatch = s.match(/^(\\d{1,2})\\/(\\d{1,2})(?:\\/(\\d{2,4}))?$/);\n  if (slashMatch) {\n    const dd = parseInt(slashMatch[1]);\n    const mm = parseInt(slashMatch[2]);\n    let year;\n    if (slashMatch[3]) {\n      year = parseInt(slashMatch[3]);\n      if (year < 100) year += 2000;\n    } else {\n      year = now.year;\n      if (mm < now.month) year += 1;\n    }\n    console.log('[parseDate] slash parsed -> year:', year, 'month:', mm, 'day:', dd);\n    return DateTime.fromObject({ year, month: mm, day: dd }, { zone: 'America/Bogota' });\n  }\n\n  // Fallback: try Luxon fromISO as last resort\n  console.log('[parseDate] no pattern matched, trying fromISO fallback');\n  const attempt = DateTime.fromISO(s, { zone: 'America/Bogota' });\n  if (attempt.isValid) return attempt;\n\n  console.log('[parseDate] all parsing failed, returning today');\n  return now;\n}\n\nfunction addMinutes(isoStr, mins) {\n  return DateTime.fromISO(isoStr, { zone: 'America/Bogota' }).plus({ minutes: mins }).toFormat(\"yyyy-MM-dd'T'HH:mm:ss\");\n}\n\n// ---------- GROUP BY DAY ----------\nconst dayMap = new Map();\nfor (const row of allRows) {\n  const key = row.planned_day;\n  if (!dayMap.has(key)) {\n    dayMap.set(key, {\n      day_routine_id: row.day_routine_id,\n      session_name: row.session_name,\n      planned_day: row.planned_day,\n      week_day: row.week_day,\n      email: row.email,\n      full_name: row.full_name,\n      preferred_schedule: row.preferred_schedule,\n      session_duration_mins: row.session_duration_mins,\n      training_environment: row.training_environment,\n      exercises: []\n    });\n  }\n  if (row.spanish_name) {\n    dayMap.get(key).exercises.push({\n      exercise_order: row.exercise_order,\n      spanish_name: row.spanish_name,\n      sets: row.sets,\n      reps: row.reps,\n      rir: row.rir,\n      rest_seconds: row.rest_seconds,\n      role: row.role || 'compound'\n    });\n  }\n}\n\n// ---------- BUILD EVENTS ----------\nconst events = [];\nfor (const [, day] of dayMap) {\n  const startTime = timeMap[day.preferred_schedule] || '06:00';\n  const durationMins = parseDuration(day.session_duration_mins);\n  const date = parseDate(day.planned_day);\n  const startDT = date.set({\n    hour: parseInt(startTime.split(':')[0]),\n    minute: parseInt(startTime.split(':')[1])\n  }).toFormat(\"yyyy-MM-dd'T'HH:mm:ss\");\n  const endDT = addMinutes(startDT, durationMins);\n\n  // Build description grouped by role\n  let desc = 'Tu rutina del dia:\\n\\n';\n  const byRole = {};\n  for (const ex of day.exercises) {\n    if (!byRole[ex.role]) byRole[ex.role] = [];\n    byRole[ex.role].push(ex);\n  }\n  for (const role of roleOrder) {\n    const exs = byRole[role];\n    if (!exs || exs.length === 0) continue;\n    const first = exs[0];\n    const header = `${roleLabels[role] || role.toUpperCase()} (${first.sets} sets x ${first.reps} reps | RIR ${first.rir})`;\n    desc += `${header}\\n`;\n    for (const ex of exs) {\n      desc += `${ex.exercise_order}. ${ex.spanish_name}\\n`;\n    }\n    desc += '\\n';\n  }\n  desc += `Abre tu rutina: ${magicUrl}`;\n\n  const location = (day.training_environment || 'GYM') === 'HOME' ? 'Casa' : 'Gimnasio';\n\n  events.push({\n    json: {\n      day_routine_id: day.day_routine_id,\n      summary: `${day.session_name} - Entrenamiento Kairos`,\n      description: desc,\n      startDateTime: startDT,\n      endDateTime: endDT,\n      attendeeEmail: day.email,\n      location,\n      timezone: 'America/Bogota'\n    }\n  });\n}\n\nreturn events;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -9280,
+        5120
+      ],
+      "id": "1eac992d-b696-4c3f-8079-8dace9121d98",
+      "name": "PrepareCalendarEvents",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "kai.ros.col.lifestyle@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kai.ros.col.lifestyle@gmail.com"
+        },
+        "start": "={{ $json.startDateTime }}",
+        "end": "={{ $json.endDateTime }}",
+        "additionalFields": {
+          "description": "={{ $json.description }}",
+          "guestsCanModify": false,
+          "location": "={{ $json.location }}",
+          "sendUpdates": "all",
+          "summary": "={{ $json.summary }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -9040,
+        5120
+      ],
+      "id": "2e87f96d-f99a-40db-806f-628adbc5b489",
+      "name": "GoogleCalendar_CreateEvent",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "7bUOdDmuyoIefiTG",
+          "name": "Google Calendar Kai.Ros"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE user_weekly_schedule SET calendar_event_id = '{{ $json.id }}' WHERE day_routine_id = '{{ $('PrepareCalendarEvents').item.json.day_routine_id }}'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -8800,
+        5120
+      ],
+      "id": "aead7aba-b7a6-4b0c-9acd-6713345b9f18",
+      "name": "UpdateCalendarEventId",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
     }
   ],
   "pinData": {
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "messaging_product": "whatsapp",
-          "metadata": {
-            "display_phone_number": "573213413664",
-            "phone_number_id": "914510145083991"
-          },
-          "contacts": [
-            {
-              "profile": {
-                "name": "Test NewUser"
-              },
-              "wa_id": "570000000009"
-            }
-          ],
-          "messages": [
-            {
-              "from": "570000000009",
-              "id": "wamid.E2E-TC002",
-              "timestamp": "1769085000",
-              "text": {
-                "body": "Hola, quiero empezar a entrenar"
-              },
-              "type": "text"
-            }
-          ],
-          "field": "messages"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
     "Build URL": [
       {
         "json": {
@@ -1776,6 +1888,40 @@
               "timestamp": "1770038182",
               "text": {
                 "body": "Lunes Miércoles y Viernes"
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "573213413664",
+            "phone_number_id": "914510145083991"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "Test NoSchedule"
+              },
+              "wa_id": "570000000001"
+            }
+          ],
+          "messages": [
+            {
+              "from": "570000000001",
+              "id": "wamid.E2E-TC003-TURN4",
+              "timestamp": "1771200786",
+              "text": {
+                "body": "Sí, confirmo. ¡Gracias!"
               },
               "type": "text"
             }
@@ -2284,6 +2430,11 @@
             "node": "Filtered Message4",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "IsScheduleComplete",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -2440,6 +2591,62 @@
           }
         ]
       ]
+    },
+    "IsScheduleComplete": {
+      "main": [
+        [
+          {
+            "node": "GetCalendarData",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "GetCalendarData": {
+      "main": [
+        [
+          {
+            "node": "CreateCalendarMagicLink",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateCalendarMagicLink": {
+      "main": [
+        [
+          {
+            "node": "PrepareCalendarEvents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PrepareCalendarEvents": {
+      "main": [
+        [
+          {
+            "node": "GoogleCalendar_CreateEvent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleCalendar_CreateEvent": {
+      "main": [
+        [
+          {
+            "node": "UpdateCalendarEventId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -2447,8 +2654,9 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "adddac76-0748-43e5-896d-8545f488c682",
+  "versionId": "f36e5167-6263-4cb5-9c76-6bba7cde5fc4",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
   "id": "CKw15AtLk4-zAKdT_X5ZZ",
