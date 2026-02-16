@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3584,
-        1664
+        -20656,
+        5328
       ],
-      "id": "dfc30d14-9ac9-41b2-a871-07eabfde8d62",
+      "id": "b5293b55-418c-4de6-bad4-74b3602345d1",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2576,
-        1664
+        -19648,
+        5328
       ],
-      "id": "0a6008ca-c323-4822-9e3d-451d10f96f46",
+      "id": "67ac0063-0adb-44f4-8f75-dc59b0318d4f",
       "name": "Send message",
       "webhookId": "10fb6670-6b0a-4139-b31e-e009fca86100",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -4688,
-        2128
+        -21760,
+        5792
       ],
-      "id": "3fd53dd3-08fb-4ed9-b3d1-47ddbbec8e57",
+      "id": "3f9abaa0-e4ab-40b8-8139-d5042c4bd3a6",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -4656,
-        2384
+        -21728,
+        6048
       ],
-      "id": "4204d71a-aa82-4a8e-b1a1-bd6a1a5151f3",
+      "id": "84d52048-24ea-4d1f-92f6-bc6a87eb053d",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -4304,
-        2144
+        -21376,
+        5808
       ],
-      "id": "6c9a72b1-a08b-4f13-a00a-dfb5cb8a80ca",
+      "id": "f4ca9fc6-7506-48e2-b0af-b01cbb57c5fe",
       "name": "Send message2",
       "webhookId": "16f0732e-1b44-4c37-9a47-4d32112c6e78",
       "retryOnFail": true,
@@ -122,10 +122,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -7424,
-        2224
+        -24496,
+        5888
       ],
-      "id": "4c071f23-347c-49a0-8f38-bb6838c25d7b",
+      "id": "462a7168-e949-42fd-873b-9712ef81ae54",
       "name": "WhatsApp_Trigger1",
       "webhookId": "8bf52a73-7fd4-4762-ba3f-f77e5b9b8f7a",
       "credentials": {
@@ -151,10 +151,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6576,
-        2240
+        -23648,
+        5904
       ],
-      "id": "21439280-b52a-46e7-93e5-43136c2b9098",
+      "id": "8e65f5a5-52c2-40e6-abd4-ff2dbf5cdcdf",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -181,10 +181,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6080,
-        2208
+        -23152,
+        5872
       ],
-      "id": "8b9fbeb8-8122-40f0-9993-f3b93eca8cb2",
+      "id": "7a5dc3b1-9709-4eea-81e4-e1c1c6caa0a1",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -205,10 +205,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -4544,
-        1936
+        -21616,
+        5600
       ],
-      "id": "727a1405-867c-4e84-b8dd-b9a8badc812c",
+      "id": "d0a48fc5-76cf-4bf9-af84-10e9fb941745",
       "name": "Send message1",
       "webhookId": "45dd2929-4021-4904-ae82-c5f878f9a340",
       "executeOnce": true,
@@ -228,10 +228,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -3376,
-        1904
+        -20448,
+        5568
       ],
-      "id": "1400c77e-78e7-4151-a0ba-7c5e7b6e800f",
+      "id": "be285fab-7d56-432e-8689-5cdbd28140e6",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -251,10 +251,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -4368,
-        1264
+        -21440,
+        4928
       ],
-      "id": "76069c11-7fcd-4d12-b030-f8bf99ff75ac",
+      "id": "f6dbe15e-9d6a-4887-a444-313bc531f6da",
       "name": "Intention_Agent"
     },
     {
@@ -270,10 +270,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -4400,
-        1568
+        -21472,
+        5232
       ],
-      "id": "37e3022a-ec57-4599-b554-e5f6ce2bf23f",
+      "id": "0b5770f1-293e-493d-b03e-876a936c2cdf",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -390,10 +390,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -4000,
-        1200
+        -21072,
+        4864
       ],
-      "id": "c52fed62-47f5-49fb-b0e4-f05f42c29abf",
+      "id": "8d628e60-0f48-4f7f-ae0e-aa0011841a65",
       "name": "Switch"
     },
     {
@@ -407,10 +407,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -3360,
-        1168
+        -20432,
+        4832
       ],
-      "id": "4264c009-3393-4805-977c-9c1ae3d551a0",
+      "id": "e56b9972-5854-4746-9c7d-4667ee12f9a6",
       "name": "Send message3",
       "webhookId": "d91b39ce-c157-41c0-806d-e89f891c234b",
       "credentials": {
@@ -429,10 +429,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -4240,
-        1552
+        -21312,
+        5216
       ],
-      "id": "34436dac-a610-474e-9ae8-d8e52017b76a",
+      "id": "538f5f98-8ea6-4eb3-aa8c-4ebffc38a60c",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -450,10 +450,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -3552,
-        1360
+        -20624,
+        5024
       ],
-      "id": "29c701cc-c2e2-4392-8302-b81fdab9af57",
+      "id": "4f40a0ae-ad59-49f8-aaec-ebfb34ff38dd",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -470,10 +470,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -3552,
-        1904
+        -20624,
+        5568
       ],
-      "id": "52a35a4c-7c8b-4b90-a3f2-52feffb82f26",
+      "id": "aca2bb31-b33e-4be8-9003-d6487777a0ff",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -510,10 +510,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -4944,
-        1808
+        -22016,
+        5472
       ],
-      "id": "4d6a2a7f-7a14-48e9-846b-0f0b9db4b448",
+      "id": "a89bf704-1fd0-4817-8366-e332b775b6b2",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -545,10 +545,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3808,
-        1664
+        -20880,
+        5328
       ],
-      "id": "bde9873d-6709-4baa-8d56-7f4905b6e66b",
+      "id": "4ace020c-1083-4e2a-999d-8f3ea80c0df1",
       "name": "If_Has_Routine_Today",
       "executeOnce": true
     },
@@ -561,10 +561,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -5344,
-        2368
+        -22416,
+        6032
       ],
-      "id": "b3e7526e-02d2-449d-b8cd-b74fc471ebd5",
+      "id": "a6e00e76-b6f3-4b0b-a70a-2019f4a37632",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -582,10 +582,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -5136,
-        2544
+        -22208,
+        6208
       ],
-      "id": "076d5864-3c3f-4369-830c-22e6941d8b4d",
+      "id": "cfbedff4-47c1-485c-bdfb-f77c64a33035",
       "name": "Merge"
     },
     {
@@ -616,10 +616,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -5744,
-        2208
+        -22816,
+        5872
       ],
-      "id": "18f22ff2-5f12-4bcf-9a11-03a7e03bd13b",
+      "id": "4f9581dd-003f-4fd0-8973-4dc3d808b6e8",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -644,10 +644,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5360,
-        2576
+        -22432,
+        6240
       ],
-      "id": "c4c32a13-9090-4576-aea8-b157f6b87aa4",
+      "id": "d36c073d-eacd-4783-981c-e28532459540",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -666,10 +666,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -5376,
-        2784
+        -22448,
+        6448
       ],
-      "id": "17c200f6-b350-4a8b-8dba-75c4c67af86c",
+      "id": "cf8475b6-61ce-4bf7-9260-088ece441aa3",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -687,10 +687,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -4512,
-        2384
+        -21584,
+        6048
       ],
-      "id": "b8035180-d303-4ec6-aaad-2a66b46f355f",
+      "id": "26199bcc-b419-41bf-9bba-66abcbd13a05",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -708,10 +708,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -4368,
-        2384
+        -21440,
+        6048
       ],
-      "id": "4ea3e5e6-ae61-47db-9985-fcbd313263c1",
+      "id": "0b5a3e42-6116-4ca9-ba26-de3a7a419f38",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "postgres": {
@@ -728,10 +728,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -6048,
-        3328
+        -23120,
+        6992
       ],
-      "id": "369b7b8c-8f58-473e-a90d-473fe14b6ef4",
+      "id": "7191e991-2bef-48fb-b475-c2494da45ace",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -749,10 +749,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -5888,
-        3328
+        -22960,
+        6992
       ],
-      "id": "44b7c2e3-fc6a-472a-98ce-411bfd5edd71",
+      "id": "230f37c9-080b-4908-b768-ae8bd0097727",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -789,10 +789,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -6368,
-        2240
+        -23440,
+        5904
       ],
-      "id": "857189a3-91d7-4f5b-b697-2f84c8a1155e",
+      "id": "8e904217-9af6-482f-834b-40bb1de3c581",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -807,10 +807,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -5600,
-        3072
+        -22672,
+        6736
       ],
-      "id": "b0ee5853-a170-47f8-b919-1f23a937b7f8",
+      "id": "eeeb3942-c410-40af-a6e2-d71294ff098d",
       "name": "Send message4",
       "webhookId": "62006b73-0285-4ac9-ad46-2b327a2d5be5",
       "credentials": {
@@ -831,10 +831,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -5904,
-        3072
+        -22976,
+        6736
       ],
-      "id": "97b050ce-a7f5-499b-a90f-faf6e823f367",
+      "id": "c1fa84bc-15eb-46ea-9a3a-5740699081ab",
       "name": "KYC Agent",
       "retryOnFail": true
     },
@@ -849,10 +849,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3696,
-        1168
+        -20768,
+        4832
       ],
-      "id": "17170c5e-f587-48ae-9be7-f554d46d8978",
+      "id": "3d7e47b5-e81a-4ec3-a371-1130d65c6334",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -963,10 +963,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -5728,
-        3328
+        -22800,
+        6992
       ],
-      "id": "0294cad9-a6ef-406d-b599-73e346d4af11",
+      "id": "e5178fb1-77da-4c0c-8208-8cf34cc2dc36",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -982,10 +982,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -3712,
-        1872
+        -20784,
+        5536
       ],
-      "id": "9c93f60a-02b1-46ab-aef3-fa751ee206e2",
+      "id": "aaa5e7cf-2986-405b-b197-fd4467b8e02c",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -1001,10 +1001,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -5344,
-        1808
+        -22416,
+        5472
       ],
-      "id": "6fa59f91-2fe2-4b0e-9c6e-4da1b80d9dee",
+      "id": "b1867d95-b43e-4b2b-aa8b-721f8b73471e",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1045,10 +1045,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -7104,
-        2272
+        -24176,
+        5936
       ],
-      "id": "70b33d00-4a4e-41eb-b614-30e357a1a29a",
+      "id": "dc574f45-ca7b-40e3-89d6-8730d0ac00b7",
       "name": "If"
     },
     {
@@ -1058,10 +1058,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -6800,
-        2240
+        -23872,
+        5904
       ],
-      "id": "5b4d303a-58ab-431e-a2f4-a502a7e7658f",
+      "id": "964e2c7a-44ed-45b4-b26b-49a92aed0653",
       "name": "Normalize_Message"
     },
     {
@@ -1088,10 +1088,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -6272,
-        2048
+        -23344,
+        5712
       ],
-      "id": "7e9fca08-0498-4a14-9545-0917ad04528c",
+      "id": "d3cf8204-1660-4edb-9b19-accea629043d",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1129,10 +1129,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -6080,
-        2048
+        -23152,
+        5712
       ],
-      "id": "cb080391-e7a2-4a49-8512-e822041e6a0a",
+      "id": "28ab67a5-5512-4bc4-92c1-66b4300d0558",
       "name": "Has_Pending_Task"
     },
     {
@@ -1144,10 +1144,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -3504,
-        960
+        -20576,
+        4624
       ],
-      "id": "0d44f3ff-fe70-4c55-9299-e7889a460b9e",
+      "id": "24b96f4c-b6c4-45fa-bbc7-2db3afd1a12f",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1163,10 +1163,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -7312,
-        2448
+        -24384,
+        6112
       ],
-      "id": "37ede993-cd9a-4b1f-adb2-4f05f41061af",
+      "id": "47b207e2-02ed-4368-a594-7ab55f16c3db",
       "name": "When Executed by Another Workflow",
       "disabled": true
     },
@@ -1177,10 +1177,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -6576,
-        2432
+        -23648,
+        6096
       ],
-      "id": "d0606d8d-1d92-48d1-a34b-977a5d8fa94f",
+      "id": "a32de839-a074-4c1d-a8e1-1a0c2d9c9643",
       "name": "Filtered Message"
     },
     {
@@ -1190,10 +1190,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2368,
-        1664
+        -19440,
+        5328
       ],
-      "id": "1dab48d7-0a9d-41da-a9bd-fb129fb52b46",
+      "id": "87d7d470-5b17-43e6-8d41-ce77cee75aa3",
       "name": "Filtered Message1"
     },
     {
@@ -1203,10 +1203,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4608,
-        3104
+        -21680,
+        6768
       ],
-      "id": "bdeb37ee-dcc5-4076-bb9b-6cc244c7d49a",
+      "id": "59cfac80-b4cd-4e09-9688-bd130b20d6cd",
       "name": "Filtered Message2"
     },
     {
@@ -1216,10 +1216,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3168,
-        1168
+        -20240,
+        4832
       ],
-      "id": "ee71b176-2ec6-4757-8d82-7fb3b7140277",
+      "id": "857f2f9d-031b-467f-8cf5-3b39a352db5e",
       "name": "Filtered Message3"
     },
     {
@@ -1229,10 +1229,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4064,
-        2144
+        -21136,
+        5808
       ],
-      "id": "9856298a-2117-417f-8744-b846de9f5a9d",
+      "id": "94b5c1f6-c9de-4699-b78c-174b6b857b6c",
       "name": "Filtered Message4"
     },
     {
@@ -1242,10 +1242,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4304,
-        1936
+        -21376,
+        5600
       ],
-      "id": "dc8a7bba-2b63-4c80-87eb-57c0e02db7d2",
+      "id": "46e62e95-10bb-4b18-991c-8d2e39f6bc4b",
       "name": "Filtered Message5"
     },
     {
@@ -1264,10 +1264,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -5392,
-        3072
+        -22464,
+        6736
       ],
-      "id": "327a365c-3679-4708-9df0-fb7057859af8",
+      "id": "b3ccd8ec-8443-4e78-bba5-c7b1b0cb7bc6",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1305,10 +1305,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -5200,
-        3072
+        -22272,
+        6736
       ],
-      "id": "5203a566-72aa-455f-aa9c-18e6c1e397af",
+      "id": "dbb1a1be-284a-481b-b40b-a65ce96970d6",
       "name": "If1"
     },
     {
@@ -1348,10 +1348,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -4896,
-        2928
+        -21968,
+        6592
       ],
-      "id": "6657db3a-c556-48cc-80e4-eb2e5173af3a",
+      "id": "4ef73bb4-b7f2-4ba9-9de7-5b54d22023e6",
       "name": "Call 'WORKOUT_CREATOR'",
       "alwaysOutputData": true
     },
@@ -1364,10 +1364,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -3216,
-        1776
+        -20288,
+        5440
       ],
-      "id": "a4214867-513f-4eee-b7d7-b562ccb71cba",
+      "id": "3472b980-f450-4518-b92f-a1be98b093c3",
       "name": "Create Magic Link",
       "credentials": {
         "postgres": {
@@ -1378,15 +1378,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = 'https://[FIREBASE_PROJECT_ID].web.app';\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
+        "jsCode": "// Build workout URL with short code\nconst items = $input.all();\nconst FRONTEND_URL = $vars.FRONTEND_URL;\n\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    workout_url: `${FRONTEND_URL}/w?c=${item.json.code}`\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3024,
-        1776
+        -20096,
+        5440
       ],
-      "id": "cee51560-b374-4019-942d-772256e62792",
+      "id": "cde3f326-839b-4e9b-bccc-b967fbdf3d11",
       "name": "Build URL"
     },
     {
@@ -1398,10 +1398,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -2768,
-        1664
+        -19840,
+        5328
       ],
-      "id": "2c0128f2-e678-43cb-8e29-36e692d91abc",
+      "id": "17f0f77d-f300-48cb-9f94-037e652ddc11",
       "name": "Merge1"
     },
     {
@@ -1413,10 +1413,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -3744,
-        752
+        -20816,
+        4416
       ],
-      "id": "906fc80c-854a-479f-8470-4449892b2c19",
+      "id": "ef061db5-16e1-4252-a24a-b07ff8b872fe",
       "name": "Fetch_Plan_For_Renewal",
       "executeOnce": true,
       "credentials": {
@@ -1516,10 +1516,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -3504,
-        752
+        -20576,
+        4416
       ],
-      "id": "54fdfbc2-e837-4b74-94e3-316848477179",
+      "id": "0a14fa57-ec8c-42b0-a478-54257218ace3",
       "name": "Execute_Mesocycle_Renewal_Manual",
       "alwaysOutputData": true
     },
@@ -1530,10 +1530,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4896,
-        2560
+        -21968,
+        6224
       ],
-      "id": "3ae151ca-b546-4485-8541-40ed01192521",
+      "id": "c01cbe81-99dd-46e0-bd99-88d5c15422cf",
       "name": "Check_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1565,10 +1565,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -4672,
-        2560
+        -21744,
+        6224
       ],
-      "id": "d72e22e9-d728-450f-94eb-d96d909cc78a",
+      "id": "677ac4fd-4cfb-4f97-99ca-c9f6f81e8ff2",
       "name": "If_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1662,10 +1662,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -4368,
-        2688
+        -21440,
+        6352
       ],
-      "id": "7fede148-2c46-4f34-acd3-6cb6e4b60696",
+      "id": "7c8fbd90-e2da-4ead-ab31-0d0b2ec5a751",
       "name": "Execute_Mesocycle_Renewal",
       "alwaysOutputData": true
     }
@@ -1705,59 +1705,39 @@
         }
       }
     ],
-    "Build URL": [
-      {
-        "json": {
-          "code": "8e230d",
-          "user_id": "5d3b501c-8ac5-4dfd-9c0d-4ef9a8a15f9c",
-          "workout_url": "https://[FIREBASE_PROJECT_ID].web.app/w?c=8e230d"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
-    "AI Agent": [
-      {
-        "json": {
-          "output": "¡Hola, Juan Pérez García! 🔥 Aquí tienes tu plan para hoy:\n\n1️ Sentadilla con barra y pausa\n🎯 Zona: Lower back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-pause-squat\n\n〰〰〰〰〰〰〰〰\n2️ Sentadilla trasera con barra baja\n🎯 Zona: Lower back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-low-bar-squat\n\n〰〰〰〰〰〰〰〰\n3️ Peso muerto convencional\n🎯 Zona: Back\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-deadlift\n\n〰〰〰〰〰〰〰〰\n4️ Peso muerto con barra\n🎯 Zona: Traps (mid-back)\n\n📋 Qué hacer:\n* 3 Series\n* 6–8 Repeticiones\n* ⏸ 3 min de descanso\n\n🔥 Esfuerzo: RIR 0–1 (Deja 0 o 1 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-deadlift\n\n〰〰〰〰〰〰〰〰\n5️ Abdominal con barra\n🎯 Zona: Abs\n\n📋 Qué hacer:\n* 3 Series\n* 8–15 Repeticiones\n* ⏸ 1 min de descanso\n\n🔥 Esfuerzo: RIR 1–2 (Deja 1 o 2 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercise/barbell-situp\n\n〰〰〰〰〰〰〰〰\n6️ Abdominales colgado\n🎯 Zona: Abs\n\n📋 Qué hacer:\n* 3 Series\n* 8–15 Repeticiones\n* ⏸ 1 min de descanso\n\n🔥 Esfuerzo: RIR 1–2 (Deja 1 o 2 reps en reserva)\n\n📹 ¿Cómo se hace?:\nhttps://musclewiki.com/es-es/exercises/abdominals/2?model=f\n\n────────────────────\n*¡Dale con toda! 🚀*\n"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
     "WhatsApp_Trigger1": [
       {
         "json": {
           "messaging_product": "whatsapp",
           "metadata": {
-            "display_phone_number": "550000000000",
-            "phone_number_id": "YOUR_PHONE_NUMBER_ID"
+            "display_phone_number": "573213413664",
+            "phone_number_id": "914510145083991"
           },
           "contacts": [
             {
               "profile": {
-                "name": "Helena Jaimes"
+                "name": "Faiber Valenzuela T"
               },
-              "wa_id": "550000000000"
+              "wa_id": "573138288254"
             }
           ],
           "messages": [
             {
-              "from": "550000000000",
-              "id": "wamid.HBgMNTczMjA4NzgwMDIwFQIAEhggQUM1NTRBRTE4NkMwODk3QUVEOTkxNzY1NTdEQURBNUUA",
-              "timestamp": "1770038182",
-              "text": {
-                "body": "Lunes Miércoles y Viernes"
+              "context": {
+                "from": "573213413664",
+                "id": "wamid.HBgMNTczMTM4Mjg4MjU0FQIAERgSMjA0MDhBNTVGMjFEN0Y1MUExAA=="
               },
-              "type": "text"
+              "from": "573138288254",
+              "id": "wamid.HBgMNTczMTM4Mjg4MjU0FQIAEhgUM0FERTMwNDgwRUE3NzhFRUQzNkMA",
+              "timestamp": "1771280597",
+              "type": "button",
+              "button": {
+                "payload": "Quiero mi rutina de hoy",
+                "text": "Quiero mi rutina de hoy"
+              }
             }
           ],
           "field": "messages"
-        },
-        "pairedItem": {
-          "item": 0
         }
       }
     ]
@@ -2421,8 +2401,9 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "adddac76-0748-43e5-896d-8545f488c682",
+  "versionId": "be2346e0-6e56-47d6-868a-34a5ee6d39a1",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
   "id": "CKw15AtLk4-zAKdT_X5ZZ",
