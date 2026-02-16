@@ -2,6 +2,28 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.5.0] - 2026-02-15
+
+### Added - Rest Timer Between Sets (KAN-75)
+
+- **`RestTimerOverlay` component**: Fixed bottom bar that appears after completing a non-last set
+  - Countdown display (M:SS), progress bar, exercise name
+  - Beep sound via `AudioContext` (800Hz) + haptic feedback (`navigator.vibrate`)
+  - "¡Tiempo!" state for 3s then auto-dismiss; manual dismiss via X button
+  - Slide-up/slide-down animations, dark theme (`#1A1A1A`)
+  - Accessible: `role="timer"`, `aria-live="polite"`, keyboard-navigable dismiss
+- **`useRestTimer` hook**: Custom React hook managing countdown state, interval cleanup, and audio
+- **Set interaction blocking**: Uncompleted sets are disabled (opacity 50%) while timer is active
+- **Content padding**: Dynamic bottom padding prevents "Completar Rutina" button overlap
+
+### Fixed
+
+- **Alternative exercise set counting**: `handleComplete` now counts sets from the active exercise (primary or alternative with completed sets) instead of always counting primary sets — fixes incorrect completion validation when user switches to an alternative
+
+### Added - Spec Documentation
+
+- **`spec/rest-timer/`**: Architecture, implementation phases, and UX/UI spec for the rest timer feature
+
 ## [0.4.0] - 2026-02-15
 
 ### Added - Weekly Scheduling Prompt (KAN-61)
