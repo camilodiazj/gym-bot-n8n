@@ -12,11 +12,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        7376,
-        144
+        10144,
+        1344
       ],
-      "id": "c607367f-f2ca-4311-be36-10a4423c938c",
+      "id": "e3692e7f-dd76-4d21-867c-aca6538b1c72",
       "name": "AI Agent",
+      "alwaysOutputData": true,
       "executeOnce": true
     },
     {
@@ -26,10 +27,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5568,
-        16
+        8336,
+        1216
       ],
-      "id": "eb2187df-30dc-43ae-b41d-e7a3697ce56d",
+      "id": "96086a51-fcb4-4f2d-906a-5c0eea3346fd",
       "name": "ProcessUserPreferences",
       "executeOnce": true
     },
@@ -40,10 +41,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8016,
-        16
+        10784,
+        1216
       ],
-      "id": "39a12449-5312-4be1-865b-f099e3e43abd",
+      "id": "6a7b2a97-31ac-4406-9a9c-6abd924c9ff5",
       "name": "Code in JavaScript1"
     },
     {
@@ -53,10 +54,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        6864,
-        0
+        9632,
+        1200
       ],
-      "id": "b2cd4076-5831-4d42-86ee-cfe8e5b6a810",
+      "id": "aa1d81ea-ffe9-43a3-94f5-88dc1998c12e",
       "name": "Loop Over Items"
     },
     {
@@ -68,23 +69,23 @@
       "type": "n8n-nodes-base.aiTransform",
       "typeVersion": 1,
       "position": [
-        7168,
-        -128
+        9936,
+        1072
       ],
-      "id": "c2b22e4e-6729-4b8a-8c3b-eb93741e51fc",
+      "id": "e709810d-2d67-4961-81bc-e7ae5bfe42db",
       "name": "AI Transform"
     },
     {
       "parameters": {
-        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los items de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        let outputStr = entry.output;\n\n        // Limpiar los bloques de codigo markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n\n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n\n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algun output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// === DEDUPLICATION GUARD ===\n// Remove duplicate exercise_ids within the same day_name.\nconst deduplicatedExercises = [];\nconst seenByDay = {};\n\nfor (const ex of allExercises) {\n  const dayKey = ex.day_name || 'unknown';\n  if (!seenByDay[dayKey]) {\n    seenByDay[dayKey] = new Set();\n  }\n  if (seenByDay[dayKey].has(ex.exercise_id)) {\n    console.log(`DEDUP: Removed duplicate exercise_id=${ex.exercise_id} from day=${dayKey}`);\n    continue;\n  }\n  seenByDay[dayKey].add(ex.exercise_id);\n  deduplicatedExercises.push(ex);\n}\n\nconst dupCount = allExercises.length - deduplicatedExercises.length;\nif (dupCount > 0) {\n  console.log(`DEDUP: Removed ${dupCount} duplicate exercises total`);\n}\n\nallExercises = deduplicatedExercises;\n\n// Retornamos cada ejercicio como un item independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
+        "jsCode": "// Arreglo para acumular todos los ejercicios finales\nlet allExercises = [];\n\n// Recorremos los items de entrada (usualmente es 1 que contiene el unifiedArray)\nfor (const item of $input.all()) {\n  const unified = item.json.unifiedArray;\n  if (Array.isArray(unified)) {\n    for (const entry of unified) {\n      try {\n        if (!entry.output) continue;\n        let outputStr = entry.output;\n\n        // Limpiar los bloques de codigo markdown (```json ... ```)\n        outputStr = outputStr\n          .replace(/^```json\\s*/i, '')  // Quitar ```json del inicio\n          .replace(/^```\\s*/i, '')       // O solo ``` del inicio\n          .replace(/\\s*```$/i, '')       // Quitar ``` del final\n          .trim();\n\n        // Parseamos el string limpio\n        const exercises = JSON.parse(outputStr);\n\n        // Agregamos los ejercicios al arreglo maestro\n        allExercises.push(...exercises);\n      } catch (error) {\n        // Ignoramos errores de parseo si algun output viene mal\n        continue;\n      }\n    }\n  }\n}\n\n// === DEDUPLICATION GUARD ===\n// Remove duplicate exercise_ids within the same day_name.\nconst deduplicatedExercises = [];\nconst seenByDay = {};\n\nfor (const ex of allExercises) {\n  const dayKey = ex.day_name || 'unknown';\n  if (!seenByDay[dayKey]) {\n    seenByDay[dayKey] = new Set();\n  }\n  if (seenByDay[dayKey].has(ex.exercise_id)) {\n    console.log(`DEDUP: Removed duplicate exercise_id=${ex.exercise_id} from day=${dayKey}`);\n    continue;\n  }\n  seenByDay[dayKey].add(ex.exercise_id);\n  deduplicatedExercises.push(ex);\n}\n\nconst dupCount = allExercises.length - deduplicatedExercises.length;\nif (dupCount > 0) {\n  console.log(`DEDUP: Removed ${dupCount} duplicate exercises total`);\n}\n\nallExercises = deduplicatedExercises;\n\n// Retornamos cada ejercicio como un item independiente para n8n\nreturn allExercises.map(exercise => ({ json: exercise }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7488,
-        -32
+        10256,
+        1168
       ],
-      "id": "8d40634a-5911-4640-84a5-3233b9837207",
+      "id": "d796d71e-da1e-4c90-8267-68565711de4f",
       "name": "Code in JavaScript",
       "executeOnce": true
     },
@@ -97,10 +98,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        5936,
-        16
+        8704,
+        1216
       ],
-      "id": "56f1413c-c470-40ed-9871-d69ac9f345f5",
+      "id": "02af6bb0-bb6d-4009-9e28-b6b45a2fb97b",
       "name": "Get_Day_Requirements",
       "executeOnce": true,
       "credentials": {
@@ -135,10 +136,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5792,
-        16
+        8560,
+        1216
       ],
-      "id": "73fe1184-72ea-4806-bca4-1eb3a0204900",
+      "id": "10f8a7eb-a87c-4736-aa34-0cf824703a42",
       "name": "LoadProfile",
       "credentials": {
         "supabaseApi": {
@@ -156,11 +157,12 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        7104,
-        112
+        9872,
+        1312
       ],
-      "id": "bfac1016-1807-463e-ab0a-23ea9f5fb349",
+      "id": "b756b08f-7d74-4c38-8a7b-fcb33e0f24d5",
       "name": "GetExercisesByPattern",
+      "alwaysOutputData": true,
       "executeOnce": true,
       "credentials": {
         "postgres": {
@@ -168,6 +170,40 @@
           "name": "Supabase Memory"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a1b2c3d4-0001-4000-8000-000000000001",
+              "leftValue": "={{ $json.exercise_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        10016,
+        1312
+      ],
+      "id": "60adabc7-f163-425d-95f3-9d9a27e178fc",
+      "name": "If_Has_Exercises"
     },
     {
       "parameters": {
@@ -209,10 +245,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6464,
-        352
+        9232,
+        1552
       ],
-      "id": "14724d38-c96c-438f-b222-6b925d78441a",
+      "id": "48acca26-bc15-4e1b-ade2-01c010c26e1f",
       "name": "CreateUser",
       "alwaysOutputData": false,
       "credentials": {
@@ -250,10 +286,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6288,
-        224
+        9056,
+        1424
       ],
-      "id": "c31c697d-bee4-4bc2-a87a-a13fd70648e7",
+      "id": "81539650-2bb2-498c-8734-342ba566389a",
       "name": "UserExists"
     },
     {
@@ -272,10 +308,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6128,
-        128
+        8896,
+        1328
       ],
-      "id": "6ab69b8d-5940-452e-9dfe-4235484ff85c",
+      "id": "7a5d8a96-284b-4e12-94df-44b64dad8f2c",
       "name": "GetUser",
       "executeOnce": true,
       "alwaysOutputData": true,
@@ -325,10 +361,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        6512,
-        176
+        9280,
+        1376
       ],
-      "id": "42a7cee2-52e0-4fdc-b929-0579921280cf",
+      "id": "315b23ba-68e3-490b-9311-7ffb1344393a",
       "name": "CreatePlan",
       "credentials": {
         "supabaseApi": {
@@ -344,10 +380,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        6640,
-        0
+        9408,
+        1200
       ],
-      "id": "48bdf4fe-c4cd-477c-8602-c1c216b12a81",
+      "id": "e6e7d65c-e23f-4bef-a8fd-904ab6dbbb59",
       "name": "Merge"
     },
     {
@@ -410,10 +446,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        8480,
-        16
+        11248,
+        1216
       ],
-      "id": "30b17401-febd-4cfd-9ba9-2f3d127b670e",
+      "id": "e064c774-d343-4116-a7c5-9129174746b7",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -439,10 +475,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        7760,
-        16
+        10528,
+        1216
       ],
-      "id": "3417ded0-4e2e-4830-a05d-390e344b97ae",
+      "id": "384fd5f9-86f8-44f0-b570-ce2de6562e80",
       "name": "Get a row",
       "alwaysOutputData": false,
       "executeOnce": true,
@@ -474,10 +510,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        5168,
-        16
+        7936,
+        1216
       ],
-      "id": "69434978-3986-48db-9a88-f7d0960d8aad",
+      "id": "0fc59505-72c0-4128-b6e5-a71772004894",
       "name": "input",
       "executeOnce": true
     },
@@ -497,10 +533,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        5344,
-        16
+        8112,
+        1216
       ],
-      "id": "5d961c0f-cbf2-4049-9244-3d4df3652b92",
+      "id": "c2fbce0f-9bbd-42a0-874b-93aeb4e7757a",
       "name": "GetUserProfile",
       "credentials": {
         "supabaseApi": {
@@ -512,7 +548,7 @@
     {
       "parameters": {
         "operation": "send",
-        "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
+        "phoneNumberId": "914510145083991",
         "recipientPhoneNumber": "={{ String($items('ProcessUserPreferences')[0].json.whatsapp_id) }}",
         "textBody": "=🎉 ¡Hola {{ $items('ProcessUserPreferences')[0].json.full_name }}!\n\n¡Tu rutina de entrenamiento de 4 semanas ha sido creada exitosamente! 💪\n\n📋 Tu plan está personalizado para:\n• Objetivo: {{ $items('ProcessUserPreferences')[0].json.primary_goal }}\n• Nivel: {{ $items('ProcessUserPreferences')[0].json.fitness_level }}\n• Días por semana: {{ $items('ProcessUserPreferences')[0].json.days_available }}\n• Músculos prioritarios: {{ $items('ProcessUserPreferences')[0].json.priority_muscles || 'Balanceado' }}\n\n📧 Ya te enviamos tu rutina de la Semana 1 a *{{ $items('ProcessUserPreferences')[0].json.email }}*. Revísala con calma para familiarizarte con cada ejercicio y su técnica.\n\n⚠️ Si no lo ves en tu bandeja de entrada, revisa la carpeta de SPAM o correo no deseado.\n\nCuando quieras, escríbeme y agendamos juntos tu semana de entrenamiento 📅",
         "additionalFields": {}
@@ -520,10 +556,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        8720,
-        16
+        11488,
+        1216
       ],
-      "id": "762dfcc3-e59b-45fc-9569-30d22967171d",
+      "id": "6f1f864d-d4c0-442e-aad3-c190b6278cf4",
       "name": "NotifyRoutineCreated",
       "executeOnce": true,
       "webhookId": "1704d209-1f1d-45f1-b3f9-e2b6bd4681b7",
@@ -541,10 +577,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8224,
-        16
+        10992,
+        1216
       ],
-      "id": "ff744a27-133d-44ab-8d93-c511631d250d",
+      "id": "39ea7361-e712-4b24-8903-9439f5323347",
       "name": "ValidateWorkoutDuration"
     },
     {
@@ -554,10 +590,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8928,
-        32
+        11696,
+        1232
       ],
-      "id": "c296a69c-3de5-40a7-a08f-94e731f7fda6",
+      "id": "ffb3b8cd-530a-40ea-b2d9-15b71e234ce5",
       "name": "Filtered Message2"
     },
     {
@@ -568,10 +604,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        7248,
-        352
+        10016,
+        1552
       ],
-      "id": "9f4af93f-b0d2-42bf-8d9d-2b08365857f0",
+      "id": "617c53e4-13a5-4778-81a6-afc7b075dd29",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -589,10 +625,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        8720,
-        272
+        11488,
+        1472
       ],
-      "id": "611cebc8-bb49-4bf9-a6dc-c1bf1ff531f1",
+      "id": "df388f68-6b35-4223-b2db-d5255ba8cf1c",
       "name": "GetWeek1WithExercises",
       "executeOnce": true,
       "credentials": {
@@ -609,10 +645,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        8928,
-        272
+        11696,
+        1472
       ],
-      "id": "4df1a1ad-1dc0-4c7f-92a5-6c26b1644d8c",
+      "id": "5d6a14ef-6d53-4204-801e-2c0ca4c47d35",
       "name": "GenerateRoutineHTML"
     },
     {
@@ -643,10 +679,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        9136,
-        272
+        11904,
+        1472
       ],
-      "id": "3269c6b7-a3a7-4bb2-a910-203788f232a6",
+      "id": "3336b90b-b0da-462c-aac4-ce8d48a0720e",
       "name": "HasEmail"
     },
     {
@@ -662,10 +698,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        9344,
-        272
+        12112,
+        1472
       ],
-      "id": "7c29b6c8-e047-4576-a184-a070b96704fe",
+      "id": "6e2e323a-e7cd-4db2-8f55-051c9ffca3de",
       "name": "SendRoutineEmail",
       "executeOnce": true,
       "webhookId": "7ce92ef4-643b-4662-8e05-2295bd893835",
@@ -704,10 +740,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        5680,
-        16
+        8448,
+        1216
       ],
-      "id": "58a6147a-915e-4feb-a230-2b342ceb3653",
+      "id": "500e0bbf-db78-4305-94a8-e6ad3b73219c",
       "name": "If_Is_Renewal",
       "executeOnce": true
     },
@@ -720,10 +756,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        5680,
-        -240
+        8448,
+        960
       ],
-      "id": "161dde87-f80b-4dff-be1f-9ef4fb7d53f8",
+      "id": "ca482fa6-f83d-4a90-b596-56f99b34a4e4",
       "name": "Clear_Old_Workouts",
       "executeOnce": true,
       "credentials": {
@@ -742,10 +778,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        5888,
-        -240
+        8656,
+        960
       ],
-      "id": "39fd31b4-0259-47ce-8e55-0b51de2e3c8e",
+      "id": "98ea17bd-fa81-4a25-92b3-8fd4e312b858",
       "name": "Clear_Old_Schedule",
       "executeOnce": true,
       "credentials": {
@@ -764,10 +800,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        6096,
-        -240
+        8864,
+        960
       ],
-      "id": "a50cfa0f-95d7-4803-8e49-ed246d4e537f",
+      "id": "9370e23e-79d9-436d-bf65-2ff30a248294",
       "name": "UpdatePlan",
       "executeOnce": true,
       "credentials": {
@@ -804,10 +840,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6032,
-        16
+        8800,
+        1216
       ],
-      "id": "91de35f7-08b8-4e34-bd53-49ca4f99337e",
+      "id": "0f7c4363-4ff3-4d24-a94e-3b4c23e11e12",
       "name": "If_Skip_Create_For_Renewal",
       "executeOnce": true
     }
@@ -816,7 +852,7 @@
     "input": [
       {
         "json": {
-          "whatsapp_id": 573123623296
+          "whatsapp_id": 573001234567
         }
       }
     ]
@@ -922,7 +958,25 @@
       "main": [
         [
           {
+            "node": "If_Has_Exercises",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_Has_Exercises": {
+      "main": [
+        [
+          {
             "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -1187,7 +1241,7 @@
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "9ff21dc2-01e4-4792-afcf-fa4b05e98260",
+  "versionId": "581413d1-63aa-4396-b708-cc349db0823c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
