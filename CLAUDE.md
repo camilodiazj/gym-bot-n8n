@@ -37,7 +37,7 @@ GymBot/
 
 | Workflow | Purpose |
 |----------|---------|
-| `MAIN_FLOW.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), and routine display |
+| `MAIN_FLOW.json` | Main orchestrator - handles WhatsApp messages, user validation, intention detection (CONFIRMAR_RUTINA, VER_RUTINA_DE_HOY, CHAT), routine display, and Google Calendar event creation on schedule |
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
@@ -144,7 +144,7 @@ Agents use Postgres-based chat memory for conversation context persistence.
 |-------|---------|-------------|
 | `workouts` | User-assigned exercises | `id` (UUID PK), `user_id`, `week`, `day_name`, `exercise_id`, `sets`, `reps`, `rir`, `rest-seconds`, `tempo`, `exercise_order` |
 | `set_profiles` | Loading parameters by goal/level/week | `profile_id` (PK), `goal`, `level`, `week`, `role`, `sets`, `reps`, `rir`, `rest_sec`, `tempo` |
-| `user_weekly_schedule` | Scheduled workout sessions | `day_routine_id` (UUID PK), `user_id`, `week`, `week_day` (enum), `session_name`, `planned_day`, `Completed` |
+| `user_weekly_schedule` | Scheduled workout sessions | `day_routine_id` (UUID PK), `user_id`, `week`, `week_day` (enum), `session_name`, `planned_day`, `Completed`, `calendar_event_id` (nullable, Google Calendar event ID) |
 | `set_values` | User-recorded weights/reps per set | `id` (UUID PK), `user_id`, `exercise_id`, `workout_id`, `set_number`, `actual_weight`, `actual_reps`, `recorded_at` |
 
 ### Pending Tasks (Confirmation Flow)
@@ -218,6 +218,7 @@ users_gym_profile ------------------------------>+
 | Mark completed | `user_weekly_schedule` | UPDATE `Completed = true` |
 | Schedule creation | `user_weekly_schedule` | INSERT via tool |
 | Plan info | `users_plans` + `week_schedules` + `template_days` | JOIN query |
+| Calendar event creation | `user_weekly_schedule` + `users` + `magic_links` | After schedule confirmed: `GetCalendarData` (JOIN query) → `CreateCalendarMagicLink` (INSERT magic_link) → `PrepareCalendarEvents` (Code node) → `GoogleCalendar_CreateEvent` (Google Calendar API) → `UpdateCalendarEventId` (UPDATE `calendar_event_id`) |
 
 ### 2. WORKOUT_CREATOR (Advanced Routine Generator)
 
@@ -297,6 +298,7 @@ New Code node that transforms user profile data for AI personalization:
 |  User message: GymRatFlow -> Intention detection ->                  |
 |        VER_RUTINA_DE_HOY: workouts + exercises -> WhatsApp           |
 |        CONFIRMAR_RUTINA: user_weekly_schedule.Completed = true       |
+|        AGENDAR: schedule creation -> Google Calendar invites         |
 |                                                                      |
 |  8 PM: GymBotWorkoutCompletion -> uncompleted schedules ->          |
 |        -> Follow-up WhatsApp                                         |
@@ -554,6 +556,7 @@ The `spec/` directory contains detailed implementation specs for major features:
 | Email Routine | `spec/email-routine-week1/` | Workflow spec, HTML template, QA test plan |
 | Quality Fixes | `spec/workout_creator_quality_fixes/` | WORKOUT_CREATOR defect fixes (QF-1 through QF-5): volume inflation, dedup, misclassified exercises, cardio role, health enforcement |
 | Interaction Analysis | `spec/interaction-analysis/` | Architecture, implementation phases, SQL queries for `n8n_chat_histories` analysis |
+| Calendar Event | `spec/calendar-event/` | Implementation spec for Google Calendar invitations on schedule creation (KAN-57) |
 
 The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 

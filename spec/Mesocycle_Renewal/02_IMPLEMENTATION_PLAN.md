@@ -398,7 +398,7 @@ GymBot is an AI fitness coaching platform. Production workflows live in `n8n/run
       },
       input: [{
         messaging_product: "whatsapp",
-        metadata: { display_phone_number: "550000000000", phone_number_id: "YOUR_PHONE_NUMBER_ID" },
+        metadata: { display_phone_number: "550000000000", phone_number_id: "914510145083991" },
         contacts: [{ profile: { name: "Test MesoDetect" }, wa_id: "570000000051" }],
         messages: [{
           from: "570000000051",
@@ -451,7 +451,7 @@ GymBot is an AI fitness coaching platform. Production workflows live in `n8n/run
       ],
       input: [{
         messaging_product: "whatsapp",
-        metadata: { display_phone_number: "550000000000", phone_number_id: "YOUR_PHONE_NUMBER_ID" },
+        metadata: { display_phone_number: "550000000000", phone_number_id: "914510145083991" },
         contacts: [{ profile: { name: "Test MesoMantener" }, wa_id: "570000000052" }],
         messages: [{ from: "570000000052", id: "wamid.E2E-TC_MESO_002", timestamp: String(Math.floor(Date.now() / 1000)), text: { body: "" }, type: "text" }],
         field: "messages"
@@ -487,7 +487,7 @@ GymBot is an AI fitness coaching platform. Production workflows live in `n8n/run
       },
       input: [{
         messaging_product: "whatsapp",
-        metadata: { display_phone_number: "550000000000", phone_number_id: "YOUR_PHONE_NUMBER_ID" },
+        metadata: { display_phone_number: "550000000000", phone_number_id: "914510145083991" },
         contacts: [{ profile: { name: "Test MesoManual" }, wa_id: "570000000053" }],
         messages: [{
           from: "570000000053",

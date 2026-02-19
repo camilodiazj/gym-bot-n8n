@@ -2,6 +2,28 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.6.0] - 2026-02-18
+
+### Added - Calendar Event on Schedule (KAN-57)
+
+- **Google Calendar integration in MAIN_FLOW**: When a user confirms their weekly schedule, Google Calendar events are automatically created for each training session
+  - `GetCalendarData`: Joins `user_weekly_schedule` + `users` + `users_gym_profile` to gather schedule, email, and session duration
+  - `CreateCalendarMagicLink`: Creates a magic link for the workout tracker URL included in each event description
+  - `PrepareCalendarEvents`: Code node that builds calendar event payloads (summary, start/end times based on `preferred_schedule`, attendee email, location)
+  - `GoogleCalendar_CreateEvent`: Creates events via Google Calendar API with user as attendee (sends invitation email)
+  - `UpdateCalendarEventId`: Stores the Google Calendar event ID back in `user_weekly_schedule.calendar_event_id`
+- **DB migration**: Added `calendar_event_id` (TEXT, nullable) column to `user_weekly_schedule`
+- **E2E test update**: TC003 now verifies `calendar_event_id IS NOT NULL` after scheduling flow
+
+### Fixed
+
+- **IsScheduleComplete FALSE output**: Removed duplicate connection from `IsScheduleComplete` FALSE → `Filtered Message4` that caused duplicate items and broke multi-turn test context
+- **Phone number placeholder**: Replaced `YOUR_PHONE_NUMBER_ID` with actual WhatsApp phone_number_id across all workflow and spec files
+
+### Changed
+
+- **Test data fixtures** (`test_data_setup.sql`): Fixed `cel_number` for 6 test users to include country code; added `users_gym_profile` for users 2, 3, 4
+
 ## [0.5.0] - 2026-02-15
 
 ### Added - Rest Timer Between Sets (KAN-75)
