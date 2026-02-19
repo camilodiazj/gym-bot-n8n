@@ -12,10 +12,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -20656,
-        5328
+        -50448,
+        1904
       ],
-      "id": "b5293b55-418c-4de6-bad4-74b3602345d1",
+      "id": "8a7b2137-18cc-4554-becc-a9778df3161d",
       "name": "AI Agent",
       "executeOnce": true
     },
@@ -30,10 +30,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -19648,
-        5328
+        -49440,
+        1904
       ],
-      "id": "67ac0063-0adb-44f4-8f75-dc59b0318d4f",
+      "id": "12d0d4e8-9578-48db-8a22-06bb2fb830c5",
       "name": "Send message",
       "webhookId": "10fb6670-6b0a-4139-b31e-e009fca86100",
       "credentials": {
@@ -54,10 +54,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -21760,
-        5792
+        -51552,
+        2368
       ],
-      "id": "3f9abaa0-e4ab-40b8-8139-d5042c4bd3a6",
+      "id": "15d2ace3-b6d4-464d-9bd6-da4edaa1144a",
       "name": "AI Agent1",
       "executeOnce": true
     },
@@ -75,10 +75,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -21728,
-        6048
+        -51520,
+        2624
       ],
-      "id": "84d52048-24ea-4d1f-92f6-bc6a87eb053d",
+      "id": "2481daa0-71f4-4fe8-9395-555185befacb",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -98,10 +98,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -21376,
-        5808
+        -51168,
+        2384
       ],
-      "id": "f4ca9fc6-7506-48e2-b0af-b01cbb57c5fe",
+      "id": "8b1816d0-3fdd-44b7-9fae-41a76ee5ffd9",
       "name": "Send message2",
       "webhookId": "16f0732e-1b44-4c37-9a47-4d32112c6e78",
       "retryOnFail": true,
@@ -122,10 +122,10 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        -24496,
-        5888
+        -54288,
+        2464
       ],
-      "id": "462a7168-e949-42fd-873b-9712ef81ae54",
+      "id": "5150fc83-f5ab-4ce7-a943-8ec901871c63",
       "name": "WhatsApp_Trigger1",
       "webhookId": "8bf52a73-7fd4-4762-ba3f-f77e5b9b8f7a",
       "credentials": {
@@ -151,10 +151,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -23648,
-        5904
+        -53440,
+        2480
       ],
-      "id": "8e65f5a5-52c2-40e6-abd4-ff2dbf5cdcdf",
+      "id": "cfeafd04-d632-4b85-aa55-56763f787dd2",
       "name": "GetUser",
       "alwaysOutputData": true,
       "credentials": {
@@ -181,10 +181,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -23152,
-        5872
+        -52944,
+        2448
       ],
-      "id": "7a5dc3b1-9709-4eea-81e4-e1c1c6caa0a1",
+      "id": "617044ca-0c47-4c70-b7c0-92118dc384e2",
       "name": "GetWeeklySchedule",
       "alwaysOutputData": true,
       "credentials": {
@@ -205,10 +205,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -21616,
-        5600
+        -51408,
+        2176
       ],
-      "id": "d0a48fc5-76cf-4bf9-af84-10e9fb941745",
+      "id": "ee7babd5-4471-4030-9d68-365f4d53885b",
       "name": "Send message1",
       "webhookId": "45dd2929-4021-4904-ae82-c5f878f9a340",
       "executeOnce": true,
@@ -228,10 +228,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -20448,
-        5568
+        -50240,
+        2144
       ],
-      "id": "be285fab-7d56-432e-8689-5cdbd28140e6",
+      "id": "53073c01-ca46-4033-8a0d-6533dd10791a",
       "name": "Tool_Get_Workout2",
       "credentials": {
         "postgres": {
@@ -251,10 +251,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -21440,
-        4928
+        -51232,
+        1504
       ],
-      "id": "f6dbe15e-9d6a-4887-a444-313bc531f6da",
+      "id": "0b6d715f-b2af-4125-a243-96609e338ddd",
       "name": "Intention_Agent"
     },
     {
@@ -270,10 +270,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -21472,
-        5232
+        -51264,
+        1808
       ],
-      "id": "0b5770f1-293e-493d-b03e-876a936c2cdf",
+      "id": "bb29f4fb-049a-4e5a-8b22-89b49209b359",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -390,10 +390,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -21072,
-        4864
+        -50864,
+        1440
       ],
-      "id": "8d628e60-0f48-4f7f-ae0e-aa0011841a65",
+      "id": "4bc351cc-9a6a-4352-bb54-f43c0d7046a5",
       "name": "Switch"
     },
     {
@@ -407,10 +407,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -20432,
-        4832
+        -50224,
+        1408
       ],
-      "id": "e56b9972-5854-4746-9c7d-4667ee12f9a6",
+      "id": "65483eab-e02a-4ccc-bf1d-e583125c8443",
       "name": "Send message3",
       "webhookId": "d91b39ce-c157-41c0-806d-e89f891c234b",
       "credentials": {
@@ -429,10 +429,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -21312,
-        5216
+        -51104,
+        1792
       ],
-      "id": "538f5f98-8ea6-4eb3-aa8c-4ebffc38a60c",
+      "id": "5b0dfc4a-5421-4ca5-9b74-f247e4118f95",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -450,10 +450,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -20624,
-        5024
+        -50416,
+        1600
       ],
-      "id": "4f40a0ae-ad59-49f8-aaec-ebfb34ff38dd",
+      "id": "8bc3cb68-009c-4f9e-90e2-95c777b743ab",
       "name": "Tool_Update_User_Weekly_Schedule1",
       "credentials": {
         "postgres": {
@@ -470,10 +470,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -20624,
-        5568
+        -50416,
+        2144
       ],
-      "id": "aca2bb31-b33e-4be8-9003-d6487777a0ff",
+      "id": "69bb0981-c9b3-4dd7-8ae5-a480b3090e71",
       "name": "Postgres Chat Memory1",
       "credentials": {
         "postgres": {
@@ -510,10 +510,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -22016,
-        5472
+        -51808,
+        2048
       ],
-      "id": "a89bf704-1fd0-4817-8366-e332b775b6b2",
+      "id": "065ecf89-09a7-4574-a4eb-9ca59be25263",
       "name": "userHasRoutineForToday",
       "executeOnce": true
     },
@@ -545,10 +545,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -20880,
-        5328
+        -50672,
+        1904
       ],
-      "id": "4ace020c-1083-4e2a-999d-8f3ea80c0df1",
+      "id": "424f82be-6ccc-4753-9025-190d3f00f179",
       "name": "If_Has_Routine_Today",
       "executeOnce": true
     },
@@ -561,10 +561,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -22416,
-        6032
+        -52208,
+        2608
       ],
-      "id": "a6e00e76-b6f3-4b0b-a70a-2019f4a37632",
+      "id": "dbb34b8c-f116-431e-8cbc-b6588339c483",
       "name": "Week_Schedule",
       "credentials": {
         "postgres": {
@@ -582,10 +582,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -22208,
-        6208
+        -52000,
+        2784
       ],
-      "id": "cfbedff4-47c1-485c-bdfb-f77c64a33035",
+      "id": "2bb699db-2da1-4970-9801-b3fa148e3c11",
       "name": "Merge"
     },
     {
@@ -616,10 +616,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -22816,
-        5872
+        -52608,
+        2448
       ],
-      "id": "4f9581dd-003f-4fd0-8973-4dc3d808b6e8",
+      "id": "d3b48d6f-bc62-4fa6-a5ee-19c8f3b63e06",
       "name": "has_planned_workouts1",
       "executeOnce": false,
       "alwaysOutputData": false
@@ -644,10 +644,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -22432,
-        6240
+        -52224,
+        2816
       ],
-      "id": "d36c073d-eacd-4783-981c-e28532459540",
+      "id": "9e0a445b-d8ce-4c10-9e05-efdaf2a691aa",
       "name": "User_Finished_Workouts",
       "alwaysOutputData": true,
       "credentials": {
@@ -666,10 +666,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -22448,
-        6448
+        -52240,
+        3024
       ],
-      "id": "cf8475b6-61ce-4bf7-9260-088ece441aa3",
+      "id": "55c09170-d450-4fc7-a4d1-a03613700f0e",
       "name": "Template_Days",
       "credentials": {
         "postgres": {
@@ -687,10 +687,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -21584,
-        6048
+        -51376,
+        2624
       ],
-      "id": "26199bcc-b419-41bf-9bba-66abcbd13a05",
+      "id": "edc90878-9c0c-4dd0-bf43-f3b924786d80",
       "name": "Postgres Chat Memory2",
       "credentials": {
         "postgres": {
@@ -708,10 +708,10 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        -21440,
-        6048
+        -51232,
+        2624
       ],
-      "id": "0b5a3e42-6116-4ca9-ba26-de3a7a419f38",
+      "id": "eae5bd9c-badd-4dd5-8b7e-19fae1b30e02",
       "name": "Tool_Update_User_Weekly_Schedule",
       "credentials": {
         "postgres": {
@@ -728,10 +728,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -23120,
-        6992
+        -52912,
+        3568
       ],
-      "id": "7191e991-2bef-48fb-b475-c2494da45ace",
+      "id": "da2330aa-f634-4f32-9b38-dff2fc758694",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -749,10 +749,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        -22960,
-        6992
+        -52752,
+        3568
       ],
-      "id": "230f37c9-080b-4908-b768-ae8bd0097727",
+      "id": "fa425bb2-9134-48c3-872f-0ed967149a59",
       "name": "Postgres Chat Memory3",
       "credentials": {
         "postgres": {
@@ -789,10 +789,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -23440,
-        5904
+        -53232,
+        2480
       ],
-      "id": "8e904217-9af6-482f-834b-40bb1de3c581",
+      "id": "7cc6ebf6-979e-482f-99a6-35c5c0a88df0",
       "name": "user_exists",
       "alwaysOutputData": false
     },
@@ -807,10 +807,10 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -22672,
-        6736
+        -52464,
+        3312
       ],
-      "id": "eeeb3942-c410-40af-a6e2-d71294ff098d",
+      "id": "67e85cfe-b99b-4fca-9c7c-4b47afa0f68e",
       "name": "Send message4",
       "webhookId": "62006b73-0285-4ac9-ad46-2b327a2d5be5",
       "credentials": {
@@ -831,10 +831,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -22976,
-        6736
+        -52768,
+        3312
       ],
-      "id": "c1fa84bc-15eb-46ea-9a3a-5740699081ab",
+      "id": "c4410c8d-c21e-4790-b502-10b30a774b3b",
       "name": "KYC Agent",
       "retryOnFail": true
     },
@@ -849,10 +849,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -20768,
-        4832
+        -50560,
+        1408
       ],
-      "id": "3d7e47b5-e81a-4ec3-a371-1130d65c6334",
+      "id": "5a577bc7-cf5c-482d-9bc2-3756ebbb4fc1",
       "name": "CONFIRMATION AGENT"
     },
     {
@@ -963,10 +963,10 @@
       "type": "n8n-nodes-base.supabaseTool",
       "typeVersion": 1,
       "position": [
-        -22800,
-        6992
+        -52592,
+        3568
       ],
-      "id": "e5178fb1-77da-4c0c-8208-8cf34cc2dc36",
+      "id": "8927b914-c93f-4592-a54f-1265a2b16b62",
       "name": "Tool_Create_User_Profile",
       "credentials": {
         "supabaseApi": {
@@ -982,10 +982,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -20784,
-        5536
+        -50576,
+        2112
       ],
-      "id": "aaa5e7cf-2986-405b-b197-fd4467b8e02c",
+      "id": "f24f7846-50d9-427b-bb07-06d5953d37d5",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -1001,10 +1001,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -22416,
-        5472
+        -52208,
+        2048
       ],
-      "id": "b1867d95-b43e-4b2b-aa8b-721f8b73471e",
+      "id": "08a3f2e5-bf18-4f3c-884c-ba410bad333d",
       "name": "Filter_Today_Routine",
       "alwaysOutputData": true
     },
@@ -1045,10 +1045,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -24176,
-        5936
+        -53968,
+        2512
       ],
-      "id": "dc574f45-ca7b-40e3-89d6-8730d0ac00b7",
+      "id": "0e30f046-3ba8-4ebe-84c9-a6a7808ae608",
       "name": "If"
     },
     {
@@ -1058,10 +1058,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -23872,
-        5904
+        -53664,
+        2480
       ],
-      "id": "964e2c7a-44ed-45b4-b26b-49a92aed0653",
+      "id": "ea5437d4-aee0-4543-a858-a2ff761e0f2c",
       "name": "Normalize_Message"
     },
     {
@@ -1088,10 +1088,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -23344,
-        5712
+        -53136,
+        2288
       ],
-      "id": "d3cf8204-1660-4edb-9b19-accea629043d",
+      "id": "6fcb8b57-4ad7-4bb8-b2ec-7a5043022d55",
       "name": "Check_Pending_Tasks",
       "alwaysOutputData": true,
       "credentials": {
@@ -1129,10 +1129,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -23152,
-        5712
+        -52944,
+        2288
       ],
-      "id": "28ab67a5-5512-4bc4-92c1-66b4300d0558",
+      "id": "7165b7a6-6f27-46db-9dea-f10894dcfad8",
       "name": "Has_Pending_Task"
     },
     {
@@ -1144,10 +1144,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -20576,
-        4624
+        -50368,
+        1200
       ],
-      "id": "24b96f4c-b6c4-45fa-bbc7-2db3afd1a12f",
+      "id": "4c094367-30a3-46f7-a209-c0033d59de48",
       "name": "Update_Pending_Task_Completed",
       "credentials": {
         "postgres": {
@@ -1163,10 +1163,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -24384,
-        6112
+        -54176,
+        2688
       ],
-      "id": "47b207e2-02ed-4368-a594-7ab55f16c3db",
+      "id": "9f2e94ba-c119-4534-8000-543b7c7b486f",
       "name": "When Executed by Another Workflow",
       "disabled": true
     },
@@ -1177,10 +1177,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -23648,
-        6096
+        -53440,
+        2672
       ],
-      "id": "a32de839-a074-4c1d-a8e1-1a0c2d9c9643",
+      "id": "5092f1e3-15a3-4631-bbdf-0a5655a345f8",
       "name": "Filtered Message"
     },
     {
@@ -1190,10 +1190,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -19440,
-        5328
+        -49232,
+        1904
       ],
-      "id": "87d7d470-5b17-43e6-8d41-ce77cee75aa3",
+      "id": "3aa7698d-334e-4651-b843-cf204d135a88",
       "name": "Filtered Message1"
     },
     {
@@ -1203,10 +1203,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -21680,
-        6768
+        -51472,
+        3344
       ],
-      "id": "59cfac80-b4cd-4e09-9688-bd130b20d6cd",
+      "id": "7bcbb9eb-0871-47b7-9482-7d9ad2d02746",
       "name": "Filtered Message2"
     },
     {
@@ -1216,10 +1216,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -20240,
-        4832
+        -50032,
+        1408
       ],
-      "id": "857f2f9d-031b-467f-8cf5-3b39a352db5e",
+      "id": "e9d4710f-0ccd-4e62-b7f5-7f318465b5e7",
       "name": "Filtered Message3"
     },
     {
@@ -1229,10 +1229,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -21136,
-        5808
+        -48992,
+        2336
       ],
-      "id": "94b5c1f6-c9de-4699-b78c-174b6b857b6c",
+      "id": "10745610-d2ac-4956-8377-e55d2e734f01",
       "name": "Filtered Message4"
     },
     {
@@ -1242,10 +1242,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -21376,
-        5600
+        -51168,
+        2176
       ],
-      "id": "46e62e95-10bb-4b18-991c-8d2e39f6bc4b",
+      "id": "4d25d9f9-8175-49b9-ae8f-1e4b21ef2906",
       "name": "Filtered Message5"
     },
     {
@@ -1264,10 +1264,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        -22464,
-        6736
+        -52256,
+        3312
       ],
-      "id": "b3ccd8ec-8443-4e78-bba5-c7b1b0cb7bc6",
+      "id": "e29aa10b-5f50-430b-b513-f762f16f0aeb",
       "name": "GetNewUserProfile",
       "alwaysOutputData": true,
       "credentials": {
@@ -1305,10 +1305,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -22272,
-        6736
+        -52064,
+        3312
       ],
-      "id": "dbb1a1be-284a-481b-b40b-a65ce96970d6",
+      "id": "b04e6d3d-110a-423d-8d60-105a5b3b31b3",
       "name": "If1"
     },
     {
@@ -1348,10 +1348,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        -21968,
-        6592
+        -51760,
+        3168
       ],
-      "id": "4ef73bb4-b7f2-4ba9-9de7-5b54d22023e6",
+      "id": "524be167-b10d-464a-88fa-26e6c67c539b",
       "name": "Call 'WORKOUT_CREATOR'",
       "alwaysOutputData": true
     },
@@ -1364,10 +1364,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -20288,
-        5440
+        -50080,
+        2016
       ],
-      "id": "3472b980-f450-4518-b92f-a1be98b093c3",
+      "id": "b8320c07-144a-484e-9f4c-df4d4d7e84f8",
       "name": "Create Magic Link",
       "credentials": {
         "postgres": {
@@ -1383,10 +1383,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -20096,
-        5440
+        -49888,
+        2016
       ],
-      "id": "cde3f326-839b-4e9b-bccc-b967fbdf3d11",
+      "id": "5778207f-47c1-43a2-8bab-0799361db863",
       "name": "Build URL"
     },
     {
@@ -1398,10 +1398,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -19840,
-        5328
+        -49632,
+        1904
       ],
-      "id": "17f0f77d-f300-48cb-9f94-037e652ddc11",
+      "id": "8af5cae9-45ae-4634-994c-1be42a75b2c7",
       "name": "Merge1"
     },
     {
@@ -1413,10 +1413,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        -20816,
-        4416
+        -50608,
+        992
       ],
-      "id": "ef061db5-16e1-4252-a24a-b07ff8b872fe",
+      "id": "bdcd0a4d-1e82-4ed3-aff0-59ad51ce4417",
       "name": "Fetch_Plan_For_Renewal",
       "executeOnce": true,
       "credentials": {
@@ -1516,10 +1516,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -20576,
-        4416
+        -50368,
+        992
       ],
-      "id": "0a14fa57-ec8c-42b0-a478-54257218ace3",
+      "id": "745d8c39-4cf8-4946-bb38-70dc84308cd1",
       "name": "Execute_Mesocycle_Renewal_Manual",
       "alwaysOutputData": true
     },
@@ -1530,10 +1530,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -21968,
-        6224
+        -51760,
+        2800
       ],
-      "id": "c01cbe81-99dd-46e0-bd99-88d5c15422cf",
+      "id": "dff4ac2e-6bff-476f-8ffd-57772cc0b8c6",
       "name": "Check_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1565,10 +1565,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -21744,
-        6224
+        -51536,
+        2800
       ],
-      "id": "677ac4fd-4cfb-4f97-99ca-c9f6f81e8ff2",
+      "id": "5db77cb8-b29e-4917-937d-7e062f5d0eaa",
       "name": "If_Mesocycle_Complete",
       "executeOnce": true
     },
@@ -1662,10 +1662,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -21440,
-        6352
+        -51232,
+        2928
       ],
-      "id": "7c8fbd90-e2da-4ead-ab31-0d0b2ec5a751",
+      "id": "d19eaecb-1931-4a62-800f-e0965ecc16f0",
       "name": "Execute_Mesocycle_Renewal",
       "alwaysOutputData": true
     },
@@ -1695,10 +1695,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -10000,
-        5120
+        -50576,
+        2464
       ],
-      "id": "988ab21a-1f1d-4475-967d-7f9b665a4398",
+      "id": "97de8ff4-3d2a-4d7d-8211-a95e9c3cad2b",
       "name": "IsScheduleComplete"
     },
     {
@@ -1710,10 +1710,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -9760,
-        5120
+        -50320,
+        2448
       ],
-      "id": "99511a3c-c44e-4e5d-9c41-c9c00f1205c7",
+      "id": "b81e97b0-f208-4dc8-896b-79d0b7e3c804",
       "name": "GetCalendarData",
       "executeOnce": true,
       "credentials": {
@@ -1732,10 +1732,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -9520,
-        5120
+        -50080,
+        2448
       ],
-      "id": "0bd9a3da-450a-4fd7-b8ba-e6f3779fe29a",
+      "id": "1aa1a4af-b3e9-4994-a3d5-2ce863461e41",
       "name": "CreateCalendarMagicLink",
       "executeOnce": true,
       "credentials": {
@@ -1752,10 +1752,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -9280,
-        5120
+        -49840,
+        2448
       ],
-      "id": "1eac992d-b696-4c3f-8079-8dace9121d98",
+      "id": "44df5171-2d4b-4697-b8c1-a56064f0a464",
       "name": "PrepareCalendarEvents",
       "executeOnce": true
     },
@@ -1770,6 +1770,9 @@
         "start": "={{ $json.startDateTime }}",
         "end": "={{ $json.endDateTime }}",
         "additionalFields": {
+          "attendees": [
+            "={{ $json.attendeeEmail }}"
+          ],
           "description": "={{ $json.description }}",
           "guestsCanModify": false,
           "location": "={{ $json.location }}",
@@ -1780,10 +1783,10 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        -9040,
-        5120
+        -49600,
+        2448
       ],
-      "id": "2e87f96d-f99a-40db-806f-628adbc5b489",
+      "id": "2de8fec7-0430-4311-8666-798b38bdd93e",
       "name": "GoogleCalendar_CreateEvent",
       "credentials": {
         "googleCalendarOAuth2Api": {
@@ -1802,10 +1805,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -8800,
-        5120
+        -49360,
+        2448
       ],
-      "id": "aead7aba-b7a6-4b0c-9acd-6713345b9f18",
+      "id": "650b35f6-0587-4400-81c2-140d835add7e",
       "name": "UpdateCalendarEventId",
       "credentials": {
         "postgres": {
@@ -1817,40 +1820,6 @@
     }
   ],
   "pinData": {
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "messaging_product": "whatsapp",
-          "metadata": {
-            "display_phone_number": "550000000000",
-            "phone_number_id": "YOUR_PHONE_NUMBER_ID"
-          },
-          "contacts": [
-            {
-              "profile": {
-                "name": "Test NewUser"
-              },
-              "wa_id": "570000000009"
-            }
-          ],
-          "messages": [
-            {
-              "from": "570000000009",
-              "id": "wamid.E2E-TC002",
-              "timestamp": "1769085000",
-              "text": {
-                "body": "Hola, quiero empezar a entrenar"
-              },
-              "type": "text"
-            }
-          ],
-          "field": "messages"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ],
     "WhatsApp_Trigger1": [
       {
         "json": {
@@ -1884,6 +1853,40 @@
             }
           ],
           "field": "messages"
+        }
+      }
+    ],
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "messaging_product": "whatsapp",
+          "metadata": {
+            "display_phone_number": "550000000000",
+            "phone_number_id": "914510145083991"
+          },
+          "contacts": [
+            {
+              "profile": {
+                "name": "Test NoSchedule"
+              },
+              "wa_id": "570000000001"
+            }
+          ],
+          "messages": [
+            {
+              "from": "570000000001",
+              "id": "wamid.E2E-TC003-TURN4",
+              "timestamp": "1771456462",
+              "text": {
+                "body": "Sí, confirmo."
+              },
+              "type": "text"
+            }
+          ],
+          "field": "messages"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
@@ -2555,7 +2558,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Filtered Message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "GetCalendarData": {
@@ -2601,6 +2610,17 @@
           }
         ]
       ]
+    },
+    "UpdateCalendarEventId": {
+      "main": [
+        [
+          {
+            "node": "Filtered Message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -2608,7 +2628,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "be2346e0-6e56-47d6-868a-34a5ee6d39a1",
+  "versionId": "9552b903-b22c-482b-a230-edd5b2b404e6",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"

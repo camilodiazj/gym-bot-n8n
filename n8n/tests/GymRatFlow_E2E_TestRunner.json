@@ -8,10 +8,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2880,
-        2352
+        3792,
+        9008
       ],
-      "id": "655ab7db-dd6f-4a8f-b0f2-33d81324ae5e",
+      "id": "81942388-7fe2-4428-994a-c2b6b3408873",
       "name": "Aggregate AI Results"
     },
     {
@@ -23,10 +23,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        2640,
-        2352
+        3552,
+        9008
       ],
-      "id": "8d0e1bff-7565-44dc-b45e-ab092308aaf8",
+      "id": "61ba16c1-f486-490b-bb29-bd06bb663488",
       "name": "Run DB Verification AI",
       "credentials": {
         "postgres": {
@@ -43,10 +43,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2880,
-        2592
+        3792,
+        9248
       ],
-      "id": "90bfcfa4-c241-49e0-8343-097ee322ccd8",
+      "id": "15afdeff-4f97-4b35-9c0c-e3dbadcbce3d",
       "name": "Process AI Response"
     },
     {
@@ -72,10 +72,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2640,
-        2592
+        3552,
+        9248
       ],
-      "id": "751be515-ec13-40c6-9d6a-c20886a905d1",
+      "id": "a5e695c0-2b3b-4ea0-8663-8834a47e2c72",
       "name": "Simulate User Response",
       "credentials": {
         "openAiApi": {
@@ -115,10 +115,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2384,
-        2576
+        3296,
+        9232
       ],
-      "id": "fe128838-6607-4299-86ac-9ad68776c984",
+      "id": "b10e1b42-931f-443b-953c-7aa4a2971fb0",
       "name": "Loop Control AI"
     },
     {
@@ -128,10 +128,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2160,
-        2480
+        3072,
+        9136
       ],
-      "id": "fae3200f-5de6-4c9a-9c30-6516e70cce9b",
+      "id": "2d58985a-d7de-4def-af16-3d68e295000f",
       "name": "Check Completion"
     },
     {
@@ -141,7 +141,7 @@
           "value": "CKw15AtLk4-zAKdT_X5ZZ",
           "mode": "list",
           "cachedResultUrl": "/workflow/CKw15AtLk4-zAKdT_X5ZZ",
-          "cachedResultName": "Learning Project — MAIN_FLOW"
+          "cachedResultName": "KaiRos — MAIN_FLOW"
         },
         "workflowInputs": {
           "mappingMode": "autoMapInputData",
@@ -158,23 +158,23 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1920,
-        2480
+        2832,
+        9136
       ],
-      "id": "b45f042e-4edb-4231-8b10-ea9b2bd8353b",
+      "id": "95a30bcb-1dc2-4744-8c26-c4bf1d9663c7",
       "name": "Execute GymRatFlow AI"
     },
     {
       "parameters": {
-        "jsCode": "// Build AI Turn Input - construye el mensaje WhatsApp para el turno actual\nconst testCase = $('Pre-Test Log').first().json;\nconst turnData = $input.first().json;\nconst turnNumber = turnData.turnNumber || 1;\nconst message = turnData.currentMessage;\n\n// Usar phone del test case o default a 570000000009\nconst phone = testCase.phone || \"570000000009\";\n\nconsole.log(`   📤 AI Turn ${turnNumber}: \"${message.substring(0, 60)}...\"`);\n\nreturn [{\n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: {\n      display_phone_number: \"550000000000\",\n      phone_number_id: \"YOUR_PHONE_NUMBER_ID\"\n    },\n    contacts: [{\n      profile: { name: testCase.simulatedUser?.nombre || \"Test KYC User\" },\n      wa_id: phone\n    }],\n    messages: [{\n      from: phone,\n      id: `wamid.E2E-${testCase.id}-TURN${turnNumber}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
+        "jsCode": "// Build AI Turn Input - construye el mensaje WhatsApp para el turno actual\nconst testCase = $('Pre-Test Log').first().json;\nconst turnData = $input.first().json;\nconst turnNumber = turnData.turnNumber || 1;\nconst message = turnData.currentMessage;\n\n// Usar phone del test case o default a 570000000009\nconst phone = testCase.phone || \"570000000009\";\n\nconsole.log(`   📤 AI Turn ${turnNumber}: \"${message.substring(0, 60)}...\"`);\n\nreturn [{\n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: {\n      display_phone_number: \"550000000000\",\n      phone_number_id: \"914510145083991\"\n    },\n    contacts: [{\n      profile: { name: testCase.simulatedUser?.nombre || \"Test KYC User\" },\n      wa_id: phone\n    }],\n    messages: [{\n      from: phone,\n      id: `wamid.E2E-${testCase.id}-TURN${turnNumber}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1680,
-        2480
+        2592,
+        9136
       ],
-      "id": "8ec2de2f-9c0f-4564-b8ab-a3df5cac3bef",
+      "id": "be7a95cf-9808-4d93-8f62-1d0f1369d918",
       "name": "Build AI Turn Input"
     },
     {
@@ -184,10 +184,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1440,
-        2480
+        2352,
+        9136
       ],
-      "id": "770c2bbb-f327-49dc-82d5-4162f1f25d7b",
+      "id": "ae30ac37-b008-4ad0-af53-4f5300107141",
       "name": "Initialize AI Loop"
     },
     {
@@ -197,10 +197,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2320,
-        2080
+        3232,
+        8736
       ],
-      "id": "99733dfd-fb41-467a-a1d9-90212466449c",
+      "id": "e21c3b06-f726-4582-b540-4d2c4f868a16",
       "name": "Aggregate Multi-Turn Results"
     },
     {
@@ -212,10 +212,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        2080,
-        2080
+        2992,
+        8736
       ],
-      "id": "40d330d5-44d3-476b-894f-4d4f43faf9f5",
+      "id": "59e19b4b-7748-48e5-99e7-351089f822f5",
       "name": "Run DB Verification",
       "credentials": {
         "postgres": {
@@ -232,10 +232,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1440,
-        2272
+        2352,
+        8928
       ],
-      "id": "4a94fdc1-44bb-43ea-a63f-a505feebe890",
+      "id": "97a873ed-aa15-4863-939d-a7bfa0d328b0",
       "name": "Prepare Turns"
     },
     {
@@ -245,10 +245,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2320,
-        2272
+        3232,
+        8928
       ],
-      "id": "8170b8cf-7710-4b9a-a417-bf73255c70ee",
+      "id": "166a2eec-df0e-476c-966a-c91ea01cd92c",
       "name": "Evaluate Turn Result"
     },
     {
@@ -275,23 +275,23 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        2080,
-        2272
+        2992,
+        8928
       ],
-      "id": "26fc51e5-b29c-445d-832b-40e8c8180000",
+      "id": "eb2e59e7-594c-4494-bdea-41e271b08776",
       "name": "Execute GymRatFlow Multi"
     },
     {
       "parameters": {
-        "jsCode": "// Build Turn Input - construye el mensaje WhatsApp para cada turno\n// El turno actual viene del input (pasado por Prepare Turns -> Multi-Turn Loop)\nconst currentTurn = $input.first().json;\n\nconsole.log(`   📤 Turn ${currentTurn.turn}: \"${currentTurn.message.substring(0, 50)}...\"`);\n\nreturn [{ \n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: { \n      display_phone_number: \"550000000000\", \n      phone_number_id: \"YOUR_PHONE_NUMBER_ID\" \n    },\n    contacts: [{ \n      profile: { name: \"Test KYC User\" }, \n      wa_id: \"570000000009\" \n    }],\n    messages: [{\n      from: \"570000000009\",\n      id: `wamid.E2E-TC002-FULL-TURN${currentTurn.turn}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: currentTurn.message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
+        "jsCode": "// Build Turn Input - construye el mensaje WhatsApp para cada turno\n// El turno actual viene del input (pasado por Prepare Turns -> Multi-Turn Loop)\nconst currentTurn = $input.first().json;\n\nconsole.log(`   📤 Turn ${currentTurn.turn}: \"${currentTurn.message.substring(0, 50)}...\"`);\n\nreturn [{ \n  json: {\n    messaging_product: \"whatsapp\",\n    metadata: { \n      display_phone_number: \"550000000000\", \n      phone_number_id: \"914510145083991\" \n    },\n    contacts: [{ \n      profile: { name: \"Test KYC User\" }, \n      wa_id: \"570000000009\" \n    }],\n    messages: [{\n      from: \"570000000009\",\n      id: `wamid.E2E-TC002-FULL-TURN${currentTurn.turn}`,\n      timestamp: String(Math.floor(Date.now() / 1000)),\n      text: { body: currentTurn.message },\n      type: \"text\"\n    }],\n    field: \"messages\"\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1840,
-        2272
+        2752,
+        8928
       ],
-      "id": "23ebf3b0-8478-4d1c-a911-60b0f92b73b6",
+      "id": "e031583c-2475-4b48-b991-0f0e1a3a2687",
       "name": "Build Turn Input"
     },
     {
@@ -301,10 +301,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1600,
-        2272
+        2512,
+        8928
       ],
-      "id": "9f45b5cc-5ab4-4fa7-861b-02c45cb91ede",
+      "id": "1085cf74-dc1e-4a9f-85f7-1fb0f3539d27",
       "name": "Multi-Turn Loop"
     },
     {
@@ -392,10 +392,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1360,
-        2080
+        2272,
+        8736
       ],
-      "id": "e71579d3-8d05-4470-8008-f20686c9b08a",
+      "id": "d309161d-a7b8-4aeb-920b-cd9c09e9b02f",
       "name": "Detect Multi-Turn"
     },
     {
@@ -408,10 +408,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1072,
-        640
+        1984,
+        7296
       ],
-      "id": "f1505547-4328-4af4-bd1b-eee9c32e10fe",
+      "id": "25b143aa-c52c-49ce-883f-d7dd8756dcd5",
       "name": "Instructions"
     },
     {
@@ -442,10 +442,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2512,
-        1696
+        3424,
+        8352
       ],
-      "id": "4f98e0a2-e690-4295-97f6-b07ac911d28d",
+      "id": "9476b046-ed98-4dcd-81cb-fcaa0d08f80c",
       "name": "Has Failures?"
     },
     {
@@ -455,10 +455,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2304,
-        1696
+        3216,
+        8352
       ],
-      "id": "b6951917-97be-4cd3-9e15-b192ca47d3fa",
+      "id": "a3125109-8b4a-4131-b95e-320e40196bd8",
       "name": "Generate Report"
     },
     {
@@ -470,10 +470,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        2080,
-        1696
+        2992,
+        8352
       ],
-      "id": "7270d626-614f-46a6-b5ec-524f567f8a8f",
+      "id": "ea4d9ffd-08b0-4f1a-ae25-364c090c714e",
       "name": "Collect Results"
     },
     {
@@ -483,10 +483,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1728,
-        1872
+        2640,
+        8528
       ],
-      "id": "948a6f9c-de5b-456c-8a64-94365c43a97d",
+      "id": "67fda90a-5ce3-437e-b769-19d32a999d61",
       "name": "Evaluate Result"
     },
     {
@@ -513,10 +513,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1536,
-        1872
+        2448,
+        8528
       ],
-      "id": "fe3f3ed6-ab4c-4775-bb0d-69fd1749b968",
+      "id": "0a641c35-fe8c-43f2-9a6f-ba849b3bba43",
       "name": "Execute GymRatFlow"
     },
     {
@@ -526,10 +526,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1360,
-        1872
+        2272,
+        8528
       ],
-      "id": "fb410833-02a5-4878-819d-dfd24a9bfd14",
+      "id": "51a0c90c-f352-4b71-94da-3b8744ea00b0",
       "name": "Extract Test Input"
     },
     {
@@ -541,10 +541,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.5,
       "position": [
-        1200,
-        1872
+        2112,
+        8528
       ],
-      "id": "c9812feb-9684-4d2c-8725-98aaae678f99",
+      "id": "fac995d3-28f9-4622-b46a-f7ac6cfd3ef0",
       "name": "Run Cleanup SQL",
       "credentials": {
         "postgres": {
@@ -561,10 +561,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1024,
-        1872
+        1936,
+        8528
       ],
-      "id": "82703e36-a8b5-4be7-b6c8-cec980652b04",
+      "id": "d27ec5d2-9e0d-4685-a323-abaf4db8558d",
       "name": "Pre-Test Log"
     },
     {
@@ -574,23 +574,23 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        752,
-        1696
+        1664,
+        8352
       ],
-      "id": "dc9afa88-6a0d-44de-9fbd-cf352a383926",
+      "id": "ea32fc9e-f1ef-4a83-b460-58edbf00d00a",
       "name": "Loop Tests"
     },
     {
       "parameters": {
-        "jsCode": "// Test Cases E2E para GymRatFlow\n// Tests ejecutados en orden secuencial por el campo 'order'\n\n// === TEST FILTER ===\n// Para ejecutar tests específicos, agregar IDs aquí. Ej: ['TC003', 'TC006']\n// Para ejecutar TODOS, dejar vacío: []\nconst TEST_FILTER = [];\n\nconst testCases = [{\n    order: 1,\n    id: \"TC001\",\n    name: \"Bloqueo de Ruido - Status Update\",\n    priority: \"CRITICAL\",\n    category: \"FILTRO_RUIDO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output === undefined || output === null || output === ''\",\n      description: \"No debe generar respuesta\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"statuses\": [{ \"id\": \"wamid.test\", \"status\": \"sent\", \"timestamp\": \"1769084739\", \"recipient_id\": \"550000000000\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 2,\n    id: \"TC002\",\n    name: \"Usuario Nuevo - Onboarding KYC (Greeting)\",\n    priority: \"HIGH\",\n    category: \"ONBOARDING\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('conocerte') || output.includes('nombre') || output.includes('Coach')\",\n      description: \"Debe iniciar KYC\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NewUser\" }, \"wa_id\": \"570000000009\" }],\n      \"messages\": [{ \"from\": \"570000000009\", \"id\": \"wamid.E2E-TC002\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Hola, quiero empezar a entrenar\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ]\n  },\n  {\n    order: 3,\n    id: \"TC002_FULL_KYC\",\n    name: \"Onboarding Completo - KYC con Usuario Simulado IA\",\n    priority: \"CRITICAL\",\n    category: \"ONBOARDING_FULL\",\n    testType: \"MULTI_TURN_AI\",\n    simulatedUser: {\n      nombre: \"Juan Pérez García\",\n      email: \"juan.perez.e2e@test.com\",\n      edad: 28,\n      sexo: \"M\",\n      estatura_cm: 175,\n      peso_kg: 75,\n      objetivo_principal: \"Ganar masa muscular\",\n      objetivo_secundario: \"Mejorar fuerza\",\n      tiempo_entrenando: \"6 a 12 meses\",\n      frecuencia_actual: \"3-4 días por semana\",\n      nivel: \"Intermedio\",\n      estado_salud: \"A\",\n      dias_disponibles: 4,\n      tiempo_por_sesion: \"45-60 minutos\",\n      horario: \"Mañana\",\n      tipo_entrenamiento: \"Pesas libres\",\n      prioridades: \"Pecho y espalda\",\n      desafios: \"Entrenar piernas\",\n      cardio_actual: \"No\",\n      frecuencia_cardio: \"0\"\n    },\n    config: {\n      maxTurns: 25,\n      completionIndicators: [\"me pongo manos a la obra\", \"recibirás tu plan\", \"tu rutina 100%\", \"estoy emocionado por ver tu progreso\", \"en breve recibirás\", \"Prepárate para darlo todo\"],\n      firstMessage: \"Hola, quiero empezar a entrenar en el gimnasio\"\n    },\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ],\n    verification: {\n      queries: [\n        { sql: \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000009\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000009'\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 1 },\n        { sql: \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 4 }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"Debe completar KYC dinámicamente y crear usuario + rutina\"\n    }\n  },\n  {\n    order: 4,\n    id: \"TC003\",\n    name: \"Usuario sin Workouts - Flujo Agendar Completo\",\n    priority: \"HIGH\",\n    category: \"AGENDAR\",\n    testType: \"MULTI_TURN_AI\",\n    phone: \"570000000001\",\n    simulatedUser: {\n      nombre: \"Test NoSchedule\",\n      email: \"test_noschedule@gymbot.test\",\n      edad: 28,\n      sexo: \"M\",\n      estatura_cm: 175,\n      peso_kg: 75,\n      objetivo_principal: \"Ganar masa muscular\",\n      objetivo_secundario: \"Mejorar fuerza\",\n      tiempo_entrenando: \"1 a 3 años\",\n      frecuencia_actual: \"3-4 días por semana\",\n      nivel: \"Principiante\",\n      estado_salud: \"A\",\n      dias_disponibles: 3,\n      tiempo_por_sesion: \"60-75 minutos\",\n      horario: \"Mañana\",\n      tipo_entrenamiento: \"Mixto\",\n      prioridades: \"Pecho y espalda\",\n      desafios: \"Ya tengo mi plan creado, solo necesito agendar mi semana. Quiero entrenar Lunes, Miércoles y Viernes. Quiero empezar el próximo lunes. Si me piden confirmar, digo que sí.\",\n      ambiente_entrenamiento: \"Gimnasio\",\n      equipamiento_casa: \"N/A\",\n      cardio_actual: \"No\",\n      frecuencia_cardio: \"0\"\n    },\n    config: {\n      maxTurns: 10,\n      completionIndicators: [\n        \"me encargo de recordarte\",\n        \"está agendada\",\n        \"esta agendada\",\n        \"primer entrenamiento es el\",\n        \"Nos vemos pronto\",\n        \"nos vemos pronto\",\n        \"rutina de la Semana 1\",\n        \"rutina de la semana 1\"\n      ],\n      firstMessage: \"Hola, quiero agendar mi semana de entrenamiento\"\n    },\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001';\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000001%' OR session_id LIKE '%e2e00001-0000-0000-0000-000000000001%';\"\n    ],\n    verification: {\n      queries: [\n        {\n          sql: \"SELECT COUNT(*) as cnt FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001'\",\n          expected: 3\n        },\n        {\n          sql: \"SELECT COUNT(*) as cnt FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001' AND calendar_event_id IS NOT NULL\",\n          expected: 3\n        }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"Debe completar agendamiento de 3 dias y mostrar closing message con primer entrenamiento\"\n    }\n  },\n  {\n    order: 5,\n    id: \"TC004\",\n    name: \"Dia de Descanso\",\n    priority: \"MEDIUM\",\n    category: \"DESCANSO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('no tienes sesión') || output.includes('no tienes sesion') || output.includes('descansar') || output.includes('descanso')\",\n      description: \"Debe indicar día de descanso\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test RestDay\" }, \"wa_id\": \"570000000002\" }],\n      \"messages\": [{ \"from\": \"570000000002\", \"id\": \"wamid.E2E-TC004\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que hay para hoy?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 6,\n    id: \"TC006\",\n    name: \"VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"VER_RUTINA\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"(output.includes('plan para hoy') || output.includes('rutina') || output.includes('RUTINA')) && (output.includes('Series') || output.includes('series') || output.includes('Repeticiones'))\",\n      description: \"Debe mostrar rutina formateada\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC006\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Muestrame mi rutina de hoy\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 7,\n    id: \"TC007\",\n    name: \"CHAT - Pregunta General\",\n    priority: \"MEDIUM\",\n    category: \"CHAT\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 50\",\n      description: \"Debe responder pregunta fitness\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC007\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que ejercicio es mejor para biceps?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 8,\n    id: \"TC011\",\n    name: \"Confirmacion via Pending Task\",\n    priority: \"CRITICAL\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('Felicidades') || output.includes('excelente') || output.includes('Felicitaciones') || output.includes('increíble') || output.includes('genial') || output.includes('Completada')\",\n      description: \"Debe confirmar rutina completada\"\n    },\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND planned_day = CURRENT_DATE::text;\",\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC011\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Si, ya terminé mi rutina\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 9,\n    id: \"TC012\",\n    name: \"Pending Task - No confirma\",\n    priority: \"HIGH\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 30\",\n      description: \"Debe manejar no-confirmación\"\n    },\n    cleanup: [\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC012\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"No pude hoy, me senti mal\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 10,\n    id: \"TC013\",\n    name: \"Button Input - VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"BUTTON_INPUT\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"(output.includes('plan para hoy') || output.includes('rutina') || output.includes('RUTINA')) && (output.includes('Series') || output.includes('series') || output.includes('Repeticiones'))\",\n      description: \"Debe mostrar rutina cuando usuario responde con botón\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"YOUR_PHONE_NUMBER_ID\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{\n        \"context\": {\n          \"from\": \"550000000000\",\n          \"id\": \"wamid.HBgMNTczMTUzMTY3NDA0FQIAERgSODVBQUQyMUU4Qzg1RjYwOTE2AA==\"\n        },\n        \"from\": \"570000000003\",\n        \"id\": \"wamid.E2E-TC013-BUTTON\",\n        \"timestamp\": \"1769085000\",\n        \"type\": \"button\",\n        \"button\": {\n          \"payload\": \"Quiero mi rutina de hoy\",\n          \"text\": \"Quiero mi rutina de hoy\"\n        }\n      }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    \"order\": 11,\n    \"id\": \"TC_HOME_FULL_BASIC\",\n    \"name\": \"Onboarding HOME Completo - Equipamiento Basico (Mancuernas + Bandas)\",\n    \"priority\": \"CRITICAL\",\n    \"category\": \"ONBOARDING_HOME\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000211\",\n    \"simulatedUser\": {\n      \"nombre\": \"Maria Lopez Sanchez\",\n      \"email\": \"maria.lopez.home.e2e@test.com\",\n      \"edad\": 32,\n      \"sexo\": \"F\",\n      \"estatura_cm\": 165,\n      \"peso_kg\": 62,\n      \"objetivo_principal\": \"Salud general / recomposicion corporal\",\n      \"objetivo_secundario\": \"Tonificar\",\n      \"tiempo_entrenando\": \"Menos de 6 meses\",\n      \"frecuencia_actual\": \"1-2 dias por semana\",\n      \"nivel\": \"Principiante\",\n      \"estado_salud\": \"A\",\n      \"dias_disponibles\": 3,\n      \"tiempo_por_sesion\": \"45-60 minutos\",\n      \"horario\": \"Manana\",\n      \"tipo_entrenamiento\": \"Mixto\",\n      \"prioridades\": \"Gluteo y pierna\",\n      \"desafios\": \"Nada en particular\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Mancuernas y bandas elasticas\",\n      \"cardio_actual\": \"Caminata\",\n      \"frecuencia_cardio\": \"1-2\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \n        \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola! Quiero empezar a entrenar en casa\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000211%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000211';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000211;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211 AND home_equipment IS NOT NULL AND home_equipment != ''\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000211'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211') AND e.equipment IN ('machine', 'cable', 'smith')\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME con mancuernas+bandas y generar rutina sin ejercicios de maquina\"\n    }\n  },\n  {\n    \"order\": 12,\n    \"id\": \"TC_HOME_FULL_BODYWEIGHT\",\n    \"name\": \"Onboarding HOME Completo - Solo Peso Corporal\",\n    \"priority\": \"HIGH\",\n    \"category\": \"ONBOARDING_HOME\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000212\",\n    \"simulatedUser\": {\n      \"nombre\": \"Carlos Ramirez Diaz\",\n      \"email\": \"carlos.ramirez.home.e2e@test.com\",\n      \"edad\": 25,\n      \"sexo\": \"M\",\n      \"estatura_cm\": 178,\n      \"peso_kg\": 70,\n      \"objetivo_principal\": \"Mejorar resistencia\",\n      \"objetivo_secundario\": \"Mantenerme activo\",\n      \"tiempo_entrenando\": \"Nunca he entrenado\",\n      \"frecuencia_actual\": \"No entreno\",\n      \"nivel\": \"Principiante\",\n      \"estado_salud\": \"A\",\n      \"dias_disponibles\": 4,\n      \"tiempo_por_sesion\": \"30-45 minutos\",\n      \"horario\": \"Noche\",\n      \"tipo_entrenamiento\": \"Funcional\",\n      \"prioridades\": \"Core y resistencia general\",\n      \"desafios\": \"Ninguno\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Solo tengo mi cuerpo, no tengo equipamiento\",\n      \"cardio_actual\": \"No\",\n      \"frecuencia_cardio\": \"0\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola, quiero empezar a entrenar pero solo tengo mi cuerpo, no tengo equipamiento\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000212%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000212';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000212;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000212\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000212 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000212'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212') AND e.equipment NOT IN ('bodyweight')\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME bodyweight-only y generar rutina SOLO con ejercicios bodyweight\"\n    }\n  },\n  {\n    \"order\": 13,\n    \"id\": \"TC_HOME_FULL_HEALTH_C\",\n    \"name\": \"Onboarding HOME Completo - Restriccion Upper Body (Health C)\",\n    \"priority\": \"HIGH\",\n    \"category\": \"ONBOARDING_HOME_HEALTH\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000213\",\n    \"simulatedUser\": {\n      \"nombre\": \"Ana Garcia Torres\",\n      \"email\": \"ana.garcia.home.e2e@test.com\",\n      \"edad\": 40,\n      \"sexo\": \"F\",\n      \"estatura_cm\": 160,\n      \"peso_kg\": 65,\n      \"objetivo_principal\": \"Bajar grasa\",\n      \"objetivo_secundario\": \"Fortalecer piernas\",\n      \"tiempo_entrenando\": \"1 a 3 anos\",\n      \"frecuencia_actual\": \"3-4 dias por semana\",\n      \"nivel\": \"Intermedio\",\n      \"estado_salud\": \"C\",\n      \"dias_disponibles\": 4,\n      \"tiempo_por_sesion\": \"45-60 minutos\",\n      \"horario\": \"Tarde\",\n      \"tipo_entrenamiento\": \"Mixto\",\n      \"prioridades\": \"Pierna y gluteo\",\n      \"desafios\": \"Hombros, me lastimo facilmente\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Mancuernas y bandas elasticas\",\n      \"cardio_actual\": \"Bicicleta\",\n      \"frecuencia_cardio\": \"3-4\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola! Quiero entrenar en casa pero tengo una molestia en los hombros\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000213%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000213';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000213;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213 AND health_status = 'C'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000213'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213') AND e.equipment IN ('machine', 'cable', 'smith')\",\n          \"expected\": 0\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213') AND e.pattern = 'push_v' AND e.spanish_name ILIKE '%press%hombro%'\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME con health_status=C y generar rutina sin ejercicios overhead/maquina\"\n    }\n  }\n];\n\n// Ordenar tests por el campo 'order' para garantizar ejecución secuencial\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n\n// Aplicar filtro si TEST_FILTER tiene IDs\nconst filteredTests = TEST_FILTER.length > 0\n  ? sortedTests.filter(tc => TEST_FILTER.includes(tc.id))\n  : sortedTests;\n\n// Inicializar estado global del test run\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', filteredTests.length);\n$execution.customData.set('testResults', '[]');\n\nconsole.log(`📋 Tests cargados y ordenados: ${filteredTests.map(t => t.id).join(' -> ')}`);\nif (TEST_FILTER.length > 0) {\n  console.log(`🔍 Filtro activo: ${TEST_FILTER.join(', ')}`);\n}\n\nreturn filteredTests.map(tc => ({ json: tc }));"
+        "jsCode": "// Test Cases E2E para GymRatFlow\n// Tests ejecutados en orden secuencial por el campo 'order'\n\n// === TEST FILTER ===\n// Para ejecutar tests específicos, agregar IDs aquí. Ej: ['TC003', 'TC006']\n// Para ejecutar TODOS, dejar vacío: []\nconst TEST_FILTER = [];\n\nconst testCases = [{\n    order: 1,\n    id: \"TC001\",\n    name: \"Bloqueo de Ruido - Status Update\",\n    priority: \"CRITICAL\",\n    category: \"FILTRO_RUIDO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output === undefined || output === null || output === ''\",\n      description: \"No debe generar respuesta\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"statuses\": [{ \"id\": \"wamid.test\", \"status\": \"sent\", \"timestamp\": \"1769084739\", \"recipient_id\": \"550000000000\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 2,\n    id: \"TC002\",\n    name: \"Usuario Nuevo - Onboarding KYC (Greeting)\",\n    priority: \"HIGH\",\n    category: \"ONBOARDING\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('conocerte') || output.includes('nombre') || output.includes('Coach')\",\n      description: \"Debe iniciar KYC\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test NewUser\" }, \"wa_id\": \"570000000009\" }],\n      \"messages\": [{ \"from\": \"570000000009\", \"id\": \"wamid.E2E-TC002\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Hola, quiero empezar a entrenar\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }],\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ]\n  },\n  {\n    order: 3,\n    id: \"TC002_FULL_KYC\",\n    name: \"Onboarding Completo - KYC con Usuario Simulado IA\",\n    priority: \"CRITICAL\",\n    category: \"ONBOARDING_FULL\",\n    testType: \"MULTI_TURN_AI\",\n    simulatedUser: {\n      nombre: \"Juan Pérez García\",\n      email: \"juan.perez.e2e@test.com\",\n      edad: 28,\n      sexo: \"M\",\n      estatura_cm: 175,\n      peso_kg: 75,\n      objetivo_principal: \"Ganar masa muscular\",\n      objetivo_secundario: \"Mejorar fuerza\",\n      tiempo_entrenando: \"6 a 12 meses\",\n      frecuencia_actual: \"3-4 días por semana\",\n      nivel: \"Intermedio\",\n      estado_salud: \"A\",\n      dias_disponibles: 4,\n      tiempo_por_sesion: \"45-60 minutos\",\n      horario: \"Mañana\",\n      tipo_entrenamiento: \"Pesas libres\",\n      prioridades: \"Pecho y espalda\",\n      desafios: \"Entrenar piernas\",\n      cardio_actual: \"No\",\n      frecuencia_cardio: \"0\"\n    },\n    config: {\n      maxTurns: 25,\n      completionIndicators: [\"me pongo manos a la obra\", \"recibirás tu plan\", \"tu rutina 100%\", \"estoy emocionado por ver tu progreso\", \"en breve recibirás\", \"Prepárate para darlo todo\"],\n      firstMessage: \"Hola, quiero empezar a entrenar en el gimnasio\"\n    },\n    cleanup: [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000009%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000009';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;\"\n    ],\n    verification: {\n      queries: [\n        { sql: \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000009\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000009'\", expected: 1 },\n        { sql: \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 1 },\n        { sql: \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009')\", expected: 4 }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"Debe completar KYC dinámicamente y crear usuario + rutina\"\n    }\n  },\n  {\n    order: 4,\n    id: \"TC003\",\n    name: \"Usuario sin Workouts - Flujo Agendar Completo\",\n    priority: \"HIGH\",\n    category: \"AGENDAR\",\n    testType: \"MULTI_TURN_AI\",\n    phone: \"570000000001\",\n    simulatedUser: {\n      nombre: \"Test NoSchedule\",\n      email: \"test_noschedule@gymbot.test\",\n      edad: 28,\n      sexo: \"M\",\n      estatura_cm: 175,\n      peso_kg: 75,\n      objetivo_principal: \"Ganar masa muscular\",\n      objetivo_secundario: \"Mejorar fuerza\",\n      tiempo_entrenando: \"1 a 3 años\",\n      frecuencia_actual: \"3-4 días por semana\",\n      nivel: \"Principiante\",\n      estado_salud: \"A\",\n      dias_disponibles: 3,\n      tiempo_por_sesion: \"60-75 minutos\",\n      horario: \"Mañana\",\n      tipo_entrenamiento: \"Mixto\",\n      prioridades: \"Pecho y espalda\",\n      desafios: \"Ya tengo mi plan creado, solo necesito agendar mi semana. Quiero entrenar Lunes, Miércoles y Viernes. Quiero empezar el próximo lunes. Si me piden confirmar, digo que sí.\",\n      ambiente_entrenamiento: \"Gimnasio\",\n      equipamiento_casa: \"N/A\",\n      cardio_actual: \"No\",\n      frecuencia_cardio: \"0\"\n    },\n    config: {\n      maxTurns: 10,\n      completionIndicators: [\n        \"me encargo de recordarte\",\n        \"está agendada\",\n        \"esta agendada\",\n        \"primer entrenamiento es el\",\n        \"Nos vemos pronto\",\n        \"nos vemos pronto\",\n        \"rutina de la Semana 1\",\n        \"rutina de la semana 1\"\n      ],\n      firstMessage: \"Hola, quiero agendar mi semana de entrenamiento\"\n    },\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001';\",\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000001%' OR session_id LIKE '%e2e00001-0000-0000-0000-000000000001%';\"\n    ],\n    verification: {\n      queries: [\n        {\n          sql: \"SELECT COUNT(*) as cnt FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001'\",\n          expected: 3\n        },\n        {\n          sql: \"SELECT COUNT(*) as cnt FROM user_weekly_schedule WHERE user_id = 'e2e00001-0000-0000-0000-000000000001' AND calendar_event_id IS NOT NULL\",\n          expected: 3\n        }\n      ]\n    },\n    metrics: {\n      rule: \"passed === true\",\n      description: \"Debe completar agendamiento de 3 dias y mostrar closing message con primer entrenamiento\"\n    }\n  },\n  {\n    order: 5,\n    id: \"TC004\",\n    name: \"Dia de Descanso\",\n    priority: \"MEDIUM\",\n    category: \"DESCANSO\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('no tienes sesión') || output.includes('no tienes sesion') || output.includes('descansar') || output.includes('descanso')\",\n      description: \"Debe indicar día de descanso\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test RestDay\" }, \"wa_id\": \"570000000002\" }],\n      \"messages\": [{ \"from\": \"570000000002\", \"id\": \"wamid.E2E-TC004\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que hay para hoy?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 6,\n    id: \"TC006\",\n    name: \"VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"VER_RUTINA\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"(output.includes('plan para hoy') || output.includes('rutina') || output.includes('RUTINA')) && (output.includes('Series') || output.includes('series') || output.includes('Repeticiones'))\",\n      description: \"Debe mostrar rutina formateada\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC006\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Muestrame mi rutina de hoy\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 7,\n    id: \"TC007\",\n    name: \"CHAT - Pregunta General\",\n    priority: \"MEDIUM\",\n    category: \"CHAT\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 50\",\n      description: \"Debe responder pregunta fitness\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{ \"from\": \"570000000003\", \"id\": \"wamid.E2E-TC007\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Que ejercicio es mejor para biceps?\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 8,\n    id: \"TC011\",\n    name: \"Confirmacion via Pending Task\",\n    priority: \"CRITICAL\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output.includes('Felicidades') || output.includes('excelente') || output.includes('Felicitaciones') || output.includes('increíble') || output.includes('genial') || output.includes('Completada')\",\n      description: \"Debe confirmar rutina completada\"\n    },\n    cleanup: [\n      \"UPDATE user_weekly_schedule SET \\\"Completed\\\" = false WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND planned_day = CURRENT_DATE::text;\",\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC011\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"Si, ya terminé mi rutina\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 9,\n    id: \"TC012\",\n    name: \"Pending Task - No confirma\",\n    priority: \"HIGH\",\n    category: \"PENDING_TASK\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"output !== undefined && output.length > 30\",\n      description: \"Debe manejar no-confirmación\"\n    },\n    cleanup: [\n      \"UPDATE pending_tasks SET status = 'pending', resolved_at = NULL WHERE user_id = 'e2e00004-0000-0000-0000-000000000004' AND task_type = 'CONFIRMAR_RUTINA';\"\n    ],\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithPendingTask\" }, \"wa_id\": \"570000000004\" }],\n      \"messages\": [{ \"from\": \"570000000004\", \"id\": \"wamid.E2E-TC012\", \"timestamp\": \"1769085000\", \"text\": { \"body\": \"No pude hoy, me senti mal\" }, \"type\": \"text\" }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    order: 10,\n    id: \"TC013\",\n    name: \"Button Input - VER_RUTINA_DE_HOY\",\n    priority: \"HIGH\",\n    category: \"BUTTON_INPUT\",\n    testType: \"SINGLE\",\n    metrics: {\n      rule: \"(output.includes('plan para hoy') || output.includes('rutina') || output.includes('RUTINA')) && (output.includes('Series') || output.includes('series') || output.includes('Repeticiones'))\",\n      description: \"Debe mostrar rutina cuando usuario responde con botón\"\n    },\n    input: [{\n      \"messaging_product\": \"whatsapp\",\n      \"metadata\": { \"display_phone_number\": \"550000000000\", \"phone_number_id\": \"914510145083991\" },\n      \"contacts\": [{ \"profile\": { \"name\": \"Test WithRoutine\" }, \"wa_id\": \"570000000003\" }],\n      \"messages\": [{\n        \"context\": {\n          \"from\": \"550000000000\",\n          \"id\": \"wamid.HBgMNTczMTUzMTY3NDA0FQIAERgSODVBQUQyMUU4Qzg1RjYwOTE2AA==\"\n        },\n        \"from\": \"570000000003\",\n        \"id\": \"wamid.E2E-TC013-BUTTON\",\n        \"timestamp\": \"1769085000\",\n        \"type\": \"button\",\n        \"button\": {\n          \"payload\": \"Quiero mi rutina de hoy\",\n          \"text\": \"Quiero mi rutina de hoy\"\n        }\n      }],\n      \"field\": \"messages\"\n    }]\n  },\n  {\n    \"order\": 11,\n    \"id\": \"TC_HOME_FULL_BASIC\",\n    \"name\": \"Onboarding HOME Completo - Equipamiento Basico (Mancuernas + Bandas)\",\n    \"priority\": \"CRITICAL\",\n    \"category\": \"ONBOARDING_HOME\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000211\",\n    \"simulatedUser\": {\n      \"nombre\": \"Maria Lopez Sanchez\",\n      \"email\": \"maria.lopez.home.e2e@test.com\",\n      \"edad\": 32,\n      \"sexo\": \"F\",\n      \"estatura_cm\": 165,\n      \"peso_kg\": 62,\n      \"objetivo_principal\": \"Salud general / recomposicion corporal\",\n      \"objetivo_secundario\": \"Tonificar\",\n      \"tiempo_entrenando\": \"Menos de 6 meses\",\n      \"frecuencia_actual\": \"1-2 dias por semana\",\n      \"nivel\": \"Principiante\",\n      \"estado_salud\": \"A\",\n      \"dias_disponibles\": 3,\n      \"tiempo_por_sesion\": \"45-60 minutos\",\n      \"horario\": \"Manana\",\n      \"tipo_entrenamiento\": \"Mixto\",\n      \"prioridades\": \"Gluteo y pierna\",\n      \"desafios\": \"Nada en particular\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Mancuernas y bandas elasticas\",\n      \"cardio_actual\": \"Caminata\",\n      \"frecuencia_cardio\": \"1-2\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \n        \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola! Quiero empezar a entrenar en casa\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000211%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000211';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000211;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000211 AND home_equipment IS NOT NULL AND home_equipment != ''\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000211'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000211') AND e.equipment IN ('machine', 'cable', 'smith')\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME con mancuernas+bandas y generar rutina sin ejercicios de maquina\"\n    }\n  },\n  {\n    \"order\": 12,\n    \"id\": \"TC_HOME_FULL_BODYWEIGHT\",\n    \"name\": \"Onboarding HOME Completo - Solo Peso Corporal\",\n    \"priority\": \"HIGH\",\n    \"category\": \"ONBOARDING_HOME\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000212\",\n    \"simulatedUser\": {\n      \"nombre\": \"Carlos Ramirez Diaz\",\n      \"email\": \"carlos.ramirez.home.e2e@test.com\",\n      \"edad\": 25,\n      \"sexo\": \"M\",\n      \"estatura_cm\": 178,\n      \"peso_kg\": 70,\n      \"objetivo_principal\": \"Mejorar resistencia\",\n      \"objetivo_secundario\": \"Mantenerme activo\",\n      \"tiempo_entrenando\": \"Nunca he entrenado\",\n      \"frecuencia_actual\": \"No entreno\",\n      \"nivel\": \"Principiante\",\n      \"estado_salud\": \"A\",\n      \"dias_disponibles\": 4,\n      \"tiempo_por_sesion\": \"30-45 minutos\",\n      \"horario\": \"Noche\",\n      \"tipo_entrenamiento\": \"Funcional\",\n      \"prioridades\": \"Core y resistencia general\",\n      \"desafios\": \"Ninguno\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Solo tengo mi cuerpo, no tengo equipamiento\",\n      \"cardio_actual\": \"No\",\n      \"frecuencia_cardio\": \"0\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola, quiero empezar a entrenar pero solo tengo mi cuerpo, no tengo equipamiento\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000212%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000212';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000212;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000212\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000212 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000212'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000212') AND e.equipment NOT IN ('bodyweight')\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME bodyweight-only y generar rutina SOLO con ejercicios bodyweight\"\n    }\n  },\n  {\n    \"order\": 13,\n    \"id\": \"TC_HOME_FULL_HEALTH_C\",\n    \"name\": \"Onboarding HOME Completo - Restriccion Upper Body (Health C)\",\n    \"priority\": \"HIGH\",\n    \"category\": \"ONBOARDING_HOME_HEALTH\",\n    \"testType\": \"MULTI_TURN_AI\",\n    \"phone\": \"570000000213\",\n    \"simulatedUser\": {\n      \"nombre\": \"Ana Garcia Torres\",\n      \"email\": \"ana.garcia.home.e2e@test.com\",\n      \"edad\": 40,\n      \"sexo\": \"F\",\n      \"estatura_cm\": 160,\n      \"peso_kg\": 65,\n      \"objetivo_principal\": \"Bajar grasa\",\n      \"objetivo_secundario\": \"Fortalecer piernas\",\n      \"tiempo_entrenando\": \"1 a 3 anos\",\n      \"frecuencia_actual\": \"3-4 dias por semana\",\n      \"nivel\": \"Intermedio\",\n      \"estado_salud\": \"C\",\n      \"dias_disponibles\": 4,\n      \"tiempo_por_sesion\": \"45-60 minutos\",\n      \"horario\": \"Tarde\",\n      \"tipo_entrenamiento\": \"Mixto\",\n      \"prioridades\": \"Pierna y gluteo\",\n      \"desafios\": \"Hombros, me lastimo facilmente\",\n      \"ambiente_entrenamiento\": \"En casa\",\n      \"equipamiento_casa\": \"Mancuernas y bandas elasticas\",\n      \"cardio_actual\": \"Bicicleta\",\n      \"frecuencia_cardio\": \"3-4\"\n    },\n    \"config\": {\n      \"maxTurns\": 30,\n      \"completionIndicators\": [\n        \"me pongo manos a la obra\",\n        \"recibiras tu plan\",\n        \"tu rutina 100%\",\n        \"estoy emocionado por ver tu progreso\",\n        \"en breve recibiras\",\n        \"disenar tu rutina\", \"Prepárate para darlo todo\"\n      ],\n      \"firstMessage\": \"Hola! Quiero entrenar en casa pero tengo una molestia en los hombros\"\n    },\n    \"cleanup\": [\n      \"DELETE FROM n8n_chat_histories WHERE session_id LIKE '570000000213%';\",\n      \"DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM pending_tasks WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213');\",\n      \"DELETE FROM users WHERE full_phone_number = '570000000213';\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000213;\"\n    ],\n    \"verification\": {\n      \"queries\": [\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213 AND training_environment = 'HOME'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_gym_profile WHERE whatsapp_id = 570000000213 AND health_status = 'C'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users WHERE full_phone_number = '570000000213'\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213')\",\n          \"expected\": 1\n        },\n        {\n          \"sql\": \"SELECT COUNT(DISTINCT week) as cnt FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213')\",\n          \"expected\": 4\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213') AND e.equipment IN ('machine', 'cable', 'smith')\",\n          \"expected\": 0\n        },\n        {\n          \"sql\": \"SELECT COUNT(*) as cnt FROM workouts w JOIN exercises e ON w.exercise_id = e.exercise_id WHERE w.user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000213') AND e.pattern = 'push_v' AND e.spanish_name ILIKE '%press%hombro%'\",\n          \"expected\": 0\n        }\n      ]\n    },\n    \"metrics\": {\n      \"rule\": \"passed === true\",\n      \"description\": \"Debe completar KYC HOME con health_status=C y generar rutina sin ejercicios overhead/maquina\"\n    }\n  }\n];\n\n// Ordenar tests por el campo 'order' para garantizar ejecución secuencial\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n\n// Aplicar filtro si TEST_FILTER tiene IDs\nconst filteredTests = TEST_FILTER.length > 0\n  ? sortedTests.filter(tc => TEST_FILTER.includes(tc.id))\n  : sortedTests;\n\n// Inicializar estado global del test run\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', filteredTests.length);\n$execution.customData.set('testResults', '[]');\n\nconsole.log(`📋 Tests cargados y ordenados: ${filteredTests.map(t => t.id).join(' -> ')}`);\nif (TEST_FILTER.length > 0) {\n  console.log(`🔍 Filtro activo: ${TEST_FILTER.join(', ')}`);\n}\n\nreturn filteredTests.map(tc => ({ json: tc }));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        544,
-        1696
+        1456,
+        8352
       ],
-      "id": "401d29ed-a106-4b88-ad99-aeea0c2dbf0a",
+      "id": "80c8291c-590f-4013-b201-a79f4dfce5a5",
       "name": "Load Test Cases"
     },
     {
@@ -598,10 +598,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        320,
-        1696
+        1232,
+        8352
       ],
-      "id": "74e85453-ec53-478d-a85c-7dca773a93ac",
+      "id": "eaab405f-92f3-4cb2-8fd7-ba00a5404435",
       "name": "Run All Tests"
     }
   ],
@@ -952,7 +952,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "78e29c83-7a99-43eb-b2f5-fc42027af388",
+  "versionId": "f998a1ba-7cb3-47f5-ac2f-b647a9b84c2d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
