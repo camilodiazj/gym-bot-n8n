@@ -1,0 +1,305 @@
+{
+  "name": "InteractionAnalysis",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "788b53f1-ab60-4099-956c-1e7031258809",
+      "name": "schedule_trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        208
+      ],
+      "id": "ad71fde5-d94e-435d-8380-f4fcaaf5b3c5",
+      "name": "manual_trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH\nclassified AS (\n  SELECT id, session_id, message, created_at,\n    CASE\n      WHEN session_id LIKE '%_kyc_v4' THEN 'kyc'\n      WHEN session_id LIKE '%_chat' THEN 'chat'\n      WHEN session_id LIKE '%_confirmation' THEN 'confirmation'\n      WHEN session_id LIKE '%_renewal' THEN 'renewal'\n      ELSE 'other'\n    END AS session_type,\n    (message->>'type') AS msg_type\n  FROM n8n_chat_histories\n),\nsession_stats AS (\n  SELECT session_id, session_type,\n    COUNT(*) AS msg_count,\n    COUNT(*) FILTER (WHERE msg_type = 'human') AS human_msgs\n  FROM classified GROUP BY session_id, session_type\n),\nrecent AS (\n  SELECT * FROM classified WHERE created_at >= NOW() - INTERVAL '7 days'\n),\ntool_usage AS (\n  SELECT message->>'name' AS tool_name, COUNT(*) AS calls\n  FROM n8n_chat_histories\n  WHERE (message->>'type') = 'tool' AND message->>'name' IS NOT NULL\n  GROUP BY message->>'name' ORDER BY calls DESC LIMIT 10\n),\nkyc_completion AS (\n  SELECT\n    CASE WHEN u.user_id IS NOT NULL THEN 'completado' ELSE 'abandonado' END AS outcome,\n    COUNT(*) AS cnt\n  FROM (\n    SELECT DISTINCT SPLIT_PART(session_id, '_kyc_v4', 1) AS phone\n    FROM classified WHERE session_type = 'kyc'\n  ) k\n  LEFT JOIN users u ON u.full_phone_number::text = k.phone\n  GROUP BY outcome\n)\nSELECT json_build_object(\n  'total_sessions', (SELECT COUNT(DISTINCT session_id) FROM classified),\n  'total_messages', (SELECT COUNT(*) FROM classified),\n  'sessions_last_7d', (SELECT COUNT(DISTINCT session_id) FROM recent),\n  'messages_last_7d', (SELECT COUNT(*) FROM recent),\n  'session_breakdown', (SELECT json_agg(row) FROM (SELECT json_build_object(\n    'type', session_type, 'sessions', COUNT(*),\n    'avg_msgs', ROUND(AVG(msg_count), 1), 'max_msgs', MAX(msg_count)\n  ) AS row FROM session_stats GROUP BY session_type) sub),\n  'tool_usage', (SELECT json_agg(json_build_object('name', tool_name, 'calls', calls)) FROM tool_usage),\n  'kyc_completion', (SELECT json_agg(json_build_object('outcome', outcome, 'count', cnt)) FROM kyc_completion),\n  'long_sessions', (SELECT json_agg(json_build_object(\n    'session_id', session_id, 'type', session_type, 'msgs', msg_count\n  )) FROM (SELECT * FROM session_stats ORDER BY msg_count DESC LIMIT 5) t)\n) AS metrics;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        304,
+        0
+      ],
+      "id": "34d77b67-0753-40ae-8f91-368687448879",
+      "name": "query_metrics",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH\nclassified AS (\n  SELECT id, session_id, message,\n    CASE\n      WHEN session_id LIKE '%_kyc_v4' THEN 'kyc'\n      WHEN session_id LIKE '%_chat' THEN 'chat'\n      ELSE 'other'\n    END AS session_type\n  FROM n8n_chat_histories\n  WHERE (message->>'type') IN ('human', 'ai')\n),\nsampled AS (\n  (SELECT DISTINCT session_id FROM classified WHERE session_type = 'kyc'\n   ORDER BY session_id DESC LIMIT 3)\n  UNION\n  (SELECT DISTINCT session_id FROM classified WHERE session_type = 'chat'\n   ORDER BY session_id DESC LIMIT 3)\n  UNION\n  (SELECT session_id FROM (\n    SELECT session_id, COUNT(*) AS c FROM classified GROUP BY session_id ORDER BY c DESC LIMIT 2\n  ) t)\n),\nranked AS (\n  SELECT c.session_id, c.session_type,\n    message->>'type' AS role,\n    LEFT(message->>'content', 500) AS content,\n    ROW_NUMBER() OVER (PARTITION BY c.session_id ORDER BY c.id) AS rn\n  FROM classified c WHERE c.session_id IN (SELECT session_id FROM sampled)\n)\nSELECT session_id, session_type, role, content\nFROM ranked WHERE rn <= 30\nORDER BY session_id, rn;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        304,
+        208
+      ],
+      "id": "710a908d-fcec-477d-8366-cdbca834226c",
+      "name": "query_conversation_samples",
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        480,
+        112
+      ],
+      "id": "eb9e42c7-015c-4fa6-83a3-018f6b279a73",
+      "name": "merge_queries"
+    },
+    {
+      "parameters": {
+        "jsCode": "const metricsRaw = $('query_metrics').first().json;\nconst metrics = metricsRaw.metrics || metricsRaw;\n\nconst samples = $('query_conversation_samples').all();\n\n// Group by session_id\nconst grouped = {};\nfor (const row of samples) {\n  const sid = row.json.session_id;\n  if (!grouped[sid]) {\n    grouped[sid] = { type: row.json.session_type, messages: [] };\n  }\n  grouped[sid].messages.push({\n    role: row.json.role,\n    content: row.json.content\n  });\n}\n\n// Build conversation text\nlet conversationsText = '';\nfor (const [sid, data] of Object.entries(grouped)) {\n  conversationsText += `\\n--- Sesión: ${sid} (${data.type}) ---\\n`;\n  for (const msg of data.messages) {\n    const prefix = msg.role === 'human' ? 'USUARIO' : 'BOT';\n    conversationsText += `[${prefix}]: ${msg.content}\\n`;\n  }\n}\n\nconst reportDate = DateTime.now().setZone('America/Bogota').toFormat('dd/MM/yyyy');\n\nreturn [{\n  json: {\n    metrics_summary: JSON.stringify(metrics, null, 2),\n    conversations_text: conversationsText,\n    report_date: reportDate\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        112
+      ],
+      "id": "7f80dd55-bfa7-4ee4-8562-932c686b3df4",
+      "name": "build_analysis_payload"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Fecha del reporte: {{ $json.report_date }}\n\nMÉTRICAS CUANTITATIVAS:\n{{ $json.metrics_summary }}\n\nCONVERSACIONES DE MUESTRA:\n{{ $json.conversations_text }}",
+        "options": {
+          "systemMessage": "Eres un analista de producto experto para GymBot, un coach fitness por WhatsApp en Colombia.\n\nAnaliza los datos proporcionados y genera un reporte en español con EXACTAMENTE estas 7 secciones:\n\n## 1. Resumen Ejecutivo\n3-4 oraciones con los hallazgos más importantes.\n\n## 2. Patrones de Uso\n- Distribución por tipo de sesión\n- Tendencias de actividad (últimos 7 días vs total)\n- Horarios y frecuencia de uso\n\n## 3. Temas Frecuentes en Chat\nTop 3-5 temas específicos que los usuarios preguntan. Sé concreto (ej: \"nutrición post-entreno\", \"dolor de rodilla al hacer sentadilla\").\n\n## 4. Puntos de Fricción\n- Sesiones inusualmente largas (¿por qué?)\n- Patrones de confusión del usuario\n- Momentos donde el bot no entiende o responde mal\n- Puntos de abandono en KYC\n\n## 5. Análisis de KYC\n- Tasa de completación\n- Momento de abandono más común\n- Calidad de las respuestas del usuario\n\n## 6. Uso de Herramientas\n- Qué herramientas usa el bot más frecuentemente\n- Herramientas subutilizadas\n\n## 7. Recomendaciones de Mejora\nTop 3 acciones concretas y priorizadas para mejorar GymBot.\n\nREGLAS:\n- Usa datos específicos (números, porcentajes, ejemplos textuales)\n- Sé directo y accionable, no genérico\n- Si no hay datos suficientes para una sección, indícalo explícitamente\n- Formato: Markdown con headers ##"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        912,
+        112
+      ],
+      "id": "fbf3ed6c-5e3b-4cc8-b8a6-b7ef9aac40a8",
+      "name": "llm_analysis"
+    },
+    {
+      "parameters": {
+        "jsCode": "const llmOutput = $('llm_analysis').first().json.output || $('llm_analysis').first().json.text || '';\nconst reportDate = $('build_analysis_payload').first().json.report_date;\nconst metrics = JSON.parse($('build_analysis_payload').first().json.metrics_summary);\n\n// Simple markdown to HTML\nlet htmlBody = llmOutput\n  .replace(/## (.*)/g, '<h2 style=\"color:#1a1a2e;margin-top:24px;margin-bottom:8px;font-size:18px;\">$1</h2>')\n  .replace(/### (.*)/g, '<h3 style=\"color:#16213e;margin-top:16px;margin-bottom:6px;font-size:15px;\">$1</h3>')\n  .replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')\n  .replace(/^- (.*)/gm, '<li style=\"margin-bottom:4px;\">$1</li>')\n  .replace(/(<li.*<\\/li>\\n?)+/g, '<ul style=\"padding-left:20px;margin:8px 0;\">$&</ul>')\n  .replace(/\\n\\n/g, '<br><br>')\n  .replace(/\\n/g, '<br>');\n\nconst totalSessions = metrics.total_sessions || 'N/A';\nconst totalMessages = metrics.total_messages || 'N/A';\nconst sessions7d = metrics.sessions_last_7d || 'N/A';\nconst messages7d = metrics.messages_last_7d || 'N/A';\n\nconst html = `\n<!DOCTYPE html>\n<html>\n<head><meta charset=\"utf-8\"></head>\n<body style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:700px;margin:0 auto;background:#f5f5f5;padding:20px;\">\n  <div style=\"background:#1a1a2e;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;\">\n    <h1 style=\"margin:0;font-size:22px;\">GymBot — Análisis Semanal</h1>\n    <p style=\"margin:8px 0 0;opacity:0.8;font-size:14px;\">${reportDate}</p>\n  </div>\n  <div style=\"background:white;padding:24px;border-radius:0 0 8px 8px;\">\n    <table style=\"width:100%;border-collapse:collapse;margin-bottom:24px;\">\n      <tr style=\"background:#f0f0f0;\">\n        <td style=\"padding:12px;text-align:center;border:1px solid #ddd;\"><strong>Sesiones Totales</strong><br><span style=\"font-size:24px;color:#1a1a2e;\">${totalSessions}</span></td>\n        <td style=\"padding:12px;text-align:center;border:1px solid #ddd;\"><strong>Mensajes Totales</strong><br><span style=\"font-size:24px;color:#1a1a2e;\">${totalMessages}</span></td>\n      </tr>\n      <tr style=\"background:#f8f8f8;\">\n        <td style=\"padding:12px;text-align:center;border:1px solid #ddd;\"><strong>Sesiones (7d)</strong><br><span style=\"font-size:24px;color:#e94560;\">${sessions7d}</span></td>\n        <td style=\"padding:12px;text-align:center;border:1px solid #ddd;\"><strong>Mensajes (7d)</strong><br><span style=\"font-size:24px;color:#e94560;\">${messages7d}</span></td>\n      </tr>\n    </table>\n    ${htmlBody}\n  </div>\n  <p style=\"text-align:center;color:#888;font-size:12px;margin-top:16px;\">Generado automáticamente por GymBot Interaction Analysis</p>\n</body>\n</html>`;\n\nreturn [{\n  json: {\n    html: html,\n    subject: 'GymBot Análisis Semanal - ' + reportDate,\n    to: 'camilodiazjaimes@gmail.com'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        112
+      ],
+      "id": "d22c0008-3373-4dce-84f5-d21d0fdc7aae",
+      "name": "format_email"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false,
+          "ccList": "lulusofia.72@gmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1392,
+        112
+      ],
+      "id": "7f9cb272-ac85-436e-8fc8-43a8a8780ace",
+      "name": "send_email",
+      "webhookId": "a30d60a2-ef08-4cc4-b03c-3e298eee7d8b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H1GF1YdmcaZ0gfWB",
+          "name": "Gmail Kai.Ros"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-pro-preview",
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        784,
+        320
+      ],
+      "id": "836b7c17-046b-4bed-b191-d74bde1068fc",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FGJvOXDfOTLntPLK",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "schedule_trigger": {
+      "main": [
+        [
+          {
+            "node": "query_metrics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "query_conversation_samples",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "manual_trigger": {
+      "main": [
+        [
+          {
+            "node": "query_metrics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "query_conversation_samples",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "query_metrics": {
+      "main": [
+        [
+          {
+            "node": "merge_queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "query_conversation_samples": {
+      "main": [
+        [
+          {
+            "node": "merge_queries",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "merge_queries": {
+      "main": [
+        [
+          {
+            "node": "build_analysis_payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build_analysis_payload": {
+      "main": [
+        [
+          {
+            "node": "llm_analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llm_analysis": {
+      "main": [
+        [
+          {
+            "node": "format_email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "format_email": {
+      "main": [
+        [
+          {
+            "node": "send_email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "llm_analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "73942f02-875a-42bb-aa31-d472b3d245c2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "qCfmbpW7b6r2xzUx",
+  "tags": []
+}
