@@ -28,6 +28,17 @@
 --   MESOCYCLE: 570000000051, 570000000052, 570000000053
 -- ============================================
 
+-- Eliminar magic_links de usuarios dummy (GYM + HOME + MESOCYCLE)
+DELETE FROM magic_links
+WHERE user_id IN (
+    SELECT user_id FROM users
+    WHERE full_phone_number::text IN (
+        '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
+        '570000000211', '570000000212', '570000000213',
+        '570000000051', '570000000052', '570000000053'
+    )
+);
+
 -- Eliminar pending_tasks de usuarios dummy (GYM + HOME + MESOCYCLE)
 DELETE FROM pending_tasks
 WHERE user_id IN (
@@ -115,13 +126,14 @@ WHERE session_id LIKE '%570000000001%'
 -- ============================================
 
 -- Usuario 1: Test_NoSchedule (para TC003 - sin workouts planeados)
+-- cel_number debe ser 570000000001 (con country code) para que el JOIN con users_gym_profile.whatsapp_id funcione
 INSERT INTO users (user_id, full_name, email, full_phone_number, cel_number, country_indicative, timezone, created_at)
 VALUES (
     'e2e00001-0000-0000-0000-000000000001',
     'Test NoSchedule',
     'test_noschedule@gymbot.test',
     '570000000001',
-    0000000001,
+    570000000001,
     57,
     'America/Bogota',
     NOW()
@@ -134,7 +146,7 @@ VALUES (
     'Test RestDay',
     'test_restday@gymbot.test',
     '570000000002',
-    0000000002,
+    570000000002,
     57,
     'America/Bogota',
     NOW()
@@ -147,7 +159,7 @@ VALUES (
     'Test WithRoutine',
     'test_withroutine@gymbot.test',
     '570000000003',
-    0000000003,
+    570000000003,
     57,
     'America/Bogota',
     NOW()
@@ -160,7 +172,7 @@ VALUES (
     'Test WithPendingTask',
     'test_withpendingtask@gymbot.test',
     '570000000004',
-    0000000004,
+    570000000004,
     57,
     'America/Bogota',
     NOW()
@@ -173,7 +185,7 @@ VALUES (
     'Test MesoDetect',
     'test_mesodetect@gymbot.test',
     '570000000051',
-    0000000051,
+    570000000051,
     57,
     'America/Bogota',
     NOW()
@@ -186,7 +198,7 @@ VALUES (
     'Test MesoMantener',
     'test_mesomantener@gymbot.test',
     '570000000052',
-    0000000052,
+    570000000052,
     57,
     'America/Bogota',
     NOW()
@@ -199,15 +211,84 @@ VALUES (
     'Test MesoManual',
     'test_mesomanual@gymbot.test',
     '570000000053',
-    0000000053,
+    570000000053,
     57,
     'America/Bogota',
     NOW()
 );
 
 -- ============================================
--- SECCION 2.5: SETUP GYM PROFILES (Mesocycle Users) [NUEVO v5.0]
+-- SECCION 2.5: SETUP GYM PROFILES [NUEVO v5.0, actualizado v6.1]
 -- ============================================
+
+-- Perfil gym para Usuario 1 (NoSchedule / TC003)
+-- Necesario para que GetCalendarData JOIN con users_gym_profile funcione
+INSERT INTO users_gym_profile (
+    submission_date, whatsapp_id, full_name, email, age, biological_sex,
+    height_cm, weight_kg, primary_goal, secondary_goal, training_experience,
+    current_frequency, fitness_level, health_status, days_available,
+    session_duration_mins, preferred_schedule, training_style,
+    priority_muscles, disliked_exercises, cardio_type, cardio_frequency,
+    training_environment
+) VALUES (
+    NOW(), 570000000001, 'Test NoSchedule', 'test_noschedule@gymbot.test', 25, 'M',
+    175, 75, 'Ganar masa muscular', 'Ninguna', '1 a 3 años',
+    '3-4 días por semana', 'Intermedio', 'A', 3,
+    '60-75 minutos', 'Mañana', 'Mixto', 'Pecho, Espalda',
+    'Pantorrillas', 'No', '0',
+    'GYM'
+);
+
+-- Perfil gym para Usuario 2 (RestDay / TC004)
+INSERT INTO users_gym_profile (
+    submission_date, whatsapp_id, full_name, email, age, biological_sex,
+    height_cm, weight_kg, primary_goal, secondary_goal, training_experience,
+    current_frequency, fitness_level, health_status, days_available,
+    session_duration_mins, preferred_schedule, training_style,
+    priority_muscles, disliked_exercises, cardio_type, cardio_frequency,
+    training_environment
+) VALUES (
+    NOW(), 570000000002, 'Test RestDay', 'test_restday@gymbot.test', 30, 'M',
+    180, 80, 'Ganar masa muscular', 'Ninguna', '1 a 3 años',
+    '3-4 días por semana', 'Intermedio', 'A', 3,
+    '60-75 minutos', 'Mañana', 'Mixto', 'Pecho, Espalda',
+    'Pantorrillas', 'No', '0',
+    'GYM'
+);
+
+-- Perfil gym para Usuario 3 (WithRoutine / TC006, TC007)
+INSERT INTO users_gym_profile (
+    submission_date, whatsapp_id, full_name, email, age, biological_sex,
+    height_cm, weight_kg, primary_goal, secondary_goal, training_experience,
+    current_frequency, fitness_level, health_status, days_available,
+    session_duration_mins, preferred_schedule, training_style,
+    priority_muscles, disliked_exercises, cardio_type, cardio_frequency,
+    training_environment
+) VALUES (
+    NOW(), 570000000003, 'Test WithRoutine', 'test_withroutine@gymbot.test', 28, 'M',
+    175, 75, 'Ganar masa muscular', 'Ninguna', '1 a 3 años',
+    '3-4 días por semana', 'Intermedio', 'A', 3,
+    '60-75 minutos', 'Tarde', 'Mixto', 'Pecho, Espalda',
+    'Pantorrillas', 'No', '0',
+    'GYM'
+);
+
+-- Perfil gym para Usuario 4 (WithPendingTask / TC011, TC012)
+INSERT INTO users_gym_profile (
+    submission_date, whatsapp_id, full_name, email, age, biological_sex,
+    height_cm, weight_kg, primary_goal, secondary_goal, training_experience,
+    current_frequency, fitness_level, health_status, days_available,
+    session_duration_mins, preferred_schedule, training_style,
+    priority_muscles, disliked_exercises, cardio_type, cardio_frequency,
+    training_environment
+) VALUES (
+    NOW(), 570000000004, 'Test WithPendingTask', 'test_withpendingtask@gymbot.test', 27, 'M',
+    172, 70, 'Ganar masa muscular', 'Ninguna', '6 a 12 meses',
+    '3-4 días por semana', 'Intermedio', 'A', 3,
+    '60-75 minutos', 'Noche', 'Mixto', 'Pecho, Espalda',
+    'Pantorrillas', 'No', '0',
+    'GYM'
+);
 
 -- Perfil gym para Usuario 51 (MesoDetect)
 INSERT INTO users_gym_profile (

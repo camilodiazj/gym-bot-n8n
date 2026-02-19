@@ -22,7 +22,7 @@
     },
     {
       "parameters": {
-        "phoneNumberId": "YOUR_PHONE_NUMBER_ID",
+        "phoneNumberId": "914510145083991",
         "recipientPhoneNumber": "={{ $json.full_phone_number }}",
         "template": "prueba_2|es_CO",
         "components": {
