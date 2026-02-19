@@ -41,6 +41,7 @@ GymBot/
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
+| `InteractionAnalysis.json` | Weekly interaction analysis — queries `n8n_chat_histories` metrics + conversation samples, runs LLM analysis (Gemini), emails HTML report every Monday 8 AM Bogota |
 
 **Test workflows** (`n8n/tests/`):
 
@@ -552,6 +553,7 @@ The `spec/` directory contains detailed implementation specs for major features:
 | Mesocycle Renewal | `spec/Mesocycle_Renewal/` | Architecture, domain logic, implementation plan |
 | Email Routine | `spec/email-routine-week1/` | Workflow spec, HTML template, QA test plan |
 | Quality Fixes | `spec/workout_creator_quality_fixes/` | WORKOUT_CREATOR defect fixes (QF-1 through QF-5): volume inflation, dedup, misclassified exercises, cardio role, health enforcement |
+| Interaction Analysis | `spec/interaction-analysis/` | Architecture, implementation phases, SQL queries for `n8n_chat_histories` analysis |
 
 The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 
