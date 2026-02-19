@@ -41,6 +41,7 @@ GymBot/
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
+| `DailyReport.json` | Daily 6 AM operational report — queries 7 categories (health violations, plan failures, new users, engagement, churn risk, never completed, abandoned KYC), sends HTML email via Gmail + WhatsApp summary |
 
 **Test workflows** (`n8n/tests/`):
 
