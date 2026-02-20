@@ -164,7 +164,7 @@
             {
               "id": "a1b2c3d4-asgn-4000-8000-000000000001",
               "name": "message",
-              "value": "=Felicidades {{ $json.full_name }}! Completaste todas tus {{ $json.total_sessions }} sesiones de la Semana {{ $json.current_week }}.\n\nTu constancia es admirable. Listo para seguir con la Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y organizamos tus dias.",
+              "value": "=Felicidades {{ $json.full_name }}! Completaste todas tus {{ $json.total_sessions }} sesiones de la Semana {{ $json.current_week }}.\n\nTu constancia es admirable. Listo para seguir con la Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y organizamos tus dias.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
               "type": "string"
             },
             {
@@ -195,7 +195,7 @@
             {
               "id": "a1b2c3d4-asgn-4000-8000-000000000003",
               "name": "message",
-              "value": "=Hola {{ $json.full_name }}! Completaste {{ $json.completed_count }} de {{ $json.total_sessions }} sesiones en la Semana {{ $json.current_week }}.\n\nCada entrenamiento suma. Quieres programar tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y arrancamos.",
+              "value": "=Hola {{ $json.full_name }}! Completaste {{ $json.completed_count }} de {{ $json.total_sessions }} sesiones en la Semana {{ $json.current_week }}.\n\nCada entrenamiento suma. Quieres programar tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y arrancamos.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
               "type": "string"
             },
             {
@@ -226,7 +226,7 @@
             {
               "id": "a1b2c3d4-asgn-4000-8000-000000000005",
               "name": "message",
-              "value": "=Hola {{ $json.full_name }}! Veo que la Semana {{ $json.current_week }} quedo sin entrenamientos.\n\nNo pasa nada, lo importante es volver. Quieres intentar con tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y planeamos juntos.",
+              "value": "=Hola {{ $json.full_name }}! Veo que la Semana {{ $json.current_week }} quedo sin entrenamientos.\n\nNo pasa nada, lo importante es volver. Quieres intentar con tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y planeamos juntos.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
               "type": "string"
             },
             {

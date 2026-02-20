@@ -231,7 +231,7 @@
         "operation": "send",
         "phoneNumberId": "={{ $items('Execute Workflow Trigger')[0].json.phone_number_id }}",
         "recipientPhoneNumber": "={{ $items('Execute Workflow Trigger')[0].json.whatsapp_id }}",
-        "textBody": "=¡Perfecto {{ $items('Execute Workflow Trigger')[0].json.full_name }}! 🎉\n\nTu mesociclo {{ $json.mesocycle_number }} ha iniciado con la misma rutina. Ahora puedes agendar tu Semana 1.\n\n¡Escríbeme cuando quieras agendar! 💪",
+        "textBody": "=¡Perfecto {{ $items('Execute Workflow Trigger')[0].json.full_name }}! 🎉\n\nTu mesociclo {{ $json.mesocycle_number }} ha iniciado con la misma rutina. Ahora puedes agendar tu Semana 1.\n\n¡Escríbeme cuando quieras agendar! 💪\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
@@ -435,7 +435,7 @@
         "operation": "send",
         "phoneNumberId": "={{ $items('Execute Workflow Trigger')[0].json.phone_number_id }}",
         "recipientPhoneNumber": "={{ $items('Execute Workflow Trigger')[0].json.whatsapp_id }}",
-        "textBody": "=¡Excelente {{ $items('Execute Workflow Trigger')[0].json.full_name }}! 🔄\n\nHe rotado los ejercicios de tu rutina manteniendo la misma estructura de {{ $items('Execute Workflow Trigger')[0].json.days_per_week }} días por semana.\n\nAhora puedes agendar tu nueva Semana 1 con ejercicios frescos. ¡Escríbeme cuando estés listo! 💪",
+        "textBody": "=¡Excelente {{ $items('Execute Workflow Trigger')[0].json.full_name }}! 🔄\n\nHe rotado los ejercicios de tu rutina manteniendo la misma estructura de {{ $items('Execute Workflow Trigger')[0].json.days_per_week }} días por semana.\n\nAhora puedes agendar tu nueva Semana 1 con ejercicios frescos. ¡Escríbeme cuando estés listo! 💪\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
