@@ -24,7 +24,7 @@ GymBot/
 ├── workout-tracker-back/      # Go/Gin backend (hexagonal architecture)
 ├── e2e/                       # E2E test fixtures and documentation
 ├── exercises/                 # Exercise data and utilities
-├── spec/                      # Feature specifications (home-training, mesocycle-renewal, email, support-link)
+├── spec/                      # Feature specifications (home-training, mesocycle-renewal, email, support-link, session-recommendation)
 ├── docs/                      # Deployment guides and feature docs
 └── ActionBody/                # Gym equipment photos (ActionBody inventory)
 ```
@@ -87,7 +87,7 @@ workout-tracker-back/
 ### Multi-Agent Architecture
 
 Each workflow uses specialized AI agents with Spanish system prompts:
-- **KYC Agent**: Collects user profile information
+- **KYC Agent**: Collects user profile information, calls `Tool_Session_Recommendation` to suggest training days/week
 - **Intention Agent**: Classifies user messages (including RENOVAR_MESOCICLO)
 - **Confirmation Agent**: Handles schedule confirmations
 - **Workout Display Agent**: Formats and presents routines
@@ -561,6 +561,7 @@ The `spec/` directory contains detailed implementation specs for major features:
 | Calendar Event | `spec/calendar-event/` | Implementation spec for Google Calendar invitations on schedule creation (KAN-57) |
 | Support Link | `spec/support-link/` | Support link footer on terminal WhatsApp messages and email (KAN-92) |
 | Daily Report | `spec/daily-report-workflow/` | Architecture, SQL queries, and implementation phases for daily operational report (KAN-97) |
+| Session Recommendation | `spec/session-recommendation/` | Deterministic day-recommendation tool for KYC flow, prompt restructuring (KAN-104) |
 
 The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 
