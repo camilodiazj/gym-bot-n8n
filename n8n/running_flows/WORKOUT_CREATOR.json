@@ -568,7 +568,8 @@
           "id": "xIjy4zDHyjIvGQT4",
           "name": "WhatsApp account"
         }
-      }
+      },
+      "continueOnFail": true
     },
     {
       "parameters": {
