@@ -14,25 +14,49 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        0,
-        300
+        -2448,
+        384
       ],
-      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "id": "df4f415a-14cf-4cdd-926a-6ee5db252b74",
       "name": "schedule_trigger_8pm"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2448,
+        576
+      ],
+      "id": "a1b2c3d4-test-4000-8000-000000000099",
+      "name": "execute_workflow_trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// When called via Execute Workflow (test runner), input has test_phone_filter.\n// When triggered by cron, input is empty => phone_filter defaults to '%' (all users).\nconst triggerData = $input.first()?.json || {};\nconst phoneFilter = triggerData.test_phone_filter || '%';\nconst isTest = phoneFilter !== '%';\n\nif (isTest) {\n  console.log(`🧪 TEST MODE: phone_filter = ${phoneFilter}`);\n} else {\n  console.log('🚀 PRODUCTION MODE: no phone filter');\n}\n\nreturn [{ json: { phone_filter: phoneFilter, is_test: isTest } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2208,
+        384
+      ],
+      "id": "a1b2c3d4-test-4000-8000-000000000010",
+      "name": "check_test_mode"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH current_week_stats AS (\n    SELECT\n        u.user_id,\n        u.full_phone_number,\n        u.full_name,\n        uws.week::int AS current_week,\n        ws.days_per_week::int AS total_sessions,\n        COUNT(*) FILTER (WHERE uws.\"Completed\" = true)::int AS completed_count,\n        MAX(uws.planned_day) AS last_planned_day\n    FROM users u\n    JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active'\n    JOIN week_schedules ws ON up.week_schedule = ws.schedule_type\n    JOIN user_weekly_schedule uws ON u.user_id = uws.user_id\n    WHERE uws.week BETWEEN 1 AND 3\n    GROUP BY u.user_id, u.full_phone_number, u.full_name, uws.week, ws.days_per_week\n)\nSELECT DISTINCT ON (user_id)\n    user_id, full_phone_number, full_name, current_week,\n    total_sessions, completed_count, last_planned_day\nFROM current_week_stats cws\nWHERE cws.last_planned_day < TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD')\n  AND cws.last_planned_day >= TO_CHAR(\n      (NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '3 days', 'YYYY-MM-DD'\n  )\n  AND NOT EXISTS (\n      SELECT 1 FROM user_weekly_schedule uws2\n      WHERE uws2.user_id = cws.user_id\n        AND uws2.week = cws.current_week + 1\n  )\nORDER BY user_id, current_week DESC;",
+        "query": "WITH current_week_stats AS (\n    SELECT\n        u.user_id,\n        u.full_phone_number,\n        u.full_name,\n        uws.week::int AS current_week,\n        ws.days_per_week::int AS total_sessions,\n        COUNT(*) FILTER (WHERE uws.\"Completed\" = true)::int AS completed_count,\n        MAX(\n            CASE\n                WHEN uws.planned_day ~ '^\\d{4}-' THEN uws.planned_day::date\n                ELSE TO_DATE(uws.planned_day, 'DD/MM/YYYY')\n            END\n        ) AS last_planned_date\n    FROM users u\n    JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active'\n    JOIN week_schedules ws ON up.week_schedule = ws.schedule_type\n    JOIN user_weekly_schedule uws ON u.user_id = uws.user_id\n    WHERE uws.week BETWEEN 1 AND 3\n      AND u.full_phone_number::text LIKE '{{ $json.phone_filter }}'\n    GROUP BY u.user_id, u.full_phone_number, u.full_name, uws.week, ws.days_per_week\n)\nSELECT DISTINCT ON (user_id)\n    user_id, full_phone_number, full_name, current_week,\n    total_sessions, completed_count, last_planned_date\nFROM current_week_stats cws\nWHERE cws.last_planned_date < (NOW() AT TIME ZONE 'America/Bogota')::date\n  AND cws.last_planned_date >= ((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '3 days')::date\n  AND NOT EXISTS (\n      SELECT 1 FROM user_weekly_schedule uws2\n      WHERE uws2.user_id = cws.user_id\n        AND uws2.week = cws.current_week + 1\n  )\nORDER BY user_id, current_week DESC;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        240,
-        300
+        -1968,
+        384
       ],
-      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "id": "a223ee98-b2b0-49bb-9cf6-43c13afc58fd",
       "name": "query_users_needing_prompt",
       "credentials": {
         "postgres": {
@@ -68,59 +92,38 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        480,
-        300
+        -1728,
+        384
       ],
-      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "id": "62ee5022-2bd7-40b4-9cf6-2badcca48f04",
       "name": "if_has_results",
       "alwaysOutputData": true
     },
     {
       "parameters": {
-        "batchSize": 1,
         "options": {}
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        720,
-        300
+        -1488,
+        384
       ],
-      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "id": "5c420302-4205-4aa7-acb6-9d5f24c28e7a",
       "name": "split_in_batches"
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "a1b2c3d4-cond-4000-8000-000000000002",
-              "leftValue": "={{ $json.completed_count }}",
-              "rightValue": "={{ $json.total_sessions }}",
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
+        "jsCode": "// Tag each user with their scenario and test mode flag\nconst data = $input.first().json;\nconst isTest = $('check_test_mode').first().json.is_test;\nlet scenario = 'GROWTH';\n\nif (data.completed_count === data.total_sessions) {\n  scenario = 'CELEBRATION';\n} else if (data.completed_count === 0) {\n  scenario = 'RE_ENGAGEMENT';\n}\n\nconsole.log(`📊 ${data.full_name} → ${scenario} (${data.completed_count}/${data.total_sessions})${isTest ? ' [TEST]' : ''}`);\n\nreturn [{ json: { ...data, scenario, is_test: isTest } }];"
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        960,
-        300
+        -1248,
+        384
       ],
-      "id": "a1b2c3d4-0005-4000-8000-000000000005",
-      "name": "if_full_completion"
+      "id": "a1b2c3d4-test-4000-8000-000000000020",
+      "name": "tag_scenario"
     },
     {
       "parameters": {
@@ -133,11 +136,11 @@
           },
           "conditions": [
             {
-              "id": "a1b2c3d4-cond-4000-8000-000000000003",
-              "leftValue": "={{ $json.completed_count }}",
-              "rightValue": 0,
+              "id": "a1b2c3d4-cond-4000-8000-000000000011",
+              "leftValue": "={{ $json.is_test }}",
+              "rightValue": true,
               "operator": {
-                "type": "number",
+                "type": "boolean",
                 "operation": "equals"
               }
             }
@@ -149,124 +152,212 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1200,
-        500
+        -1008,
+        384
       ],
-      "id": "a1b2c3d4-0006-4000-8000-000000000006",
-      "name": "if_zero_completion"
+      "id": "a1b2c3d4-test-4000-8000-000000000030",
+      "name": "if_test_mode"
     },
     {
       "parameters": {
-        "mode": "manual",
-        "duplicateItem": false,
-        "assignments": {
-          "assignments": [
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
             {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000001",
-              "name": "message",
-              "value": "=Felicidades {{ $json.full_name }}! Completaste todas tus {{ $json.total_sessions }} sesiones de la Semana {{ $json.current_week }}.\n\nTu constancia es admirable. Listo para seguir con la Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y organizamos tus dias.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
-              "type": "string"
-            },
-            {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000002",
-              "name": "full_phone_number",
-              "value": "={{ $json.full_phone_number }}",
-              "type": "string"
+              "id": "a1b2c3d4-cond-4000-8000-000000000040",
+              "leftValue": "={{ $json.scenario }}",
+              "rightValue": "CELEBRATION",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
             }
-          ]
+          ],
+          "combinator": "and"
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
       "position": [
-        1200,
-        200
+        -768,
+        576
       ],
-      "id": "a1b2c3d4-0007-4000-8000-000000000007",
-      "name": "set_celebration_msg"
+      "id": "a1b2c3d4-cond-4000-8000-000000000041",
+      "name": "if_celebration"
     },
     {
       "parameters": {
-        "mode": "manual",
-        "duplicateItem": false,
-        "assignments": {
-          "assignments": [
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
             {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000003",
-              "name": "message",
-              "value": "=Hola {{ $json.full_name }}! Completaste {{ $json.completed_count }} de {{ $json.total_sessions }} sesiones en la Semana {{ $json.current_week }}.\n\nCada entrenamiento suma. Quieres programar tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y arrancamos.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
-              "type": "string"
-            },
-            {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000004",
-              "name": "full_phone_number",
-              "value": "={{ $json.full_phone_number }}",
-              "type": "string"
+              "id": "a1b2c3d4-cond-4000-8000-000000000050",
+              "leftValue": "={{ $json.scenario }}",
+              "rightValue": "RE_ENGAGEMENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
             }
-          ]
+          ],
+          "combinator": "and"
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
       "position": [
-        1440,
-        500
+        -528,
+        672
       ],
-      "id": "a1b2c3d4-0008-4000-8000-000000000008",
-      "name": "set_growth_msg"
+      "id": "a1b2c3d4-cond-4000-8000-000000000051",
+      "name": "if_reengagement"
     },
     {
       "parameters": {
-        "mode": "manual",
-        "duplicateItem": false,
-        "assignments": {
-          "assignments": [
-            {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000005",
-              "name": "message",
-              "value": "=Hola {{ $json.full_name }}! Veo que la Semana {{ $json.current_week }} quedo sin entrenamientos.\n\nNo pasa nada, lo importante es volver. Quieres intentar con tu Semana {{ $json.current_week + 1 }}? Escribeme \"agendar\" y planeamos juntos.\n\n---\n¿Necesitas ayuda? Escríbenos: {{ $vars.SUPPORT_LINK }}",
-              "type": "string"
-            },
-            {
-              "id": "a1b2c3d4-asgn-4000-8000-000000000006",
-              "name": "full_phone_number",
-              "value": "={{ $json.full_phone_number }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1440,
-        700
-      ],
-      "id": "a1b2c3d4-0009-4000-8000-000000000009",
-      "name": "set_reengagement_msg"
-    },
-    {
-      "parameters": {
-        "operation": "send",
         "phoneNumberId": "914510145083991",
         "recipientPhoneNumber": "={{ $json.full_phone_number }}",
-        "textBody": "={{ $json.message }}",
-        "additionalFields": {}
+        "template": "semana_completa|es_CO",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.full_name }}"
+                  },
+                  {
+                    "text": "={{ $json.total_sessions }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week + 1 }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1680,
-        400
+        -528,
+        384
       ],
-      "id": "a1b2c3d4-0010-4000-8000-000000000010",
-      "name": "send_whatsapp",
+      "id": "d806e0c0-9691-4799-ba49-05879d99799c",
+      "name": "set_celebration_template",
+      "webhookId": "7905d142-40e9-4ae0-af09-e7907f8e73be",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 30000,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "914510145083991",
+        "recipientPhoneNumber": "={{ $json.full_phone_number }}",
+        "template": "kairos_rutina_sin_abrir_dias|en",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.full_name }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week + 1 }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        576
+      ],
+      "id": "af7147b1-3973-4d1c-be6c-dac78be26289",
+      "name": "set_reengagement_template",
+      "webhookId": "252e9d7a-f076-49db-bc7f-a45c534bb81b",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "914510145083991",
+        "recipientPhoneNumber": "={{ $json.full_phone_number }}",
+        "template": "semana_incompleta|es_CO",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.full_name }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week }}"
+                  },
+                  {
+                    "text": "={{ $json.completed_count }}"
+                  },
+                  {
+                    "text": "={{ $json.total_sessions }}"
+                  },
+                  {
+                    "text": "={{ $json.current_week + 1 }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        768
+      ],
+      "id": "b576d01d-178a-4fcb-84bb-770068055af1",
+      "name": "set_growth_template",
+      "webhookId": "a5c1c45e-be51-4000-bd58-072584b600ae",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
       "credentials": {
         "whatsAppApi": {
           "id": "xIjy4zDHyjIvGQT4",
@@ -278,6 +369,28 @@
   "pinData": {},
   "connections": {
     "schedule_trigger_8pm": {
+      "main": [
+        [
+          {
+            "node": "check_test_mode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_workflow_trigger": {
+      "main": [
+        [
+          {
+            "node": "check_test_mode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_test_mode": {
       "main": [
         [
           {
@@ -307,8 +420,7 @@
             "type": "main",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     },
     "split_in_batches": {
@@ -316,83 +428,101 @@
         [],
         [
           {
-            "node": "if_full_completion",
+            "node": "tag_scenario",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "if_full_completion": {
+    "tag_scenario": {
       "main": [
         [
           {
-            "node": "set_celebration_msg",
+            "node": "if_test_mode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if_test_mode": {
+      "main": [
+        [
+          {
+            "node": "split_in_batches",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "if_zero_completion",
+            "node": "if_celebration",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "if_zero_completion": {
+    "if_celebration": {
       "main": [
         [
           {
-            "node": "set_reengagement_msg",
+            "node": "set_celebration_template",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "set_growth_msg",
+            "node": "if_reengagement",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "set_celebration_msg": {
+    "if_reengagement": {
       "main": [
         [
           {
-            "node": "send_whatsapp",
+            "node": "set_reengagement_template",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "set_growth_template",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "set_growth_msg": {
+    "set_celebration_template": {
       "main": [
         [
           {
-            "node": "send_whatsapp",
+            "node": "split_in_batches",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "set_reengagement_msg": {
+    "set_reengagement_template": {
       "main": [
         [
           {
-            "node": "send_whatsapp",
+            "node": "split_in_batches",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "send_whatsapp": {
+    "set_growth_template": {
       "main": [
         [
           {
@@ -404,18 +534,17 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
-    "timezone": "America/Bogota",
+    "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "00000000-0000-4000-8000-000000000000",
+  "versionId": "57ae887f-d116-4c17-bd34-582425b27801",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
   },
-  "id": "WeeklySchedulingPrompt001",
+  "id": "YdVeExdTzmeLhFkO",
   "tags": [
     {
       "updatedAt": "2026-01-12T17:40:14.959Z",

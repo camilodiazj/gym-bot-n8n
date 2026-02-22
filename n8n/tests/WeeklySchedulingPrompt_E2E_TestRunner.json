@@ -1,0 +1,364 @@
+{
+  "name": "WeeklySchedulingPrompt_E2E_TestRunner",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "wsp-trigger-0001-0000-0000-000000000001",
+      "name": "Run All Tests",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const yesterday = DateTime.now().setZone('America/Bogota').minus({ days: 1 }).toFormat('yyyy-MM-dd');\nconst yesterdayUtc = DateTime.now().setZone('America/Bogota').minus({ days: 1 }).startOf('day').toISO();\n\nconst testCases = [\n  {\n    order: 1,\n    id: \"TC_WSP_001\",\n    name: \"Celebration — 100% sesiones completadas\",\n    priority: \"CRITICAL\",\n    category: \"WEEKLY_SCHEDULING_PROMPT\",\n    phone: '570000000071',\n    userId: 'e2e00071-0000-0000-0000-000000000061',\n    expectedScenario: \"CELEBRATION\",\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00071-0000-0000-0000-000000000061'\",\n      \"DELETE FROM users_plans WHERE user_id = 'e2e00071-0000-0000-0000-000000000061'\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000071\",\n      \"DELETE FROM users WHERE user_id = 'e2e00071-0000-0000-0000-000000000061'\",\n      \"INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative) VALUES ('e2e00071-0000-0000-0000-000000000061', 'Test_WSP_Celebration', 570000000071, '570000000071', 'wsp_celeb@test.com', 'America/Bogota', NOW(), 57)\",\n      \"INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule) VALUES ('e2e00071-0a01-0000-0000-000000000061', 'e2e00071-0000-0000-0000-000000000061', 'tpl_fb_3_hyp_int', NOW() - INTERVAL '14 days', 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3')\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00071-5c01-0000-0000-000000000061', 'e2e00071-0000-0000-0000-000000000061', 1, 'Lunes', 'Full Body A', '\" + yesterday + \"', '\" + yesterdayUtc + \"', true)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00071-5c02-0000-0000-000000000061', 'e2e00071-0000-0000-0000-000000000061', 1, 'Miercoles', 'Full Body B', '\" + yesterday + \"', '\" + yesterdayUtc + \"', true)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00071-5c03-0000-0000-000000000061', 'e2e00071-0000-0000-0000-000000000061', 1, 'Viernes', 'Full Body C', '\" + yesterday + \"', '\" + yesterdayUtc + \"', true)\"\n    ],\n    validations: [\n      {\n        id: \"V-WSP-101\",\n        description: \"User appears in detection query\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, u.full_phone_number, u.full_name, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 GROUP BY u.user_id, u.full_phone_number, u.full_name, uws.week, ws.days_per_week) SELECT COUNT(*) as cnt FROM current_week_stats cws WHERE cws.user_id = 'e2e00071-0000-0000-0000-000000000061' AND cws.last_planned_day < TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD') AND cws.last_planned_day >= TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '3 days', 'YYYY-MM-DD') AND NOT EXISTS (SELECT 1 FROM user_weekly_schedule uws2 WHERE uws2.user_id = cws.user_id AND uws2.week = cws.current_week + 1)\",\n        expected: 1,\n        operator: \"=\"\n      },\n      {\n        id: \"V-WSP-102\",\n        description: \"completed_count equals total_sessions (CELEBRATION scenario)\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 AND u.user_id = 'e2e00071-0000-0000-0000-000000000061' GROUP BY u.user_id, uws.week, ws.days_per_week) SELECT CASE WHEN completed_count = total_sessions THEN 1 ELSE 0 END as cnt FROM current_week_stats\",\n        expected: 1,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 2,\n    id: \"TC_WSP_002\",\n    name: \"Growth — sesiones parcialmente completadas\",\n    priority: \"CRITICAL\",\n    category: \"WEEKLY_SCHEDULING_PROMPT\",\n    phone: '570000000072',\n    userId: 'e2e00072-0000-0000-0000-000000000062',\n    expectedScenario: \"GROWTH\",\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00072-0000-0000-0000-000000000062'\",\n      \"DELETE FROM users_plans WHERE user_id = 'e2e00072-0000-0000-0000-000000000062'\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000072\",\n      \"DELETE FROM users WHERE user_id = 'e2e00072-0000-0000-0000-000000000062'\",\n      \"INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative) VALUES ('e2e00072-0000-0000-0000-000000000062', 'Test_WSP_Growth', 570000000072, '570000000072', 'wsp_growth@test.com', 'America/Bogota', NOW(), 57)\",\n      \"INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule) VALUES ('e2e00072-0a01-0000-0000-000000000062', 'e2e00072-0000-0000-0000-000000000062', 'tpl_fb_3_hyp_int', NOW() - INTERVAL '21 days', 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3')\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00072-5c01-0000-0000-000000000062', 'e2e00072-0000-0000-0000-000000000062', 2, 'Lunes', 'Full Body A', '\" + yesterday + \"', '\" + yesterdayUtc + \"', true)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00072-5c02-0000-0000-000000000062', 'e2e00072-0000-0000-0000-000000000062', 2, 'Miercoles', 'Full Body B', '\" + yesterday + \"', '\" + yesterdayUtc + \"', false)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00072-5c03-0000-0000-000000000062', 'e2e00072-0000-0000-0000-000000000062', 2, 'Viernes', 'Full Body C', '\" + yesterday + \"', '\" + yesterdayUtc + \"', false)\"\n    ],\n    validations: [\n      {\n        id: \"V-WSP-201\",\n        description: \"User appears in detection query\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, u.full_phone_number, u.full_name, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 GROUP BY u.user_id, u.full_phone_number, u.full_name, uws.week, ws.days_per_week) SELECT COUNT(*) as cnt FROM current_week_stats cws WHERE cws.user_id = 'e2e00072-0000-0000-0000-000000000062' AND cws.last_planned_day < TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD') AND cws.last_planned_day >= TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '3 days', 'YYYY-MM-DD') AND NOT EXISTS (SELECT 1 FROM user_weekly_schedule uws2 WHERE uws2.user_id = cws.user_id AND uws2.week = cws.current_week + 1)\",\n        expected: 1,\n        operator: \"=\"\n      },\n      {\n        id: \"V-WSP-202\",\n        description: \"completed_count > 0 AND < total_sessions (GROWTH scenario)\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 AND u.user_id = 'e2e00072-0000-0000-0000-000000000062' GROUP BY u.user_id, uws.week, ws.days_per_week) SELECT CASE WHEN completed_count > 0 AND completed_count < total_sessions THEN 1 ELSE 0 END as cnt FROM current_week_stats\",\n        expected: 1,\n        operator: \"=\"\n      }\n    ]\n  },\n  {\n    order: 3,\n    id: \"TC_WSP_003\",\n    name: \"Re-engagement — 0 sesiones completadas\",\n    priority: \"CRITICAL\",\n    category: \"WEEKLY_SCHEDULING_PROMPT\",\n    phone: '570000000073',\n    userId: 'e2e00073-0000-0000-0000-000000000063',\n    expectedScenario: \"RE_ENGAGEMENT\",\n    cleanup: [\n      \"DELETE FROM user_weekly_schedule WHERE user_id = 'e2e00073-0000-0000-0000-000000000063'\",\n      \"DELETE FROM users_plans WHERE user_id = 'e2e00073-0000-0000-0000-000000000063'\",\n      \"DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000073\",\n      \"DELETE FROM users WHERE user_id = 'e2e00073-0000-0000-0000-000000000063'\",\n      \"INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative) VALUES ('e2e00073-0000-0000-0000-000000000063', 'Test_WSP_Reengagement', 570000000073, '570000000073', 'wsp_reengage@test.com', 'America/Bogota', NOW(), 57)\",\n      \"INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule) VALUES ('e2e00073-0a01-0000-0000-000000000063', 'e2e00073-0000-0000-0000-000000000063', 'tpl_fb_3_hyp_int', NOW() - INTERVAL '7 days', 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3')\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00073-5c01-0000-0000-000000000063', 'e2e00073-0000-0000-0000-000000000063', 1, 'Lunes', 'Full Body A', '\" + yesterday + \"', '\" + yesterdayUtc + \"', false)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00073-5c02-0000-0000-000000000063', 'e2e00073-0000-0000-0000-000000000063', 1, 'Miercoles', 'Full Body B', '\" + yesterday + \"', '\" + yesterdayUtc + \"', false)\",\n      \"INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, \\\"Completed\\\") VALUES ('e2e00073-5c03-0000-0000-000000000063', 'e2e00073-0000-0000-0000-000000000063', 1, 'Viernes', 'Full Body C', '\" + yesterday + \"', '\" + yesterdayUtc + \"', false)\"\n    ],\n    validations: [\n      {\n        id: \"V-WSP-301\",\n        description: \"User appears in detection query\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, u.full_phone_number, u.full_name, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 GROUP BY u.user_id, u.full_phone_number, u.full_name, uws.week, ws.days_per_week) SELECT COUNT(*) as cnt FROM current_week_stats cws WHERE cws.user_id = 'e2e00073-0000-0000-0000-000000000063' AND cws.last_planned_day < TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD') AND cws.last_planned_day >= TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '3 days', 'YYYY-MM-DD') AND NOT EXISTS (SELECT 1 FROM user_weekly_schedule uws2 WHERE uws2.user_id = cws.user_id AND uws2.week = cws.current_week + 1)\",\n        expected: 1,\n        operator: \"=\"\n      },\n      {\n        id: \"V-WSP-302\",\n        description: \"completed_count = 0 (RE_ENGAGEMENT scenario)\",\n        sql: \"WITH current_week_stats AS (SELECT u.user_id, uws.week::int AS current_week, ws.days_per_week::int AS total_sessions, COUNT(*) FILTER (WHERE uws.\\\"Completed\\\" = true)::int AS completed_count, MAX(uws.planned_day) AS last_planned_day FROM users u JOIN users_plans up ON u.user_id = up.user_id AND up.status = 'active' JOIN week_schedules ws ON up.week_schedule = ws.schedule_type JOIN user_weekly_schedule uws ON u.user_id = uws.user_id WHERE uws.week BETWEEN 1 AND 3 AND u.user_id = 'e2e00073-0000-0000-0000-000000000063' GROUP BY u.user_id, uws.week, ws.days_per_week) SELECT CASE WHEN completed_count = 0 THEN 1 ELSE 0 END as cnt FROM current_week_stats\",\n        expected: 1,\n        operator: \"=\"\n      }\n    ]\n  }\n];\n\nconst sortedTests = testCases.sort((a, b) => a.order - b.order);\n$execution.customData.set('startTime', new Date().toISOString());\n$execution.customData.set('totalTests', String(sortedTests.length));\n$execution.customData.set('testResults', '[]');\nconsole.log(`\\u{1F4CB} WSP Tests cargados: ${sortedTests.map(t => t.id).join(' -> ')}`);\nreturn sortedTests.map(tc => ({ json: tc }));"
+      },
+      "id": "wsp-load-0002-0000-0000-000000000002",
+      "name": "Load Test Cases",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "wsp-loop-0003-0000-0000-000000000003",
+      "name": "Loop Tests",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2640,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $input.first().json;\nconsole.log(`\\n========================================`);\nconsole.log(`\\u{1F9EA} [${testCase.order}/${$execution.customData.get('totalTests')}] ${testCase.id} - ${testCase.name}`);\nconsole.log(`   Categoria: ${testCase.category}`);\nconsole.log(`   Prioridad: ${testCase.priority}`);\nconsole.log(`   Phone: ${testCase.phone}`);\nconsole.log(`   Expected: ${testCase.expectedScenario}`);\nconsole.log(`========================================`);\nreturn [{ json: testCase }];"
+      },
+      "id": "wsp-prelog-004-0000-0000-000000000004",
+      "name": "Pre-Test Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2912,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.cleanup.join('; ') }}",
+        "options": {}
+      },
+      "id": "wsp-clean-005-0000-0000-000000000005",
+      "name": "Run Cleanup SQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3088,
+        1264
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const phone = $('Pre-Test Log').first().json.phone;\nconsole.log(`📞 Executing WeeklySchedulingPrompt with test_phone_filter = ${phone}`);\nreturn [{ json: { test_phone_filter: phone } }];"
+      },
+      "id": "wsp-prep-0012-0000-0000-000000000012",
+      "name": "Prepare Test Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3264,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "YdVeExdTzmeLhFkO",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "wsp-exec-0013-0000-0000-000000000013",
+      "name": "Execute WeeklySchedulingPrompt",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3440,
+        1264
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $('Pre-Test Log').first().json.validations.map((v, i) => 'SELECT \\'' + v.id + '\\' as vid, cnt FROM (' + v.sql + ') _v' + i).join(' UNION ALL ') }}",
+        "options": {}
+      },
+      "id": "wsp-valid-006-0000-0000-000000000006",
+      "name": "Run Validations",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        3616,
+        1264
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "vZLJtIWG5nYXMez4",
+          "name": "Supabase Memory"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const testCase = $('Pre-Test Log').first().json;\nconst dbResults = $input.all();\nlet allPassed = true;\nlet details = [];\nlet failedValidations = [];\n\ntestCase.validations.forEach((validation, idx) => {\n  const result = dbResults[idx];\n  let actualValue = 0;\n  if (result && result.json) {\n    actualValue = result.json.cnt !== undefined ? Number(result.json.cnt) : 0;\n  }\n  \n  let passed = false;\n  if (validation.operator === '=') {\n    passed = actualValue === validation.expected;\n  } else if (validation.operator === '>=') {\n    passed = actualValue >= validation.expected;\n  } else {\n    passed = actualValue === validation.expected;\n  }\n  \n  if (!passed) {\n    allPassed = false;\n    failedValidations.push(validation.id);\n  }\n  \n  details.push({\n    id: validation.id,\n    description: validation.description,\n    expected: validation.expected,\n    actual: actualValue,\n    operator: validation.operator || '=',\n    passed\n  });\n  \n  const emoji = passed ? '\\u2705' : '\\u274C';\n  console.log(`   ${emoji} ${validation.id}: expected ${validation.operator || '='} ${validation.expected}, got ${actualValue} \\u2014 ${validation.description}`);\n});\n\nconst result = {\n  order: testCase.order,\n  testId: testCase.id,\n  testName: testCase.name,\n  category: testCase.category,\n  priority: testCase.priority,\n  expectedScenario: testCase.expectedScenario,\n  passed: allPassed,\n  output: `Validations: ${details.filter(d => d.passed).length}/${details.length} passed`,\n  error: allPassed ? null : `Failed: ${failedValidations.join(', ')}`,\n  executedAt: new Date().toISOString(),\n  details\n};\n\nlet allResults = [];\ntry {\n  const existing = $execution.customData.get('testResults');\n  if (existing) allResults = JSON.parse(existing);\n} catch(e) {}\nallResults.push(result);\n$execution.customData.set('testResults', JSON.stringify(allResults));\n\nconsole.log(`${allPassed ? '\\u2705 PASSED' : '\\u274C FAILED'}: [${testCase.order}] ${testCase.id} (${testCase.expectedScenario}) \\u2014 ${details.filter(d => d.passed).length}/${details.length} validations`);\n\nreturn [{ json: result }];"
+      },
+      "id": "wsp-eval-0007-0000-0000-000000000007",
+      "name": "Evaluate Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3824,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "results",
+        "options": {}
+      },
+      "id": "wsp-collect-08-0000-0000-000000000008",
+      "name": "Collect Results",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4016,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let results = [];\nif (items && items.length > 0 && items[0].json && Array.isArray(items[0].json.results)) {\n  results = items[0].json.results;\n}\nconst total = results.length;\nconst passed = results.filter(r => r.passed);\nconst failed = results.filter(r => !r.passed);\nconst passRateRaw = total > 0 ? (passed.length / total) * 100 : 0;\nconst passRate = passRateRaw % 1 === 0 ? passRateRaw.toFixed(0) : passRateRaw.toFixed(1);\n\nlet statusEmoji = failed.length === 0 ? '\\u2705' : '\\u274C';\nif (total === 0) statusEmoji = '\\u26A0\\uFE0F';\n\nlet mdReport = `*\\u{1F4CA} Test Report \\u2014 WeeklySchedulingPrompt*\\n`;\nmdReport += `\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\u2500\\n`;\nmdReport += `*Status:* ${statusEmoji} ${failed.length === 0 ? 'ALL PASS' : 'HAS FAILURES'}\\n`;\nmdReport += `*Score:* ${passRate}% (${passed.length}/${total})\\n`;\nmdReport += `*Time:* ${new Date().toLocaleString('es-CO')}\\n\\n`;\n\nmdReport += `*Scenarios Validated:*\\n`;\nresults.forEach(r => {\n  const icon = r.passed ? '\\u2705' : '\\u274C';\n  mdReport += `${icon} *${r.testId}* [${r.expectedScenario}] \\u2014 ${r.testName}\\n`;\n  if (r.details) {\n    r.details.forEach(d => {\n      const dIcon = d.passed ? '\\u2714' : '\\u2757';\n      mdReport += `   ${dIcon} ${d.id}: ${d.description} (${d.actual}/${d.expected})\\n`;\n    });\n  }\n});\n\nif (failed.length > 0) {\n  mdReport += `\\n*\\u{1F6A8} Failures:*\\n`;\n  failed.forEach(f => {\n    mdReport += `\\u2022 *[${f.priority}] ${f.testName}*: ${f.error}\\n`;\n  });\n}\n\nconsole.log('\\n\\u2554' + '\\u2550'.repeat(52) + '\\u2557');\nconsole.log(`\\u2551 WeeklySchedulingPrompt Test Report`.padEnd(53) + '\\u2551');\nconsole.log('\\u2560' + '\\u2550'.repeat(52) + '\\u2563');\nconsole.log(`\\u2551 STATUS: ${statusEmoji}  RATE: ${passRate}% (${passed.length}/${total})`.padEnd(53) + '\\u2551');\nconsole.log('\\u2560' + '\\u2550'.repeat(52) + '\\u2563');\nresults.forEach(r => {\n  const icon = r.passed ? '\\u2705' : '\\u274C';\n  console.log(`\\u2551 ${icon} ${r.testId} [${r.expectedScenario}]`.padEnd(53) + '\\u2551');\n});\nconsole.log('\\u255A' + '\\u2550'.repeat(52) + '\\u255D');\n\nresults.forEach(r => {\n  const icon = r.passed ? '\\u2705' : '\\u274C';\n  console.log(`\\n${icon} ${r.testId} \\u2014 ${r.testName}`);\n  if (r.details) {\n    r.details.forEach(d => {\n      const dIcon = d.passed ? '  \\u2714' : '  \\u2757';\n      console.log(`${dIcon} ${d.id}: expected ${d.operator} ${d.expected}, got ${d.actual}`);\n    });\n  }\n});\n\nreturn [{\n  json: {\n    meta: { timestamp: new Date().toISOString(), totalTests: total, success: failed.length === 0 },\n    markdownReport: mdReport,\n    stats: { passed: passed.length, failed: failed.length, rate: parseFloat(passRate) },\n    failures: failed.map(r => ({ testId: r.testId, name: r.testName, category: r.category, error: r.error, details: r.details }))\n  }\n}];"
+      },
+      "id": "wsp-report-09-0000-0000-000000000009",
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4208,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "condition-wsp-failed",
+              "leftValue": "={{ $json.failures }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "wsp-hasfail-10-0000-0000-000000000010",
+      "name": "Has Failures?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4416,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## WeeklySchedulingPrompt E2E Test Runner\n\n### Validates:\n- **TC_WSP_001**: Celebration scenario (3/3 completed)\n- **TC_WSP_002**: Growth scenario (1/3 completed)\n- **TC_WSP_003**: Re-engagement scenario (0/3 completed)\n\n### What it tests:\n1. Detection SQL query identifies qualifying users\n2. Completion counts match expected scenario routing\n3. 3-day window and week exclusion logic\n\n### Test Users (5700000007X):\n| Phone | Scenario | Completed |\n|-------|----------|-----------|\n| 570000000071 | CELEBRATION | 3/3 |\n| 570000000072 | GROWTH | 1/3 |\n| 570000000073 | RE_ENGAGEMENT | 0/3 |\n\n### Prerequisites:\n- Postgres credential configured\n- `week_schedules` table has `fb_3` entry",
+        "height": 380,
+        "width": 460,
+        "color": 5
+      },
+      "id": "wsp-note-0011-0000-0000-000000000011",
+      "name": "Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        608
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run All Tests": {
+      "main": [
+        [
+          {
+            "node": "Load Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Tests": {
+      "main": [
+        [
+          {
+            "node": "Collect Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pre-Test Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Test Log": {
+      "main": [
+        [
+          {
+            "node": "Run Cleanup SQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Cleanup SQL": {
+      "main": [
+        [
+          {
+            "node": "Prepare Test Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Test Input": {
+      "main": [
+        [
+          {
+            "node": "Execute WeeklySchedulingPrompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute WeeklySchedulingPrompt": {
+      "main": [
+        [
+          {
+            "node": "Run Validations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Validations": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Result": {
+      "main": [
+        [
+          {
+            "node": "Loop Tests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Results": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Report": {
+      "main": [
+        [
+          {
+            "node": "Has Failures?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1
+  },
+  "versionId": "wsp-e2e-0001-0000-0000-000000000001",
+  "meta": {
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "id": "WSP-E2E-TestRunner-001",
+  "tags": []
+}

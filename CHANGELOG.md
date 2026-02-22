@@ -2,6 +2,23 @@
 
 All notable changes to GymBot will be documented in this file.
 
+## [0.7.0] - 2026-02-22
+
+### Changed - WhatsApp Templates for WeeklySchedulingPrompt (KAN-100)
+
+- **Replaced free-text messages with WhatsApp Business API templates**: 3 pre-approved templates now handle celebration (`semana_completa|es_CO`), growth (`semana_incompleta|es_CO`), and re-engagement (`kairos_rutina_sin_abrir_dias|en`) scenarios
+- **Removed obsolete nodes**: `set_celebration_msg`, `set_growth_msg`, `set_reengagement_msg` (Set nodes) and `send_whatsapp` (freeform text node)
+- **Added test mode support**: `execute_workflow_trigger` + `check_test_mode` + `if_test_mode` gate — test runner passes `test_phone_filter` param to isolate test users and skip WhatsApp sends
+
+### Fixed
+
+- **`planned_day` format inconsistency in detection query**: `MAX(planned_day)` now converts both ISO (`YYYY-MM-DD`) and DD/MM/YYYY formats to `DATE` before comparison, fixing users with mixed-format dates being silently excluded from prompts
+
+### Added - E2E Tests
+
+- **`WeeklySchedulingPrompt_E2E_TestRunner.json`**: 3 test cases validating celebration (3/3), growth (1/3), and re-engagement (0/3) scenarios
+- **Test users** (`5700000007X`): 3 fixtures in `test_data_setup.sql`
+
 ## [0.6.0] - 2026-02-18
 
 ### Added - Calendar Event on Schedule (KAN-57)

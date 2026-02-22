@@ -41,7 +41,7 @@ GymBot/
 | `WORKOUT_CREATOR.json` | **Advanced routine generation** - creates personalized 4-week workout plans using full user profile (22 fields) with duration validation |
 | `MorningReminder-WorkoutTracker.json` | Daily workout reminders and completion tracking |
 | `GymBotMesocycleRenewal.json` | Handles 4-week mesocycle renewal flow |
-| `WeeklySchedulingPrompt.json` | Weekly proactive outreach - sends celebration/growth/re-engagement messages based on session completion |
+| `WeeklySchedulingPrompt.json` | Weekly proactive outreach — sends WhatsApp template messages (celebration/growth/re-engagement) based on session completion. Supports `test_phone_filter` param for E2E testing |
 | `DailyReport.json` | Daily 6 AM operational report — queries 7 categories (health violations, plan failures, new users, engagement, churn risk, never completed, abandoned KYC), sends HTML email via Gmail + WhatsApp summary |
 | `InteractionAnalysis.json` | Weekly interaction analysis — queries `n8n_chat_histories` metrics + conversation samples, runs LLM analysis (Gemini), emails HTML report every Monday 8 AM Bogota |
 
@@ -52,6 +52,7 @@ GymBot/
 | `GymRatFlow_E2E_TestRunner.json` | Automated E2E test suite - validates all user flows (parallel multi-turn execution) |
 | `MesocycleRenewal_E2E_TestRunner.json` | E2E test suite for mesocycle renewal scenarios (3 test cases: auto-detect, MANTENER, manual intent) |
 | `QualityFixes_E2E_TestRunner.json` | E2E test suite for WORKOUT_CREATOR quality fixes (QF-1 through QF-5) |
+| `WeeklySchedulingPrompt_E2E_TestRunner.json` | E2E test suite for WeeklySchedulingPrompt (3 scenarios: celebration, growth, re-engagement) |
 
 > `GymRatFlow_MultiTurnExecutor.json` is deployed directly in the n8n instance (not in the repo). It's the sub-workflow called by test runners for isolated multi-turn test execution.
 
@@ -456,7 +457,15 @@ e2e/
 | `570000000052` | Test_MesoMantener | TC_MESO_002 |
 | `570000000053` | Test_MesoManual | TC_MESO_003 |
 
-> **Important**: Phone numbers `57000000000X`, `5700000002XX`, and `5700000005XX` are reserved for testing. Do not use for real users.
+**WSP Users** (`5700000007X`) - Created dynamically by WeeklySchedulingPrompt E2E tests:
+
+| Phone | User | Purpose |
+|-------|------|---------|
+| `570000000071` | Test_WSP_Celebration | TC_WSP_001 (3/3 completed) |
+| `570000000072` | Test_WSP_Growth | TC_WSP_002 (1/3 completed) |
+| `570000000073` | Test_WSP_Reengagement | TC_WSP_003 (0/3 completed) |
+
+> **Important**: Phone numbers `57000000000X`, `5700000002XX`, `5700000005XX`, and `5700000007X` are reserved for testing. Do not use for real users.
 
 ### Teardown (Critical)
 
@@ -475,6 +484,7 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- GYM: 570000000001, 570000000002, 570000000003, 570000000004, 570000000009
 -- HOME: 570000000211, 570000000212, 570000000213
 -- MESOCYCLE: 570000000051, 570000000052, 570000000053
+-- WSP: 570000000071, 570000000072, 570000000073
 ```
 
 ### Creating Test Users Manually (SQL Template)
