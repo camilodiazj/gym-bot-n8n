@@ -162,7 +162,7 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 
 | Table | Purpose | Key Columns |
 |-------|---------|-------------|
-| `magic_links` | Passwordless auth via WhatsApp deep links | `code` (VARCHAR PK), `user_id`, `created_at`, `expires_at` (24h default), `used_at` |
+| `magic_links` | Passwordless auth via WhatsApp deep links | `code` (VARCHAR PK), `user_id`, `created_at`, `expires_at` (48h default), `used_at` |
 
 **Magic link URL format**: `https://[FIREBASE_PROJECT_ID].web.app/w?c={code}` (local: `http://localhost:5173/w?c={code}`). The `code` is a short hex string (e.g., `7fda02`). Do NOT use `/auth?code=` — that path does not exist.
 
@@ -465,7 +465,15 @@ e2e/
 | `570000000072` | Test_WSP_Growth | TC_WSP_002 (1/3 completed) |
 | `570000000073` | Test_WSP_Reengagement | TC_WSP_003 (0/3 completed) |
 
-> **Important**: Phone numbers `57000000000X`, `5700000002XX`, `5700000005XX`, and `5700000007X` are reserved for testing. Do not use for real users.
+**GRACE PERIOD Users** (`5700000008X`) - Pre-populated fixtures:
+
+| Phone | User | Purpose |
+|-------|------|---------|
+| `570000000081` | Test_GracePeriod_Yesterday | TC_GRACE_001 (yesterday uncompleted, no today) |
+| `570000000082` | Test_GracePeriod_BothDays | TC_GRACE_002 (both today+yesterday uncompleted) |
+| `570000000083` | Test_GracePeriod_RestDay | TC_GRACE_003 (yesterday completed, no today) |
+
+> **Important**: Phone numbers `57000000000X`, `5700000002XX`, `5700000005XX`, `5700000007X`, and `5700000008X` are reserved for testing. Do not use for real users.
 
 ### Teardown (Critical)
 
@@ -485,6 +493,7 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- HOME: 570000000211, 570000000212, 570000000213
 -- MESOCYCLE: 570000000051, 570000000052, 570000000053
 -- WSP: 570000000071, 570000000072, 570000000073
+-- GRACE PERIOD: 570000000081, 570000000082, 570000000083
 ```
 
 ### Creating Test Users Manually (SQL Template)
@@ -502,7 +511,7 @@ When creating ad-hoc test users (e.g., to replicate a real user's workout for lo
 | `user_weekly_schedule` | `planned_day` | text | NOT NULL — use `TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD')` |
 | `user_weekly_schedule` | `planned_day_utc` | timestamptz | Separate from `planned_day` — use `DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota'` |
 
-> **CRITICAL — `planned_day` format inconsistency**: Fixture SQL writes `planned_day` in ISO format (`2026-02-15`) and populates `planned_day_utc`. But the MAIN_FLOW scheduling tool (`Tool_Update_User_Weekly_Schedule`) writes `planned_day` in `DD/MM` format (e.g., `"30/10"`) and leaves `planned_day_utc` as **NULL**. When querying records created by the scheduling tool, do NOT filter on `planned_day_utc` (it's NULL) or compare `planned_day` with `CURRENT_DATE::text` (format mismatch). Instead, filter by `user_id` + `week` or just `user_id`.
+> **Note — `planned_day` format & `planned_day_utc`**: Fixture SQL writes `planned_day` in ISO format (`2026-02-15`). The MAIN_FLOW scheduling tool (`Tool_Update_User_Weekly_Schedule`) writes `planned_day` in `DD/MM` format (e.g., `"30/10"`). A Supabase trigger `trg_convert_planned_day` (function `convert_planned_day_to_utc()`) fires on INSERT/UPDATE of `user_weekly_schedule` and auto-populates `planned_day_utc` from `planned_day` by parsing both ISO (`YYYY-MM-DD`) and slash (`D/M/YYYY`) formats. Therefore `planned_day_utc` is always available in production and is the preferred column for date filtering.
 | `workouts` | `created_at` | timestamptz | No default — must supply `NOW()` |
 | `workouts` | `notes` | text | NOT NULL — use `''` (empty string) |
 | `magic_links` | `code` | varchar(8) | Max 8 chars |
@@ -528,7 +537,7 @@ VALUES (NOW(), 570000000010, 'Test User Name', 'test@test.com', 27, 'M', 171, 67
 INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule)
 VALUES ('e2e01000-0000-0000-0000-000000000010', 'e2e00010-0000-0000-0000-000000000010', 'tpl_fb_3_hyp_int', NOW(), 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3');
 
--- 4. Today's schedule (needs BOTH planned_day text AND planned_day_utc timestamptz)
+-- 4. Today's schedule (planned_day_utc is auto-populated by trg_convert_planned_day trigger, but supplying it explicitly is harmless for fixture data)
 INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
 VALUES ('e2e01010-0000-0000-0000-000000000010', 'e2e00010-0000-0000-0000-000000000010', 1, 'Martes', 'Full Body A',
   TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD'),
@@ -539,9 +548,9 @@ VALUES ('e2e01010-0000-0000-0000-000000000010', 'e2e00010-0000-0000-0000-0000000
 INSERT INTO workouts (id, user_id, week, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, created_at, notes, exercise_order)
 VALUES (gen_random_uuid(), 'e2e00010-0000-0000-0000-000000000010', 1, 'Full Body A', 'ex_barbell_squat', '3', '8–10', '1–2', 150, '2-0-1', NOW(), '', 1);
 
--- 6. Magic link for frontend access (code max 8 chars, expires in 24h)
+-- 6. Magic link for frontend access (code max 8 chars, expires in 48h)
 INSERT INTO magic_links (code, user_id, created_at, expires_at)
-VALUES ('testcode', 'e2e00010-0000-0000-0000-000000000010', NOW(), NOW() + INTERVAL '24 hours');
+VALUES ('testcode', 'e2e00010-0000-0000-0000-000000000010', NOW(), NOW() + INTERVAL '48 hours');
 -- Frontend URL: http://localhost:5173/?c=testcode
 
 -- 7. Cleanup (run when done)

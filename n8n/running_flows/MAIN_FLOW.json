@@ -6,7 +6,7 @@
         "promptType": "define",
         "text": "={{ $items('Normalize_Message')[0].json.message_body }}",
         "options": {
-          "systemMessage": "=# System Prompt: Kairos Personal Trainer – Gestor de Flujos y Progreso (V7)\n\nEres \"Kairos Personal Trainer\", un asistente de entrenamiento inteligente.\n\nUSER_ID: {{ $items('GetUser')[0].json.user_id }}\n\nSESION_ENTRENAMIENTO_PARA_HOY: \n{{ JSON.stringify($('Filter_Today_Routine').all().map(i => i.json), null, 2) }}\n\nDebes seguir los siguientes pasos:\n\n1. ACCIÓN:\n   - Usa 'Tool_Get_Workout' pasando los parámetros: user_id (el USER_ID de arriba), session_name y week (obtenidos de SESION_ENTRENAMIENTO_PARA_HOY).\n   - Presenta la rutina con el FORMATO VISUAL.\n---\n\n## 📋 FORMATO VISUAL (WhatsApp)\nSaluda al usuario. Estructura el mensaje así para facilitar la lectura:\n\n*¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:\n\n[NÚMERO]️ [NOMBRE DEL EJERCICIO]\n🎯 Zona: [Músculo principal]\n\n📋 Qué hacer:\n* [Series] Series\n* [Reps] Repeticiones\n* ⏸ [Descanso en minutos] de descanso\n\n🔥 Esfuerzo: RIR [Rir] (Deja [Rir] reps en reserva)\n\n📹 ¿Cómo se hace?:\n[Link limpio]\n\n〰〰〰〰〰〰〰〰\n\n# REGLAS DE TEXTO:\n1. Convierte los segundos de descanso a minutos (ej: 120s -> \"2 min\", 90s -> \"1.5 min\").\n2. Si el RIR es un rango (ej: 3-4), escribe: \"Deja 3 o 4 reps en reserva\".\n3. Usa separadores de ondas (〰〰〰) entre ejercicios.\n\n────────────────────\n*¡Dale con toda! 🚀*\n\n---\n\n## 🚨 REGLAS INQUEBRANTABLES\n4. DISEÑO: Usa estrictamente la línea ──────────────────── para separar los bloques de ejercicios.\n5. IDIOMA: Todo el contenido enviado al usuario debe ser en español.\n6. Al entregar la rutina NO preguntes al usuario si terminó el entrenamiento.\n\nFecha actual (HOY): {{ $now }}"
+          "systemMessage": "=# System Prompt: Kairos Personal Trainer – Gestor de Flujos y Progreso (V7)\n\nEres \"Kairos Personal Trainer\", un asistente de entrenamiento inteligente.\n\nUSER_ID: {{ $items('GetUser')[0].json.user_id }}\n\nSESION_PENDIENTE: \n{{ JSON.stringify($('Filter_Today_Routine').all().map(i => i.json), null, 2) }}\n\nES_RECUPERACION: {{ (() => { const s = $('Filter_Today_Routine').first().json; const today = $now.setZone('America/Bogota').startOf('day').toUTC().toMillis(); const planned = new Date(s.planned_day_utc || '').getTime(); return planned < today; })() }}\n\nDebes seguir los siguientes pasos:\n\n1. ACCIÓN:\n   - Usa 'Tool_Get_Workout' pasando los parámetros: user_id (el USER_ID de arriba), session_name y week (obtenidos de SESION_PENDIENTE).\n   - Presenta la rutina con el FORMATO VISUAL.\n---\n\n## 📋 FORMATO VISUAL (WhatsApp)\nSaluda al usuario. Estructura el mensaje así para facilitar la lectura:\n\n*¡Hola, {{ $items('GetUser')[0].json.full_name }}!* 🔥 Aquí tienes tu plan para hoy:\n\n[NÚMERO]️ [NOMBRE DEL EJERCICIO]\n🎯 Zona: [Músculo principal]\n\n📋 Qué hacer:\n* [Series] Series\n* [Reps] Repeticiones\n* ⏸ [Descanso en minutos] de descanso\n\n🔥 Esfuerzo: RIR [Rir] (Deja [Rir] reps en reserva)\n\n📹 ¿Cómo se hace?:\n[Link limpio]\n\n〰〰〰〰〰〰〰〰\n\n# REGLAS DE TEXTO:\n1. Convierte los segundos de descanso a minutos (ej: 120s -> \"2 min\", 90s -> \"1.5 min\").\n2. Si el RIR es un rango (ej: 3-4), escribe: \"Deja 3 o 4 reps en reserva\".\n3. Usa separadores de ondas (〰〰〰) entre ejercicios.\n\n────────────────────\n*¡Dale con toda! 🚀*\n\n---\n\n## 🚨 REGLAS INQUEBRANTABLES\n4. DISEÑO: Usa estrictamente la línea ──────────────────── para separar los bloques de ejercicios.\n5. IDIOMA: Todo el contenido enviado al usuario debe ser en español.\n6. Al entregar la rutina NO preguntes al usuario si terminó el entrenamiento.\n7. Si ES_RECUPERACION es true, en vez de \"Aquí tienes tu plan para hoy\", di: \"Ayer no completaste tu sesión de [session_name]. ¡Vamos a completarla hoy como recuperación!\"\n\nFecha actual (HOY): {{ $now }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -444,7 +444,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day_utc = (\n  DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota')\n  AT TIME ZONE 'America/Bogota'\n)\nAND \"Completed\" = false;\n",
+        "query": "UPDATE user_weekly_schedule\nSET \"Completed\" = true\nWHERE user_id = '{{ $items('GetUser')[0].json.user_id }}'\nAND planned_day_utc IN (\n  DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota',\n  (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota') - INTERVAL '1 day'\n)\nAND \"Completed\" = false;\n",
         "options": {}
       },
       "type": "n8n-nodes-base.postgresTool",
@@ -600,7 +600,7 @@
           "conditions": [
             {
               "id": "6fdb5aca-0a64-4c5a-8e0b-c0fbedd7aa01",
-              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => new Date(item.json.planned_day_utc || item.json.planned_day) >= new Date($now.setZone('America/Bogota').startOf('day').toUTC().toISO())) }}",
+              "leftValue": "={{ $items(\"GetWeeklySchedule\").some(item => new Date(item.json.planned_day_utc || item.json.planned_day) >= new Date($now.setZone('America/Bogota').startOf('day').minus({days: 1}).toUTC().toISO())) }}",
               "rightValue": "={{ $now.format('yyyy-MM-dd') }}",
               "operator": {
                 "type": "boolean",
@@ -843,7 +843,7 @@
         "promptType": "define",
         "text": "={{ $('Normalize_Message').item.json.message_body }}",
         "options": {
-          "systemMessage": "Eres \"Kairos Personal Trainer\", encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSí el usuario te confirmó que completó su rutina de hoy, usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así. \nNo le preguntes nada al usuario."
+          "systemMessage": "Eres \"Kairos Personal Trainer\", encargado de actualizar el registro de la rutina según la confirmación del usuario.\n\nSi el usuario te confirmo que completo su rutina pendiente (de hoy o de ayer), usa \"Tool_Update_User_Weekly_Schedule1\" para marcarla como completada. El tool ya tiene los datos necesarios del usuario y la fecha.\n\nLuego de eso debes felicitar al usuario por su compromiso y motivarle a seguir así. \nNo le preguntes nada al usuario."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -1008,7 +1008,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Filtrar solo la rutina de hoy que NO esté completada\n// Calculamos midnight de hoy en Bogota, expresado en UTC\nconst todayMidnightUTC = $now.setZone('America/Bogota').startOf('day').toUTC();\nconst items = $input.all();\n\nconst todayRoutine = items.filter(item => {\n  // planned_day_utc es TIMESTAMPTZ (midnight Bogota en UTC = 05:00:00Z)\n  // planned_day puede ser ISO (YYYY-MM-DD) o DD/MM o DD/MM/YYYY\n  let plannedDate;\n  if (item.json.planned_day_utc) {\n    plannedDate = new Date(item.json.planned_day_utc);\n  } else if (item.json.planned_day) {\n    const parts = item.json.planned_day.split('/');\n    const day = parseInt(parts[0], 10);\n    const month = parseInt(parts[1], 10) - 1;\n    const year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();\n    plannedDate = new Date(Date.UTC(year, month, day, 5, 0, 0));\n  } else {\n    return false;\n  }\n  const todayDate = new Date(todayMidnightUTC.toISO());\n  \n  // Comparar timestamps (ambos deberían ser midnight Bogota en UTC)\n  const isToday = plannedDate.getTime() === todayDate.getTime();\n  \n  // Completed puede ser booleano false o string 'false'\n  const isNotCompleted = item.json.Completed === false || item.json.Completed === 'false';\n  \n  return isToday && isNotCompleted;\n});\n\n// Si no hay rutina para hoy sin completar, retornar array vacío\nreturn todayRoutine.length > 0 ? todayRoutine : [];"
+        "jsCode": "// Filtrar rutina pendiente: hoy (prioridad) o ayer (grace period)\nconst todayMidnightUTC = $now.setZone('America/Bogota').startOf('day').toUTC();\nconst todayDate = new Date(todayMidnightUTC.toISO());\nconst yesterdayDate = new Date(todayDate.getTime() - 24 * 60 * 60 * 1000);\nconst items = $input.all();\n\nfunction parseDate(item) {\n  if (item.json.planned_day_utc) {\n    return new Date(item.json.planned_day_utc);\n  } else if (item.json.planned_day) {\n    const parts = item.json.planned_day.split('/');\n    const day = parseInt(parts[0], 10);\n    const month = parseInt(parts[1], 10) - 1;\n    const year = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();\n    return new Date(Date.UTC(year, month, day, 5, 0, 0));\n  }\n  return null;\n}\n\nfunction isNotCompleted(item) {\n  return item.json.Completed === false || item.json.Completed === 'false';\n}\n\n// Rule 1: Today's uncompleted workout (highest priority)\nconst todayRoutine = items.filter(item => {\n  const d = parseDate(item);\n  return d && d.getTime() === todayDate.getTime() && isNotCompleted(item);\n});\nif (todayRoutine.length > 0) return todayRoutine;\n\n// Rule 2: Yesterday's uncompleted workout (1-day grace period)\nconst yesterdayRoutine = items.filter(item => {\n  const d = parseDate(item);\n  return d && d.getTime() === yesterdayDate.getTime() && isNotCompleted(item);\n});\nreturn yesterdayRoutine.length > 0 ? yesterdayRoutine : [];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1370,7 +1370,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO magic_links (code, user_id)\nVALUES (\n  substr(md5(random()::text || '{{ $items('GetUser')[0].json.user_id }}' || now()::text), 1, 6),\n  '{{ $items('GetUser')[0].json.user_id }}'\n)\nON CONFLICT (code) DO UPDATE SET\n  user_id = EXCLUDED.user_id,\n  created_at = NOW(),\n  expires_at = NOW() + INTERVAL '24 hours',\n  used_at = NULL\nRETURNING code, user_id",
+        "query": "INSERT INTO magic_links (code, user_id)\nVALUES (\n  substr(md5(random()::text || '{{ $items('GetUser')[0].json.user_id }}' || now()::text), 1, 6),\n  '{{ $items('GetUser')[0].json.user_id }}'\n)\nON CONFLICT (code) DO UPDATE SET\n  user_id = EXCLUDED.user_id,\n  created_at = NOW(),\n  expires_at = NOW() + INTERVAL '48 hours',\n  used_at = NULL\nRETURNING code, user_id",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",

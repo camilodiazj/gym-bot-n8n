@@ -15,6 +15,9 @@
 -- 570000000071 - Test_WSP_Celebration (TC_WSP_001) - creado/eliminado por test runner
 -- 570000000072 - Test_WSP_Growth (TC_WSP_002) - creado/eliminado por test runner
 -- 570000000073 - Test_WSP_Reengagement (TC_WSP_003) - creado/eliminado por test runner
+-- 570000000081 - Test_GracePeriod_Yesterday (TC_GRACE_001) - ayer sin completar
+-- 570000000082 - Test_GracePeriod_BothDays (TC_GRACE_002) - ayer + hoy sin completar
+-- 570000000083 - Test_GracePeriod_RestDay (TC_GRACE_003) - ayer completado, descanso hoy
 --
 -- TABLAS AFECTADAS:
 -- users, users_plans, user_weekly_schedule, workouts,
@@ -30,9 +33,10 @@
 --   HOME: 570000000211, 570000000212, 570000000213
 --   MESOCYCLE: 570000000051, 570000000052, 570000000053
 --   WSP: 570000000071, 570000000072, 570000000073
+--   GRACE PERIOD: 570000000081, 570000000082, 570000000083
 -- ============================================
 
--- Eliminar magic_links de usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar magic_links de usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM magic_links
 WHERE user_id IN (
     SELECT user_id FROM users
@@ -40,11 +44,12 @@ WHERE user_id IN (
         '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
         '570000000211', '570000000212', '570000000213',
         '570000000051', '570000000052', '570000000053',
-        '570000000071', '570000000072', '570000000073'
+        '570000000071', '570000000072', '570000000073',
+        '570000000081', '570000000082', '570000000083'
     )
 );
 
--- Eliminar pending_tasks de usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar pending_tasks de usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM pending_tasks
 WHERE user_id IN (
     SELECT user_id FROM users
@@ -52,11 +57,12 @@ WHERE user_id IN (
         '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
         '570000000211', '570000000212', '570000000213',
         '570000000051', '570000000052', '570000000053',
-        '570000000071', '570000000072', '570000000073'
+        '570000000071', '570000000072', '570000000073',
+        '570000000081', '570000000082', '570000000083'
     )
 );
 
--- Eliminar workouts de usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar workouts de usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM workouts
 WHERE user_id IN (
     SELECT user_id FROM users
@@ -64,11 +70,12 @@ WHERE user_id IN (
         '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
         '570000000211', '570000000212', '570000000213',
         '570000000051', '570000000052', '570000000053',
-        '570000000071', '570000000072', '570000000073'
+        '570000000071', '570000000072', '570000000073',
+        '570000000081', '570000000082', '570000000083'
     )
 );
 
--- Eliminar schedules de usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar schedules de usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM user_weekly_schedule
 WHERE user_id IN (
     SELECT user_id FROM users
@@ -76,11 +83,12 @@ WHERE user_id IN (
         '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
         '570000000211', '570000000212', '570000000213',
         '570000000051', '570000000052', '570000000053',
-        '570000000071', '570000000072', '570000000073'
+        '570000000071', '570000000072', '570000000073',
+        '570000000081', '570000000082', '570000000083'
     )
 );
 
--- Eliminar planes de usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar planes de usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM users_plans
 WHERE user_id IN (
     SELECT user_id FROM users
@@ -88,17 +96,19 @@ WHERE user_id IN (
         '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
         '570000000211', '570000000212', '570000000213',
         '570000000051', '570000000052', '570000000053',
-        '570000000071', '570000000072', '570000000073'
+        '570000000071', '570000000072', '570000000073',
+        '570000000081', '570000000082', '570000000083'
     )
 );
 
--- Eliminar usuarios dummy (GYM + HOME + MESOCYCLE)
+-- Eliminar usuarios dummy (GYM + HOME + MESOCYCLE + GRACE PERIOD)
 DELETE FROM users
 WHERE full_phone_number::text IN (
     '570000000001', '570000000002', '570000000003', '570000000004', '570000000009',
     '570000000211', '570000000212', '570000000213',
     '570000000051', '570000000052', '570000000053',
-    '570000000071', '570000000072', '570000000073'
+    '570000000071', '570000000072', '570000000073',
+    '570000000081', '570000000082', '570000000083'
 );
 
 -- Eliminar perfiles gym de usuarios dummy (whatsapp_id es BIGINT, no string)
@@ -107,7 +117,8 @@ WHERE whatsapp_id IN (
     570000000001, 570000000002, 570000000003, 570000000004, 570000000009,
     570000000211, 570000000212, 570000000213,
     570000000051, 570000000052, 570000000053,
-    570000000071, 570000000072, 570000000073
+    570000000071, 570000000072, 570000000073,
+    570000000081, 570000000082, 570000000083
 );
 
 -- Limpiar memoria de chat de usuarios dummy (GYM + HOME + MESOCYCLE)
@@ -126,6 +137,9 @@ WHERE session_id LIKE '%570000000001%'
    OR session_id LIKE '%570000000071%'
    OR session_id LIKE '%570000000072%'
    OR session_id LIKE '%570000000073%'
+   OR session_id LIKE '%570000000081%'
+   OR session_id LIKE '%570000000082%'
+   OR session_id LIKE '%570000000083%'
    OR session_id LIKE '%e2e00001-0000-0000-0000-000000000001%'
    OR session_id LIKE '%e2e00002-0000-0000-0000-000000000002%'
    OR session_id LIKE '%e2e00003-0000-0000-0000-000000000003%'
@@ -133,6 +147,9 @@ WHERE session_id LIKE '%570000000001%'
    OR session_id LIKE '%e2e00051-0000-0000-0000-000000000051%'
    OR session_id LIKE '%e2e00052-0000-0000-0000-000000000052%'
    OR session_id LIKE '%e2e00053-0000-0000-0000-000000000053%'
+   OR session_id LIKE '%e2e00081-0000-0000-0000-000000000081%'
+   OR session_id LIKE '%e2e00082-0000-0000-0000-000000000082%'
+   OR session_id LIKE '%e2e00083-0000-0000-0000-000000000083%'
    ;
 
 -- ============================================
@@ -931,6 +948,107 @@ INSERT INTO workouts (user_id, week, day_name, exercise_id, sets, reps, rir, "re
 SELECT 'e2e00053-0000-0000-0000-000000000053', 1, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, exercise_order, NOW(), ''
 FROM workouts WHERE user_id = 'e2e00051-0000-0000-0000-000000000051' AND week = 1;
 
+-- ============================================================
+-- SECCION 5.6: GRACE PERIOD TEST USERS (KAN-109)
+-- ============================================================
+
+-- User 81: Test_GracePeriod_Yesterday (TC_GRACE_001)
+-- Yesterday's uncompleted workout, no today
+INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative)
+VALUES ('e2e00081-0000-0000-0000-000000000081', 'Test_GracePeriod_Yesterday', 570000000081, '570000000081', 'grace1@test.com', 'America/Bogota', NOW(), 57);
+
+INSERT INTO users_gym_profile (submission_date, whatsapp_id, full_name, email, age, biological_sex, height_cm, weight_kg, primary_goal, secondary_goal, training_experience, current_frequency, fitness_level, health_status, days_available, session_duration_mins, preferred_schedule, training_style, priority_muscles, disliked_exercises, cardio_type, cardio_frequency, training_environment, home_equipment)
+VALUES (NOW(), 570000000081, 'Test_GracePeriod_Yesterday', 'grace1@test.com', 27, 'M', 175, 75, 'Ganar masa muscular', 'Mejorar fuerza', '1 a 3 años', '3-4 días por semana', 'Intermedio', 'A', 3, '60-75 minutos', 'Mañana', 'Mixto', 'Pecho', 'Ninguno', 'No', '0', 'GYM', NULL);
+
+INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule)
+VALUES ('e2e01081-0000-0000-0000-000000000081', 'e2e00081-0000-0000-0000-000000000081', 'tpl_fb_3_hyp_int', NOW(), 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3');
+
+-- YESTERDAY's schedule, NOT completed
+INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
+VALUES ('e2e01081-1111-0000-0000-000000000081', 'e2e00081-0000-0000-0000-000000000081', 1,
+  (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date - 1)
+    WHEN 0 THEN 'Domingo' WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes'
+    WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes'
+    WHEN 6 THEN 'Sabado' END)::week_days,
+  'Full Body A',
+  TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '1 day', 'YYYY-MM-DD'),
+  (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota') - INTERVAL '1 day',
+  false);
+
+INSERT INTO workouts (id, user_id, week, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, created_at, notes, exercise_order)
+VALUES
+  (gen_random_uuid(), 'e2e00081-0000-0000-0000-000000000081', 1, 'Full Body A', 'ex_002', '3', '8-10', '1-2', 150, '2-0-1', NOW(), '', 1),
+  (gen_random_uuid(), 'e2e00081-0000-0000-0000-000000000081', 1, 'Full Body A', 'ex_004', '3', '8-10', '1-2', 150, '2-0-1', NOW(), '', 2);
+
+
+-- User 82: Test_GracePeriod_BothDays (TC_GRACE_002)
+-- Both today AND yesterday uncompleted — today should take priority
+INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative)
+VALUES ('e2e00082-0000-0000-0000-000000000082', 'Test_GracePeriod_BothDays', 570000000082, '570000000082', 'grace2@test.com', 'America/Bogota', NOW(), 57);
+
+INSERT INTO users_gym_profile (submission_date, whatsapp_id, full_name, email, age, biological_sex, height_cm, weight_kg, primary_goal, secondary_goal, training_experience, current_frequency, fitness_level, health_status, days_available, session_duration_mins, preferred_schedule, training_style, priority_muscles, disliked_exercises, cardio_type, cardio_frequency, training_environment, home_equipment)
+VALUES (NOW(), 570000000082, 'Test_GracePeriod_BothDays', 'grace2@test.com', 28, 'M', 176, 76, 'Ganar masa muscular', 'Mejorar fuerza', '1 a 3 años', '3-4 días por semana', 'Intermedio', 'A', 4, '60-75 minutos', 'Tarde', 'Mixto', 'Pierna', 'Ninguno', 'No', '0', 'GYM', NULL);
+
+INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule)
+VALUES ('e2e01082-0000-0000-0000-000000000082', 'e2e00082-0000-0000-0000-000000000082', 'tpl_fb_3_hyp_int', NOW(), 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3');
+
+-- YESTERDAY's schedule, NOT completed
+INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
+VALUES ('e2e01082-1111-0000-0000-000000000082', 'e2e00082-0000-0000-0000-000000000082', 1,
+  (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date - 1)
+    WHEN 0 THEN 'Domingo' WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes'
+    WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes'
+    WHEN 6 THEN 'Sabado' END)::week_days,
+  'Full Body A',
+  TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '1 day', 'YYYY-MM-DD'),
+  (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota') - INTERVAL '1 day',
+  false);
+
+-- TODAY's schedule, NOT completed
+INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
+VALUES ('e2e01082-2222-0000-0000-000000000082', 'e2e00082-0000-0000-0000-000000000082', 1,
+  (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date)
+    WHEN 0 THEN 'Domingo' WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes'
+    WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes'
+    WHEN 6 THEN 'Sabado' END)::week_days,
+  'Full Body B',
+  TO_CHAR(NOW() AT TIME ZONE 'America/Bogota', 'YYYY-MM-DD'),
+  DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota',
+  false);
+
+INSERT INTO workouts (id, user_id, week, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, created_at, notes, exercise_order)
+VALUES
+  (gen_random_uuid(), 'e2e00082-0000-0000-0000-000000000082', 1, 'Full Body A', 'ex_002', '3', '8-10', '1-2', 150, '2-0-1', NOW(), '', 1),
+  (gen_random_uuid(), 'e2e00082-0000-0000-0000-000000000082', 1, 'Full Body B', 'ex_032', '3', '10-12', '1-2', 120, '2-0-1', NOW(), '', 1);
+
+
+-- User 83: Test_GracePeriod_RestDay (TC_GRACE_003)
+-- Yesterday COMPLETED, no today — should be rest day
+INSERT INTO users (user_id, full_name, cel_number, full_phone_number, email, timezone, created_at, country_indicative)
+VALUES ('e2e00083-0000-0000-0000-000000000083', 'Test_GracePeriod_RestDay', 570000000083, '570000000083', 'grace3@test.com', 'America/Bogota', NOW(), 57);
+
+INSERT INTO users_gym_profile (submission_date, whatsapp_id, full_name, email, age, biological_sex, height_cm, weight_kg, primary_goal, secondary_goal, training_experience, current_frequency, fitness_level, health_status, days_available, session_duration_mins, preferred_schedule, training_style, priority_muscles, disliked_exercises, cardio_type, cardio_frequency, training_environment, home_equipment)
+VALUES (NOW(), 570000000083, 'Test_GracePeriod_RestDay', 'grace3@test.com', 29, 'F', 165, 62, 'Ganar masa muscular', 'Mejorar fuerza', '6 a 12 meses', '3-4 días por semana', 'Intermedio', 'A', 3, '60-75 minutos', 'Noche', 'Mixto', 'Pierna', 'Ninguno', 'Caminata', '1-2', 'GYM', NULL);
+
+INSERT INTO users_plans (plan_id, user_id, template_id, start_date, goal, level, status, mesocycle_number, week_schedule)
+VALUES ('e2e01083-0000-0000-0000-000000000083', 'e2e00083-0000-0000-0000-000000000083', 'tpl_fb_3_hyp_int', NOW(), 'Ganar masa muscular', 'Intermedio', 'active', 1, 'fb_3');
+
+-- YESTERDAY's schedule, COMPLETED
+INSERT INTO user_weekly_schedule (day_routine_id, user_id, week, week_day, session_name, planned_day, planned_day_utc, "Completed")
+VALUES ('e2e01083-1111-0000-0000-000000000083', 'e2e00083-0000-0000-0000-000000000083', 1,
+  (CASE EXTRACT(DOW FROM (NOW() AT TIME ZONE 'America/Bogota')::date - 1)
+    WHEN 0 THEN 'Domingo' WHEN 1 THEN 'Lunes' WHEN 2 THEN 'Martes'
+    WHEN 3 THEN 'Miercoles' WHEN 4 THEN 'Jueves' WHEN 5 THEN 'Viernes'
+    WHEN 6 THEN 'Sabado' END)::week_days,
+  'Full Body A',
+  TO_CHAR((NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '1 day', 'YYYY-MM-DD'),
+  (DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota') AT TIME ZONE 'America/Bogota') - INTERVAL '1 day',
+  true);
+
+INSERT INTO workouts (id, user_id, week, day_name, exercise_id, sets, reps, rir, "rest-seconds", tempo, created_at, notes, exercise_order)
+VALUES
+  (gen_random_uuid(), 'e2e00083-0000-0000-0000-000000000083', 1, 'Full Body A', 'ex_002', '3', '8-10', '1-2', 150, '2-0-1', NOW(), '', 1);
+
 -- ============================================
 -- SECCION 6: VERIFICACION
 -- Ejecutar para confirmar setup correcto
@@ -1033,6 +1151,7 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 --   HOME: 570000000211, 570000000212, 570000000213
 --   MESOCYCLE: 570000000051, 570000000052, 570000000053
 --   WSP: 570000000071, 570000000072, 570000000073
+--   GRACE PERIOD: 570000000081, 570000000082, 570000000083
 --
 -- WSP USERS (creados/eliminados dinamicamente por WeeklySchedulingPrompt_E2E_TestRunner):
 -- | Usuario                | Phone        | Scenario       | Para Tests      |
@@ -1040,6 +1159,13 @@ WHERE u.full_phone_number::text LIKE '57000000000%';
 -- | Test_WSP_Celebration   | 570000000071 | CELEBRATION    | TC_WSP_001      |
 -- | Test_WSP_Growth        | 570000000072 | GROWTH         | TC_WSP_002      |
 -- | Test_WSP_Reengagement  | 570000000073 | RE_ENGAGEMENT  | TC_WSP_003      |
+--
+-- GRACE PERIOD USERS (fixtures pre-poblados, fb_3 / Intermedio / Ganar masa muscular) (KAN-109):
+-- | Usuario                      | Phone        | Schedule          | Completed | Para Tests      |
+-- |------------------------------|--------------|-------------------|-----------|-----------------|
+-- | Test_GracePeriod_Yesterday   | 570000000081 | AYER, no hoy      | NO        | TC_GRACE_001    |
+-- | Test_GracePeriod_BothDays    | 570000000082 | AYER + HOY        | NO        | TC_GRACE_002    |
+-- | Test_GracePeriod_RestDay     | 570000000083 | AYER completado   | SI        | TC_GRACE_003    |
 --
 -- NOTA: Quality Fix test users (570000000061-066) tienen su propio script:
 --   e2e/quality_fixes_test_data.sql
