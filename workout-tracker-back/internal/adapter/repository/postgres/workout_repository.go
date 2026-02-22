@@ -273,11 +273,11 @@ func (r *WorkoutRepository) loadRecordedSets(ctx context.Context, workoutIDs []s
 	return recorded
 }
 
-// GetTodayWorkout retrieves today's workout for a user
+// GetTodayWorkout retrieves today's workout for a user, with yesterday fallback
 func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) (*entity.Workout, error) {
-	// First, get the scheduled workout session for today
+	// First, get the scheduled uncompleted workout session for today (fallback to yesterday)
 	// Note: planned_day_utc is stored as TIMESTAMPTZ (midnight Bogota in UTC = 05:00:00+00)
-	scheduleQuery := `
+	todayQuery := `
 		SELECT
 			uws.day_routine_id,
 			uws.week,
@@ -290,10 +290,34 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 		FROM user_weekly_schedule uws
 		JOIN users_plans up ON up.user_id = uws.user_id AND up.status = 'active'
 		WHERE uws.user_id = $1
+		AND uws."Completed" = false
 		AND uws.planned_day_utc = (
 			DATE_TRUNC('day', NOW() AT TIME ZONE 'America/Bogota')
 			AT TIME ZONE 'America/Bogota'
 		)
+		ORDER BY uws.day_routine_id
+		LIMIT 1
+	`
+
+	yesterdayQuery := `
+		SELECT
+			uws.day_routine_id,
+			uws.week,
+			uws.week_day,
+			uws.session_name,
+			uws.planned_day_utc,
+			uws."Completed",
+			up.goal,
+			up.level
+		FROM user_weekly_schedule uws
+		JOIN users_plans up ON up.user_id = uws.user_id AND up.status = 'active'
+		WHERE uws.user_id = $1
+		AND uws."Completed" = false
+		AND uws.planned_day_utc = (
+			DATE_TRUNC('day', (NOW() AT TIME ZONE 'America/Bogota') - INTERVAL '1 day')
+			AT TIME ZONE 'America/Bogota'
+		)
+		ORDER BY uws.day_routine_id
 		LIMIT 1
 	`
 
@@ -302,11 +326,17 @@ func (r *WorkoutRepository) GetTodayWorkout(ctx context.Context, userID string) 
 	var week int
 	var completed bool
 
-	err := r.conn.DB.QueryRowContext(ctx, scheduleQuery, userID).Scan(
+	err := r.conn.DB.QueryRowContext(ctx, todayQuery, userID).Scan(
 		&scheduleID, &week, &dayName, &sessionName, &plannedDay, &completed, &goal, &level,
 	)
 	if err == sql.ErrNoRows {
-		return nil, nil // No workout scheduled for today
+		// Fallback: yesterday's uncompleted workout
+		err = r.conn.DB.QueryRowContext(ctx, yesterdayQuery, userID).Scan(
+			&scheduleID, &week, &dayName, &sessionName, &plannedDay, &completed, &goal, &level,
+		)
+		if err == sql.ErrNoRows {
+			return nil, nil // No pending workout (rest day)
+		}
 	}
 	if err != nil {
 		return nil, apperror.NewInternalError("failed to query schedule", err)
