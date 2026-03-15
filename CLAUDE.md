@@ -587,3 +587,10 @@ The `docs/` directory has operational docs: deployment guide, mesocycle renewal 
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
+
+## Active Technologies
+- Python 3.11+ + LangGraph >=0.4, langchain-google-genai, FastAPI, httpx, pydantic (001-onboarding-kyc)
+- Supabase (PostgreSQL) via PostgREST API (httpx) (001-onboarding-kyc)
+
+## Recent Changes
+- 001-onboarding-kyc: Added Python 3.11+ + LangGraph >=0.4, langchain-google-genai, FastAPI, httpx, pydantic
