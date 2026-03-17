@@ -86,3 +86,52 @@ async def supabase_insert(
         response = await client.post(url, headers=headers, json=data)
         response.raise_for_status()
         return response.json()
+
+
+async def supabase_update(
+    table: str,
+    data: dict,
+    filters: dict[str, str],
+) -> list[dict]:
+    """Update rows in a Supabase table via PostgREST PATCH.
+
+    Args:
+        table: Table name (e.g., "user_weekly_schedule")
+        data: Fields to update (e.g., {"Completed": True})
+        filters: PostgREST filters for WHERE clause
+                 (e.g., {"user_id": "eq.uuid-here", "planned_day": "eq.2026-03-17"})
+
+    Returns:
+        List of updated row dicts
+    """
+    url = f"{SUPABASE_URL}/rest/v1/{table}"
+    headers = _get_headers()
+    headers["Prefer"] = "return=representation"
+
+    async with httpx.AsyncClient() as client:
+        response = await client.patch(url, headers=headers, json=data, params=filters)
+        response.raise_for_status()
+        return response.json()
+
+
+async def supabase_bulk_insert(
+    table: str,
+    rows: list[dict],
+) -> list[dict]:
+    """Bulk insert multiple rows into a Supabase table via PostgREST.
+
+    Args:
+        table: Table name (e.g., "workouts")
+        rows: List of row dicts to insert
+
+    Returns:
+        List of inserted row dicts
+    """
+    url = f"{SUPABASE_URL}/rest/v1/{table}"
+    headers = _get_headers()
+    headers["Prefer"] = "return=representation"
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, headers=headers, json=rows)
+        response.raise_for_status()
+        return response.json()

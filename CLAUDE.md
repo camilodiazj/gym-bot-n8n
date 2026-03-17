@@ -591,6 +591,8 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 ## Active Technologies
 - Python 3.11+ + LangGraph >=0.4, langchain-google-genai, FastAPI, httpx, pydantic (001-onboarding-kyc)
 - Supabase (PostgreSQL) via PostgREST API (httpx) (001-onboarding-kyc)
+- Python 3.11+ + LangGraph >=0.4, langchain-google-genai >=2.1, langchain-core >=0.3, FastAPI >=0.115, httpx (Supabase PostgREST client) (001-kairos-unified-agent)
+- Supabase (PostgreSQL) via PostgREST REST API — misma infraestructura que Case 5 (001-kairos-unified-agent)
 
 ## Recent Changes
 - 001-onboarding-kyc: Added Python 3.11+ + LangGraph >=0.4, langchain-google-genai, FastAPI, httpx, pydantic

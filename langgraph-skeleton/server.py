@@ -1,4 +1,4 @@
-"""FastAPI server exposing all 5 LangGraph cases as HTTP endpoints.
+"""FastAPI server exposing all 6 LangGraph cases as HTTP endpoints.
 
 Usage:
     source .venv/bin/activate
@@ -18,9 +18,12 @@ Endpoints:
     GET  /case5/kyc/status   — Check KYC session status
     POST /case5/kyc/live/chat    — Onboarding KYC + Supabase persistence
     GET  /case5/kyc/live/history — View KYC conversation history (live)
+    POST /case6/chat         — Unified Agent Kairos (context + tools)
+    GET  /case6/history      — View Case 6 conversation history
 """
 
 import asyncio
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
@@ -36,6 +39,8 @@ from cases.case4_memory.graph import build_case4_graph
 from cases.case4_memory.graph_live import build_case4_live_graph
 from cases.case5_onboarding_kyc.graph import build_case5_graph
 from cases.case5_onboarding_kyc.graph_live import build_case5_live_graph
+from cases.case6_unified_agent.graph import build_case6_graph
+from cases.case6_unified_agent.graph_live import build_case6_live_graph
 
 
 # ═══════════════ KYC NUDGE TRACKER ═══════════════
@@ -78,8 +83,8 @@ async def lifespan(app):
 
 app = FastAPI(
     title="LangGraph Skeleton API",
-    description="5 casos progresivos de LangGraph con Gemini — GymBot workout scenarios",
-    version="0.1.0",
+    description="6 casos progresivos de LangGraph con Gemini — GymBot workout scenarios",
+    version="0.2.0",
     lifespan=lifespan,
 )
 
@@ -92,6 +97,8 @@ case4_graph = build_case4_graph()
 case4_live_graph = build_case4_live_graph()
 case5_graph = build_case5_graph()
 case5_live_graph = build_case5_live_graph()
+case6_graph = build_case6_graph()
+case6_live_graph = build_case6_live_graph()
 
 
 # ═══════════════ SCHEMAS ═══════════════
@@ -122,6 +129,12 @@ class KYCChatRequest(BaseModel):
     phone_number: str = Field(description="Full phone number (e.g., 573001234567)")
     display_name: str = Field(default="", description="WhatsApp display name")
     thread_id: str = Field(default="", description="Session ID (auto-generated from phone if empty)")
+
+
+class Case6ChatRequest(BaseModel):
+    message: str = Field(description="User message for Kairos agent")
+    phone_number: str = Field(description="Full phone number (e.g., 573001234567)")
+    display_name: str = Field(default="", description="WhatsApp display name (optional)")
 
 
 # ═══════════════ CASE 1 ═══════════════
@@ -590,6 +603,113 @@ async def case5_live_history(thread_id: str = "kyc_test"):
         return {"thread_id": thread_id, "messages": [], "note": "Thread no encontrado"}
 
 
+# ═══════════════ CASE 6 — Unified Agent Kairos ═══════════════
+
+@app.post("/case6/chat", tags=["Case 6 — Unified Agent Kairos"])
+async def case6_chat(req: Case6ChatRequest):
+    """Agente unificado Kairos — reemplaza MAIN_FLOW de n8n.
+
+    El agente carga contexto del usuario (plan, sesiones, tareas pendientes),
+    decide qué hacer, y responde usando tools si es necesario.
+
+    Usa `phone_number` como identificador de thread (un thread por usuario).
+    """
+    # FR-013: Filter WhatsApp status messages
+    if not req.message or not req.message.strip():
+        return {"response": "", "thread_id": f"case6_{req.phone_number}", "filtered": True}
+
+    thread_id = f"case6_{req.phone_number}"
+    config = {"configurable": {"thread_id": thread_id}}
+
+    # Use live graph (with Supabase tools) when SUPABASE_URL is configured
+    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+    result = await graph.ainvoke(
+        {
+            "messages": [HumanMessage(content=req.message)],
+            "phone_number": req.phone_number,
+            "display_name": req.display_name,
+        },
+        config,
+    )
+
+    ctx = result.get("user_context", {})
+
+    return {
+        "response": result.get("response", ""),
+        "thread_id": thread_id,
+        "is_new_user": ctx.get("is_new_user", False),
+        "kyc_complete": ctx.get("kyc_complete", False),
+    }
+
+
+@app.get("/case6/history", tags=["Case 6 — Unified Agent Kairos"])
+async def case6_history(phone_number: str = "573001234567"):
+    """View conversation history for a Case 6 thread."""
+    thread_id = f"case6_{phone_number}"
+    config = {"configurable": {"thread_id": thread_id}}
+
+    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+    try:
+        state = await graph.aget_state(config)
+        if not state.values:
+            raise HTTPException(status_code=404, detail=f"No conversation found for phone_number {phone_number}")
+
+        messages = [
+            {
+                "role": "user" if isinstance(m, HumanMessage) else "assistant",
+                "content": m.content,
+            }
+            for m in state.values.get("messages", [])
+            if hasattr(m, "content") and not isinstance(m, ToolMessage)
+        ]
+
+        return {
+            "thread_id": thread_id,
+            "message_count": len(messages),
+            "messages": messages,
+        }
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=404, detail=f"No conversation found for phone_number {phone_number}")
+
+
+@app.get("/case6/debug", tags=["Case 6 — Unified Agent Kairos"])
+async def case6_debug(phone_number: str = "570000000004"):
+    """Debug: muestra el state raw incluyendo tool_calls y ToolMessages."""
+    thread_id = f"case6_{phone_number}"
+    config = {"configurable": {"thread_id": thread_id}}
+
+    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+    try:
+        state = await graph.aget_state(config)
+        if not state.values:
+            raise HTTPException(status_code=404, detail="No state found")
+
+        raw_messages = []
+        for m in state.values.get("messages", []):
+            msg_type = type(m).__name__
+            entry = {"type": msg_type, "content": str(m.content)[:500]}
+            if hasattr(m, "tool_calls") and m.tool_calls:
+                entry["tool_calls"] = [{"name": tc["name"], "args": tc["args"]} for tc in m.tool_calls]
+            if hasattr(m, "name"):
+                entry["tool_name"] = m.name
+            raw_messages.append(entry)
+
+        return {
+            "thread_id": thread_id,
+            "user_context": state.values.get("user_context", {}),
+            "raw_messages": raw_messages,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ═══════════════ HEALTH CHECK ═══════════════
 
 @app.get("/", tags=["Health"])
@@ -613,6 +733,8 @@ async def root():
             "GET /case5/kyc/status?phone_number=X": "Check KYC session status",
             "POST /case5/kyc/live/chat": "Onboarding KYC + Supabase persistence",
             "GET /case5/kyc/live/history?thread_id=X": "View KYC conversation history (live)",
+            "POST /case6/chat": "Unified Agent Kairos (context + tools)",
+            "GET /case6/history?phone_number=X": "View Case 6 conversation history",
             "GET /docs": "Swagger UI (interactive docs)",
         },
     }
