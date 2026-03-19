@@ -136,13 +136,64 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
 | Google Calendar events | Usuarios no reciben invitaciones | Medio — API de Google Calendar |
 | Email con rutina semana 1 | Usuarios no tienen referencia escrita | Bajo — template HTML + Gmail API |
 
-### Prioridad Baja (puede seguir en n8n)
+### Prioridad Baja (migrar vía Cloud Scheduler)
 | Item | Impacto | Esfuerzo |
 |------|---------|----------|
-| MorningReminder (5 AM) | Funciona bien en n8n | N/A — no migrar |
-| WeeklySchedulingPrompt | Funciona bien en n8n | N/A — no migrar |
-| DailyReport | Funciona bien en n8n | N/A — no migrar |
-| InteractionAnalysis | Funciona bien en n8n | N/A — no migrar |
+| MorningReminder (5 AM) | Elimina dependencia de n8n | Bajo — endpoint + Cloud Scheduler |
+| 8PM Follow-up | Elimina dependencia de n8n | Bajo — endpoint + Cloud Scheduler |
+| WeeklySchedulingPrompt | Elimina dependencia de n8n | Medio — segmentación + templates |
+| DailyReport | Funciona bien en n8n | N/A — no migrar (analytics interno) |
+| InteractionAnalysis | Funciona bien en n8n | N/A — no migrar (analytics interno) |
+
+---
+
+## Plan de Migración de Cron Jobs
+
+Los recordatorios y outreach proactivo pueden migrarse a Kairos usando **Cloud Scheduler → endpoint HTTP** en el mismo servicio. Esto elimina n8n como dependencia para flujos que tocan WhatsApp.
+
+### Estrategia: Cloud Scheduler → Kairos Cron Endpoints
+
+```
+Cloud Scheduler (GCP)
+    │
+    ├── 5:00 AM Bogotá  → GET /cron/morning-reminder
+    ├── 8:00 PM Bogotá  → GET /cron/evening-followup
+    └── 8:00 PM Lunes   → GET /cron/weekly-prompt
+```
+
+Cada endpoint:
+1. Query Supabase para obtener usuarios relevantes
+2. Genera mensaje personalizado (el agente ya tiene el contexto)
+3. Envía WhatsApp via `_send_whatsapp_message()` (ya existe en server.py)
+4. Retorna resumen de envíos
+
+### Endpoint: `GET /cron/morning-reminder`
+- Query: `user_weekly_schedule` WHERE `planned_day = hoy` AND `Completed = false`
+- JOIN: `users` para obtener `full_phone_number`
+- Para cada usuario: envía "Hoy tienes [session_name]. ¡Dale con toda! 💪"
+- Sin LLM — mensaje template directo
+
+### Endpoint: `GET /cron/evening-followup`
+- Query: `user_weekly_schedule` WHERE `planned_day = hoy` AND `Completed = false`
+- Para cada usuario sin completar: invoca el agente Kairos con mensaje interno
+  "Pregúntale al usuario si completó su sesión de hoy"
+- El agente usa el contexto y responde naturalmente
+- Crea `pending_task` de tipo `CONFIRMAR_RUTINA`
+
+### Endpoint: `GET /cron/weekly-prompt`
+- Query: completitud de la semana por usuario
+- Segmentar: CELEBRATION (100%), GROWTH (parcial), RE_ENGAGEMENT (0%)
+- Enviar WhatsApp template personalizado por segmento
+
+### Qué NO migrar (se queda en n8n)
+- **DailyReport**: 7 queries SQL complejas + HTML email — no toca WhatsApp, puro analytics
+- **InteractionAnalysis**: Gemini analysis + HTML email — analytics interno
+
+### Ventajas de la migración
+- **Elimina n8n como punto de falla** para recordatorios (si n8n cae, usuarios no reciben reminder)
+- **Un solo servicio** maneja todo el flujo de WhatsApp
+- **Reutiliza** `_send_whatsapp_message()` y `context_loader` que ya existen
+- **Cloud Scheduler** es gratis (3 jobs gratis en GCP) y más confiable que n8n cron
 
 ---
 
@@ -155,7 +206,9 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
                                │
                     ┌──────────▼──────────────────────┐
                     │   Cloud Run: kairos-agent        │
-                    │   POST /webhook                  │
+                    │                                  │
+                    │   POST /webhook (chat directo)   │
+                    │   GET /cron/* (Cloud Scheduler)  │
                     │                                  │
                     │   load_context → router →        │
                     │   kairos_agent ↔ tools            │
@@ -164,23 +217,16 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
                     │   PostgresSaver (Supabase)       │
                     └──────────┬──────────────────────┘
                                │
-                    ┌──────────▼──────────────────────┐
-                    │         Supabase (PostgreSQL)    │
-                    │   users, workouts, exercises,    │
-                    │   plans, schedules, checkpoints  │
-                    └──────────┬──────────────────────┘
-                               │
           ┌────────────────────┼────────────────────┐
           │                    │                    │
 ┌─────────▼──────┐  ┌─────────▼──────┐  ┌─────────▼──────┐
-│  n8n (crons)   │  │ Workout Tracker │  │ Google Calendar│
-│                │  │  (React/Go)     │  │  (pendiente)   │
+│ Cloud Scheduler│  │ Workout Tracker │  │  n8n (solo     │
+│                │  │  (React/Go)     │  │  analytics)    │
 │ • 5AM Reminder │  │  Firebase +     │  │                │
-│ • 8PM Follow-up│  │  Cloud Run      │  │                │
-│ • Weekly Prompt│  │                 │  │                │
-│ • Daily Report │  │                 │  │                │
-│ • Analysis     │  │                 │  │                │
+│ • 8PM Follow-up│  │  Cloud Run      │  │ • Daily Report │
+│ • Weekly Prompt│  │                 │  │ • Interaction  │
+│                │  │                 │  │   Analysis     │
 └────────────────┘  └─────────────────┘  └────────────────┘
 ```
 
-**Recomendación**: Los cron jobs (recordatorios, reportes, análisis) se quedan en n8n. Solo el flujo conversacional (MAIN_FLOW) migra completamente a Kairos.
+**Meta final**: n8n solo queda para analytics interno (DailyReport + InteractionAnalysis). Todo lo que toca WhatsApp vive en Kairos.
