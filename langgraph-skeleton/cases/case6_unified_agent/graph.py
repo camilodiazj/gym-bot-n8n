@@ -42,6 +42,7 @@ async def load_context_mock(state: UnifiedAgentState) -> dict:
         missed_sessions=[],
         next_scheduled_session={"session_name": "Lower Body A", "planned_day": "2026-03-19"},
         pending_tasks=[],
+        gym_profile=None,
         is_new_user=False,
         kyc_complete=True,
         has_schedule=True,

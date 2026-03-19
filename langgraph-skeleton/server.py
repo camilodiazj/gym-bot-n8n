@@ -23,13 +23,17 @@ Endpoints:
 """
 
 import asyncio
+import logging
 import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException
+import httpx
+from fastapi import FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from langchain_core.messages import HumanMessage, ToolMessage
+
+logger = logging.getLogger("kairos")
 
 from cases.case1_basic_graph.graph import build_case1_graph
 from cases.case2_conditional.graph import build_case2_graph
@@ -40,7 +44,8 @@ from cases.case4_memory.graph_live import build_case4_live_graph
 from cases.case5_onboarding_kyc.graph import build_case5_graph
 from cases.case5_onboarding_kyc.graph_live import build_case5_live_graph
 from cases.case6_unified_agent.graph import build_case6_graph
-from cases.case6_unified_agent.graph_live import build_case6_live_graph
+from cases.case6_unified_agent.graph_live import build_case6_live_workflow
+from src.shared.checkpointer import postgres_checkpointer_context
 
 
 # ═══════════════ KYC NUDGE TRACKER ═══════════════
@@ -73,10 +78,15 @@ async def _nudge_checker():
 
 @asynccontextmanager
 async def lifespan(app):
-    """Start nudge checker on server startup, cancel on shutdown."""
-    task = asyncio.create_task(_nudge_checker())
-    yield
-    task.cancel()
+    """Initialize async resources on startup, cleanup on shutdown."""
+    global case6_live_graph
+    async with postgres_checkpointer_context() as checkpointer:
+        case6_live_graph = case6_live_workflow.compile(checkpointer=checkpointer)
+        cp_name = type(checkpointer).__name__
+        print(f"[STARTUP] Case 6 live graph compiled (checkpointer: {cp_name})")
+        task = asyncio.create_task(_nudge_checker())
+        yield
+        task.cancel()
 
 
 # ═══════════════ APP ═══════════════
@@ -98,7 +108,8 @@ case4_live_graph = build_case4_live_graph()
 case5_graph = build_case5_graph()
 case5_live_graph = build_case5_live_graph()
 case6_graph = build_case6_graph()
-case6_live_graph = build_case6_live_graph()
+case6_live_workflow = build_case6_live_workflow()
+case6_live_graph = None  # Compiled async in lifespan with checkpointer
 
 
 # ═══════════════ SCHEMAS ═══════════════
@@ -710,6 +721,139 @@ async def case6_debug(phone_number: str = "570000000004"):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ═══════════════ WHATSAPP WEBHOOK (Direct) ═══════════════
+
+WHATSAPP_API_URL = "https://graph.facebook.com/v21.0"
+WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "")
+WHATSAPP_VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "kairos-verify-token")
+WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "")
+
+
+async def _send_whatsapp_message(phone_number_id: str, to: str, text: str):
+    """Send a text message via WhatsApp Business API."""
+    url = f"{WHATSAPP_API_URL}/{phone_number_id}/messages"
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    body = {
+        "messaging_product": "whatsapp",
+        "to": to,
+        "type": "text",
+        "text": {"body": text},
+    }
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(url, headers=headers, json=body, timeout=30)
+        if resp.status_code != 200:
+            logger.error(f"WhatsApp send failed: {resp.status_code} {resp.text}")
+
+
+def _extract_message(data: dict) -> tuple[str, str, str, str] | None:
+    """Extract (message_body, phone_from, display_name, phone_number_id) from webhook payload.
+
+    Returns None if the payload is not a valid user message (status update, audio, etc).
+    """
+    entry = data.get("entry", [])
+    if not entry:
+        return None
+
+    changes = entry[0].get("changes", [])
+    if not changes:
+        return None
+
+    value = changes[0].get("value", {})
+    messages = value.get("messages", [])
+    if not messages:
+        return None
+
+    msg = messages[0]
+    msg_type = msg.get("type", "")
+
+    # Filter audio and unsupported types
+    if msg_type == "audio":
+        return None
+
+    phone_from = msg.get("from", "")
+    if not phone_from:
+        return None
+
+    # Extract text based on message type
+    if msg_type == "text":
+        body = msg.get("text", {}).get("body", "")
+    elif msg_type == "button":
+        body = msg.get("button", {}).get("payload", "") or msg.get("button", {}).get("text", "")
+    elif msg_type == "interactive":
+        interactive = msg.get("interactive", {})
+        body = (interactive.get("button_reply", {}).get("title", "")
+                or interactive.get("list_reply", {}).get("title", ""))
+    else:
+        body = msg.get("text", {}).get("body", "")
+
+    if not body or not body.strip():
+        return None
+
+    # Get display name and phone_number_id
+    contacts = value.get("contacts", [])
+    display_name = contacts[0].get("profile", {}).get("name", "") if contacts else ""
+    phone_number_id = value.get("metadata", {}).get("phone_number_id", WHATSAPP_PHONE_NUMBER_ID)
+
+    return body.strip(), phone_from, display_name, phone_number_id
+
+
+@app.get("/webhook", tags=["WhatsApp Webhook"])
+async def whatsapp_verify(
+    hub_mode: str = Query(None, alias="hub.mode"),
+    hub_challenge: str = Query(None, alias="hub.challenge"),
+    hub_verify_token: str = Query(None, alias="hub.verify_token"),
+):
+    """WhatsApp webhook verification (challenge-response)."""
+    if hub_mode == "subscribe" and hub_verify_token == WHATSAPP_VERIFY_TOKEN:
+        return int(hub_challenge)
+    raise HTTPException(status_code=403, detail="Verification failed")
+
+
+@app.post("/webhook", tags=["WhatsApp Webhook"])
+async def whatsapp_webhook(request: Request):
+    """Receive WhatsApp messages, process with Kairos agent, send response back.
+
+    This replaces the n8n KAIROS_AGENT_FLOW — direct WhatsApp ↔ Kairos.
+    """
+    data = await request.json()
+
+    # Extract message from webhook payload
+    extracted = _extract_message(data)
+    if not extracted:
+        return {"status": "ignored"}
+
+    message_body, phone_from, display_name, phone_number_id = extracted
+    logger.info(f"[WA] {phone_from} ({display_name}): {message_body[:50]}")
+
+    # Call Kairos agent (same logic as /case6/chat)
+    thread_id = f"case6_{phone_from}"
+    config = {"configurable": {"thread_id": thread_id}}
+    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+    try:
+        result = await graph.ainvoke(
+            {
+                "messages": [HumanMessage(content=message_body)],
+                "phone_number": phone_from,
+                "display_name": display_name,
+            },
+            config,
+        )
+        response_text = result.get("response", "")
+    except Exception as e:
+        logger.error(f"[WA] Agent error for {phone_from}: {e}")
+        response_text = "Lo siento, tuve un problema procesando tu mensaje. Intenta de nuevo en un momento."
+
+    # Send response back via WhatsApp
+    if response_text:
+        await _send_whatsapp_message(phone_number_id, phone_from, response_text)
+
+    return {"status": "ok"}
+
+
 # ═══════════════ HEALTH CHECK ═══════════════
 
 @app.get("/", tags=["Health"])
@@ -735,6 +879,8 @@ async def root():
             "GET /case5/kyc/live/history?thread_id=X": "View KYC conversation history (live)",
             "POST /case6/chat": "Unified Agent Kairos (context + tools)",
             "GET /case6/history?phone_number=X": "View Case 6 conversation history",
+            "GET /webhook": "WhatsApp webhook verification",
+            "POST /webhook": "WhatsApp → Kairos → WhatsApp (direct, no n8n)",
             "GET /docs": "Swagger UI (interactive docs)",
         },
     }

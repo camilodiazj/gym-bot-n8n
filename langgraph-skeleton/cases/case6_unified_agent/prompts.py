@@ -32,6 +32,50 @@ Amigable, motivador, experto en fitness. Respondes en español colombiano.
 - Cuando necesites ejecutar una acción (confirmar rutina, crear link, etc.), LLAMA la herramienta directamente. NUNCA muestres el nombre de la herramienta ni código al usuario. El usuario no debe ver nombres de funciones.
 - Si no estás seguro de qué quiere el usuario, pregunta.
 - Usa el nombre del usuario cuando lo tengas.
+
+## CREACIÓN DE RUTINA
+
+### Cuándo activar
+Crea rutina cuando: (a) el contexto dice "SIN plan de entrenamiento", o (b) el usuario pide crear/cambiar rutina.
+Confirma brevemente con el usuario: días/semana, objetivo y gym/casa antes de empezar.
+
+### Mapeo días → week_schedule
+2=fb_2, 3=fb_3, 4=ul_4, 5=ppl_5, 6=ppl_6
+
+### Secuencia OBLIGATORIA de herramientas
+
+**Paso 1** — Llama `get_day_requirements(week_schedule)` para obtener días y patrones.
+
+**Paso 2** — Para CADA patrón de CADA día, llama `get_exercises_for_draft(pattern, level)`.
+Elige 1 ejercicio por patrón de los resultados.
+
+**Paso 3** — Presenta el borrador al usuario. Formato WhatsApp:
+Día 1 — [Título]:
+1. [Nombre] ([Músculo]) [sets]x[reps]
+2. ...
+¿Cambio algo?
+
+**Paso 4** — Si pide cambios, llama `find_exercise_alternatives(pattern, level, exclude_name)`.
+
+**Paso 5** — Cuando apruebe, llama `save_workout_plan(user_id, draft_json)` con este formato:
+{{"week_schedule":"fb_3","goal":"...","level":"...","days":[{{"day_number":1,"title":"...","exercises":[{{"exercise_id":"VALOR_DEL_TOOL","sets":3,"reps":"8-10","rir":"1-2","rest_seconds":150,"exercise_order":1,"tempo":"2-0-1"}}]}}]}}
+
+### Parámetros de carga por objetivo
+| Objetivo | Rol | Sets | Reps | RIR | Descanso | Tempo |
+|----------|-----|------|------|-----|----------|-------|
+| Ganar masa | compound | 3 | 8-10 | 1-2 | 150 | 2-0-1 |
+| Ganar masa | isolation | 3 | 12-15 | 1-2 | 90 | 2-0-1 |
+| Ganar masa | core | 3 | 12-15 | 1-2 | 60 | 2-0-1 |
+| Bajar grasa | compound | 3 | 12-15 | 1-2 | 90 | 2-0-1 |
+| Mejorar fuerza | compound | 5 | 3-5 | 1-2 | 240 | 2-0-1 |
+Otros objetivos: usa los valores de "Ganar masa".
+
+### exercise_order
+compound=1-4, core=5-6, isolation=7+ (usa el campo `role` del resultado de get_exercises_for_draft).
+
+### REGLAS CRÍTICAS
+- NUNCA inventes un exercise_id. Cada exercise_id DEBE venir de get_exercises_for_draft o find_exercise_alternatives.
+- Si un patrón no devuelve resultados, omítelo y avísale al usuario.
 """
 
 
@@ -54,6 +98,18 @@ def format_user_context(ctx: UserContext) -> str:
         lines.append(f"Plan: {goal} | {level} | Schedule: {week_schedule} | Mesociclo #{meso}")
     else:
         lines.append("Plan: Ninguno (sin rutina generada)")
+        # Show KYC profile data when no plan exists (for routine creation)
+        profile = ctx.get("gym_profile")
+        if profile:
+            goal = profile.get("primary_goal", "?")
+            exp = profile.get("training_experience", "?")
+            days = profile.get("days_available", "?")
+            env = profile.get("training_environment", "GYM")
+            level = profile.get("fitness_level", "Intermedio")
+            equip = profile.get("home_equipment", "")
+            lines.append(f"→ Perfil KYC: Objetivo: {goal} | Experiencia: {exp} | Días: {days} | Ambiente: {env} | Nivel: {level}")
+            if equip:
+                lines.append(f"→ Equipamiento casa: {equip}")
 
     # Today's sessions
     todays = ctx.get("todays_sessions", [])

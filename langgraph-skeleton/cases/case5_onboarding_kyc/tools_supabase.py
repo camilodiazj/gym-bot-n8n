@@ -89,22 +89,71 @@ async def save_gym_profile(
     data = json.loads(collected_data) if isinstance(collected_data, str) else collected_data
     whatsapp_id = int(phone) if phone.isdigit() else 0
 
+    # Normalize primary_goal to valid enum values (FK to user_goals table)
+    valid_goals = {
+        "Ganar masa muscular", "Bajar grasa", "Mejorar fuerza",
+        "Mejorar resistencia", "Salud general / recomposición corporal",
+    }
+    goal_normalize = {
+        "Mantener masa muscular": "Ganar masa muscular",
+        "Mantener masa": "Ganar masa muscular",
+        "Tonificar": "Salud general / recomposición corporal",
+        "Recomposición corporal": "Salud general / recomposición corporal",
+        "Perder peso": "Bajar grasa",
+        "Definir": "Bajar grasa",
+    }
+    raw_goal = data.get("primary_goal", "Salud general / recomposición corporal")
+    if raw_goal not in valid_goals:
+        data["primary_goal"] = goal_normalize.get(raw_goal, "Salud general / recomposición corporal")
+
+    # Map experience to frequency and fitness_level defaults
+    exp = data.get("training_experience", "")
+    freq_map = {
+        "Nunca he entrenado": "No entreno",
+        "Menos de 6 meses": "1-2 días por semana",
+        "6 a 12 meses": "3-4 días por semana",
+        "1 a 3 años": "3-4 días por semana",
+        "Más de 3 años": "5-6 días por semana",
+    }
+    level_map = {
+        "Nunca he entrenado": "Principiante",
+        "Menos de 6 meses": "Principiante",
+        "6 a 12 meses": "Intermedio",
+        "1 a 3 años": "Intermedio",
+        "Más de 3 años": "Avanzado",
+    }
+    style_map = {
+        "GYM": "Mixto",
+        "HOME": "Funcional",
+    }
+
     profile = {
         "whatsapp_id": whatsapp_id,
         "full_name": display_name,
         "submission_date": datetime.now(timezone.utc).isoformat(),
-        "primary_goal": data.get("primary_goal", ""),
-        "training_experience": data.get("training_experience", ""),
+        "email": f"{phone}@gymbot.local",
+        # KYC collected fields
+        "primary_goal": data.get("primary_goal", "Salud general / recomposición corporal"),
+        "training_experience": data.get("training_experience", "Menos de 6 meses"),
         "days_available": int(data.get("days_available", 3)),
         "preferred_schedule": data.get("preferred_schedule", "Mañana"),
         "training_environment": data.get("training_environment", "GYM"),
         "home_equipment": data.get("home_equipment"),
         "biological_sex": data.get("biological_sex", "M"),
         "age": int(data.get("age", 25)),
-        "height_cm": float(data.get("height_cm", 170)),
+        "height_cm": int(float(data.get("height_cm", 170))),
         "weight_kg": float(data.get("weight_kg", 70)),
         "health_status": health_code,
-        "email": f"{phone}@gymbot.local",
+        # Defaults for NOT NULL fields not collected in KYC
+        "secondary_goal": data.get("secondary_goal", ""),
+        "current_frequency": data.get("current_frequency", freq_map.get(exp, "3-4 días por semana")),
+        "fitness_level": data.get("fitness_level", level_map.get(exp, "Intermedio")),
+        "session_duration_mins": data.get("session_duration_mins", "60-75 minutos"),
+        "training_style": data.get("training_style", style_map.get(data.get("training_environment", "GYM"), "Mixto")),
+        "priority_muscles": data.get("priority_muscles", ""),
+        "disliked_exercises": data.get("disliked_exercises", ""),
+        "cardio_type": data.get("cardio_type", "No"),
+        "cardio_frequency": data.get("cardio_frequency", "0"),
     }
 
     result = await supabase_insert(table="users_gym_profile", data=profile, upsert=True)

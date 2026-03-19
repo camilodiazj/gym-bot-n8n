@@ -41,6 +41,7 @@ def _make_context(**overrides) -> UserContext:
         "missed_sessions": [],
         "next_scheduled_session": None,
         "pending_tasks": [],
+        "gym_profile": None,
         "is_new_user": False,
         "kyc_complete": True,
         "has_schedule": True,
@@ -260,3 +261,89 @@ def test_draft_routine_structure():
     assert len(draft["days"]) == 1
     assert draft["days"][0]["title"] == "Upper Body A"
     assert draft["days"][0]["exercises"][0]["spanish_name"] == "Press banca"
+
+
+# ═══════════════ EXERCISE ID RESOLUTION TESTS ═══════════════
+
+
+def test_extract_exercise_identifiers_valid_id():
+    from cases.case6_unified_agent.tools import _extract_exercise_identifiers
+    cid, cname = _extract_exercise_identifiers({"exercise_id": "ex_barbell_bench_press"})
+    assert cid == "ex_barbell_bench_press"
+    assert cname is None
+
+
+def test_extract_exercise_identifiers_name_in_id_field():
+    from cases.case6_unified_agent.tools import _extract_exercise_identifiers
+    cid, cname = _extract_exercise_identifiers({"exercise_id": "Press de banca con barra"})
+    assert cid is None
+    assert cname == "Press de banca con barra"
+
+
+def test_extract_exercise_identifiers_name_field():
+    from cases.case6_unified_agent.tools import _extract_exercise_identifiers
+    cid, cname = _extract_exercise_identifiers({"name": "Sentadilla con barra"})
+    assert cid is None
+    assert cname == "Sentadilla con barra"
+
+
+def test_extract_exercise_identifiers_empty():
+    from cases.case6_unified_agent.tools import _extract_exercise_identifiers
+    cid, cname = _extract_exercise_identifiers({})
+    assert cid is None
+    assert cname is None
+
+
+def test_match_names_exact():
+    from cases.case6_unified_agent.tools import _match_names_to_exercises
+    candidates = [
+        {"exercise_id": "ex_barbell_bench_press", "spanish_name": "Press de banca con barra"},
+        {"exercise_id": "ex_barbell_squat", "spanish_name": "Sentadilla con barra"},
+    ]
+    result = _match_names_to_exercises(["Press de banca con barra"], candidates)
+    assert result["Press de banca con barra"] == "ex_barbell_bench_press"
+
+
+def test_match_names_partial():
+    from cases.case6_unified_agent.tools import _match_names_to_exercises
+    candidates = [
+        {"exercise_id": "ex_barbell_bench_press", "spanish_name": "Press de banca con barra"},
+        {"exercise_id": "ex_dumbbell_bench_press", "spanish_name": "Press de banca con mancuernas"},
+    ]
+    result = _match_names_to_exercises(["Press banca barra"], candidates)
+    assert result.get("Press banca barra") == "ex_barbell_bench_press"
+
+
+def test_match_names_single_word():
+    from cases.case6_unified_agent.tools import _match_names_to_exercises
+    candidates = [
+        {"exercise_id": "ex_pull_up", "spanish_name": "Dominadas"},
+    ]
+    result = _match_names_to_exercises(["Dominadas"], candidates)
+    assert result["Dominadas"] == "ex_pull_up"
+
+
+def test_match_names_no_match():
+    from cases.case6_unified_agent.tools import _match_names_to_exercises
+    candidates = [
+        {"exercise_id": "ex_barbell_squat", "spanish_name": "Sentadilla con barra"},
+    ]
+    result = _match_names_to_exercises(["Ejercicio inventado xyz"], candidates)
+    assert "Ejercicio inventado xyz" not in result
+
+
+def test_format_context_with_gym_profile():
+    ctx = _make_context(
+        plan=None,
+        gym_profile={
+            "primary_goal": "Ganar masa muscular",
+            "training_experience": "Más de 3 años",
+            "days_available": 4,
+            "training_environment": "GYM",
+            "fitness_level": "Avanzado",
+        },
+    )
+    formatted = format_user_context(ctx)
+    assert "Perfil KYC" in formatted
+    assert "Ganar masa muscular" in formatted
+    assert "Avanzado" in formatted

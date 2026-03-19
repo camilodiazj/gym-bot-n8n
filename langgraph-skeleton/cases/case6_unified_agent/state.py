@@ -22,6 +22,7 @@ class UserContext(TypedDict):
     missed_sessions: list[dict]  # Last 3 days, Completed=false
     next_scheduled_session: dict | None  # {session_name, planned_day}
     pending_tasks: list[dict]  # [{task_id, task_type, session_name, status}]
+    gym_profile: dict | None  # KYC data: {primary_goal, training_experience, days_available, training_environment, ...}
     is_new_user: bool
     kyc_complete: bool
     has_schedule: bool

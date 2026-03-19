@@ -1,0 +1,228 @@
+{
+  "name": "KAIROS_AGENT_FLOW",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        300
+      ],
+      "id": "a1000001-0001-4000-8000-000000000001",
+      "name": "whatsapp_trigger",
+      "webhookId": "kairos-agent-webhook-id",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "oKhoyxAukdcY8qMi",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a2000001-0001-4000-8000-000000000001",
+              "leftValue": "={{ $json.messages[0].from }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "a2000002-0002-4000-8000-000000000002",
+              "leftValue": "={{ $json.messages[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -100,
+        300
+      ],
+      "id": "a1000002-0002-4000-8000-000000000002",
+      "name": "filter_noise"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalize WhatsApp message input - handles text, button, and interactive messages\nconst items = $input.all();\n\nreturn items.map(item => {\n  const message = item.json.messages?.[0];\n  if (!message) return item;\n\n  let messageBody = '';\n\n  switch (message.type) {\n    case 'text':\n      messageBody = message.text?.body ?? '';\n      break;\n    case 'button':\n      messageBody = message.button?.payload ?? message.button?.text ?? '';\n      break;\n    case 'interactive':\n      messageBody = message.interactive?.button_reply?.title ??\n                    message.interactive?.list_reply?.title ?? '';\n      break;\n    default:\n      messageBody = message.text?.body ?? '';\n  }\n\n  return {\n    json: {\n      ...item.json,\n      message_body: messageBody.trim()\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ],
+      "id": "a1000003-0003-4000-8000-000000000003",
+      "name": "normalize_message"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://kairos-agent-148665080566.us-central1.run.app/case6/chat",
+        "sendBody": true,
+        "specifyBody": "keypair",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message_body }}"
+            },
+            {
+              "name": "phone_number",
+              "value": "={{ $json.messages[0].from }}"
+            },
+            {
+              "name": "display_name",
+              "value": "={{ $json.contacts[0].profile.name }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        500,
+        300
+      ],
+      "id": "a1000004-0004-4000-8000-000000000004",
+      "name": "call_kairos_agent",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('filter_noise').item.json.metadata.phone_number_id }}",
+        "recipientPhoneNumber": "={{ $('filter_noise').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.response ?? $json.message ?? $json.output ?? $json.reply ?? JSON.stringify($json) }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        300
+      ],
+      "id": "a1000005-0005-4000-8000-000000000005",
+      "name": "send_whatsapp_response",
+      "webhookId": "kairos-agent-send-id",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "xIjy4zDHyjIvGQT4",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Noise filtered out (status update, audio, etc)\nreturn [{ json: { filtered: true, output: '' } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        520
+      ],
+      "id": "a1000006-0006-4000-8000-000000000006",
+      "name": "filtered_message"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "whatsapp_trigger": {
+      "main": [
+        [
+          {
+            "node": "filter_noise",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter_noise": {
+      "main": [
+        [
+          {
+            "node": "normalize_message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "filtered_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "normalize_message": {
+      "main": [
+        [
+          {
+            "node": "call_kairos_agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "call_kairos_agent": {
+      "main": [
+        [
+          {
+            "node": "send_whatsapp_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "00000000-0000-4000-8000-000000000001",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd589e9070acf5df5b620546257b334503d22c25ae71f1985d73be33744f1fff"
+  },
+  "tags": [
+    {
+      "name": "gym-bot"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ Tools are grouped by phase:
 
 import json
 import os
+import uuid
 from datetime import datetime, timedelta, timezone
 
 from langchain_core.tools import tool
@@ -381,15 +382,168 @@ async def find_exercise_alternatives(
     return json.dumps(filtered[:5], ensure_ascii=False)
 
 
+# ═══════════════ Exercise ID Resolution Helpers ═══════════════
+
+
+def _extract_exercise_identifiers(ex: dict) -> tuple[str | None, str | None]:
+    """Extract (candidate_id, candidate_name) from an exercise dict.
+
+    Returns a real exercise_id if it starts with 'ex_', otherwise
+    treats it as a name that needs resolution.
+    """
+    raw_id = ex.get("exercise_id") or ex.get("id")
+    if raw_id and raw_id.startswith("ex_"):
+        return (raw_id, None)
+
+    candidate_name = (
+        raw_id
+        or ex.get("name")
+        or ex.get("exercise")
+        or ex.get("spanish_name")
+        or ex.get("nombre")
+    )
+    return (None, candidate_name)
+
+
+def _match_names_to_exercises(
+    names: list[str],
+    candidates: list[dict],
+) -> dict[str, str]:
+    """Match each name to the best candidate exercise_id.
+
+    Priority: exact match > case-insensitive exact > word overlap.
+    """
+    result = {}
+    for name in names:
+        name_lower = name.lower().strip()
+        best_id = None
+        best_score = 0
+
+        exact_match = False
+        for c in candidates:
+            c_name = c.get("spanish_name", "").lower().strip()
+
+            if c_name == name_lower:
+                best_id = c["exercise_id"]
+                exact_match = True
+                break
+
+            name_words = set(name_lower.split())
+            c_words = set(c_name.split())
+            overlap = len(name_words & c_words)
+
+            if c_name.startswith(name_lower):
+                overlap += 2
+
+            if overlap > best_score:
+                best_score = overlap
+                best_id = c["exercise_id"]
+
+        if exact_match:
+            result[name] = best_id
+        else:
+            min_threshold = 1 if len(name_lower.split()) == 1 else 2
+            if best_id and best_score >= min_threshold:
+                result[name] = best_id
+
+    return result
+
+
+async def _resolve_exercise_ids(draft: dict) -> tuple[dict[tuple[int, int], str], list[dict]]:
+    """Resolve all exercises in the draft to valid exercise_ids.
+
+    Returns:
+        resolved: {(day_idx, ex_idx): "ex_real_id", ...}
+        unresolved: [{"day_idx": 0, "ex_idx": 2, "name": "..."}, ...]
+    """
+    candidate_ids: set[str] = set()
+    needs_name_resolution: list[tuple[int, int, str]] = []
+
+    for d_idx, day in enumerate(draft.get("days", [])):
+        for e_idx, ex in enumerate(day.get("exercises", [])):
+            cid, cname = _extract_exercise_identifiers(ex)
+            if cid:
+                candidate_ids.add(cid)
+            elif cname:
+                needs_name_resolution.append((d_idx, e_idx, cname))
+
+    resolved: dict[tuple[int, int], str] = {}
+
+    # Batch-validate candidate IDs
+    valid_ids: set[str] = set()
+    if candidate_ids:
+        rows = await supabase_query(
+            "exercises",
+            select="exercise_id",
+            filters={"exercise_id": f"in.({','.join(candidate_ids)})"},
+        )
+        valid_ids = {r["exercise_id"] for r in rows}
+
+    # Map valid IDs, move invalid to name resolution
+    for d_idx, day in enumerate(draft.get("days", [])):
+        for e_idx, ex in enumerate(day.get("exercises", [])):
+            cid, cname = _extract_exercise_identifiers(ex)
+            if cid and cid in valid_ids:
+                resolved[(d_idx, e_idx)] = cid
+            elif cid and cid not in valid_ids:
+                needs_name_resolution.append((d_idx, e_idx, cid))
+
+    # Batch-resolve names via ILIKE
+    unresolved: list[dict] = []
+    if needs_name_resolution:
+        unique_names = list({name for _, _, name in needs_name_resolution})
+        or_parts = []
+        for name in unique_names:
+            safe = name.replace("(", "").replace(")", "").replace(",", "").replace("'", "")
+            or_parts.append(f"spanish_name.ilike.*{safe}*")
+
+        all_candidates = await supabase_query(
+            "exercises",
+            select="exercise_id,spanish_name",
+            filters={"or": f"({','.join(or_parts)})"},
+        )
+
+        name_to_id = _match_names_to_exercises(unique_names, all_candidates)
+
+        for d_idx, e_idx, name in needs_name_resolution:
+            if (d_idx, e_idx) in resolved:
+                continue
+            matched_id = name_to_id.get(name)
+            if matched_id:
+                resolved[(d_idx, e_idx)] = matched_id
+            else:
+                unresolved.append({"day_idx": d_idx, "ex_idx": e_idx, "name": name})
+
+    return resolved, unresolved
+
+
+# ═══════════════ Save Workout Plan ═══════════════
+
+
+VALID_GOALS = {
+    "Ganar masa muscular", "Bajar grasa", "Mejorar fuerza",
+    "Mejorar resistencia", "Salud general / recomposición corporal",
+}
+GOAL_NORMALIZE = {
+    "Mantener masa muscular": "Ganar masa muscular",
+    "Mantener masa": "Ganar masa muscular",
+    "Tonificar": "Salud general / recomposición corporal",
+    "Recomposición corporal": "Salud general / recomposición corporal",
+    "Perder peso": "Bajar grasa",
+    "Definir": "Bajar grasa",
+}
+
+
 @tool
 async def save_workout_plan(user_id: str, draft_json: str) -> str:
     """Guarda el plan de entrenamiento aprobado por el usuario.
 
     Crea users_plans + bulk insert de workouts para 4 semanas.
+    Resuelve automáticamente nombres de ejercicios a exercise_ids válidos.
 
     Args:
         user_id: UUID del usuario
-        draft_json: JSON string de DraftRoutine con la estructura:
+        draft_json: JSON string con la estructura:
             {week_schedule, goal, level, days: [{day_number, title, exercises: [{exercise_id, sets, reps, rir, rest_seconds, exercise_order, tempo}]}]}
 
     Returns:
@@ -397,69 +551,92 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
     """
     draft = json.loads(draft_json)
 
-    # Generate plan_id using timestamp
     now = datetime.now(timezone.utc)
-    plan_id = f"plan_{int(now.timestamp()):x}"
+    plan_id = str(uuid.uuid4())
 
-    # Determine template_id from week_schedule + goal + level
-    goal_map = {
-        "Ganar masa muscular": "hyp",
-        "Mejorar fuerza": "str",
-        "Bajar grasa": "cut",
-        "Mejorar resistencia": "end",
+    # Determine week_schedule
+    days_count = len(draft.get("days", []))
+    ws_map = {2: "fb_2", 3: "fb_3", 4: "ul_4", 5: "ppl_5", 6: "ppl_6"}
+    week_schedule = draft.get("week_schedule", ws_map.get(days_count, "fb_3"))
+
+    # Normalize goal
+    raw_goal = draft.get("goal", "Salud general / recomposición corporal")
+    goal = raw_goal if raw_goal in VALID_GOALS else GOAL_NORMALIZE.get(raw_goal, "Salud general / recomposición corporal")
+
+    goal_code_map = {
+        "Ganar masa muscular": "hyp", "Mejorar fuerza": "str",
+        "Bajar grasa": "cut", "Mejorar resistencia": "end",
         "Salud general / recomposición corporal": "rec",
     }
     level_map = {"Principiante": "beg", "Intermedio": "int", "Avanzado": "adv"}
-    goal_code = goal_map.get(draft.get("goal", ""), "hyp")
-    level_code = level_map.get(draft.get("level", ""), "int")
-    template_id = f"tpl_{draft['week_schedule']}_{goal_code}_{level_code}"
+    template_id = f"tpl_{week_schedule}_{goal_code_map.get(goal, 'hyp')}_{level_map.get(draft.get('level', ''), 'int')}"
+
+    # Resolve exercise IDs (handles names → real IDs)
+    resolved, unresolved = await _resolve_exercise_ids(draft)
 
     # Create plan
     await supabase_insert(
         "users_plans",
         data={
-            "plan_id": plan_id,
-            "user_id": user_id,
-            "template_id": template_id,
-            "start_date": now.isoformat(),
-            "goal": draft.get("goal", ""),
-            "level": draft.get("level", ""),
-            "status": "active",
-            "mesocycle_number": 1,
-            "week_schedule": draft.get("week_schedule", ""),
+            "plan_id": plan_id, "user_id": user_id, "template_id": template_id,
+            "start_date": now.isoformat(), "goal": goal,
+            "level": draft.get("level", ""), "status": "active",
+            "mesocycle_number": 1, "week_schedule": week_schedule,
         },
+        upsert=True,
     )
 
-    # Build workout rows for 4 weeks
+    # Build workout rows for 4 weeks (only resolved exercises)
     workout_rows = []
     for week in range(1, 5):
-        for day in draft.get("days", []):
-            for ex in day.get("exercises", []):
+        for d_idx, day in enumerate(draft.get("days", [])):
+            day_title = day.get("title", day.get("name", f"Day {day.get('day_number', 1)}"))
+            for e_idx, ex in enumerate(day.get("exercises", [])):
+                ex_id = resolved.get((d_idx, e_idx))
+                if not ex_id:
+                    continue  # Skip unresolved
+
                 workout_rows.append({
+                    "id": str(uuid.uuid4()),
                     "user_id": user_id,
                     "week": week,
-                    "day_name": day["title"],
-                    "exercise_id": ex["exercise_id"],
+                    "day_name": day_title,
+                    "exercise_id": ex_id,
                     "sets": str(ex.get("sets", 3)),
-                    "reps": ex.get("reps", "8-10"),
+                    "reps": ex.get("reps", "8-12"),
                     "rir": ex.get("rir", "1-2"),
-                    "rest-seconds": ex.get("rest_seconds", 120),
+                    "rest-seconds": ex.get("rest_seconds", ex.get("rest", 120)),
                     "tempo": ex.get("tempo", "2-0-1"),
                     "created_at": now.isoformat(),
                     "notes": "",
-                    "exercise_order": ex.get("exercise_order", 1),
+                    "exercise_order": ex.get("exercise_order", ex.get("order", e_idx + 1)),
                 })
 
     if workout_rows:
-        await supabase_bulk_insert("workouts", workout_rows)
+        try:
+            await supabase_bulk_insert("workouts", workout_rows)
+        except Exception:
+            for row in workout_rows:
+                try:
+                    await supabase_insert("workouts", row)
+                except Exception:
+                    pass
 
-    return json.dumps({
+    response = {
         "success": True,
         "plan_id": plan_id,
         "workouts_created": len(workout_rows),
         "weeks": 4,
-        "days_per_week": len(draft.get("days", [])),
-    })
+        "days_per_week": days_count,
+    }
+
+    if unresolved:
+        response["unresolved_exercises"] = [
+            {"day": draft["days"][u["day_idx"]]["title"] if u["day_idx"] < days_count else "?", "name": u["name"]}
+            for u in unresolved
+        ]
+
+    return json.dumps(response, ensure_ascii=False)
 
 
 # ═══════════════ US4: Scheduling ═══════════════

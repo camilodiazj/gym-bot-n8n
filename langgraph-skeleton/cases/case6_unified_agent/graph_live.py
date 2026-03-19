@@ -9,7 +9,6 @@ KYC subgraph: Case 5 live graph imported as-is.
 """
 
 from langchain_core.messages import AIMessage, SystemMessage
-from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode
 
@@ -151,8 +150,8 @@ async def kyc_subgraph_node(state: UnifiedAgentState) -> dict:
 
 # ═══════════════ BUILD GRAPH ═══════════════
 
-def build_case6_live_graph():
-    """Build Case 6 live graph with Supabase context + tools + KYC subgraph.
+def build_case6_live_workflow():
+    """Build Case 6 live workflow (uncompiled — checkpointer added by server.py).
 
     Graph:
       START → load_context → router ─→ kairos_agent ↔ tool_node → END
@@ -165,20 +164,13 @@ def build_case6_live_graph():
     workflow.add_node("tool_node", ToolNode(TOOLS))
     workflow.add_node("kyc_subgraph", kyc_subgraph_node)
 
-    # Edges
     workflow.add_edge(START, "load_context")
-
-    # Router: new user → KYC, existing → agent
     workflow.add_conditional_edges(
         "load_context",
         router,
         {"kairos_agent": "kairos_agent", "kyc_subgraph": "kyc_subgraph"},
     )
-
-    # KYC subgraph → END
     workflow.add_edge("kyc_subgraph", END)
-
-    # ReAct loop for agent
     workflow.add_conditional_edges(
         "kairos_agent",
         should_continue,
@@ -186,5 +178,4 @@ def build_case6_live_graph():
     )
     workflow.add_edge("tool_node", "kairos_agent")
 
-    checkpointer = InMemorySaver()
-    return workflow.compile(checkpointer=checkpointer)
+    return workflow
