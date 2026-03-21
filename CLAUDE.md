@@ -587,3 +587,22 @@ The `docs/` directory has operational docs: deployment guide, mesocycle renewal 
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
+
+## Active Technologies
+- Python 3.11+ + LangGraph >=0.4, langchain-google-genai >=2.1, langchain-core >=0.3, FastAPI >=0.115, httpx
+- langgraph-checkpoint-postgres >=2.0, psycopg[binary] >=3.1, psycopg-pool >=3.2
+- Supabase (PostgreSQL) via PostgREST API (tools) + direct connection (PostgresSaver checkpointer)
+- Google Cloud Run (kairos-agent service) — production deployment
+- WhatsApp Business API direct webhook (no n8n intermediary)
+
+### Kairos Agent (Case 6) — Production
+- **Service URL**: `https://kairos-agent-148665080566.us-central1.run.app`
+- **WhatsApp webhook**: `POST /webhook` (direct WhatsApp → Kairos → WhatsApp)
+- **API endpoint**: `POST /case6/chat` (for testing/integrations)
+- **Checkpointer**: PostgresSaver via Supabase pooler (session mode, port 5432)
+- **14 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises
+- **Exercise ID resolution**: save_workout_plan auto-resolves spanish names to exercise_ids via ILIKE batch query
+- **Deploy & Test Guide**: See [`langgraph-skeleton/docs/deploy_and_test.md`](langgraph-skeleton/docs/deploy_and_test.md) — GCP project, deploy command, test users, curl examples, Supabase verification queries
+
+## Recent Changes
+- 001-kairos-unified-agent: Unified Agent Kairos deployed to Cloud Run with WhatsApp direct webhook, PostgresSaver, 11 tools, interactive draft routine creation with exercise ID resolution, KYC subgraph integration

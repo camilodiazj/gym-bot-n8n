@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Workout Tracker Frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "workout-tracker",
+      "port": 5173
+    },
+    {
+      "name": "Workout Tracker Backend (Go)",
+      "runtimeExecutable": "go",
+      "runtimeArgs": ["run", "./cmd/api"],
+      "cwd": "workout-tracker-back",
+      "port": 8080
+    },
+    {
+      "name": "LangGraph Skeleton API",
+      "runtimeExecutable": "uvicorn",
+      "runtimeArgs": ["server:app", "--reload", "--port", "8000"],
+      "cwd": "langgraph-skeleton",
+      "port": 8000
+    }
+  ]
+}
