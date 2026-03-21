@@ -8,7 +8,10 @@ Tools bound: US1 tools. More tools added in later phases.
 KYC subgraph: Case 5 live graph imported as-is.
 """
 
-from langchain_core.messages import AIMessage, SystemMessage
+import logging
+import re
+
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode
 
@@ -32,11 +35,15 @@ from cases.case6_unified_agent.tools import (
     schedule_sessions,
     # US6: Mesocycle renewal
     get_mesocycle_status,
+    renew_maintain,
+    renew_change_days,
+    renew_rotate_exercises,
+    send_routine_email,
 )
 from src.shared.llm import get_llm
 
 
-# ═══════════════ ALL 11 TOOLS ═══════════════
+# ═══════════════ ALL 15 TOOLS ═══════════════
 
 TOOLS = [
     # US1: Daily operations
@@ -54,7 +61,49 @@ TOOLS = [
     schedule_sessions,
     # US6: Mesocycle renewal
     get_mesocycle_status,
+    renew_maintain,
+    renew_change_days,
+    renew_rotate_exercises,
+    # Email
+    send_routine_email,
 ]
+
+
+# ═══════════════ TOOL-LEAK GUARDRAIL ═══════════════
+
+logger = logging.getLogger("kairos")
+
+_TOOL_NAMES = [t.name for t in TOOLS]
+_names_re = "|".join(re.escape(n) for n in _TOOL_NAMES)
+_TOOL_LEAK_RE = re.compile(
+    rf"(?:print\s*\(|default_api\.|(?:{_names_re})\s*\()",
+    re.IGNORECASE,
+)
+
+_TOOL_LEAK_CORRECTION = (
+    "[SISTEMA] Tu respuesta anterior contenía código Python visible. "
+    "NUNCA escribas funciones, print() ni código. "
+    "Usa tool_call para ejecutar herramientas. "
+    "Responde al usuario en texto natural."
+)
+
+
+def _has_tool_leak(text: str) -> bool:
+    """Detect if LLM wrote tool calls as text instead of using tool_call."""
+    return bool(_TOOL_LEAK_RE.search(text)) if text else False
+
+
+def _sanitize_response(text: str) -> str:
+    """Strip leaked tool-call patterns from response text (last defense)."""
+    if not text:
+        return text
+    cleaned = re.sub(r"print\s*\((?:[^()]*|\([^()]*\))*\)", "", text)
+    cleaned = re.sub(r"default_api\.\w+\((?:[^()]*|\([^()]*\))*\)", "", cleaned)
+    cleaned = re.sub(
+        rf"(?:{_names_re})\s*\([^)]*\)", "", cleaned, flags=re.IGNORECASE
+    )
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
+    return cleaned or "Dame un momento, estoy procesando tu solicitud."
 
 
 # ═══════════════ LIVE NODES ═══════════════
@@ -97,9 +146,32 @@ async def kairos_agent(state: UnifiedAgentState) -> dict:
     model_with_tools = llm.bind_tools(TOOLS)
     response = await model_with_tools.ainvoke(messages)
 
+    # Normalize content (Gemini 3 may return list instead of str)
+    content = response.content or ""
+    if isinstance(content, list):
+        content = "".join(
+            p.get("text", "") if isinstance(p, dict) else str(p) for p in content
+        )
+
+    # Capa 1: Si el LLM escribió tool calls como texto sin tool_calls reales, retry una vez
+    if content and not response.tool_calls and _has_tool_leak(content):
+        logger.warning("[TOOL-LEAK] Detected text-based tool call, retrying")
+        retry_messages = messages + [response, HumanMessage(content=_TOOL_LEAK_CORRECTION)]
+        response = await model_with_tools.ainvoke(retry_messages)
+        content = response.content or ""
+        if isinstance(content, list):
+            content = "".join(
+                p.get("text", "") if isinstance(p, dict) else str(p) for p in content
+            )
+
+    # Capa 2: Sanitizar cualquier patrón residual en el texto visible al usuario
+    if _has_tool_leak(content):
+        content = _sanitize_response(content)
+        response = AIMessage(content=content, tool_calls=response.tool_calls)
+
     return {
         "messages": [response],
-        "response": response.content if response.content else "",
+        "response": content,
     }
 
 

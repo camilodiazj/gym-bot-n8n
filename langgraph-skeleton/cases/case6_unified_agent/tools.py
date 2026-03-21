@@ -20,6 +20,7 @@ from src.shared.supabase_client import (
     supabase_insert,
     supabase_update,
     supabase_bulk_insert,
+    supabase_delete,
 )
 
 
@@ -34,6 +35,88 @@ def _today_bogota() -> str:
 def _yesterday_bogota() -> str:
     now_utc = datetime.now(timezone.utc)
     return (now_utc + BOGOTA_UTC_OFFSET - timedelta(days=1)).strftime("%Y-%m-%d")
+
+
+# ═══════════════ Health Filtering (QF-5) ═══════════════
+
+_HEALTH_B_KEYWORDS = [
+    "salto", "jump", "sprint", "zancada", "pistol", "sissy",
+    "sentadilla búlgara",
+]
+
+_HEALTH_C_KEYWORDS = [
+    "press militar", "overhead", "arnold", "push press", "jerk",
+    "snatch", "clean and press", "remo al mentón", "remo al menton",
+    "elevacion lateral", "elevación lateral", "upright row",
+    "por encima de la cabeza", "detrás del cuello", "behind",
+]
+
+_HEALTH_D_KEYWORDS = [
+    "peso muerto", "deadlift", "good morning", "buenos días",
+    "back squat", "sentadilla trasera", "front squat",
+    "sentadilla frontal", "remo con barra", "barbell row",
+    "snatch", "clean", "jerk", "hiperextensión", "hyperextension",
+    "rack pull", "press militar", "overhead", "crunch", "crunches",
+    "abdominal", "sit up", "sit-up",
+]
+
+
+def _name_matches_any(name: str, keywords: list[str]) -> bool:
+    low = name.lower()
+    return any(kw in low for kw in keywords)
+
+
+def _apply_health_filter(
+    exercises: list[dict], health_status: str | None,
+) -> list[dict]:
+    """Filter exercises based on user health restriction code (A-E).
+
+    Returns list unchanged for None or 'A'. Pure function, no DB calls.
+    """
+    if not health_status or health_status.upper() == "A":
+        return exercises
+
+    hs = health_status.upper()
+    if hs == "B":
+        return [
+            ex for ex in exercises
+            if not (
+                ex.get("pattern") == "lunge"
+                or (ex.get("pattern") == "squat" and ex.get("equipment") == "barbell")
+                or _name_matches_any(ex.get("spanish_name", ""), _HEALTH_B_KEYWORDS)
+            )
+        ]
+    if hs == "C":
+        return [
+            ex for ex in exercises
+            if not (
+                ex.get("pattern") == "push_v"
+                or _name_matches_any(ex.get("spanish_name", ""), _HEALTH_C_KEYWORDS)
+                or "upright_row" in ex.get("exercise_id", "")
+            )
+        ]
+    if hs == "D":
+        return [
+            ex for ex in exercises
+            if not (
+                ex.get("pattern") == "push_v"  # overhead = axial spinal load
+                or (ex.get("pattern") == "hinge" and ex.get("equipment") == "barbell")
+                or (ex.get("pattern") == "squat" and ex.get("equipment") == "barbell")
+                or (ex.get("main_muscle") == "Lower back" and ex.get("role") == "compound")
+                or _name_matches_any(ex.get("spanish_name", ""), _HEALTH_D_KEYWORDS)
+            )
+        ]
+    if hs == "E":
+        return [
+            ex for ex in exercises
+            if ex.get("level") != "Avanzado"
+            and ex.get("role") != "cardio"
+            and (
+                ex.get("equipment") in ("machine", "cable")
+                or (ex.get("equipment") == "bodyweight" and ex.get("pattern") in ("core", "accessory"))
+            )
+        ]
+    return exercises
 
 
 # ═══════════════ US1: Daily Operations ═══════════════
@@ -272,21 +355,63 @@ async def get_day_requirements(week_schedule: str) -> str:
     return json.dumps(result, ensure_ascii=False)
 
 
+async def _lookup_user_profile(user_id: str | None) -> dict:
+    """Look up health_status, training_environment, home_equipment from DB.
+
+    Returns dict with keys: health_status, training_environment, home_equipment.
+    """
+    default = {"health_status": "A", "training_environment": "GYM", "home_equipment": ""}
+    if not user_id:
+        return default
+    profiles = await supabase_query(
+        "users_gym_profile",
+        select="health_status,training_environment,home_equipment",
+        filters={"whatsapp_id": f"eq.{user_id}"},
+        limit=1,
+    )
+    if not profiles:
+        users = await supabase_query(
+            "users", select="full_phone_number",
+            filters={"user_id": f"eq.{user_id}"}, limit=1,
+        )
+        if users:
+            phone = users[0].get("full_phone_number", "")
+            profiles = await supabase_query(
+                "users_gym_profile", select="health_status,training_environment,home_equipment",
+                filters={"whatsapp_id": f"eq.{phone}"}, limit=1,
+            )
+    if profiles:
+        p = profiles[0]
+        return {
+            "health_status": p.get("health_status", "A"),
+            "training_environment": p.get("training_environment", "GYM"),
+            "home_equipment": p.get("home_equipment", ""),
+        }
+    return default
+
+
 @tool
 async def get_exercises_for_draft(
     pattern: str,
     level: str,
+    user_id: str | None = None,
     equipment: str | None = None,
     exclude_muscle: str | None = None,
+    health_status: str | None = None,
     limit: int = 5,
 ) -> str:
     """Busca ejercicios candidatos por patrón de movimiento para construir el borrador de rutina.
 
+    IMPORTANTE: Siempre pasa user_id para aplicar filtros de salud y equipamiento automáticamente.
+    Sin user_id, usuarios con restricciones pueden recibir ejercicios peligrosos.
+
     Args:
         pattern: Patrón de movimiento (push_h, push_v, pull_h, pull_v, squat, hinge, lunge, core, arm, accessory)
         level: Nivel del usuario (Principiante, Intermedio, Avanzado)
-        equipment: Equipamiento disponible (opcional, ej: "mancuernas, bandas")
+        user_id: UUID del usuario — OBLIGATORIO para filtrar por salud y equipamiento
+        equipment: Equipamiento disponible (opcional — se detecta automáticamente si se pasa user_id)
         exclude_muscle: Músculo a excluir (opcional, ej: "Calfs" para ejercicios no deseados)
+        health_status: Código de salud (opcional — se detecta automáticamente si se pasa user_id)
         limit: Máximo de ejercicios a retornar (default 5)
 
     Returns:
@@ -315,15 +440,32 @@ async def get_exercises_for_draft(
         if level_order.get(r.get("level", "Intermedio"), 2) <= user_level
     ]
 
-    # Filter by equipment if specified
-    if equipment:
-        equip_list = [e.strip().lower() for e in equipment.split(",")]
+    # Auto-lookup profile if user_id provided (for equipment + health)
+    profile = await _lookup_user_profile(user_id) if user_id else None
+
+    # Filter by equipment (auto-detect HOME users)
+    effective_equipment = equipment
+    if not effective_equipment and profile and profile["training_environment"] == "HOME":
+        home_eq = profile.get("home_equipment", "")
+        if home_eq:
+            effective_equipment = home_eq
+        else:
+            effective_equipment = "peso corporal"
+
+    if effective_equipment:
+        equip_list = [e.strip().lower() for e in effective_equipment.split(",")]
+        # Always allow bodyweight for HOME users
+        equip_list_set = set(equip_list) | {"peso corporal", "bodyweight"}
         equip_filtered = [
             r for r in filtered
-            if r.get("equipment", "").lower() in equip_list or r.get("equipment", "").lower() == "peso corporal"
+            if r.get("equipment", "").lower() in equip_list_set
         ]
         if equip_filtered:
             filtered = equip_filtered
+
+    # Apply health restrictions (auto-lookup if not provided)
+    hs = health_status if health_status and health_status != "A" else (profile["health_status"] if profile else "A")
+    filtered = _apply_health_filter(filtered, hs)
 
     return json.dumps(filtered[:limit], ensure_ascii=False)
 
@@ -332,16 +474,20 @@ async def get_exercises_for_draft(
 async def find_exercise_alternatives(
     pattern: str,
     level: str,
+    user_id: str | None = None,
     exclude_name: str | None = None,
     equipment: str | None = None,
+    health_status: str | None = None,
 ) -> str:
     """Busca alternativas de ejercicios para swaps en el borrador de rutina.
 
     Args:
         pattern: Patrón de movimiento del ejercicio a reemplazar
         level: Nivel del usuario
+        user_id: UUID del usuario (para buscar restricciones de salud automáticamente)
         exclude_name: Nombre del ejercicio a excluir (el que se quiere cambiar)
         equipment: Equipamiento disponible (opcional)
+        health_status: Código de salud del usuario (A, B, C, D, E). Si no se pasa, se busca automáticamente
 
     Returns:
         Lista de ejercicios alternativos
@@ -369,15 +515,24 @@ async def find_exercise_alternatives(
         exclude_lower = exclude_name.lower()
         filtered = [r for r in filtered if r.get("spanish_name", "").lower() != exclude_lower]
 
-    # Filter by equipment if specified
-    if equipment:
-        equip_list = [e.strip().lower() for e in equipment.split(",")]
-        equip_filtered = [
-            r for r in filtered
-            if r.get("equipment", "").lower() in equip_list or r.get("equipment", "").lower() == "peso corporal"
-        ]
+    # Auto-lookup profile if user_id provided
+    profile = await _lookup_user_profile(user_id) if user_id else None
+
+    # Filter by equipment (auto-detect HOME users)
+    effective_equipment = equipment
+    if not effective_equipment and profile and profile["training_environment"] == "HOME":
+        home_eq = profile.get("home_equipment", "")
+        effective_equipment = home_eq if home_eq else "peso corporal"
+
+    if effective_equipment:
+        equip_list_set = {e.strip().lower() for e in effective_equipment.split(",")} | {"peso corporal", "bodyweight"}
+        equip_filtered = [r for r in filtered if r.get("equipment", "").lower() in equip_list_set]
         if equip_filtered:
             filtered = equip_filtered
+
+    # Apply health restrictions (auto-lookup if not provided)
+    hs = health_status if health_status and health_status != "A" else (profile["health_status"] if profile else "A")
+    filtered = _apply_health_filter(filtered, hs)
 
     return json.dumps(filtered[:5], ensure_ascii=False)
 
@@ -550,6 +705,7 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
         Confirmación con plan_id y cantidad de workouts creados
     """
     draft = json.loads(draft_json)
+    is_renewal = draft.pop("is_renewal", False)
 
     now = datetime.now(timezone.utc)
     plan_id = str(uuid.uuid4())
@@ -574,17 +730,18 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
     # Resolve exercise IDs (handles names → real IDs)
     resolved, unresolved = await _resolve_exercise_ids(draft)
 
-    # Create plan
-    await supabase_insert(
-        "users_plans",
-        data={
-            "plan_id": plan_id, "user_id": user_id, "template_id": template_id,
-            "start_date": now.isoformat(), "goal": goal,
-            "level": draft.get("level", ""), "status": "active",
-            "mesocycle_number": 1, "week_schedule": week_schedule,
-        },
-        upsert=True,
-    )
+    # Create plan (skip if renewal — plan already updated by renew_change_days)
+    if not is_renewal:
+        await supabase_insert(
+            "users_plans",
+            data={
+                "plan_id": plan_id, "user_id": user_id, "template_id": template_id,
+                "start_date": now.isoformat(), "goal": goal,
+                "level": draft.get("level", ""), "status": "active",
+                "mesocycle_number": 1, "week_schedule": week_schedule,
+            },
+            upsert=True,
+        )
 
     # Build workout rows for 4 weeks (only resolved exercises)
     workout_rows = []
@@ -611,6 +768,17 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
                     "notes": "",
                     "exercise_order": ex.get("exercise_order", ex.get("order", e_idx + 1)),
                 })
+
+    # Deduplicate: keep first occurrence of each exercise_id per day
+    seen_per_day = {}
+    deduped_rows = []
+    for row in workout_rows:
+        key = (row["week"], row["day_name"], row["exercise_id"])
+        if key in seen_per_day:
+            continue
+        seen_per_day[key] = True
+        deduped_rows.append(row)
+    workout_rows = deduped_rows
 
     if workout_rows:
         try:
@@ -654,7 +822,7 @@ async def get_schedule_info(user_id: str) -> str:
     """
     plans = await supabase_query(
         "users_plans",
-        select="plan_id,week_schedule,goal,level,mesocycle_number",
+        select="plan_id,week_schedule,goal,level,mesocycle_number,start_date",
         filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
         limit=1,
     )
@@ -674,14 +842,17 @@ async def get_schedule_info(user_id: str) -> str:
 
     days_sorted = sorted(days, key=lambda d: d["day_number"])
 
-    # Get current week from schedule
-    schedules = await supabase_query(
-        "user_weekly_schedule",
-        select="week",
-        filters={"user_id": f"eq.{user_id}"},
-        limit=1,
-    )
-    current_week = schedules[0]["week"] if schedules else 1
+    # Get current week from plan start_date
+    if plan.get("start_date"):
+        current_week = _compute_current_week(plan["start_date"])
+    else:
+        schedules = await supabase_query(
+            "user_weekly_schedule",
+            select="week",
+            filters={"user_id": f"eq.{user_id}", "order": "week.desc"},
+            limit=1,
+        )
+        current_week = schedules[0]["week"] if schedules else 1
 
     return json.dumps({
         "days_per_week": len(days_sorted),
@@ -689,6 +860,35 @@ async def get_schedule_info(user_id: str) -> str:
         "current_week": current_week,
         "week_schedule": ws,
     }, ensure_ascii=False)
+
+
+VALID_WEEK_DAYS = {
+    "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo",
+}
+
+# LLM often sends accented day names — map to enum values (no accents)
+_ACCENT_MAP = str.maketrans("áéíóúÁÉÍÓÚ", "aeiouAEIOU")
+
+
+def _normalize_week_day(raw: str) -> str:
+    """Normalize week_day: strip accents and title-case."""
+    return raw.strip().translate(_ACCENT_MAP).capitalize()
+
+
+def _compute_current_week(start_date_iso: str) -> int:
+    """Compute current training week (1-4) from plan start date."""
+    start = datetime.fromisoformat(start_date_iso.replace("Z", "+00:00"))
+    days_elapsed = (datetime.now(timezone.utc) - start).days
+    return max(1, min((days_elapsed // 7) + 1, 4))
+
+
+def _normalize_planned_day(raw: str) -> str:
+    """Ensure planned_day is in DD/MM/YYYY format for the DB trigger."""
+    raw = raw.strip()
+    if len(raw) >= 8:
+        return raw
+    now_bogota = datetime.now(timezone.utc) + BOGOTA_UTC_OFFSET
+    return f"{raw}/{now_bogota.year}"
 
 
 @tool
@@ -705,36 +905,68 @@ async def schedule_sessions(user_id: str, sessions_json: str) -> str:
     """
     sessions = json.loads(sessions_json)
 
-    # Get current week
+    # Normalize and validate inputs
+    errors = []
+    for i, s in enumerate(sessions):
+        wd = _normalize_week_day(s.get("week_day", ""))
+        s["week_day"] = wd  # write back normalized value
+        if wd not in VALID_WEEK_DAYS:
+            errors.append(
+                f"Sesión {i+1}: week_day '{wd}' inválido. "
+                f"Usar: {', '.join(sorted(VALID_WEEK_DAYS))}"
+            )
+        if not s.get("session_name"):
+            errors.append(f"Sesión {i+1}: session_name vacío")
+        if not s.get("planned_day"):
+            errors.append(f"Sesión {i+1}: planned_day vacío")
+
+    if errors:
+        return json.dumps({"success": False, "errors": errors}, ensure_ascii=False)
+
+    # Get current week from plan start_date
     plans = await supabase_query(
         "users_plans",
-        select="plan_id",
+        select="plan_id,start_date",
         filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
         limit=1,
     )
 
-    schedules = await supabase_query(
-        "user_weekly_schedule",
-        select="week",
-        filters={"user_id": f"eq.{user_id}"},
-        limit=1,
-    )
-    current_week = schedules[0]["week"] if schedules else 1
+    if not plans:
+        return json.dumps({"success": False, "error": "No se encontró plan activo para el usuario"})
 
-    now = datetime.now(timezone.utc)
+    plan = plans[0]
+    if plan.get("start_date"):
+        current_week = _compute_current_week(plan["start_date"])
+    else:
+        schedules = await supabase_query(
+            "user_weekly_schedule",
+            select="week",
+            filters={"user_id": f"eq.{user_id}", "order": "week.desc"},
+            limit=1,
+        )
+        current_week = schedules[0]["week"] if schedules else 1
+
     rows = []
     for s in sessions:
         rows.append({
             "user_id": user_id,
             "week": current_week,
-            "week_day": s.get("week_day", ""),
-            "session_name": s.get("session_name", ""),
-            "planned_day": s.get("planned_day", ""),
+            "week_day": s["week_day"],
+            "session_name": s["session_name"],
+            "planned_day": _normalize_planned_day(s["planned_day"]),
             "Completed": False,
         })
 
-    if rows:
-        await supabase_bulk_insert("user_weekly_schedule", rows)
+    try:
+        await supabase_bulk_insert(
+            "user_weekly_schedule",
+            rows,
+            upsert=True,
+            on_conflict="user_id,week,week_day",
+        )
+    except Exception as e:
+        detail = str(e)[:200]
+        return json.dumps({"success": False, "error": f"Error al guardar sesiones: {detail}"})
 
     return json.dumps({
         "success": True,
@@ -788,3 +1020,427 @@ async def get_mesocycle_status(user_id: str) -> str:
         "goal": plan["goal"],
         "level": plan["level"],
     }, ensure_ascii=False)
+
+
+@tool
+async def renew_maintain(user_id: str) -> str:
+    """Renueva el mesociclo MANTENIENDO la rutina actual.
+
+    Conserva todos los ejercicios. Limpia el schedule e incrementa el mesociclo.
+    Después de usar esta herramienta, el usuario debe agendar semana 1.
+
+    Args:
+        user_id: UUID del usuario
+
+    Returns:
+        Confirmación con nuevo número de mesociclo
+    """
+    plans = await supabase_query(
+        "users_plans",
+        select="plan_id,mesocycle_number,week_schedule",
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+        limit=1,
+    )
+    if not plans:
+        return json.dumps({"success": False, "error": "No se encontró plan activo"})
+
+    new_meso = plans[0]["mesocycle_number"] + 1
+
+    await supabase_delete(
+        "user_weekly_schedule",
+        filters={"user_id": f"eq.{user_id}"},
+    )
+
+    now = datetime.now(timezone.utc)
+    await supabase_update(
+        "users_plans",
+        data={
+            "mesocycle_number": new_meso,
+            "last_renewal_date": now.isoformat(),
+            "start_date": now.isoformat(),
+        },
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+    )
+
+    return json.dumps({
+        "success": True,
+        "new_mesocycle_number": new_meso,
+        "week_schedule": plans[0]["week_schedule"],
+        "action": "MANTENER_RUTINA",
+    }, ensure_ascii=False)
+
+
+@tool
+async def renew_rotate_exercises(user_id: str, health_status: str = "A") -> str:
+    """Renueva el mesociclo ROTANDO ejercicios por alternativas del mismo patrón.
+
+    Mantiene la estructura (días, sets, reps) pero cambia ejercicios por alternativas.
+    Después de usar esta herramienta, el usuario debe agendar semana 1.
+
+    Args:
+        user_id: UUID del usuario
+        health_status: Código de salud del usuario (A, B, C, D, E). Default A
+
+    Returns:
+        Resumen de ejercicios rotados y conservados
+    """
+    import random
+
+    plans = await supabase_query(
+        "users_plans",
+        select="plan_id,mesocycle_number,level",
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+        limit=1,
+    )
+    if not plans:
+        return json.dumps({"success": False, "error": "No se encontró plan activo"})
+
+    level = plans[0]["level"]
+    new_meso = plans[0]["mesocycle_number"] + 1
+
+    # Get W1 exercises
+    w1_workouts = await supabase_query(
+        "workouts",
+        select="id,exercise_id,day_name",
+        filters={"user_id": f"eq.{user_id}", "week": "eq.1"},
+    )
+    if not w1_workouts:
+        return json.dumps({"success": False, "error": "No se encontraron ejercicios en semana 1"})
+
+    # Get exercise details
+    ex_ids = list({w["exercise_id"] for w in w1_workouts})
+    exercises_data = await supabase_query(
+        "exercises",
+        select="exercise_id,spanish_name,pattern,role,level",
+        filters={"exercise_id": f"in.({','.join(ex_ids)})"},
+    )
+    ex_map = {e["exercise_id"]: e for e in exercises_data}
+
+    # Find alternatives for each unique exercise
+    rotated = []
+    kept = []
+    swap_map = {}
+
+    for ex_id in ex_ids:
+        ex = ex_map.get(ex_id)
+        if not ex:
+            kept.append(ex_id)
+            continue
+
+        candidates = await supabase_query(
+            "exercises",
+            select="exercise_id,spanish_name,pattern,role,level,equipment,main_muscle",
+            filters={
+                "pattern": f"eq.{ex['pattern']}",
+                "role": f"eq.{ex['role']}",
+                "exercise_id": f"neq.{ex_id}",
+            },
+            limit=10,
+        )
+
+        # Apply health restrictions
+        candidates = _apply_health_filter(candidates, health_status)
+
+        if candidates:
+            chosen = random.choice(candidates)
+            swap_map[ex_id] = chosen["exercise_id"]
+            rotated.append({"old": ex.get("spanish_name", ex_id), "new": chosen["spanish_name"]})
+        else:
+            kept.append(ex.get("spanish_name", ex_id))
+
+    # Apply swaps across all 4 weeks
+    for old_id, new_id in swap_map.items():
+        await supabase_update(
+            "workouts",
+            data={"exercise_id": new_id},
+            filters={"user_id": f"eq.{user_id}", "exercise_id": f"eq.{old_id}"},
+        )
+
+    # Clear schedule
+    await supabase_delete(
+        "user_weekly_schedule",
+        filters={"user_id": f"eq.{user_id}"},
+    )
+
+    # Increment mesocycle
+    now = datetime.now(timezone.utc)
+    await supabase_update(
+        "users_plans",
+        data={
+            "mesocycle_number": new_meso,
+            "last_renewal_date": now.isoformat(),
+            "start_date": now.isoformat(),
+        },
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+    )
+
+    return json.dumps({
+        "success": True,
+        "new_mesocycle_number": new_meso,
+        "rotated": rotated,
+        "kept": kept,
+        "action": "ROTAR_EJERCICIOS",
+    }, ensure_ascii=False)
+
+
+@tool
+async def renew_change_days(user_id: str, new_days_per_week: int) -> str:
+    """Renueva el mesociclo CAMBIANDO la frecuencia de entrenamiento.
+
+    Elimina ejercicios y schedule actuales, actualiza el plan con nuevo schedule.
+    Después de usar esta herramienta, DEBES crear una nueva rutina usando:
+    get_day_requirements → get_exercises_for_draft → save_workout_plan (con "is_renewal": true en el JSON)
+
+    Args:
+        user_id: UUID del usuario
+        new_days_per_week: Nuevo número de días por semana (2-6)
+
+    Returns:
+        Confirmación y nuevo week_schedule para usar en la creación de rutina
+    """
+    if new_days_per_week < 2 or new_days_per_week > 6:
+        return json.dumps({
+            "success": False,
+            "error": f"Días debe ser entre 2 y 6, recibido: {new_days_per_week}",
+        })
+
+    ws_map = {2: "fb_2", 3: "fb_3", 4: "ul_4", 5: "ppl_5", 6: "ppl_6"}
+    new_ws = ws_map[new_days_per_week]
+
+    plans = await supabase_query(
+        "users_plans",
+        select="plan_id,mesocycle_number,goal,level",
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+        limit=1,
+    )
+    if not plans:
+        return json.dumps({"success": False, "error": "No se encontró plan activo"})
+
+    plan = plans[0]
+    new_meso = plan["mesocycle_number"] + 1
+
+    # Delete old workouts and schedule
+    await supabase_delete("workouts", filters={"user_id": f"eq.{user_id}"})
+    await supabase_delete("user_weekly_schedule", filters={"user_id": f"eq.{user_id}"})
+
+    # Update plan
+    goal_code_map = {
+        "Ganar masa muscular": "hyp", "Mejorar fuerza": "str",
+        "Bajar grasa": "cut", "Mejorar resistencia": "end",
+        "Salud general / recomposición corporal": "rec",
+    }
+    level_map = {"Principiante": "beg", "Intermedio": "int", "Avanzado": "adv"}
+    template_id = f"tpl_{new_ws}_{goal_code_map.get(plan['goal'], 'hyp')}_{level_map.get(plan['level'], 'int')}"
+
+    now = datetime.now(timezone.utc)
+    await supabase_update(
+        "users_plans",
+        data={
+            "mesocycle_number": new_meso,
+            "week_schedule": new_ws,
+            "template_id": template_id,
+            "last_renewal_date": now.isoformat(),
+            "start_date": now.isoformat(),
+        },
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+    )
+
+    return json.dumps({
+        "success": True,
+        "new_mesocycle_number": new_meso,
+        "new_week_schedule": new_ws,
+        "new_days_per_week": new_days_per_week,
+        "goal": plan["goal"],
+        "level": plan["level"],
+        "action": "CAMBIAR_DIAS",
+        "next_step": "Crear nueva rutina con get_day_requirements + get_exercises_for_draft + save_workout_plan (is_renewal: true)",
+    }, ensure_ascii=False)
+
+
+# ═══════════════ Email ═══════════════
+
+
+async def _send_email(to: str, subject: str, html_body: str) -> None:
+    """Send HTML email via Gmail SMTP."""
+    import aiosmtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+
+    gmail_user = os.getenv("GMAIL_USER", "")
+    gmail_password = os.getenv("GMAIL_APP_PASSWORD", "")
+
+    if not gmail_user or not gmail_password:
+        raise ValueError("GMAIL_USER and GMAIL_APP_PASSWORD env vars required")
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = f"Kairos Personal Trainer <{gmail_user}>"
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.attach(MIMEText(html_body, "html"))
+
+    await aiosmtplib.send(
+        msg,
+        hostname="smtp.gmail.com",
+        port=587,
+        start_tls=True,
+        username=gmail_user,
+        password=gmail_password,
+    )
+
+
+def _build_routine_html(user_name: str, plan: dict, exercises_by_day: dict[str, list[dict]]) -> str:
+    """Build HTML email with routine tables grouped by day."""
+    goal = plan.get("goal", "")
+    level = plan.get("level", "")
+    ws = plan.get("week_schedule", "")
+
+    day_sections = ""
+    for day_name in sorted(exercises_by_day.keys()):
+        exercises = exercises_by_day[day_name]
+        rows_html = ""
+        for ex in exercises:
+            video = f'<a href="{ex["link"]}" style="color:#4A90D9;">Video</a>' if ex.get("link") else ""
+            rows_html += f"""<tr>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{ex.get("exercise_order", "")}</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{ex.get("spanish_name", "")}</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{ex.get("main_muscle", "")}</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{ex.get("sets", "")}x{ex.get("reps", "")}</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">RIR {ex.get("rir", "")}</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{ex.get("rest_seconds", "")}s</td>
+                <td style="padding:8px;border-bottom:1px solid #eee;">{video}</td>
+            </tr>"""
+
+        day_sections += f"""
+        <h2 style="color:#2C3E50;margin-top:24px;">{day_name}</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <thead>
+                <tr style="background:#f8f9fa;">
+                    <th style="padding:8px;text-align:left;">#</th>
+                    <th style="padding:8px;text-align:left;">Ejercicio</th>
+                    <th style="padding:8px;text-align:left;">Músculo</th>
+                    <th style="padding:8px;text-align:left;">Series x Reps</th>
+                    <th style="padding:8px;text-align:left;">RIR</th>
+                    <th style="padding:8px;text-align:left;">Descanso</th>
+                    <th style="padding:8px;text-align:left;">Video</th>
+                </tr>
+            </thead>
+            <tbody>{rows_html}</tbody>
+        </table>"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:20px;color:#333;">
+    <div style="background:#2C3E50;color:white;padding:20px;border-radius:8px 8px 0 0;">
+        <h1 style="margin:0;">Tu Rutina de Entrenamiento</h1>
+        <p style="margin:8px 0 0;">{user_name} | {goal} | {level} | {ws}</p>
+    </div>
+    <div style="padding:20px;background:#fff;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;">
+        {day_sections}
+        <hr style="margin:24px 0;border:none;border-top:1px solid #eee;">
+        <p style="color:#888;font-size:12px;text-align:center;">
+            Kairos Personal Trainer — Tu entrenador virtual
+        </p>
+    </div>
+</body>
+</html>"""
+
+
+@tool
+async def send_routine_email(user_id: str) -> str:
+    """Envía la rutina de entrenamiento completa al email del usuario.
+
+    Consulta la base de datos directamente para obtener email, plan y ejercicios.
+    No necesita parámetros adicionales — todo se obtiene del user_id.
+
+    Args:
+        user_id: UUID del usuario
+
+    Returns:
+        Confirmación de envío con dirección de email
+    """
+    # 1. Get user email
+    users = await supabase_query(
+        "users",
+        select="full_name,email",
+        filters={"user_id": f"eq.{user_id}"},
+        limit=1,
+    )
+    if not users:
+        return json.dumps({"success": False, "error": "Usuario no encontrado"})
+
+    user = users[0]
+    email = user.get("email")
+    if not email:
+        return json.dumps({"success": False, "error": "El usuario no tiene email registrado"})
+
+    # 2. Get plan
+    plans = await supabase_query(
+        "users_plans",
+        select="plan_id,goal,level,week_schedule",
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+        limit=1,
+    )
+    if not plans:
+        return json.dumps({"success": False, "error": "No se encontró plan activo"})
+
+    plan = plans[0]
+
+    # 3. Get W1 exercises
+    workouts = await supabase_query(
+        "workouts",
+        select="day_name,exercise_id,sets,reps,rir,rest-seconds,tempo,exercise_order",
+        filters={"user_id": f"eq.{user_id}", "week": "eq.1"},
+    )
+    if not workouts:
+        return json.dumps({"success": False, "error": "No se encontraron ejercicios"})
+
+    # 4. Get exercise details
+    ex_ids = list({w["exercise_id"] for w in workouts})
+    exercises = await supabase_query(
+        "exercises",
+        select="exercise_id,spanish_name,main_muscle,link",
+        filters={"exercise_id": f"in.({','.join(ex_ids)})"},
+    )
+    ex_map = {e["exercise_id"]: e for e in exercises}
+
+    # 5. Build exercises by day
+    exercises_by_day: dict[str, list[dict]] = {}
+    for w in workouts:
+        day = w["day_name"]
+        if day not in exercises_by_day:
+            exercises_by_day[day] = []
+        ex = ex_map.get(w["exercise_id"], {})
+        exercises_by_day[day].append({
+            "exercise_order": w.get("exercise_order", 0),
+            "spanish_name": ex.get("spanish_name", w["exercise_id"]),
+            "main_muscle": ex.get("main_muscle", ""),
+            "sets": w.get("sets", ""),
+            "reps": w.get("reps", ""),
+            "rir": w.get("rir", ""),
+            "rest_seconds": w.get("rest-seconds", ""),
+            "link": ex.get("link", ""),
+        })
+
+    # Sort exercises within each day
+    for day in exercises_by_day:
+        exercises_by_day[day].sort(key=lambda x: x.get("exercise_order", 0))
+
+    # 6. Build HTML and send
+    html = _build_routine_html(user.get("full_name", ""), plan, exercises_by_day)
+
+    try:
+        await _send_email(
+            to=email,
+            subject=f"Tu rutina Kairos — {plan.get('goal', '')}",
+            html_body=html,
+        )
+    except Exception as e:
+        return json.dumps({"success": False, "error": f"Error al enviar email: {str(e)[:200]}"})
+
+    return json.dumps({
+        "success": True,
+        "email": email,
+        "days_sent": len(exercises_by_day),
+        "exercises_total": sum(len(v) for v in exercises_by_day.values()),
+    })

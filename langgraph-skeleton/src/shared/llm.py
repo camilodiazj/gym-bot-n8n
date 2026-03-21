@@ -1,4 +1,4 @@
-"""LLM singleton — Gemini 2.0 Flash via langchain-google-genai."""
+"""LLM singleton — Gemini 3 Flash Preview via langchain-google-genai."""
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
@@ -7,8 +7,8 @@ load_dotenv()
 
 
 def get_llm(temperature: float = 0.7) -> ChatGoogleGenerativeAI:
-    """Returns a configured Gemini 2.0 Flash instance."""
+    """Returns a configured Gemini 3 Flash Preview instance."""
     return ChatGoogleGenerativeAI(
-        model="gemini-2.0-flash",
+        model="gemini-3-flash-preview",
         temperature=temperature,
     )

@@ -65,6 +65,7 @@ async def supabase_insert(
     table: str,
     data: dict,
     upsert: bool = False,
+    on_conflict: str | None = None,
 ) -> list[dict]:
     """Insert a row into a Supabase table via PostgREST REST API.
 
@@ -72,6 +73,7 @@ async def supabase_insert(
         table: Table name (e.g., "users", "users_gym_profile")
         data: Row data as a dict
         upsert: If True, use merge-duplicates resolution for upserts
+        on_conflict: Columns for conflict resolution (e.g., "user_id,week,week_day")
 
     Returns:
         List of inserted row dicts (with Prefer: return=representation)
@@ -82,8 +84,12 @@ async def supabase_insert(
     if upsert:
         headers["Prefer"] += ",resolution=merge-duplicates"
 
+    params = {}
+    if on_conflict:
+        params["on_conflict"] = on_conflict
+
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=data)
+        response = await client.post(url, headers=headers, json=data, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -117,12 +123,16 @@ async def supabase_update(
 async def supabase_bulk_insert(
     table: str,
     rows: list[dict],
+    upsert: bool = False,
+    on_conflict: str | None = None,
 ) -> list[dict]:
     """Bulk insert multiple rows into a Supabase table via PostgREST.
 
     Args:
         table: Table name (e.g., "workouts")
         rows: List of row dicts to insert
+        upsert: If True, use merge-duplicates resolution for upserts
+        on_conflict: Columns for conflict resolution (e.g., "user_id,week,week_day")
 
     Returns:
         List of inserted row dicts
@@ -130,8 +140,44 @@ async def supabase_bulk_insert(
     url = f"{SUPABASE_URL}/rest/v1/{table}"
     headers = _get_headers()
     headers["Prefer"] = "return=representation"
+    if upsert:
+        headers["Prefer"] += ",resolution=merge-duplicates"
+
+    params = {}
+    if on_conflict:
+        params["on_conflict"] = on_conflict
 
     async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=rows)
+        response = await client.post(url, headers=headers, json=rows, params=params)
+        response.raise_for_status()
+        return response.json()
+
+
+async def supabase_delete(
+    table: str,
+    filters: dict[str, str],
+) -> list[dict]:
+    """Delete rows from a Supabase table via PostgREST DELETE.
+
+    Args:
+        table: Table name (e.g., "user_weekly_schedule")
+        filters: PostgREST filters for WHERE clause (REQUIRED)
+                 (e.g., {"user_id": "eq.uuid-here"})
+
+    Returns:
+        List of deleted row dicts
+
+    Raises:
+        ValueError: If filters dict is empty (safety guard)
+    """
+    if not filters:
+        raise ValueError("supabase_delete requires at least one filter (safety guard)")
+
+    url = f"{SUPABASE_URL}/rest/v1/{table}"
+    headers = _get_headers()
+    headers["Prefer"] = "return=representation"
+
+    async with httpx.AsyncClient() as client:
+        response = await client.delete(url, headers=headers, params=filters)
         response.raise_for_status()
         return response.json()

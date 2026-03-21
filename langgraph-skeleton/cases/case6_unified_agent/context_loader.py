@@ -42,7 +42,7 @@ async def load_user_context(phone_number: str) -> UserContext:
         ),
         supabase_query(
             "users_gym_profile",
-            select="whatsapp_id,primary_goal,training_experience,days_available,preferred_schedule,training_environment,home_equipment,fitness_level",
+            select="whatsapp_id,primary_goal,training_experience,days_available,preferred_schedule,training_environment,home_equipment,fitness_level,health_status,priority_muscles,disliked_exercises,biological_sex",
             filters={"whatsapp_id": f"eq.{phone_number}"},
             limit=1,
         ),
@@ -72,7 +72,7 @@ async def load_user_context(phone_number: str) -> UserContext:
     today = _today_bogota()
     window_start = _days_ago_bogota(MISSED_SESSIONS_WINDOW_DAYS)
 
-    plan_result, schedule_result, pending_result = await asyncio.gather(
+    plan_result, schedule_result, pending_result, w4_result = await asyncio.gather(
         supabase_query(
             "users_plans",
             select="plan_id,goal,level,week_schedule,mesocycle_number,status",
@@ -91,6 +91,12 @@ async def load_user_context(phone_number: str) -> UserContext:
             "pending_tasks",
             select="task_id,task_type,session_name,status",
             filters={"user_id": f"eq.{user_id}", "status": "eq.pending"},
+        ),
+        # Separate W4 query without date filter for mesocycle completion check
+        supabase_query(
+            "user_weekly_schedule",
+            select='"Completed"',
+            filters={"user_id": f"eq.{user_id}", "week": "eq.4"},
         ),
     )
 
@@ -137,13 +143,10 @@ async def load_user_context(phone_number: str) -> UserContext:
     has_schedule = bool(todays_sessions or future_sessions)
 
     # all_w4_completed: check if ALL week-4 sessions are completed
+    # Uses dedicated w4_result query (no date filter) to avoid missing old W4 sessions
     all_w4_completed = False
-    if plan:
-        w4_sessions = [
-            r for r in schedule_result if r.get("week") == 4
-        ]
-        if w4_sessions:
-            all_w4_completed = all(r.get("Completed", False) for r in w4_sessions)
+    if plan and w4_result:
+        all_w4_completed = all(r.get("Completed", False) for r in w4_result)
 
     return UserContext(
         user_id=user_id,

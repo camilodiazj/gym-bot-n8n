@@ -600,8 +600,9 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **WhatsApp webhook**: `POST /webhook` (direct WhatsApp → Kairos → WhatsApp)
 - **API endpoint**: `POST /case6/chat` (for testing/integrations)
 - **Checkpointer**: PostgresSaver via Supabase pooler (session mode, port 5432)
-- **11 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status
+- **14 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises
 - **Exercise ID resolution**: save_workout_plan auto-resolves spanish names to exercise_ids via ILIKE batch query
+- **Deploy & Test Guide**: See [`langgraph-skeleton/docs/deploy_and_test.md`](langgraph-skeleton/docs/deploy_and_test.md) — GCP project, deploy command, test users, curl examples, Supabase verification queries
 
 ## Recent Changes
 - 001-kairos-unified-agent: Unified Agent Kairos deployed to Cloud Run with WhatsApp direct webhook, PostgresSaver, 11 tools, interactive draft routine creation with exercise ID resolution, KYC subgraph integration

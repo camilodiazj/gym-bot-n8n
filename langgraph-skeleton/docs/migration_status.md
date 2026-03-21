@@ -1,6 +1,6 @@
 # Estado de Migración: n8n → LangGraph (Kairos Agent)
 
-**Fecha**: 2026-03-18
+**Fecha**: 2026-03-20 (actualizado)
 **Branch**: `001-kairos-unified-agent`
 **Producción**: https://kairos-agent-148665080566.us-central1.run.app
 
@@ -8,7 +8,21 @@
 
 ## Resumen
 
-GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reemplaza el **MAIN_FLOW** como punto de entrada para mensajes de WhatsApp, con un agente inteligente (Gemini + 11 tools) que decide libremente qué hacer. Los workflows automatizados (reportes, recordatorios) siguen en n8n por ahora.
+GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reemplaza el **MAIN_FLOW** y **GymBotMesocycleRenewal** como punto de entrada para mensajes de WhatsApp, con un agente inteligente (Gemini + 15 tools) que decide libremente qué hacer. Los workflows automatizados (reportes, recordatorios) siguen en n8n por ahora.
+
+### Dashboard rápido (2026-03-20)
+
+| Workflow | Migración | Bloqueante |
+|----------|-----------|------------|
+| MAIN_FLOW | **~90%** | Google Calendar events |
+| WORKOUT_CREATOR | **~70%** | ProcessUserPreferences parcial, validación duración |
+| GymBotMesocycleRenewal | **~90%** | Pruebas CAMBIAR_DIAS E2E |
+| MorningReminder | **0%** | Sigue en n8n (cron job) |
+| WeeklySchedulingPrompt | **0%** | Sigue en n8n (cron job) |
+| DailyReport | **N/A** | Se queda en n8n (analytics) |
+| InteractionAnalysis | **N/A** | Se queda en n8n (analytics) |
+
+**Implementado desde última revisión**: health filtering B-E (`_apply_health_filter`), deduplicación en `save_workout_plan`, email rutina semana 1 (`send_routine_email`), accent normalization en `schedule_sessions`.
 
 ---
 
@@ -25,13 +39,13 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
 | Confirmar entrenamiento | Switch → handler | `confirm_workout_completion` tool | Funciona (grace period) |
 | Declinar entrenamiento | Switch → handler | `decline_workout` tool | Funciona |
 | Chat general fitness | Switch → AI Agent | Respuesta directa del LLM | Funciona (personalizado) |
-| Agendar sesiones | Switch → handler | `schedule_sessions` tool | Bug: 400 en insert |
-| Detectar renovación mesociclo | Switch → subworkflow | `get_mesocycle_status` tool | Solo lectura, no ejecuta renovación |
+| Agendar sesiones | Switch → handler | `schedule_sessions` tool | Funciona (upsert + validación + accent normalization) |
+| Detectar renovación mesociclo | Switch → subworkflow | `get_mesocycle_status` + `renew_*` tools | Funciona (detecta + ejecuta 3 acciones) |
 | Google Calendar events | CreateCalendarEvent | No implementado | Pendiente |
 | Detección de intenciones | Switch con 5+ outputs | Agente decide libremente | Mejor: no necesita intenciones fijas |
 | Magic link tracker | No existía | `create_magic_link` tool | Nuevo en Kairos |
 
-**Status: ~70% migrado** — Faltan: agendamiento (bug), renovación completa, calendario.
+**Status: ~90% migrado** — Falta: Google Calendar events.
 
 ---
 
@@ -40,18 +54,19 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
 | Capacidad | n8n | Kairos | Notas |
 |-----------|-----|--------|-------|
 | Cargar perfil usuario | Postgres query | `context_loader` + gym_profile | Funciona |
-| ProcessUserPreferences | Code node (400+ líneas) | No implementado | Mapeo músculos ES→EN, health filtering, volume modifier |
+| ProcessUserPreferences | Code node (400+ líneas) | Parcial | ~~Health filtering~~ COMPLETADO. Falta: mapeo músculos ES→EN, volume modifier, sex adaptation |
 | Consultar day_requirements | Postgres JOIN | `get_day_requirements` tool | Funciona |
-| Buscar ejercicios por patrón | Postgres query dinámico | `get_exercises_for_draft` tool | Funciona (sin health/equipment filtering) |
+| Buscar ejercicios por patrón | Postgres query dinámico | `get_exercises_for_draft` tool | Funciona (con health filtering B-E) |
+| Health filtering (B-E) | Code node | `_apply_health_filter()` en tools.py | Funciona (auto-lookup por user_id, 5 códigos) |
 | Selección AI personalizada | LangChain Agent | El LLM selecciona de los candidatos | Funciona (menos sofisticado) |
-| Deduplicación de ejercicios | Code node | No implementado | Riesgo de duplicados |
+| Deduplicación de ejercicios | Code node | `save_workout_plan` dedup guard | Funciona (keep first per day) |
 | Validación de duración | Code node | No implementado | Puede exceder tiempo objetivo |
 | Expansión 4 semanas | Code node | `save_workout_plan` replica W1 × 4 | Funciona (sin progresión por semana) |
 | Guardar plan + workouts | Postgres INSERT | `save_workout_plan` + resolución IDs | Funciona (60 workouts guardados) |
-| Enviar email con rutina | Gmail node | No implementado | Pendiente |
+| Enviar email con rutina | Gmail node | `send_routine_email` tool (aiosmtplib) | Funciona (on-demand via agente) |
 | Borrador interactivo | No existía | Draft mode con feedback | Nuevo en Kairos — el usuario opina antes de guardar |
 
-**Status: ~40% migrado** — El core funciona (buscar + seleccionar + guardar). Falta: ProcessUserPreferences, health filtering, dedup, validación duración, email.
+**Status: ~70% migrado** — Core completo (buscar + seleccionar + guardar + health filtering + dedup + email). Falta: ProcessUserPreferences parcial (muscle mapping ES→EN, volume modifier, sex adaptation), validación de duración.
 
 ---
 
@@ -71,14 +86,14 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
 
 | Capacidad | n8n | Kairos | Notas |
 |-----------|-----|--------|-------|
-| Detectar W4 completada | Query + If | `all_w4_completed` flag en context | Funciona |
+| Detectar W4 completada | Query + If | `all_w4_completed` flag en context | Funciona (query dedicada sin filtro de fecha) |
 | Consultar estado | Postgres query | `get_mesocycle_status` tool | Funciona |
-| Ofrecer opciones (mantener/cambiar/rotar) | AI Agent multi-turn | Prompt del agente | Funciona (conversacional) |
-| Ejecutar MANTENER | Delete schedules + increment mesocycle | No implementado | Necesita tool de UPDATE |
-| Ejecutar CAMBIAR_DIAS | Delete + regenerar con WORKOUT_CREATOR | No implementado | Necesita orquestación |
-| Ejecutar ROTAR | Swap ejercicios por alternativas | `find_exercise_alternatives` tool | Parcial |
+| Ofrecer opciones (mantener/cambiar/rotar) | AI Agent multi-turn | Prompt del agente | Funciona (3 opciones proactivas) |
+| Ejecutar MANTENER | Delete schedules + increment mesocycle | `renew_maintain` tool | Funciona (DELETE schedule + UPDATE plan) |
+| Ejecutar CAMBIAR_DIAS | Delete + regenerar con WORKOUT_CREATOR | `renew_change_days` tool + draft flow | Funciona (cleanup + reuso de get_day_requirements/save_workout_plan) |
+| Ejecutar ROTAR | Swap ejercicios por alternativas | `renew_rotate_exercises` tool | Funciona (batch swap por patrón+role) |
 
-**Status: ~20% migrado** — Detecta y conversa, pero no ejecuta la renovación.
+**Status: ~90% migrado** — Las 3 acciones de renovación funcionan. Falta: pruebas con CAMBIAR_DIAS E2E completo.
 
 ---
 
@@ -124,17 +139,18 @@ GymBot tiene 7 workflows de n8n en producción. El agente Kairos (Case 6) reempl
 ### Prioridad Alta (bloquea flujos de usuario)
 | Item | Impacto | Esfuerzo |
 |------|---------|----------|
-| Fix `schedule_sessions` (bug 400) | Usuarios no pueden agendar días | Bajo — probablemente campos faltantes |
-| Renovación de mesociclo (ejecutar, no solo detectar) | Usuarios quedan sin rutina después de W4 | Medio — necesita tools de UPDATE/DELETE |
-| Health filtering en `get_exercises_for_draft` | Usuarios con restricciones reciben ejercicios peligrosos | Medio — agregar filtros al query |
+| ~~Fix `schedule_sessions` (bug 400)~~ | ~~Usuarios no pueden agendar días~~ | ~~COMPLETADO~~ |
+| ~~Renovación de mesociclo (ejecutar, no solo detectar)~~ | ~~Usuarios quedan sin rutina después de W4~~ | ~~COMPLETADO~~ |
+| ~~Health filtering en `get_exercises_for_draft`~~ | ~~Usuarios con restricciones reciben ejercicios peligrosos~~ | ~~COMPLETADO~~ |
 
 ### Prioridad Media (mejora la experiencia)
 | Item | Impacto | Esfuerzo |
 |------|---------|----------|
-| ProcessUserPreferences (músculos, volume modifier) | Rutinas menos personalizadas | Alto — 400+ líneas de lógica |
-| Deduplicación de ejercicios en draft | Posibles duplicados en la rutina | Bajo — validación post-selección |
+| ProcessUserPreferences parcial (muscle mapping ES→EN, volume modifier, sex adaptation) | Rutinas menos personalizadas sin mapeo de músculos ni ajuste de volumen | Alto — lógica compleja restante |
+| ~~Deduplicación de ejercicios en draft~~ | ~~Posibles duplicados en la rutina~~ | ~~COMPLETADO~~ |
 | Google Calendar events | Usuarios no reciben invitaciones | Medio — API de Google Calendar |
-| Email con rutina semana 1 | Usuarios no tienen referencia escrita | Bajo — template HTML + Gmail API |
+| ~~Email con rutina semana 1~~ | ~~Usuarios no tienen referencia escrita~~ | ~~COMPLETADO~~ |
+| Validación de duración | Rutinas pueden exceder tiempo objetivo del usuario | Bajo — validar vs `session_duration_mins` |
 
 ### Prioridad Baja (migrar vía Cloud Scheduler)
 | Item | Impacto | Esfuerzo |
@@ -321,7 +337,7 @@ user_weekly_schedule?select=session_name,week,users(full_name,full_phone_number)
                     │                                  │
                     │   load_context → router →        │
                     │   kairos_agent ↔ tools            │
-                    │   (Gemini + 11 tools)            │
+                    │   (Gemini + 15 tools)            │
                     │                                  │
                     │   PostgresSaver (Supabase)       │
                     └──────────┬──────────────────────┘

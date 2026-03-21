@@ -57,14 +57,16 @@ Si solo da uno, pregunta por los que faltan.
 """
 
 TURN_3_PROMPT = """\
-TURNO ACTUAL: 3 de 5 — Lugar de entrenamiento y equipo
+TURNO ACTUAL: 3 de 5 — Lugar de entrenamiento, estilo y cardio
 Necesitas recolectar:
 1. Dónde entrena (training_environment): GYM o HOME
 2. Si entrena en casa (HOME), qué equipo tiene (home_equipment): texto libre \
 (ej: "mancuernas y bandas", "solo peso corporal", "barra y discos")
+3. Estilo de entrenamiento preferido (training_style): Pesas libres, Máquinas, Funcional, Mixto
+4. Si hace cardio (cardio_type): No, Caminata, Bicicleta, Running
 
 Si entrena en GYM, NO preguntes por equipo (home_equipment no aplica).
-Pregunta de forma conversacional y amigable.
+Pregunta de forma conversacional y natural. Si el usuario da varios datos juntos, regístralos todos.
 """
 
 TURN_4_PROMPT = """\
@@ -88,13 +90,17 @@ EXTRACCIÓN — presta atención a formatos variados:
 """
 
 TURN_5_PROMPT = """\
-TURNO ACTUAL: 5 de 5 — Estado de salud
-Pregunta si tiene alguna lesión, dolor crónico o condición de salud \
-que debas tener en cuenta para su rutina.
+TURNO ACTUAL: 5 de 5 — Salud, músculos y preferencias
+Necesitas recolectar:
+1. Estado de salud (health_status): ¿Alguna lesión, dolor crónico o condición? \
+   Guarda la respuesta EXACTA como texto libre. Si dice que no, registra "Sin restricciones".
+2. Músculos prioritarios (priority_muscles): ¿Qué músculos quiere enfocarse? \
+   (ej: "glúteo y pierna", "pecho y brazos", "espalda"). Si no tiene preferencia, dejar vacío.
+3. Ejercicios que NO le gustan (disliked_exercises): ¿Hay algo que quiera evitar? \
+   (ej: "pantorrillas", "cardio", "abdominales"). Si no tiene, dejar vacío.
 
-Guarda la respuesta EXACTA del usuario como: health_status (texto libre).
-Si dice que no tiene nada, registra "Sin restricciones".
-Sé empático si reporta alguna condición.
+Pregunta de forma natural. Sé empático si reporta alguna condición de salud.
+Si el usuario da todos los datos juntos, regístralos todos.
 """
 
 # Map turn number to prompt
@@ -115,18 +121,22 @@ Presenta un RESUMEN claro de su perfil y pide confirmación.
 Si el nombre del usuario está vacío, NO pongas ningún nombre después de "¡Listo!".
 
 Formato del resumen:
-"✅ ¡Listo! Este es tu perfil:
+"Este es tu perfil:
 
-🎯 Objetivo: {primary_goal}
-💪 Experiencia: {training_experience}
-📅 Días/semana: {days_available}
-🕐 Horario: {preferred_schedule}
-🏋️ Lugar: {training_environment}
+Objetivo: {primary_goal}
+Experiencia: {training_experience}
+Dias/semana: {days_available}
+Horario: {preferred_schedule}
+Lugar: {training_environment}
 {equipment_line}
-👤 Sexo: {biological_sex} | Edad: {age} | Estatura: {height_cm}cm | Peso: {weight_kg}kg
-🏥 Salud: {health_status}
+Estilo: {training_style}
+Cardio: {cardio_type}
+Sexo: {biological_sex} | Edad: {age} | Estatura: {height_cm}cm | Peso: {weight_kg}kg
+Salud: {health_status}
+Musculos prioritarios: {priority_muscles}
+Ejercicios a evitar: {disliked_exercises}
 
-¿Todo está correcto? Si algo está mal, dime qué dato quieres corregir."
+Todo esta correcto? Si algo esta mal, dime que dato quieres corregir."
 
 Responde EXACTAMENTE con este formato. No agregues nada más.
 """
@@ -234,11 +244,15 @@ def format_collected_summary(collected_data: dict) -> str:
         "preferred_schedule": "Horario",
         "training_environment": "Lugar",
         "home_equipment": "Equipo en casa",
+        "training_style": "Estilo",
+        "cardio_type": "Cardio",
         "biological_sex": "Sexo",
         "age": "Edad",
         "height_cm": "Estatura (cm)",
         "weight_kg": "Peso (kg)",
         "health_status": "Salud",
+        "priority_muscles": "Músculos prioritarios",
+        "disliked_exercises": "Ejercicios a evitar",
     }
 
     lines = []

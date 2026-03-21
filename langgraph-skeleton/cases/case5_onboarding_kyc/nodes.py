@@ -11,6 +11,16 @@ from datetime import datetime, timezone
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from src.shared.llm import get_llm
+
+
+def _ensure_str(content) -> str:
+    """Normalize LLM response content to str (Gemini 3 may return list)."""
+    if isinstance(content, list):
+        return "".join(
+            part.get("text", "") if isinstance(part, dict) else str(part)
+            for part in content
+        )
+    return content if isinstance(content, str) else str(content)
 from cases.case5_onboarding_kyc.state import (
     KYCState,
     KYC_FIELDS,
@@ -277,11 +287,12 @@ async def kyc_agent(state: KYCState) -> dict:
     response = await llm.ainvoke(messages)
 
     # Parse extracted data from response
-    new_data = _parse_extracted_data(response.content)
+    content_str = _ensure_str(response.content)
+    new_data = _parse_extracted_data(content_str)
     updated_collected = {**collected, **new_data}
 
     # Strip the JSON block from the visible response
-    clean_response = _strip_extracted_data(response.content)
+    clean_response = _strip_extracted_data(content_str)
 
     return {
         "messages": [AIMessage(content=clean_response)],
@@ -400,17 +411,18 @@ async def health_classifier(state: KYCState) -> dict:
     response = await llm.ainvoke(prompt)
 
     # Parse JSON from response
+    content_str = _ensure_str(response.content)
     try:
-        result = json.loads(response.content.strip())
+        result = json.loads(content_str.strip())
         code = result.get("code", "A")
         zones = result.get("zones", [])
     except (json.JSONDecodeError, AttributeError):
         # Fallback: try to extract from text
         code = "A"
         zones = []
-        content = response.content.upper()
+        content_upper = content_str.upper()
         for c in ["E", "D", "C", "B"]:
-            if f'"CODE": "{c}"' in content or f'"code": "{c.lower()}"' in response.content:
+            if f'"CODE": "{c}"' in content_upper or f'"code": "{c.lower()}"' in content_str:
                 code = c
                 break
 
@@ -436,7 +448,7 @@ async def route_to_trainer(state: KYCState) -> dict:
     return {
         "route_to_trainer": True,
         "messages": [response],
-        "response": response.content,
+        "response": _ensure_str(response.content),
     }
 
 

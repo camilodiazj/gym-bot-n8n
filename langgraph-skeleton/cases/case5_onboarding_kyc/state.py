@@ -11,19 +11,25 @@ from typing_extensions import TypedDict
 from langchain_core.messages import BaseMessage
 
 
-# The 10 KYC fields collected across 5 turns
+# The KYC fields collected across 5 turns
 KYC_FIELDS: dict[int, list[str]] = {
     1: ["primary_goal"],
     2: ["training_experience", "days_available", "preferred_schedule"],
-    3: ["training_environment", "home_equipment"],
+    3: ["training_environment", "home_equipment", "training_style", "cardio_type"],
     4: ["biological_sex", "age", "height_cm", "weight_kg"],
-    5: ["health_status"],
+    5: ["health_status", "priority_muscles", "disliked_exercises"],
 }
 
 ALL_KYC_FIELDS: set[str] = {f for fields in KYC_FIELDS.values() for f in fields}
 
-# Fields that are always required (home_equipment is conditional on training_environment)
-REQUIRED_FIELDS: set[str] = ALL_KYC_FIELDS - {"home_equipment"}
+# Fields that are always required (some are optional/conditional)
+REQUIRED_FIELDS: set[str] = ALL_KYC_FIELDS - {
+    "home_equipment",       # Only required for HOME users
+    "training_style",       # Optional (defaults to Mixto)
+    "cardio_type",          # Optional (defaults to No)
+    "priority_muscles",     # Optional (defaults to empty)
+    "disliked_exercises",   # Optional (defaults to empty)
+}
 
 
 class KYCState(TypedDict):
