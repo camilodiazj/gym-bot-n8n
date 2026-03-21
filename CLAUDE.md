@@ -8,7 +8,7 @@ GymBot is an AI-powered fitness coaching platform built on n8n workflows. It pro
 
 **Tech Stack:**
 - n8n (workflow automation platform)
-- LLMs: OpenAI GPT-5.x, Google Gemini 2.0-flash
+- LLMs: OpenAI GPT-5.x, Google Gemini 3 Flash Preview
 - Database: Supabase (PostgreSQL)
 - Messaging: WhatsApp Business API
 
@@ -597,12 +597,79 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ### Kairos Agent (Case 6) — Production
 - **Service URL**: `https://kairos-agent-148665080566.us-central1.run.app`
+- **LLM**: `gemini-3-flash-preview` via `langchain-google-genai` (configured in `langgraph-skeleton/src/shared/llm.py`)
 - **WhatsApp webhook**: `POST /webhook` (direct WhatsApp → Kairos → WhatsApp)
 - **API endpoint**: `POST /case6/chat` (for testing/integrations)
 - **Checkpointer**: PostgresSaver via Supabase pooler (session mode, port 5432)
-- **14 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises
+- **15 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises, send_routine_email
 - **Exercise ID resolution**: save_workout_plan auto-resolves spanish names to exercise_ids via ILIKE batch query
-- **Deploy & Test Guide**: See [`langgraph-skeleton/docs/deploy_and_test.md`](langgraph-skeleton/docs/deploy_and_test.md) — GCP project, deploy command, test users, curl examples, Supabase verification queries
+- **Tool-leak guardrail**: `_has_tool_leak()` detects when Gemini writes tool calls as text (e.g., `print(default_api...)`). If detected: retry once with correction → sanitize residual patterns. See `graph_live.py`.
+- **Enum normalization**: `_normalize_enum()` in `tools_supabase.py` maps LLM-extracted values to exact Supabase enum values (accent-safe, case-insensitive). Covers all 8 enum columns in `users_gym_profile`.
+- **Gemini 3 compatibility**: `_ensure_str()` normalizes `response.content` (Gemini 3 may return `list` instead of `str`).
+
+### Kairos Deploy & Test
+
+**Deploy to Cloud Run:**
+```bash
+cd langgraph-skeleton
+gcloud run deploy kairos-agent \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --project gen-lang-client-0432163259
+```
+- Build + deploy takes ~5 minutes
+- Env vars are already configured in the Cloud Run service — no `--set-env-vars` needed
+- Verify: `curl -s https://kairos-agent-148665080566.us-central1.run.app/ | python3 -m json.tool`
+
+**Test via `/case6/chat` endpoint:**
+```bash
+# Existing user — view routine
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+  -H "Content-Type: application/json" \
+  -d '{"phone_number":"570000000003","display_name":"Test","message":"Que me toca hoy?"}' | python3 -m json.tool
+
+# Existing user — schedule sessions
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+  -H "Content-Type: application/json" \
+  -d '{"phone_number":"570000000001","display_name":"Test","message":"Agenda lunes 24/03, miercoles 26/03 y viernes 28/03"}' | python3 -m json.tool
+
+# New user (dynamic) — triggers KYC flow
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+  -H "Content-Type: application/json" \
+  -d '{"phone_number":"570000000009","display_name":"Test","message":"Hola quiero entrenar"}' | python3 -m json.tool
+```
+
+**Verify in Supabase after tests:**
+```sql
+-- Check profile was saved with correct enums
+SELECT primary_goal, training_experience, biological_sex, preferred_schedule
+FROM users_gym_profile WHERE whatsapp_id = 570000000009;
+
+-- Check sessions were scheduled
+SELECT session_name, week_day, planned_day FROM user_weekly_schedule
+WHERE user_id = (SELECT user_id FROM users WHERE full_phone_number = '570000000001');
+```
+
+**Clean test user state (including checkpointer):**
+```sql
+DELETE FROM checkpoint_blobs WHERE thread_id IN ('case6_570000000009', 'kyc_570000000009');
+DELETE FROM checkpoint_writes WHERE thread_id IN ('case6_570000000009', 'kyc_570000000009');
+DELETE FROM checkpoints WHERE thread_id IN ('case6_570000000009', 'kyc_570000000009');
+DELETE FROM workouts WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');
+DELETE FROM user_weekly_schedule WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');
+DELETE FROM users_plans WHERE user_id IN (SELECT user_id FROM users WHERE full_phone_number = '570000000009');
+DELETE FROM users_gym_profile WHERE whatsapp_id = 570000000009;
+DELETE FROM users WHERE full_phone_number = '570000000009';
+```
+
+**Run unit tests:**
+```bash
+cd langgraph-skeleton
+.venv/bin/python -m pytest tests/test_case6.py -v
+```
+
+**Full guide**: See [`langgraph-skeleton/docs/deploy_and_test.md`](langgraph-skeleton/docs/deploy_and_test.md)
 
 ## Recent Changes
-- 001-kairos-unified-agent: Unified Agent Kairos deployed to Cloud Run with WhatsApp direct webhook, PostgresSaver, 11 tools, interactive draft routine creation with exercise ID resolution, KYC subgraph integration
+- 001-kairos-unified-agent: Unified Agent Kairos deployed to Cloud Run with Gemini 3 Flash Preview, WhatsApp direct webhook, PostgresSaver, 15 tools, tool-leak guardrail, enum normalization, interactive draft routine creation with exercise ID resolution, KYC subgraph integration
