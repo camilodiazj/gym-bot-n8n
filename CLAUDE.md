@@ -603,6 +603,10 @@ The `spec/` directory contains detailed implementation specs for major features:
 
 The `docs/` directory has operational docs: deployment guide, mesocycle renewal design, and WhatsApp deep link plan.
 
+The `langgraph-skeleton/docs/` directory has Kairos agent docs:
+- [`deploy_and_test.md`](langgraph-skeleton/docs/deploy_and_test.md) — Deploy & test guide for Cloud Run
+- [`onboarding_conversation_example.md`](langgraph-skeleton/docs/onboarding_conversation_example.md) — Baseline example of a full onboarding conversation (9 turns: greeting → routine saved → scheduled → email reactivo)
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.

@@ -4,13 +4,12 @@ Same 7-node graph as graph.py, but:
 - check_user queries Supabase users table via lookup_user_by_phone
 - save_profile writes to Supabase users + users_gym_profile tables
 
-Uses InMemorySaver checkpointer for multi-turn persistence via thread_id.
+Checkpointer is injected externally (PostgreSQL in production).
 """
 
 import json
 
 from langchain_core.messages import AIMessage
-from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import StateGraph, START, END
 
 from cases.case5_onboarding_kyc.state import KYCState
@@ -98,8 +97,12 @@ async def save_profile_live(state: KYCState) -> dict:
 
 # ═══════════════ BUILD GRAPH ═══════════════
 
-def build_case5_live_graph():
-    """Build Case 5 LIVE graph with Supabase-connected check_user and save_profile."""
+def build_case5_live_graph(checkpointer=None):
+    """Build Case 5 LIVE graph with Supabase-connected check_user and save_profile.
+
+    Args:
+        checkpointer: LangGraph checkpointer (e.g. AsyncPostgresSaver). If None, compiles without one.
+    """
     workflow = StateGraph(KYCState)
 
     # --- Nodes (live versions for check_user and save_profile) ---
@@ -143,6 +146,5 @@ def build_case5_live_graph():
     workflow.add_edge("save_profile", END)
     workflow.add_edge("route_to_trainer", END)
 
-    # --- Compile with checkpointer ---
-    checkpointer = InMemorySaver()
+    # --- Compile (checkpointer injected externally for production) ---
     return workflow.compile(checkpointer=checkpointer)

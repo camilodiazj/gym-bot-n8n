@@ -2,6 +2,9 @@
 
 Uses the PostgREST API (Supabase's auto-generated REST layer)
 to query tables directly via HTTP — no extra SDK needed.
+
+Uses a module-level AsyncClient for connection pooling (reuses TCP/TLS
+connections across requests instead of creating a new one per query).
 """
 
 import os
@@ -12,6 +15,21 @@ load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
+
+# Global HTTP client with connection pooling — reuses TCP/TLS connections.
+# httpx.AsyncClient is safe to share across async tasks.
+_http_client: httpx.AsyncClient | None = None
+
+
+def _get_client() -> httpx.AsyncClient:
+    """Get or create the shared HTTP client."""
+    global _http_client
+    if _http_client is None or _http_client.is_closed:
+        _http_client = httpx.AsyncClient(
+            timeout=httpx.Timeout(30.0, connect=10.0),
+            limits=httpx.Limits(max_connections=20, max_keepalive_connections=10),
+        )
+    return _http_client
 
 
 def _get_headers() -> dict:
@@ -55,10 +73,10 @@ async def supabase_query(
     if limit:
         params["limit"] = str(limit)
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url, headers=_get_headers(), params=params)
-        response.raise_for_status()
-        return response.json()
+    client = _get_client()
+    response = await client.get(url, headers=_get_headers(), params=params)
+    response.raise_for_status()
+    return response.json()
 
 
 async def supabase_insert(
@@ -88,10 +106,10 @@ async def supabase_insert(
     if on_conflict:
         params["on_conflict"] = on_conflict
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=data, params=params)
-        response.raise_for_status()
-        return response.json()
+    client = _get_client()
+    response = await client.post(url, headers=headers, json=data, params=params)
+    response.raise_for_status()
+    return response.json()
 
 
 async def supabase_update(
@@ -114,10 +132,10 @@ async def supabase_update(
     headers = _get_headers()
     headers["Prefer"] = "return=representation"
 
-    async with httpx.AsyncClient() as client:
-        response = await client.patch(url, headers=headers, json=data, params=filters)
-        response.raise_for_status()
-        return response.json()
+    client = _get_client()
+    response = await client.patch(url, headers=headers, json=data, params=filters)
+    response.raise_for_status()
+    return response.json()
 
 
 async def supabase_bulk_insert(
@@ -147,10 +165,10 @@ async def supabase_bulk_insert(
     if on_conflict:
         params["on_conflict"] = on_conflict
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=rows, params=params)
-        response.raise_for_status()
-        return response.json()
+    client = _get_client()
+    response = await client.post(url, headers=headers, json=rows, params=params)
+    response.raise_for_status()
+    return response.json()
 
 
 async def supabase_delete(
@@ -177,7 +195,7 @@ async def supabase_delete(
     headers = _get_headers()
     headers["Prefer"] = "return=representation"
 
-    async with httpx.AsyncClient() as client:
-        response = await client.delete(url, headers=headers, params=filters)
-        response.raise_for_status()
-        return response.json()
+    client = _get_client()
+    response = await client.delete(url, headers=headers, params=filters)
+    response.raise_for_status()
+    return response.json()

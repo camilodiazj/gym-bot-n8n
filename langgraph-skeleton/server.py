@@ -58,6 +58,48 @@ _kyc_sessions: dict[str, dict] = {}
 NUDGE_DELAY_SECONDS = 30 * 60  # 30 minutes
 NUDGE_CHECK_INTERVAL = 5 * 60  # Check every 5 minutes
 
+# ═══════════════ WEBHOOK DEDUP & LOCKING ═══════════════
+
+_user_locks: dict[str, asyncio.Lock] = {}  # per-phone serialization
+
+_background_tasks: set[asyncio.Task] = set()  # prevent GC of fire-and-forget tasks
+
+
+async def _is_duplicate_message(message_id: str, phone_from: str) -> bool:
+    """Return True if this message ID was already processed (Supabase-backed, multi-instance safe)."""
+    from src.shared.supabase_client import SUPABASE_URL, SUPABASE_ANON_KEY
+    if not SUPABASE_URL:
+        return False  # no Supabase → skip dedup
+    url = f"{SUPABASE_URL}/rest/v1/processed_webhook_messages"
+    headers = {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+        "Content-Type": "application/json",
+        "Prefer": "return=representation,resolution=ignore-duplicates",
+    }
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                url,
+                headers=headers,
+                json={"message_id": message_id, "phone_from": phone_from},
+                params={"on_conflict": "message_id"},
+                timeout=5,
+            )
+            if resp.status_code == 201 and resp.json():
+                return False  # inserted → first time seeing this message
+            return True  # conflict / empty → duplicate
+    except Exception as e:
+        logger.warning(f"[WA] Dedup check failed: {e} — processing anyway")
+        return False  # on error, allow processing (better than dropping messages)
+
+
+def _get_user_lock(phone_number: str) -> asyncio.Lock:
+    """Get or create an asyncio.Lock for a specific user."""
+    if phone_number not in _user_locks:
+        _user_locks[phone_number] = asyncio.Lock()
+    return _user_locks[phone_number]
+
 
 async def _nudge_checker():
     """Background task: check for stale KYC sessions and log nudge."""
@@ -81,6 +123,7 @@ async def _nudge_checker():
 async def lifespan(app):
     """Initialize async resources on startup, cleanup on shutdown."""
     global case6_live_graph
+
     async with postgres_checkpointer_context() as checkpointer:
         case6_live_graph = case6_live_workflow.compile(checkpointer=checkpointer)
         cp_name = type(checkpointer).__name__
@@ -803,8 +846,8 @@ async def _download_whatsapp_media(media_id: str) -> tuple[str, str] | None:
         return None
 
 
-async def _extract_message(data: dict) -> tuple[str | list, str, str, str] | None:
-    """Extract (message_body, phone_from, display_name, phone_number_id) from webhook payload.
+async def _extract_message(data: dict) -> tuple[str | list, str, str, str, str] | None:
+    """Extract (message_body, phone_from, display_name, phone_number_id, msg_id) from webhook payload.
 
     Returns None if the payload is not a valid user message (status update, audio, etc).
     message_body is str for text messages, list[dict] for image messages (langchain content blocks).
@@ -824,6 +867,7 @@ async def _extract_message(data: dict) -> tuple[str | list, str, str, str] | Non
 
     msg = messages[0]
     msg_type = msg.get("type", "")
+    msg_id = msg.get("id", "")  # WhatsApp message ID (wamid.xxx)
 
     # Filter audio and unsupported types
     if msg_type == "audio":
@@ -875,7 +919,7 @@ async def _extract_message(data: dict) -> tuple[str | list, str, str, str] | Non
     display_name = contacts[0].get("profile", {}).get("name", "") if contacts else ""
     phone_number_id = value.get("metadata", {}).get("phone_number_id", WHATSAPP_PHONE_NUMBER_ID)
 
-    return (body.strip() if isinstance(body, str) else body), phone_from, display_name, phone_number_id
+    return (body.strip() if isinstance(body, str) else body), phone_from, display_name, phone_number_id, msg_id
 
 
 @app.get("/webhook", tags=["WhatsApp Webhook"])
@@ -890,22 +934,89 @@ async def whatsapp_verify(
     raise HTTPException(status_code=403, detail="Verification failed")
 
 
+async def _process_message_background(
+    message_body: str | list,
+    phone_from: str,
+    display_name: str,
+    phone_number_id: str,
+    msg_id: str,
+):
+    """Process a WhatsApp message in the background (after 200 already returned)."""
+    import time as _time
+
+    t_start = _time.monotonic()
+    lock = _get_user_lock(phone_from)
+
+    t_lock_wait = _time.monotonic()
+    async with lock:
+        t_lock_acquired = _time.monotonic()
+        lock_wait_ms = int((t_lock_acquired - t_lock_wait) * 1000)
+        if lock_wait_ms > 100:
+            print(f"[TIMING] {phone_from} lock_wait={lock_wait_ms}ms", flush=True)
+
+        thread_id = f"case6_{phone_from}"
+        config = {"configurable": {"thread_id": thread_id}}
+        graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+        response_text = ""
+        last_error = None
+        for attempt in range(2):
+            try:
+                t_invoke = _time.monotonic()
+                result = await graph.ainvoke(
+                    {
+                        "messages": [HumanMessage(content=message_body)],
+                        "phone_number": phone_from,
+                        "display_name": display_name,
+                    },
+                    config,
+                )
+                t_invoke_done = _time.monotonic()
+                invoke_ms = int((t_invoke_done - t_invoke) * 1000)
+                print(f"[TIMING] {phone_from} graph_invoke={invoke_ms}ms", flush=True)
+
+                response_text = result.get("response", "")
+                last_error = None
+                break
+            except Exception as e:
+                last_error = e
+                logger.error(
+                    f"[WA-BG] Agent error for {phone_from} (attempt {attempt + 1}/2): "
+                    f"{type(e).__name__}: {e}\n{traceback.format_exc()}"
+                )
+                if attempt == 0:
+                    await asyncio.sleep(1)
+
+        if last_error is not None:
+            response_text = "Lo siento, tuve un problema procesando tu mensaje. Intenta de nuevo en un momento."
+
+        if response_text:
+            t_send = _time.monotonic()
+            await _send_whatsapp_message(phone_number_id, phone_from, response_text)
+            send_ms = int((_time.monotonic() - t_send) * 1000)
+            print(f"[TIMING] {phone_from} wa_send={send_ms}ms", flush=True)
+
+        total_ms = int((_time.monotonic() - t_start) * 1000)
+        print(f"[TIMING] {phone_from} TOTAL={total_ms}ms msg_id={msg_id}", flush=True)
+
+
 @app.post("/webhook", tags=["WhatsApp Webhook"])
 async def whatsapp_webhook(request: Request):
-    """Receive WhatsApp messages, process with Kairos agent, send response back.
-
-    This replaces the n8n KAIROS_AGENT_FLOW — direct WhatsApp ↔ Kairos.
-    """
+    """Receive WhatsApp messages — return 200 immediately, process in background."""
     data = await request.json()
 
-    # Extract message from webhook payload
     extracted = await _extract_message(data)
     if not extracted:
         return {"status": "ignored"}
 
-    message_body, phone_from, display_name, phone_number_id = extracted
+    message_body, phone_from, display_name, phone_number_id, msg_id = extracted
 
-    # Handle failed image downloads — short-circuit before LLM call
+    # Dedup: skip if we've already seen this message ID (Supabase-backed)
+    if msg_id and await _is_duplicate_message(msg_id, phone_from):
+        logger.info(f"[WA] Duplicate {msg_id} from {phone_from} — skip")
+        return {"status": "duplicate"}
+
+    # Handle failed image downloads — short-circuit (cheap, no background needed)
     if message_body == "[IMAGE_DOWNLOAD_FAILED]":
         await _send_whatsapp_message(
             phone_number_id, phone_from,
@@ -914,43 +1025,16 @@ async def whatsapp_webhook(request: Request):
         return {"status": "ok"}
 
     log_preview = message_body[:50] if isinstance(message_body, str) else "[image]"
-    logger.info(f"[WA] {phone_from} ({display_name}): {log_preview}")
+    logger.info(f"[WA] {phone_from} ({display_name}): {log_preview} [msg_id={msg_id}]")
 
-    # Call Kairos agent (same logic as /case6/chat)
-    thread_id = f"case6_{phone_from}"
-    config = {"configurable": {"thread_id": thread_id}}
-    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
-
-    response_text = ""
-    last_error = None
-    for attempt in range(2):
-        try:
-            result = await graph.ainvoke(
-                {
-                    "messages": [HumanMessage(content=message_body)],
-                    "phone_number": phone_from,
-                    "display_name": display_name,
-                },
-                config,
-            )
-            response_text = result.get("response", "")
-            last_error = None
-            break
-        except Exception as e:
-            last_error = e
-            logger.error(
-                f"[WA] Agent error for {phone_from} (attempt {attempt + 1}/2): "
-                f"{type(e).__name__}: {e}\n{traceback.format_exc()}"
-            )
-            if attempt == 0:
-                await asyncio.sleep(1)
-
-    if last_error is not None:
-        response_text = "Lo siento, tuve un problema procesando tu mensaje. Intenta de nuevo en un momento."
-
-    # Send response back via WhatsApp
-    if response_text:
-        await _send_whatsapp_message(phone_number_id, phone_from, response_text)
+    # Fire-and-forget: process in background, return 200 immediately
+    task = asyncio.create_task(
+        _process_message_background(
+            message_body, phone_from, display_name, phone_number_id, msg_id,
+        )
+    )
+    _background_tasks.add(task)
+    task.add_done_callback(_background_tasks.discard)
 
     return {"status": "ok"}
 

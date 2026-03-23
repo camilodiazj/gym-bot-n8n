@@ -1432,7 +1432,10 @@ async def send_routine_email(user_id: str) -> str:
     user = users[0]
     email = user.get("email")
     if not email:
-        return json.dumps({"success": False, "error": "El usuario no tiene email registrado"})
+        return json.dumps({
+            "success": False,
+            "error": "El usuario no tiene email registrado. Pregúntale su email y usa update_user_profile para guardarlo, luego reintenta send_routine_email.",
+        })
 
     # 2. Get plan
     plans = await supabase_query(
@@ -1506,4 +1509,245 @@ async def send_routine_email(user_id: str) -> str:
         "email": email,
         "days_sent": len(exercises_by_day),
         "exercises_total": sum(len(v) for v in exercises_by_day.values()),
+    })
+
+
+# ═══════════════ ONBOARDING & PROFILE ═══════════════
+
+from cases.case5_onboarding_kyc.tools_supabase import (
+    _normalize_enum,
+    _VALID_GOALS, _GOAL_ALIASES,
+    _VALID_EXPERIENCE, _EXPERIENCE_ALIASES,
+    _VALID_ENVIRONMENT, _ENVIRONMENT_ALIASES,
+    _VALID_SCHEDULE, _SCHEDULE_ALIASES,
+    _VALID_STYLE, _STYLE_ALIASES,
+    _VALID_SEX, _SEX_ALIASES,
+    _VALID_CARDIO, _CARDIO_ALIASES,
+    _VALID_CARDIO_FREQ, _CARDIO_FREQ_ALIASES,
+    _VALID_FREQUENCY, _FREQUENCY_ALIASES,
+)
+from cases.case5_onboarding_kyc.prompts import HEALTH_CLASSIFIER_PROMPT
+
+
+# Experience → fitness level mapping
+_EXPERIENCE_TO_LEVEL = {
+    "Nunca he entrenado": "Principiante",
+    "Menos de 6 meses": "Principiante",
+    "6 a 12 meses": "Intermedio",
+    "1 a 3 años": "Intermedio",
+    "Más de 3 años": "Avanzado",
+}
+
+
+async def _classify_health(health_text: str) -> dict:
+    """Classify health text into code A-E using LLM.
+
+    Returns: {"code": "A", "zones": []}
+    """
+    from src.shared.llm import get_llm
+
+    # Short-circuit for obvious "no issues" phrases
+    lower = health_text.lower().strip()
+    no_issues = [
+        "sin restricciones", "no", "ninguna", "estoy bien", "nada",
+        "no tengo", "sano", "sana", "sin problemas", "todo bien",
+        "no, estoy bien", "nop", "nel", "nope",
+    ]
+    if lower in no_issues or lower.startswith("no,") or lower.startswith("no "):
+        return {"code": "A", "zones": []}
+
+    prompt = HEALTH_CLASSIFIER_PROMPT.format(health_text=health_text)
+    llm = get_llm(temperature=0)
+    response = await llm.ainvoke(prompt)
+
+    content = response.content or ""
+    if isinstance(content, list):
+        content = "".join(
+            p.get("text", "") if isinstance(p, dict) else str(p) for p in content
+        )
+
+    try:
+        result = json.loads(content.strip())
+        return {"code": result.get("code", "A"), "zones": result.get("zones", [])}
+    except (json.JSONDecodeError, AttributeError):
+        logger.warning(f"[HEALTH] Failed to parse classification: {content}")
+        return {"code": "A", "zones": []}
+
+
+@tool
+async def register_new_user(
+    phone: str,
+    full_name: str,
+    primary_goal: str,
+    training_experience: str,
+    days_available: int,
+    training_environment: str,
+    health_text: str,
+    home_equipment: str = "",
+) -> str:
+    """Registra un usuario nuevo con sus datos esenciales de perfil.
+
+    Llama esta herramienta cuando hayas recolectado los datos necesarios del usuario
+    para crear su rutina: objetivo, experiencia, días disponibles, ambiente de
+    entrenamiento, y estado de salud.
+
+    Args:
+        phone: Número completo del usuario (ej: "573001234567")
+        full_name: Nombre del usuario
+        primary_goal: Objetivo de entrenamiento (ej: "Ganar masa muscular", "Bajar grasa")
+        training_experience: Experiencia (ej: "Más de 3 años", "Nunca he entrenado")
+        days_available: Días por semana disponibles (2-6)
+        training_environment: "GYM" o "HOME"
+        health_text: Descripción de salud del usuario (ej: "Sin restricciones", "Me duele la rodilla")
+        home_equipment: Equipo en casa, solo si training_environment=HOME (ej: "mancuernas, bandas")
+
+    Returns:
+        JSON con user_id, health_code, y confirmación del registro
+    """
+    # 1. Classify health
+    health_result = await _classify_health(health_text)
+    health_code = health_result["code"]
+
+    if health_code == "E":
+        return json.dumps({
+            "success": False,
+            "health_code": "E",
+            "route_to_trainer": True,
+            "affected_zones": health_result["zones"],
+            "message": "Condición de salud severa detectada. Recomendar consulta con profesional.",
+        }, ensure_ascii=False)
+
+    # 2. Create user in users table
+    user_id = str(uuid.uuid4())
+    cel_number = int(phone) if phone.isdigit() else 0
+
+    user_data = {
+        "user_id": user_id,
+        "full_name": full_name,
+        "cel_number": cel_number,
+        "full_phone_number": phone,
+        "timezone": "America/Bogota",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "country_indicative": 57,
+    }
+
+    await supabase_insert(table="users", data=user_data)
+
+    # 3. Normalize enums
+    goal = _normalize_enum(primary_goal, _VALID_GOALS, _GOAL_ALIASES, "Salud general / recomposición corporal")
+    experience = _normalize_enum(training_experience, _VALID_EXPERIENCE, _EXPERIENCE_ALIASES, "Menos de 6 meses")
+    environment = _normalize_enum(training_environment, _VALID_ENVIRONMENT, _ENVIRONMENT_ALIASES, "GYM")
+    fitness_level = _EXPERIENCE_TO_LEVEL.get(experience, "Intermedio")
+
+    # 4. Save gym profile with essential fields only (rest stays NULL)
+    profile_data = {
+        "whatsapp_id": cel_number,
+        "full_name": full_name,
+        "primary_goal": goal,
+        "training_experience": experience,
+        "days_available": days_available,
+        "training_environment": environment,
+        "health_status": health_code,
+        "fitness_level": fitness_level,
+    }
+    if home_equipment and environment == "HOME":
+        profile_data["home_equipment"] = home_equipment
+
+    await supabase_insert(table="users_gym_profile", data=profile_data, upsert=True)
+
+    logger.info(f"[REGISTER] New user {full_name} ({phone}) registered: {goal}, {experience}, {days_available}d, {environment}, health={health_code}")
+
+    return json.dumps({
+        "success": True,
+        "user_id": user_id,
+        "health_code": health_code,
+        "fitness_level": fitness_level,
+        "goal": goal,
+        "days_available": days_available,
+        "environment": environment,
+    }, ensure_ascii=False)
+
+
+# Allowed fields for update_user_profile
+_USERS_FIELDS = {"email"}
+_PROFILE_FIELDS = {
+    "age", "biological_sex", "height_cm", "weight_kg",
+    "preferred_schedule", "training_style", "priority_muscles",
+    "disliked_exercises", "cardio_type", "cardio_frequency",
+    "primary_goal", "training_experience", "days_available",
+    "training_environment", "home_equipment", "health_status",
+    "fitness_level",
+}
+
+# Enum normalization map for profile fields
+_ENUM_NORMALIZERS = {
+    "primary_goal": (_VALID_GOALS, _GOAL_ALIASES, "Salud general / recomposición corporal"),
+    "training_experience": (_VALID_EXPERIENCE, _EXPERIENCE_ALIASES, "Menos de 6 meses"),
+    "preferred_schedule": (_VALID_SCHEDULE, _SCHEDULE_ALIASES, "Mañana"),
+    "training_style": (_VALID_STYLE, _STYLE_ALIASES, "Mixto"),
+    "biological_sex": (_VALID_SEX, _SEX_ALIASES, "M"),
+    "cardio_type": (_VALID_CARDIO, _CARDIO_ALIASES, "No"),
+    "cardio_frequency": (_VALID_CARDIO_FREQ, _CARDIO_FREQ_ALIASES, "0"),
+    "training_environment": (_VALID_ENVIRONMENT, _ENVIRONMENT_ALIASES, "GYM"),
+}
+
+
+@tool
+async def update_user_profile(user_id: str, field: str, value: str) -> str:
+    """Actualiza un campo del perfil del usuario.
+
+    Usa esta herramienta cuando necesites guardar un dato que el usuario
+    acaba de proporcionar (email, edad, peso, etc).
+
+    Args:
+        user_id: UUID del usuario
+        field: Campo a actualizar. Valores válidos:
+            - Para tabla users: "email"
+            - Para tabla users_gym_profile: "age", "biological_sex", "height_cm",
+              "weight_kg", "preferred_schedule", "training_style", "priority_muscles",
+              "disliked_exercises", "cardio_type", "cardio_frequency", "primary_goal",
+              "training_experience", "days_available", "training_environment",
+              "home_equipment", "health_status", "fitness_level"
+        value: Nuevo valor del campo
+
+    Returns:
+        JSON confirmando la actualización
+    """
+    if field in _USERS_FIELDS:
+        result = await supabase_update(
+            "users", {field: value}, {"user_id": f"eq.{user_id}"}
+        )
+        return json.dumps({"success": True, "table": "users", "field": field, "updated": len(result)})
+
+    if field in _PROFILE_FIELDS:
+        # Normalize enum if applicable
+        final_value = value
+        if field in _ENUM_NORMALIZERS:
+            valid, aliases, default = _ENUM_NORMALIZERS[field]
+            final_value = _normalize_enum(value, valid, aliases, default)
+
+        # Convert numeric fields
+        if field in ("age", "height_cm", "days_available"):
+            final_value = int(float(final_value))
+        elif field == "weight_kg":
+            final_value = float(final_value)
+
+        # Get phone from user_id to update gym profile
+        users = await supabase_query(
+            "users", select="full_phone_number",
+            filters={"user_id": f"eq.{user_id}"}, limit=1,
+        )
+        if not users:
+            return json.dumps({"success": False, "error": "Usuario no encontrado"})
+
+        phone = str(users[0]["full_phone_number"])
+        result = await supabase_update(
+            "users_gym_profile", {field: final_value},
+            {"whatsapp_id": f"eq.{phone}"},
+        )
+        return json.dumps({"success": True, "table": "users_gym_profile", "field": field, "updated": len(result)})
+
+    return json.dumps({
+        "success": False,
+        "error": f"Campo '{field}' no es válido. Campos permitidos: {sorted(_USERS_FIELDS | _PROFILE_FIELDS)}",
     })
