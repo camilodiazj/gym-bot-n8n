@@ -62,7 +62,8 @@ async def check_user_live(state: KYCState) -> dict:
 async def save_profile_live(state: KYCState) -> dict:
     """Save completed KYC profile to Supabase users + users_gym_profile."""
     collected = state.get("collected_data", {})
-    display_name = state.get("display_name", "")
+    # Prefer full_name from KYC collected data over WhatsApp display_name
+    display_name = collected.get("full_name") or state.get("display_name", "") or "Usuario"
     phone = state.get("phone_number", "")
     health_code = state.get("health_code", "A")
 
@@ -70,6 +71,7 @@ async def save_profile_live(state: KYCState) -> dict:
     user_result_str = await save_user.ainvoke({
         "full_name": display_name,
         "phone": phone,
+        "email": collected.get("email", ""),
     })
     user_result = json.loads(user_result_str)
 

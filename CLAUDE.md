@@ -308,6 +308,25 @@ New Code node that transforms user profile data for AI personalization:
 +---------------------------------------------------------------------+
 ```
 
+## Direct Supabase Access
+
+Credentials are in `langgraph-skeleton/.env`. To query Supabase directly via PostgREST:
+
+```bash
+source langgraph-skeleton/.env
+# SELECT
+curl -s "${SUPABASE_URL}/rest/v1/users?select=full_name,email&limit=5" \
+  -H "apikey: ${SUPABASE_ANON_KEY}" -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" | python3 -m json.tool
+
+# SELECT with filter
+curl -s "${SUPABASE_URL}/rest/v1/users?full_phone_number=eq.573506267523&select=*" \
+  -H "apikey: ${SUPABASE_ANON_KEY}" -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" | python3 -m json.tool
+
+# Note: PATCH/UPDATE may be blocked by RLS with anon key. Use Supabase SQL Editor for writes.
+```
+
+**Prefer direct Supabase queries** over querying through the Kairos API when verifying data — it's faster and more reliable.
+
 ## Development Commands
 
 ### Frontend (workout-tracker/)

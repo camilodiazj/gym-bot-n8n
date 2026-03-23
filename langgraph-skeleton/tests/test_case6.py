@@ -418,6 +418,37 @@ def test_normalize_planned_day_iso():
     assert result == "2026-03-17"
 
 
+# ═══════════════ _parse_planned_date TESTS ═══════════════
+
+
+def test_parse_planned_date_from_utc():
+    from cases.case6_unified_agent.context_loader import _parse_planned_date
+
+    row = {"planned_day_utc": "2026-03-22T05:00:00+00:00", "planned_day": "22/03/2026"}
+    assert _parse_planned_date(row) == "2026-03-22"
+
+
+def test_parse_planned_date_dd_mm_yyyy_fallback():
+    from cases.case6_unified_agent.context_loader import _parse_planned_date
+
+    row = {"planned_day": "22/03/2026"}
+    assert _parse_planned_date(row) == "2026-03-22"
+
+
+def test_parse_planned_date_iso_fallback():
+    from cases.case6_unified_agent.context_loader import _parse_planned_date
+
+    row = {"planned_day": "2026-03-22"}
+    assert _parse_planned_date(row) == "2026-03-22"
+
+
+def test_parse_planned_date_empty():
+    from cases.case6_unified_agent.context_loader import _parse_planned_date
+
+    row = {}
+    assert _parse_planned_date(row) == ""
+
+
 # ═══════════════ SCHEDULE_SESSIONS VALIDATION TESTS ═══════════════
 
 

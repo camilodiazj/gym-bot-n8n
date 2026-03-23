@@ -34,14 +34,18 @@ DATOS RECOLECTADOS HASTA AHORA:
 # --- Turn-Specific Prompts ---
 
 TURN_1_PROMPT = """\
-TURNO ACTUAL: 1 de 5 — Objetivo de entrenamiento
-Pregunta al usuario cuál es su objetivo principal de entrenamiento.
-Opciones válidas: Ganar masa muscular, Bajar grasa, Mejorar fuerza, \
+TURNO ACTUAL: 1 de 5 — Nombre, email y objetivo
+Pregunta al usuario:
+1. Su nombre completo (para personalizar su experiencia).
+2. Su email (opcional — para enviarle su rutina por correo). Si no quiere darlo, no insistas.
+3. Cuál es su objetivo principal de entrenamiento.
+Opciones válidas de objetivo: Ganar masa muscular, Bajar grasa, Mejorar fuerza, \
 Mejorar resistencia, Salud general / recomposición corporal.
-NO listes las opciones como menú. Pregunta de forma conversacional.
-Si el usuario responde algo que no encaja, redirige amablemente.
+NO listes las opciones como menú. Pregunta de forma conversacional y natural, \
+como si fuera una sola pregunta fluida.
+Si el usuario responde algo que no encaja en objetivo, redirige amablemente.
 
-Guarda el dato como: primary_goal
+Guarda los datos como: full_name, email, primary_goal
 """
 
 TURN_2_PROMPT = """\

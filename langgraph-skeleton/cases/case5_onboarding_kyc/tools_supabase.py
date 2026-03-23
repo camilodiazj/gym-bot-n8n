@@ -266,7 +266,7 @@ async def save_gym_profile(
         "whatsapp_id": whatsapp_id,
         "full_name": display_name,
         "submission_date": datetime.now(timezone.utc).isoformat(),
-        "email": f"{phone}@gymbot.local",
+        "email": data.get("email") or f"{phone}@gymbot.local",
         # KYC collected fields (all normalized)
         "primary_goal": goal,
         "training_experience": experience,

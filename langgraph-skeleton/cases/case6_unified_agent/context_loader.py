@@ -28,6 +28,25 @@ def _days_ago_bogota(days: int) -> str:
     return target.strftime("%Y-%m-%d")
 
 
+def _parse_planned_date(row: dict) -> str:
+    """Extract YYYY-MM-DD from planned_day_utc (preferred) or planned_day (fallback).
+
+    planned_day_utc is a timestamptz populated by DB trigger — always reliable.
+    planned_day is a text field in DD/MM/YYYY (Kairos) or YYYY-MM-DD (fixtures) format.
+    """
+    utc_val = row.get("planned_day_utc")
+    if utc_val:
+        return utc_val[:10]  # "2026-03-22T05:00:00+00:00" → "2026-03-22"
+
+    # Fallback: parse planned_day text
+    pd = row.get("planned_day", "")
+    if "/" in pd:
+        parts = pd.split("/")
+        if len(parts) == 3:
+            return f"{parts[2]}-{parts[1]}-{parts[0]}"  # DD/MM/YYYY → YYYY-MM-DD
+    return pd  # Already YYYY-MM-DD or unknown format
+
+
 async def load_user_context(phone_number: str) -> UserContext:
     """Load full user context from Supabase in parallel queries.
 
@@ -81,7 +100,7 @@ async def load_user_context(phone_number: str) -> UserContext:
         ),
         supabase_query(
             "user_weekly_schedule",
-            select='day_routine_id,session_name,week,planned_day,"Completed"',
+            select='day_routine_id,session_name,week,planned_day,planned_day_utc,"Completed"',
             filters={
                 "user_id": f"eq.{user_id}",
                 "planned_day_utc": f"gte.{window_start}",
@@ -119,18 +138,18 @@ async def load_user_context(phone_number: str) -> UserContext:
     future_sessions = []
 
     for row in schedule_result:
-        planned = row.get("planned_day", "")
+        planned_date = _parse_planned_date(row)
         completed = row.get("Completed", False)
 
-        if planned == today:
+        if planned_date == today:
             todays_sessions.append(row)
-        elif planned < today and not completed:
+        elif planned_date < today and not completed:
             missed_sessions.append(row)
-        elif planned > today:
+        elif planned_date > today:
             future_sessions.append(row)
 
     # Sort future sessions to find the next one
-    future_sessions.sort(key=lambda r: r.get("planned_day", ""))
+    future_sessions.sort(key=lambda r: _parse_planned_date(r))
     next_scheduled = None
     if future_sessions:
         ns = future_sessions[0]

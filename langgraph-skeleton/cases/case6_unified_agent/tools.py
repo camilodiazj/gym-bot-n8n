@@ -9,9 +9,12 @@ Tools are grouped by phase:
 """
 
 import json
+import logging
 import os
 import uuid
 from datetime import datetime, timedelta, timezone
+
+logger = logging.getLogger(__name__)
 
 from langchain_core.tools import tool
 
@@ -25,6 +28,45 @@ from src.shared.supabase_client import (
 
 
 BOGOTA_UTC_OFFSET = timedelta(hours=-5)
+
+# Mapping from user-facing equipment terms (Spanish free text) to DB exercise.equipment values.
+# The DB has mixed values: "dumbbell", "barbell", "machine", "cable", "bodyweight",
+# "resistance_band", "kettlebell", "smith", "pull_bar", plus some Spanish ("Mancuerna", "Barra", etc.)
+_EQUIPMENT_NORMALIZE: dict[str, set[str]] = {
+    "mancuernas": {"dumbbell", "mancuerna"},
+    "mancuerna": {"dumbbell", "mancuerna"},
+    "pesas": {"dumbbell", "mancuerna", "barbell", "barra"},
+    "barra": {"barbell", "barra"},
+    "bandas": {"resistance_band", "bands"},
+    "banda": {"resistance_band", "bands"},
+    "bandas de resistencia": {"resistance_band", "bands"},
+    "máquinas": {"machine", "máquina", "cable", "polea"},
+    "maquinas": {"machine", "máquina", "cable", "polea"},
+    "kettlebell": {"kettlebell"},
+    "pesa rusa": {"kettlebell"},
+    "peso corporal": {"bodyweight", "peso corporal"},
+    "cuerpo": {"bodyweight", "peso corporal"},
+    "smith": {"smith"},
+    "barra guiada": {"smith"},
+    "polea": {"cable", "polea"},
+    "cables": {"cable", "polea"},
+}
+
+
+def _normalize_equipment(raw_equipment: str) -> set[str]:
+    """Convert user-facing equipment text to set of DB equipment values.
+
+    Handles free text like "unas mancuernas, bandas" → {"dumbbell", "mancuerna", "resistance_band", "bands"}.
+    Always includes bodyweight.
+    """
+    raw_lower = raw_equipment.lower()
+    db_values: set[str] = {"bodyweight", "peso corporal"}  # always allowed for HOME
+
+    for keyword, mapped in _EQUIPMENT_NORMALIZE.items():
+        if keyword in raw_lower:
+            db_values.update(mapped)
+
+    return db_values
 
 
 def _today_bogota() -> str:
@@ -359,27 +401,36 @@ async def _lookup_user_profile(user_id: str | None) -> dict:
     """Look up health_status, training_environment, home_equipment from DB.
 
     Returns dict with keys: health_status, training_environment, home_equipment.
+    whatsapp_id in users_gym_profile is bigint (phone number), so we must
+    resolve user_id → full_phone_number first, then query by phone.
     """
     default = {"health_status": "A", "training_environment": "GYM", "home_equipment": ""}
     if not user_id:
         return default
-    profiles = await supabase_query(
-        "users_gym_profile",
-        select="health_status,training_environment,home_equipment",
-        filters={"whatsapp_id": f"eq.{user_id}"},
-        limit=1,
-    )
-    if not profiles:
+
+    # Resolve user_id (UUID) → phone number first
+    phone = None
+    try:
         users = await supabase_query(
             "users", select="full_phone_number",
             filters={"user_id": f"eq.{user_id}"}, limit=1,
         )
         if users:
             phone = users[0].get("full_phone_number", "")
+    except Exception:
+        pass
+
+    profiles = []
+    if phone:
+        try:
             profiles = await supabase_query(
-                "users_gym_profile", select="health_status,training_environment,home_equipment",
-                filters={"whatsapp_id": f"eq.{phone}"}, limit=1,
+                "users_gym_profile",
+                select="health_status,training_environment,home_equipment",
+                filters={"whatsapp_id": f"eq.{phone}"},
+                limit=1,
             )
+        except Exception:
+            pass
     if profiles:
         p = profiles[0]
         return {
@@ -447,18 +498,13 @@ async def get_exercises_for_draft(
     effective_equipment = equipment
     if not effective_equipment and profile and profile["training_environment"] == "HOME":
         home_eq = profile.get("home_equipment", "")
-        if home_eq:
-            effective_equipment = home_eq
-        else:
-            effective_equipment = "peso corporal"
+        effective_equipment = home_eq if home_eq else "peso corporal"
 
     if effective_equipment:
-        equip_list = [e.strip().lower() for e in effective_equipment.split(",")]
-        # Always allow bodyweight for HOME users
-        equip_list_set = set(equip_list) | {"peso corporal", "bodyweight"}
+        allowed_equip = _normalize_equipment(effective_equipment)
         equip_filtered = [
             r for r in filtered
-            if r.get("equipment", "").lower() in equip_list_set
+            if r.get("equipment", "").lower() in allowed_equip
         ]
         if equip_filtered:
             filtered = equip_filtered
@@ -525,8 +571,8 @@ async def find_exercise_alternatives(
         effective_equipment = home_eq if home_eq else "peso corporal"
 
     if effective_equipment:
-        equip_list_set = {e.strip().lower() for e in effective_equipment.split(",")} | {"peso corporal", "bodyweight"}
-        equip_filtered = [r for r in filtered if r.get("equipment", "").lower() in equip_list_set]
+        allowed_equip = _normalize_equipment(effective_equipment)
+        equip_filtered = [r for r in filtered if r.get("equipment", "").lower() in allowed_equip]
         if equip_filtered:
             filtered = equip_filtered
 
@@ -741,6 +787,7 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
                 "mesocycle_number": 1, "week_schedule": week_schedule,
             },
             upsert=True,
+            on_conflict="user_id",
         )
 
     # Build workout rows for 4 weeks (only resolved exercises)
@@ -1116,6 +1163,13 @@ async def renew_rotate_exercises(user_id: str, health_status: str = "A") -> str:
     )
     ex_map = {e["exercise_id"]: e for e in exercises_data}
 
+    # Lookup user profile for equipment filtering (HOME users)
+    profile = await _lookup_user_profile(user_id)
+    allowed_equip = None
+    if profile and profile["training_environment"] == "HOME":
+        home_eq = profile.get("home_equipment", "") or "peso corporal"
+        allowed_equip = _normalize_equipment(home_eq)
+
     # Find alternatives for each unique exercise
     rotated = []
     kept = []
@@ -1137,6 +1191,12 @@ async def renew_rotate_exercises(user_id: str, health_status: str = "A") -> str:
             },
             limit=10,
         )
+
+        # Apply equipment filter (HOME users only get exercises matching their equipment)
+        if allowed_equip:
+            equip_filtered = [c for c in candidates if c.get("equipment", "").lower() in allowed_equip]
+            if equip_filtered:
+                candidates = equip_filtered
 
         # Apply health restrictions
         candidates = _apply_health_filter(candidates, health_status)
@@ -1430,12 +1490,15 @@ async def send_routine_email(user_id: str) -> str:
     html = _build_routine_html(user.get("full_name", ""), plan, exercises_by_day)
 
     try:
+        print(f"[EMAIL] Sending routine to {email} for user {user_id} ({len(exercises_by_day)} days)", flush=True)
         await _send_email(
             to=email,
             subject=f"Tu rutina Kairos — {plan.get('goal', '')}",
             html_body=html,
         )
+        print(f"[EMAIL] Sent successfully to {email}", flush=True)
     except Exception as e:
+        print(f"[EMAIL] FAILED to send to {email}: {e}", flush=True)
         return json.dumps({"success": False, "error": f"Error al enviar email: {str(e)[:200]}"})
 
     return json.dumps({
