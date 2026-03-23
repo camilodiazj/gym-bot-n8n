@@ -13,6 +13,12 @@ import (
 type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
+	Kairos   KairosConfig
+}
+
+// KairosConfig holds Kairos agent API configuration
+type KairosConfig struct {
+	APIURL string
 }
 
 // ServerConfig holds server-related configuration
@@ -48,6 +54,9 @@ func Load() (*Config, error) {
 	if cfg.Database.URL == "" {
 		return nil, fmt.Errorf("SUPABASE_DB_URL is required")
 	}
+
+	// Kairos config
+	cfg.Kairos.APIURL = getEnv("KAIROS_API_URL", "https://kairos-agent-148665080566.us-central1.run.app")
 
 	return cfg, nil
 }

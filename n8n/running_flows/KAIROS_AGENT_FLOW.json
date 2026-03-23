@@ -83,7 +83,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://kairos-agent-148665080566.us-central1.run.app/case6/chat",
+        "url": "https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat",
         "sendBody": true,
         "specifyBody": "keypair",
         "bodyParameters": {

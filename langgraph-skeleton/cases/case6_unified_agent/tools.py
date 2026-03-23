@@ -1751,3 +1751,139 @@ async def update_user_profile(user_id: str, field: str, value: str) -> str:
         "success": False,
         "error": f"Campo '{field}' no es válido. Campos permitidos: {sorted(_USERS_FIELDS | _PROFILE_FIELDS)}",
     })
+
+
+# ═══════════════ DRAFT ROUTINE PREVIEW ═══════════════
+
+async def _fetch_alternatives_for_exercise(
+    pattern: str,
+    level: str,
+    exclude_ids: list[str],
+    profile: dict | None,
+    limit: int = 4,
+) -> list[dict]:
+    """Fetch alternative exercises for a given pattern, excluding already-used IDs."""
+    rows = await supabase_query(
+        "exercises",
+        select="exercise_id,spanish_name,pattern,role,main_muscle,link,equipment,level",
+        filters={"pattern": f"eq.{pattern}"},
+        limit=limit * 4,
+    )
+
+    # Filter by level compatibility
+    level_order = {"Principiante": 1, "Intermedio": 2, "Avanzado": 3}
+    user_level = level_order.get(level, 2)
+    filtered = [
+        r for r in rows
+        if level_order.get(r.get("level", "Intermedio"), 2) <= user_level
+        and r.get("exercise_id") not in exclude_ids
+    ]
+
+    # Equipment filter (HOME users)
+    if profile and profile.get("training_environment") == "HOME":
+        home_eq = profile.get("home_equipment", "peso corporal")
+        allowed = _normalize_equipment(home_eq)
+        equip_filtered = [r for r in filtered if r.get("equipment", "").lower() in allowed]
+        if equip_filtered:
+            filtered = equip_filtered
+
+    # Health filter
+    hs = profile.get("health_status", "A") if profile else "A"
+    filtered = _apply_health_filter(filtered, hs)
+
+    return [
+        {
+            "exercise_id": r["exercise_id"],
+            "spanish_name": r["spanish_name"],
+            "main_muscle": r.get("main_muscle", ""),
+            "link": r.get("link", ""),
+        }
+        for r in filtered[:limit]
+    ]
+
+
+@tool
+async def save_draft_preview(user_id: str, draft_json: str) -> str:
+    """Guarda el borrador de rutina y genera un enlace de preview para el usuario.
+
+    Enriquece cada ejercicio con 3-5 alternativas del mismo patrón/nivel.
+    El usuario puede ver la rutina visualmente y hacer swaps antes de aprobar.
+
+    Args:
+        user_id: UUID del usuario
+        draft_json: JSON string con la estructura de DraftRoutine:
+            {week_schedule, goal, level, days: [{day_number, title, exercises: [{exercise_id, spanish_name, pattern, role, sets, reps, rir, rest_seconds, exercise_order}]}]}
+
+    Returns:
+        URL de preview y código de acceso
+    """
+    draft = json.loads(draft_json)
+    level = draft.get("level", "Intermedio")
+
+    # Lookup user profile for health/equipment filtering
+    profile = await _lookup_user_profile(user_id)
+
+    # Collect all exercise_ids in the draft to exclude from alternatives
+    all_exercise_ids: set[str] = set()
+    for day in draft.get("days", []):
+        for ex in day.get("exercises", []):
+            eid = ex.get("exercise_id", "")
+            if eid:
+                all_exercise_ids.add(eid)
+
+    # Enrich each exercise with alternatives
+    for day in draft.get("days", []):
+        for ex in day.get("exercises", []):
+            pattern = ex.get("pattern", "")
+            eid = ex.get("exercise_id", "")
+            if not pattern:
+                ex["alternatives"] = []
+                continue
+
+            # Exclude all exercises already in the draft + this exercise
+            exclude = list(all_exercise_ids)
+            alts = await _fetch_alternatives_for_exercise(
+                pattern=pattern,
+                level=level,
+                exclude_ids=exclude,
+                profile=profile,
+                limit=4,
+            )
+            ex["alternatives"] = alts
+
+    # Generate short code
+    now = datetime.now(timezone.utc)
+    code = f"{int(now.timestamp()) % 0xFFFFFF:06x}"
+
+    # Delete any previous pending drafts for this user
+    try:
+        await supabase_delete(
+            "draft_routines",
+            filters={"user_id": f"eq.{user_id}", "status": "eq.pending"},
+        )
+    except Exception:
+        pass  # OK if no previous drafts
+
+    # Insert draft
+    await supabase_insert("draft_routines", {
+        "user_id": user_id,
+        "code": code,
+        "draft_data": draft,
+        "status": "pending",
+        "created_at": now.isoformat(),
+        "expires_at": (now + timedelta(hours=24)).isoformat(),
+    })
+
+    frontend_url = os.getenv("FRONTEND_URL", "https://kairos-tracker.web.app")
+    preview_url = f"{frontend_url}/draft?c={code}"
+
+    return json.dumps({
+        "success": True,
+        "url": preview_url,
+        "code": code,
+        "exercises_enriched": sum(
+            len(ex.get("alternatives", []))
+            for day in draft.get("days", [])
+            for ex in day.get("exercises", [])
+        ),
+    }, ensure_ascii=False)

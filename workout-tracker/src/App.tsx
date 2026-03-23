@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { WorkoutContent } from './components'
 import { CompletionCelebration } from './components/CompletionCelebration'
+import { DraftPreviewPage } from './components/DraftPreviewPage'
 import { completeWorkout } from './services/api'
 import config from './config'
 
@@ -58,6 +59,9 @@ interface WorkoutResponse {
 }
 
 function App() {
+  // Route: /draft -> Draft Routine Preview
+  if (window.location.pathname === '/draft') return <DraftPreviewPage />
+
   const [exercises, setExercises] = useState<ExerciseData[]>([])
   const [sessionName, setSessionName] = useState<string>('')
   const [sessionId, setSessionId] = useState<string>('')

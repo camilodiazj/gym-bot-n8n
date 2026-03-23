@@ -166,6 +166,14 @@ Task types: `CONFIRMAR_RUTINA` (workout completion confirmation)
 
 **Magic link URL format**: `https://[FIREBASE_PROJECT_ID].web.app/w?c={code}` (local: `http://localhost:5173/w?c={code}`). The `code` is a short hex string (e.g., `7fda02`). Do NOT use `/auth?code=` — that path does not exist.
 
+### Draft Routine Preview
+
+| Table | Purpose | Key Columns |
+|-------|---------|-------------|
+| `draft_routines` | Temporary draft for visual preview before approval | `draft_id` (UUID PK), `user_id` FK, `code` (VARCHAR(8) UNIQUE), `draft_data` (JSONB), `status` (pending/approved/expired), `expires_at` (24h) |
+
+The `draft_data` JSONB stores the full routine structure including 3-5 alternatives per exercise. The `code` is used in the preview URL (`/draft?c={code}`). Created by the Kairos agent's `save_draft_preview` tool, consumed by the workout tracker frontend.
+
 ### Reference/Lookup Tables
 
 | Table | Purpose |
@@ -378,6 +386,42 @@ Workflows are JSON files—import directly into n8n instance and configure crede
   - `GET /api/v1/workouts/today?user_id=UUID` - Get today's workout
   - `POST /api/v1/auth/magic-link` - Validate magic link code
   - `PATCH /api/v1/sets/:id` - Update set (weight, reps, completed)
+  - `GET /api/v1/drafts/:code` - Get draft routine preview (public, code-authenticated)
+  - `PATCH /api/v1/drafts/:code/swap` - Swap exercise with alternative in draft
+  - `POST /api/v1/drafts/:code/approve` - Approve draft, triggers save_workout_plan via Kairos API
+
+### Frontend React/Tailwind Notes (workout-tracker/)
+
+**CRITICAL — Tailwind v4 padding/gap bug**: In this project, Tailwind CSS v4 utility classes for `padding` and `gap` **do NOT apply** in components. Classes like `p-6`, `px-4`, `py-2`, `gap-3`, `gap-4` all resolve to `0px`. This is a known issue with the Tailwind v4 + Vite setup in this repo.
+
+**ALWAYS use inline `style` for padding and gap**:
+```tsx
+// ❌ WRONG — will render as 0px
+<div className="p-6 gap-4">
+
+// ✅ CORRECT — always works
+<div style={{ padding: '24px', gap: '16px' }}>
+
+// ✅ CORRECT — individual properties to avoid React shorthand warnings
+<div style={{ paddingTop: '24px', paddingLeft: '20px', paddingRight: '20px', paddingBottom: '16px' }}>
+```
+
+**Do NOT mix `padding` shorthand with `paddingBottom`** — React warns about conflicting style properties. Use individual `paddingTop`, `paddingLeft`, `paddingRight`, `paddingBottom` when any value differs (e.g., safe-area).
+
+**Other Tailwind classes that DO work**: `bg-*`, `text-*`, `font-*`, `rounded-*`, `border-*`, `flex`, `items-center`, `justify-between`, `w-*`, `h-*`, `min-w-*`, `min-h-*`, `shadow-*`, `transition-*`, `hover:*`, `focus-visible:*`, `cursor-*`, `opacity-*`, `shrink-0`, `overflow-*`.
+
+**Design system reference** (from WorkoutContent.tsx):
+- Cards: `bg-[#EBEDF0]`, `rounded-[20px]`, inline `padding: '24px'`
+- Video badge: 44×44px (`w-11 h-11 min-w-[44px] min-h-[44px]`), `bg-[#374151]`, `rounded-xl`
+- Fonts: `font-['Bricolage_Grotesque']` (headings), `font-['DM_Sans']` (body) — always declare explicitly
+- Primary green: `#22C55E` (buttons bg), `#16A34A` (hover), `#166534` (text on light bg)
+- Touch targets: minimum 44×44px on all interactive elements (`min-h-[44px]`)
+- Spanish text: use proper accents (Día, días, ¡!, ¿?)
+- Safe area: `paddingBottom: 'max(env(safe-area-inset-bottom, 16px), 16px)'` on sticky bottom bars
+- Always add `hover:` and `focus-visible:` states on buttons
+- Use `font-variant-numeric: tabular-nums` (via inline style) for number-heavy rows
+
+**Draft routine preview**: `DraftPreviewPage.tsx` — visual routine preview with exercise alternatives carousel. Prototype at `spec/draft-routine-preview/prototype.html`. Uses `?demo` query param for mock data mode.
 
 ### Workflow Conventions
 
@@ -622,9 +666,9 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **Service URL**: `https://kairos-agent-148665080566.us-central1.run.app`
 - **LLM**: `gemini-3-flash-preview` via `langchain-google-genai` (configured in `langgraph-skeleton/src/shared/llm.py`)
 - **WhatsApp webhook**: `POST /webhook` (direct WhatsApp → Kairos → WhatsApp)
-- **API endpoint**: `POST /case6/chat` (for testing/integrations)
+- **API endpoint**: `POST /api/v1/chat` (for testing/integrations)
 - **Checkpointer**: PostgresSaver via Supabase pooler (session mode, port 5432)
-- **15 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises, send_routine_email
+- **17 tools**: get_todays_routine, confirm_workout_completion, decline_workout, create_magic_link, get_day_requirements, get_exercises_for_draft, find_exercise_alternatives, save_workout_plan, get_schedule_info, schedule_sessions, get_mesocycle_status, renew_maintain, renew_change_days, renew_rotate_exercises, send_routine_email, register_new_user, save_draft_preview
 - **Exercise ID resolution**: save_workout_plan auto-resolves spanish names to exercise_ids via ILIKE batch query
 - **Tool-leak guardrail**: `_has_tool_leak()` detects when Gemini writes tool calls as text (e.g., `print(default_api...)`). If detected: retry once with correction → sanitize residual patterns. See `graph_live.py`.
 - **Enum normalization**: `_normalize_enum()` in `tools_supabase.py` maps LLM-extracted values to exact Supabase enum values (accent-safe, case-insensitive). Covers all 8 enum columns in `users_gym_profile`.
@@ -645,20 +689,20 @@ gcloud run deploy kairos-agent \
 - Env vars are already configured in the Cloud Run service — no `--set-env-vars` needed
 - Verify: `curl -s https://kairos-agent-148665080566.us-central1.run.app/ | python3 -m json.tool`
 
-**Test via `/case6/chat` endpoint:**
+**Test via `/api/v1/chat` endpoint:**
 ```bash
 # Existing user — view routine
-curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{"phone_number":"570000000003","display_name":"Test","message":"Que me toca hoy?"}' | python3 -m json.tool
 
 # Existing user — schedule sessions
-curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{"phone_number":"570000000001","display_name":"Test","message":"Agenda lunes 24/03, miercoles 26/03 y viernes 28/03"}' | python3 -m json.tool
 
 # New user (dynamic) — triggers KYC flow
-curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{"phone_number":"570000000009","display_name":"Test","message":"Hola quiero entrenar"}' | python3 -m json.tool
 ```

@@ -12,6 +12,7 @@ type Router struct {
 	healthHandler      *handler.HealthHandler
 	workoutHandler     *handler.WorkoutHandler
 	setHandler         *handler.SetHandler
+	draftHandler       *handler.DraftHandler
 	codeResolver       middleware.CodeResolver
 	corsAllowedOrigins []string
 }
@@ -21,6 +22,7 @@ func NewRouter(
 	healthHandler *handler.HealthHandler,
 	workoutHandler *handler.WorkoutHandler,
 	setHandler *handler.SetHandler,
+	draftHandler *handler.DraftHandler,
 	codeResolver middleware.CodeResolver,
 	corsAllowedOrigins []string,
 ) *Router {
@@ -28,6 +30,7 @@ func NewRouter(
 		healthHandler:      healthHandler,
 		workoutHandler:     workoutHandler,
 		setHandler:         setHandler,
+		draftHandler:       draftHandler,
 		codeResolver:       codeResolver,
 		corsAllowedOrigins: corsAllowedOrigins,
 	}
@@ -48,6 +51,14 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 	{
 		// Health check (public)
 		v1.GET("/health", r.healthHandler.Check)
+
+		// Draft routes (public — the code in the URL IS the authentication)
+		drafts := v1.Group("/drafts")
+		{
+			drafts.GET("/:code", r.draftHandler.GetDraft)
+			drafts.PATCH("/:code/swap", r.draftHandler.SwapExercise)
+			drafts.POST("/:code/approve", r.draftHandler.ApproveDraft)
+		}
 
 		// Auth middleware (supports ?c= and ?user_id= for development)
 		authMiddleware := middleware.ValidateAuth(r.codeResolver)

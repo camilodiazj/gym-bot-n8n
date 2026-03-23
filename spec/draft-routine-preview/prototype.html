@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kairos - Borrador de Rutina (Design Prototype)</title>
+<!--
+  DESIGN PROTOTYPE — Draft Routine Preview
+  This file is a visual reference for the React implementation.
+  See plan: .claude/plans/soft-stirring-storm.md
+
+  Features:
+  - Day tabs (Dia 1/2/3)
+  - Exercise cards matching workout tracker style
+  - Video badge linking to exercise execution videos
+  - Collapsible RIR + Rest instructions
+  - Alternative exercise carousel (3-5 per exercise)
+  - "Elegir esta" swap + "Volver" navigation
+  - Sticky approve/changes bottom bar
+  - Success overlay after approval
+-->
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:#F3F4F6;display:flex;justify-content:center;min-height:100dvh}
+.c{max-width:400px;width:100%;background:#FFF;min-height:100dvh;position:relative}
+.h{padding:24px 16px 16px;border-bottom:1px solid #F3F4F6}
+.bg{display:inline-flex;align-items:center;gap:4px;background:#FEF9C3;color:#854D0E;font-size:11px;font-weight:600;padding:2px 10px;border-radius:9999px;margin-bottom:8px}
+.h h1{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;color:#1A1A1A}
+.hs{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;color:#9CA3AF}
+.pl{display:flex;gap:8px;margin-top:12px}.pg{background:#DCFCE7;color:#166534;font-size:12px;font-weight:500;padding:4px 12px;border-radius:9999px}.pp{background:#DBEAFE;color:#1E40AF;font-size:12px;font-weight:500;padding:4px 12px;border-radius:9999px}
+.hm{font-size:12px;color:#6B7280;margin-top:8px}
+.ts{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid #F3F4F6;position:sticky;top:0;background:#FFF;z-index:10}
+.t{padding:6px 16px;border-radius:9999px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.ta{background:#22C55E;color:#FFF;box-shadow:0 1px 3px rgba(34,197,94,.3)}.ti{background:#F9FAFB;color:#6B7280;border:1px solid #E5E7EB}
+.cn{padding:16px;padding-bottom:180px}
+.dt{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#1A1A1A;margin-bottom:16px}
+.es{display:flex;flex-direction:column;gap:12px}
+.ec{border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.ec.pri{background:#EBEDF0}
+.ec.alt{background:#E8EDF3;border:2px solid #6366F1}
+.ch{display:flex;align-items:center;justify-content:space-between}
+.cl{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.vb{width:44px;height:44px;min-width:44px;border-radius:12px;background:#374151;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;transition:all .2s;text-decoration:none}
+.vb:hover{transform:scale(1.05)}.vb svg{width:16px;height:16px;fill:white}
+.vb .ei{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.vb .ei svg{width:10px;height:10px;fill:none;stroke:#4B5563;stroke-width:2}
+.ef{display:flex;flex-direction:column;gap:2px;min-width:0}
+.el{font-size:12px;color:#9CA3AF;font-weight:500}
+.en{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#1A1A1A;line-height:1.2}
+.sb{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 10px;margin-left:-10px;border-radius:8px;font-size:12px;color:#6B7280;font-weight:500;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.sb:hover{background:rgba(0,0,0,.05);color:#374151}
+.sb svg{width:14px;height:14px}
+.cv{padding:12px;cursor:pointer;background:none;border:none;border-radius:8px;flex-shrink:0}.cv:hover{background:rgba(0,0,0,.05)}
+.cv svg{width:20px;height:20px;stroke:#6B7280;fill:none;stroke-width:2}
+.ins{display:flex;flex-direction:column;gap:8px}
+.rb{display:flex;align-items:center;gap:8px;background:#FEF3C7;border-radius:8px;padding:8px 12px}.rb .l{color:#92400E;font-size:14px;font-weight:600}.rb .v{color:#92400E;font-size:14px}
+.db{display:flex;align-items:center;gap:8px;background:#DBEAFE;border-radius:8px;padding:8px 12px}.db .l{color:#1E40AF;font-size:14px;font-weight:600}.db .v{color:#1E40AF;font-size:14px}
+.sr{background:rgba(249,250,251,.7);border-radius:8px;padding:10px;font-size:12px;color:#6B7280;font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:4px 12px}.ss{color:#D1D5DB}.rs{color:#16A34A;font-weight:500}
+.al{font-size:11px;color:#6366F1;font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(99,102,241,.2)}
+.nav-btn{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;background:rgba(99,102,241,.1);color:#6366F1}
+.nav-btn:hover{background:rgba(99,102,241,.2)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.nav-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.nav-ct{font-size:12px;color:#6B7280;font-weight:500}
+.nav-pick{display:flex;align-items:center;gap:4px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;background:#22C55E;color:#FFF;transition:all .15s}
+.nav-pick:hover{background:#16A34A}
+.nav-pick svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5}
+.nav-back{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #E5E7EB;font-family:'DM Sans',sans-serif;background:#FFF;color:#6B7280;transition:all .15s}
+.nav-back:hover{background:#F9FAFB}
+.bb{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:400px;width:100%;background:#FFF;border-top:1px solid #F3F4F6;padding:16px;box-shadow:0 -4px 16px rgba(0,0,0,.06);z-index:50}
+.bp{width:100%;background:#22C55E;color:#FFF;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}.bp:active{transform:scale(.97)}
+.bs{width:100%;background:transparent;color:#1A1A1A;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px}
+.bh{font-size:11px;color:#9CA3AF;text-align:center;margin-top:8px}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:60;align-items:flex-end;justify-content:center}
+.ov.sh{display:flex}
+.st{max-width:400px;width:100%;background:#FFF;border-radius:24px 24px 0 0;padding:24px}
+.dp{width:40px;height:4px;background:#E5E7EB;border-radius:9999px;margin:0 auto 20px}
+.si{width:80px;height:80px;border-radius:50%;background:#DCFCE7;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}.si svg{width:40px;height:40px;stroke:#22C55E;fill:none;stroke-width:2}
+.stt{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:700;color:#1A1A1A;text-align:center}
+.ssb{font-size:14px;color:#6B7280;text-align:center;margin-top:8px}
+.ns{background:#F9FAFB;border-radius:12px;padding:16px;margin-top:20px}
+.nl{font-size:11px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.stp{display:flex;gap:8px;margin-bottom:8px;font-size:14px;color:#1A1A1A}.stp:last-child{margin-bottom:0}.sti{color:#22C55E}
+.bd{width:100%;background:#22C55E;color:#FFF;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="h">
+    <div class="bg">&#9670; BORRADOR</div>
+    <h1>Tu Rutina</h1>
+    <div class="hs">Borrador</div>
+    <div class="pl"><span class="pg">Ganar masa muscular</span><span class="pp">Intermedio</span></div>
+    <div class="hm">3 d&iacute;as &middot; Cuerpo Completo (Full Body)</div>
+  </div>
+  <div class="ts">
+    <button class="t ta" onclick="sd(0)">D&iacute;a 1</button>
+    <button class="t ti" onclick="sd(1)">D&iacute;a 2</button>
+    <button class="t ti" onclick="sd(2)">D&iacute;a 3</button>
+  </div>
+  <div class="cn" id="dc"></div>
+  <div class="bb">
+    <button class="bp" onclick="apr()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      Aprobar rutina
+    </button>
+    <button class="bs">Quiero hacer cambios</button>
+    <div class="bh">Los cambios los puedes pedir por WhatsApp</div>
+  </div>
+  <div class="ov" id="ov">
+    <div class="st">
+      <div class="dp"></div>
+      <div class="si"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+      <div class="stt">&iexcl;Rutina aprobada!</div>
+      <div class="ssb">Tu entrenador ya tiene tu rutina lista. &iexcl;A entrenar!</div>
+      <div class="ns">
+        <div class="nl">Qu&eacute; sigue</div>
+        <div class="stp"><span class="sti">&rarr;</span> Recibir&aacute;s tu rutina diaria por WhatsApp</div>
+        <div class="stp"><span class="sti">&rarr;</span> Puedes pedir cambios en cualquier momento</div>
+      </div>
+      <button class="bd" onclick="document.getElementById('ov').classList.remove('sh');document.body.style.overflow=''">Entendido</button>
+    </div>
+  </div>
+</div>
+<script>
+var P='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+var X='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>';
+var CD='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+var CU='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>';
+var RP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>';
+var CL='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+var CR='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+var CK='<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+
+var D=[
+{t:"Full Body A",ex:[
+ {n:"Sentadilla Hack",m:"Quads",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:1,a:[
+   {n:"Prensa de piernas",m:"Quads",v:1},{n:"Goblet Squat",m:"Quads",v:1},{n:"Sentadilla B\u00falgara",m:"Quads",v:1},{n:"Sentadilla en Smith",m:"Quads",v:1}
+ ]},
+ {n:"Press inclinado con mancuerna",m:"Pecho",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[
+   {n:"M\u00e1quina de pecho",m:"Pecho",v:1},{n:"Aperturas con mancuerna",m:"Pecho",v:1},{n:"Press plano con barra",m:"Pecho",v:1}
+ ]},
+ {n:"Remo en T",m:"Espalda",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[
+   {n:"Remo con mancuerna",m:"Espalda",v:1},{n:"Remo en m\u00e1quina",m:"Espalda",v:1},{n:"Remo con barra",m:"Espalda",v:1}
+ ]},
+ {n:"Estabilidad del N\u00facleo 4",m:"Core",s:3,r:"12-15",ri:"1-2",re:60,v:0,xp:0,a:[
+   {n:"Plancha",m:"Core",v:0},{n:"Dead Bug",m:"Core",v:0},{n:"Pallof Press",m:"Core",v:0}
+ ]}
+]},
+{t:"Full Body B",ex:[
+ {n:"Peso muerto / RDL",m:"Isquios",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Curl femoral acostado",m:"Isquios",v:1},{n:"Buenos d\u00edas",m:"Isquios",v:1}]},
+ {n:"Jal\u00f3n abierto",m:"Espalda",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Jal\u00f3n al pecho",m:"Espalda",v:1},{n:"Dominadas asistidas",m:"Espalda",v:1}]},
+ {n:"Press militar con mancuerna",m:"Hombros",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Elevaciones laterales",m:"Hombros",v:1},{n:"Press Arnold",m:"Hombros",v:1}]},
+ {n:"M\u00e1quina de b\u00edceps",m:"B\u00edceps",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Curl con mancuerna",m:"B\u00edceps",v:1},{n:"Curl martillo",m:"B\u00edceps",v:1}]},
+ {n:"Levantamiento Activo de Banca",m:"Core",s:3,r:"12-15",ri:"1-2",re:60,v:0,xp:0,a:[{n:"Pallof Press",m:"Core",v:0}]}
+]},
+{t:"Full Body C",ex:[
+ {n:"Zancadas con barra",m:"Quads/Gl\u00fateo",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Step Up",m:"Quads/Gl\u00fateo",v:1},{n:"Hip Thrust",m:"Gl\u00fateo",v:1}]},
+ {n:"Femoral sentado",m:"Isquios",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Curl femoral de pie",m:"Isquios",v:1}]},
+ {n:"Chest press",m:"Pecho",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Fondos en m\u00e1quina",m:"Pecho",v:1},{n:"Crossover en polea",m:"Pecho",v:1}]},
+ {n:"Jal\u00f3n con tri\u00e1ngulo",m:"Espalda",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Pullover en polea",m:"Espalda",v:1}]},
+ {n:"Polea de tr\u00edceps",m:"Tr\u00edceps",s:3,r:"12-15",ri:"1-2",re:90,v:1,xp:0,a:[{n:"Fondos en banco",m:"Tr\u00edceps",v:0}]},
+ {n:"Lev. Est\u00e1tico en Banco",m:"Core",s:3,r:"12-15",ri:"1-2",re:60,v:0,xp:0,a:[{n:"Plancha lateral",m:"Core",v:0}]}
+]}];
+
+var xps={},showing={},aidx={};
+function fr(s){return s>=60?Math.floor(s/60)+':'+String(s%60).padStart(2,'0'):s+'s'}
+
+function mkcard(e,di,ei,isAlt,ai,total){
+  var k=di+'_'+ei;
+  var xp=isAlt?0:(xps[k]!==undefined?xps[k]:e.xp);
+  var rc=e.re<=60?'rs':'';
+  var h='<div class="ec '+(isAlt?'alt':'pri')+'">';
+  if(isAlt)h+='<div class="al">Alternativa '+(ai+1)+' de '+total+'</div>';
+  h+='<div class="ch"><div class="cl">';
+  if(e.v)h+='<a href="https://youtube.com" target="_blank" class="vb" onclick="event.stopPropagation()">'+P+'<span class="ei">'+X+'</span></a>';
+  else h+='<div class="vb">'+P+'</div>';
+  h+='<div class="ef"><span class="el">'+e.m+'</span><span class="en">'+e.n+'</span>';
+  if(!isAlt&&e.a&&e.a.length>0)h+='<button class="sb" onclick="event.stopPropagation();flip('+di+','+ei+')">'+RP+' Ver alternativa</button>';
+  h+='</div></div>';
+  h+='<button class="cv" onclick="te('+di+','+ei+','+isAlt+')">'+((xp)?CU:CD)+'</button></div>';
+  if(xp){h+='<div class="ins"><div class="rb"><span class="l">Esfuerzo:</span><span class="v">RIR '+e.ri+' (Deja '+e.ri+' reps en reserva)</span></div><div class="db"><span class="l">Descanso:</span><span class="v">'+fr(e.re)+' entre series</span></div></div>';}
+  h+='<div class="sr"><span>'+e.s+' &times; '+e.r+'</span><span class="ss">&middot;</span><span>RIR '+e.ri+'</span><span class="ss">&middot;</span><span class="'+rc+'">Descanso '+e.re+'s</span></div>';
+  if(isAlt){
+    h+='<div class="nav">';
+    h+='<button class="nav-btn" onclick="prev('+di+','+ei+')"'+(ai===0?' disabled':'')+'>'+CL+' Anterior</button>';
+    h+='<span class="nav-ct">'+(ai+1)+' de '+total+'</span>';
+    h+='<button class="nav-btn" onclick="next('+di+','+ei+')"'+(ai>=total-1?' disabled':'')+'>Siguiente '+CR+'</button>';
+    h+='</div>';
+    h+='<div style="display:flex;gap:8px;margin-top:8px">';
+    h+='<button class="nav-pick" onclick="pick('+di+','+ei+')">'+CK+' Elegir esta</button>';
+    h+='<button class="nav-back" onclick="back('+di+','+ei+')">&#x21a9; Volver</button>';
+    h+='</div>';
+  }
+  h+='</div>';return h;
+}
+
+function rd(di){
+  var d=D[di],el=document.getElementById('dc');
+  var h='<div class="dt">'+d.t+'</div><div class="es">';
+  for(var i=0;i<d.ex.length;i++){
+    var e=d.ex[i],k=di+'_'+i;
+    var sh=showing[k]||false;
+    var ai=aidx[k]||0;
+    if(sh&&e.a&&e.a.length>0){
+      var alt=Object.assign({},e.a[ai],{s:e.s,r:e.r,ri:e.ri,re:e.re});
+      h+=mkcard(alt,di,i,true,ai,e.a.length);
+    } else {
+      h+=mkcard(e,di,i,false,0,0);
+    }
+  }
+  h+='</div>';el.innerHTML=h;
+}
+
+function flip(di,ei){var k=di+'_'+ei;showing[k]=true;aidx[k]=0;rd(di)}
+function back(di,ei){var k=di+'_'+ei;showing[k]=false;rd(di)}
+function next(di,ei){var k=di+'_'+ei;var e=D[di].ex[ei];aidx[k]=Math.min((aidx[k]||0)+1,e.a.length-1);rd(di)}
+function prev(di,ei){var k=di+'_'+ei;aidx[k]=Math.max((aidx[k]||0)-1,0);rd(di)}
+function pick(di,ei){
+  var k=di+'_'+ei,ai=aidx[k]||0;
+  var e=D[di].ex[ei],alt=e.a[ai];
+  var old={n:e.n,m:e.m,v:e.v};
+  e.n=alt.n;e.m=alt.m;e.v=alt.v;
+  e.a.splice(ai,1);
+  e.a.push(old);
+  showing[k]=false;aidx[k]=0;rd(di);
+}
+function te(di,ei,ia){if(!ia){var k=di+'_'+ei;var c=xps[k]!==undefined?xps[k]:D[di].ex[ei].xp;xps[k]=c?0:1;}rd(di)}
+function sd(i){document.querySelectorAll('.t').forEach(function(t,j){t.className='t '+(j===i?'ta':'ti')});rd(i)}
+function apr(){document.getElementById('ov').classList.add('sh');document.body.style.overflow='hidden'}
+rd(0);
+</script>
+</body>
+</html>

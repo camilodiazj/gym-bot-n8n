@@ -38,12 +38,12 @@ curl -s https://kairos-agent-148665080566.us-central1.run.app/ | python3 -m json
 # Should return: {"status": "ok", ...}
 ```
 
-## Test via `/case6/chat` Endpoint
+## Test via `/api/v1/chat` Endpoint
 
 Send messages as any test user. The endpoint simulates a WhatsApp conversation without going through WhatsApp.
 
 ```bash
-curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat \
+curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{
     "phone_number": "570000000001",
@@ -66,19 +66,19 @@ curl -s -X POST https://kairos-agent-148665080566.us-central1.run.app/case6/chat
 
 **Schedule sessions** (tests `schedule_sessions` tool):
 ```bash
-curl -s -X POST .../case6/chat -H "Content-Type: application/json" \
+curl -s -X POST .../api/v1/chat -H "Content-Type: application/json" \
   -d '{"phone_number": "570000000001", "display_name": "Test", "message": "Agenda lunes 24/03, miercoles 26/03 y viernes 28/03"}'
 ```
 
 **View routine** (tests `get_todays_routine` tool):
 ```bash
-curl -s -X POST .../case6/chat -H "Content-Type: application/json" \
+curl -s -X POST .../api/v1/chat -H "Content-Type: application/json" \
   -d '{"phone_number": "570000000003", "display_name": "Test", "message": "Que me toca hoy?"}'
 ```
 
 **Confirm workout** (tests `confirm_workout_completion` tool):
 ```bash
-curl -s -X POST .../case6/chat -H "Content-Type: application/json" \
+curl -s -X POST .../api/v1/chat -H "Content-Type: application/json" \
   -d '{"phone_number": "570000000004", "display_name": "Test", "message": "Si, ya termine mi rutina"}'
 ```
 
@@ -100,7 +100,7 @@ WHERE user_id = (SELECT user_id FROM users WHERE full_phone_number = '5700000000
 ## View Conversation History
 
 ```bash
-curl -s "https://kairos-agent-148665080566.us-central1.run.app/case6/history?phone_number=570000000001" | python3 -m json.tool
+curl -s "https://kairos-agent-148665080566.us-central1.run.app/api/v1/chat/570000000001/history" | python3 -m json.tool
 ```
 
 ## Swagger Docs

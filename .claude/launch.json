@@ -10,7 +10,7 @@
     },
     {
       "name": "Workout Tracker Backend (Go)",
-      "runtimeExecutable": "go",
+      "runtimeExecutable": "/opt/homebrew/bin/go",
       "runtimeArgs": ["run", "./cmd/api"],
       "cwd": "workout-tracker-back",
       "port": 8080

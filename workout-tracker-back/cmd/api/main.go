@@ -34,6 +34,7 @@ func main() {
 	setRepo := postgres.NewSetRepository(dbConn)
 	workoutRepo := postgres.NewWorkoutRepository(dbConn, setRepo)
 	magicLinkRepo := postgres.NewMagicLinkRepository(dbConn)
+	draftRepo := postgres.NewDraftRoutineRepository(dbConn)
 
 	// Create code resolver function for short codes
 	codeResolver := func(code string) (string, error) {
@@ -45,14 +46,18 @@ func main() {
 	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(workoutRepo, magicLinkRepo)
 	markSetCompleteUC := usecase.NewMarkSetCompleteUseCase(setRepo)
 	updateSetUC := usecase.NewUpdateSetUseCase(setRepo)
+	getDraftUC := usecase.NewGetDraftUseCase(draftRepo)
+	swapExerciseUC := usecase.NewSwapExerciseUseCase(draftRepo)
+	approveDraftUC := usecase.NewApproveDraftUseCase(draftRepo, cfg.Kairos.APIURL)
 
 	// Initialize HTTP handlers (Primary Adapters)
 	healthHandler := handler.NewHealthHandler()
 	workoutHandler := handler.NewWorkoutHandler(getTodayWorkoutUC, completeWorkoutUC)
 	setHandler := handler.NewSetHandler(markSetCompleteUC, updateSetUC)
+	draftHandler := handler.NewDraftHandler(getDraftUC, swapExerciseUC, approveDraftUC)
 
 	// Initialize router and setup routes
-	router := http.NewRouter(healthHandler, workoutHandler, setHandler, codeResolver, cfg.Server.CORSAllowedOrigins)
+	router := http.NewRouter(healthHandler, workoutHandler, setHandler, draftHandler, codeResolver, cfg.Server.CORSAllowedOrigins)
 	engine := router.Setup(cfg.Server.GinMode)
 
 	// Start server in a goroutine

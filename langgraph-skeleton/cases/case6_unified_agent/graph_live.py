@@ -41,6 +41,8 @@ from cases.case6_unified_agent.tools import (
     # Onboarding & profile
     register_new_user,
     update_user_profile,
+    # Draft preview
+    save_draft_preview,
 )
 from src.shared.llm import get_llm
 
@@ -71,6 +73,8 @@ TOOLS = [
     # Onboarding & profile
     register_new_user,
     update_user_profile,
+    # Draft preview
+    save_draft_preview,
 ]
 
 
