@@ -190,6 +190,9 @@ async def get_todays_routine(user_id: str, session_name: str, week: int) -> str:
     if not rows:
         return json.dumps({"error": f"No se encontraron ejercicios para {session_name} semana {week}"})
 
+    # Defensive sort in Python (PostgREST order param should handle this, but just in case)
+    rows = sorted(rows, key=lambda r: r.get("exercise_order", 99))
+
     # Get exercise details
     exercise_ids = [r["exercise_id"] for r in rows]
     exercises = await supabase_query(
@@ -221,9 +224,24 @@ async def get_todays_routine(user_id: str, session_name: str, week: int) -> str:
     }, ensure_ascii=False)
 
 
+def _bogota_date_to_utc_range(bogota_date: str) -> tuple[str, str]:
+    """Convert a YYYY-MM-DD Bogota date to UTC start/end timestamps.
+
+    Bogota is UTC-5, so midnight Bogota = 05:00 UTC.
+    Returns (start_utc_iso, end_utc_iso) for the full day.
+    """
+    d = datetime.strptime(bogota_date, "%Y-%m-%d")
+    utc_start = d - BOGOTA_UTC_OFFSET  # midnight Bogota → UTC
+    utc_end = utc_start + timedelta(days=1)
+    return utc_start.strftime("%Y-%m-%dT%H:%M:%S+00:00"), utc_end.strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+
 @tool
 async def confirm_workout_completion(user_id: str, session_date: str | None = None) -> str:
     """Marca una sesión como completada. Soporta grace period (hoy o ayer).
+
+    Uses planned_day_utc (timestamptz) for reliable matching regardless of
+    planned_day text format (DD/MM from Kairos vs YYYY-MM-DD from fixtures).
 
     Args:
         user_id: UUID del usuario
@@ -238,20 +256,25 @@ async def confirm_workout_completion(user_id: str, session_date: str | None = No
     dates_to_try = [session_date] if session_date else [today, yesterday]
 
     for date in dates_to_try:
-        # Find uncompleted session for this date
+        utc_start, utc_end = _bogota_date_to_utc_range(date)
+
+        # Fetch uncompleted sessions using planned_day_utc range
         sessions = await supabase_query(
             "user_weekly_schedule",
-            select="day_routine_id,session_name,week",
+            select="day_routine_id,session_name,week,planned_day_utc",
             filters={
                 "user_id": f"eq.{user_id}",
-                "planned_day": f"eq.{date}",
+                "planned_day_utc": f"gte.{utc_start}",
                 "Completed": "eq.false",
             },
-            limit=1,
+            limit=10,
         )
 
-        if sessions:
-            session = sessions[0]
+        # Filter in Python: only sessions within the target day
+        matched = [s for s in sessions if s.get("planned_day_utc", "") < utc_end]
+
+        if matched:
+            session = matched[0]
             # Mark as completed
             await supabase_update(
                 "user_weekly_schedule",
@@ -509,8 +532,15 @@ async def get_exercises_for_draft(
         if equip_filtered:
             filtered = equip_filtered
 
-    # Apply health restrictions (auto-lookup if not provided)
-    hs = health_status if health_status and health_status != "A" else (profile["health_status"] if profile else "A")
+    # Apply health restrictions (auto-lookup from profile if not explicitly provided)
+    if health_status and health_status != "A":
+        hs = health_status
+    elif profile:
+        hs = profile.get("health_status", "A")
+    else:
+        hs = "A"
+        if not user_id:
+            logger.warning("[HEALTH] get_exercises_for_draft called without user_id — health filter skipped")
     filtered = _apply_health_filter(filtered, hs)
 
     return json.dumps(filtered[:limit], ensure_ascii=False)
@@ -576,8 +606,13 @@ async def find_exercise_alternatives(
         if equip_filtered:
             filtered = equip_filtered
 
-    # Apply health restrictions (auto-lookup if not provided)
-    hs = health_status if health_status and health_status != "A" else (profile["health_status"] if profile else "A")
+    # Apply health restrictions (auto-lookup from profile if not explicitly provided)
+    if health_status and health_status != "A":
+        hs = health_status
+    elif profile:
+        hs = profile.get("health_status", "A")
+    else:
+        hs = "A"
     filtered = _apply_health_filter(filtered, hs)
 
     return json.dumps(filtered[:5], ensure_ascii=False)
@@ -827,6 +862,23 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
         deduped_rows.append(row)
     workout_rows = deduped_rows
 
+    # Validate minimum exercises per day (week 1 is representative)
+    MIN_EXERCISES_PER_DAY = 3
+    exercises_per_day: dict[str, int] = {}
+    for row in workout_rows:
+        if row["week"] == 1:
+            exercises_per_day[row["day_name"]] = exercises_per_day.get(row["day_name"], 0) + 1
+
+    incomplete_days = [d for d, count in exercises_per_day.items() if count < MIN_EXERCISES_PER_DAY]
+    if incomplete_days:
+        return json.dumps({
+            "success": False,
+            "error": f"Días con ejercicios insuficientes: {incomplete_days}. "
+                     f"Cada día debe tener al menos {MIN_EXERCISES_PER_DAY} ejercicios. "
+                     f"Revisa el draft y agrega los ejercicios faltantes.",
+            "exercises_per_day": exercises_per_day,
+        }, ensure_ascii=False)
+
     if workout_rows:
         try:
             await supabase_bulk_insert("workouts", workout_rows)
@@ -846,6 +898,7 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
     }
 
     if unresolved:
+        response["warning"] = f"{len(unresolved)} ejercicio(s) no se pudieron resolver y fueron omitidos."
         response["unresolved_exercises"] = [
             {"day": draft["days"][u["day_idx"]]["title"] if u["day_idx"] < days_count else "?", "name": u["name"]}
             for u in unresolved

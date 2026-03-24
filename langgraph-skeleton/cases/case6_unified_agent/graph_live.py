@@ -9,6 +9,7 @@ is handled conversationally by the agent using register_new_user tool.
 
 import logging
 import re
+from datetime import datetime, timedelta, timezone
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langgraph.graph import StateGraph, START, END
@@ -135,8 +136,18 @@ async def kairos_agent(state: UnifiedAgentState) -> dict:
     display_name = state.get("display_name", "")
     formatted_ctx = format_user_context(ctx, display_name=display_name)
 
+    # Compute current datetime in user's timezone (Bogota UTC-5)
+    bogota_tz = timezone(timedelta(hours=-5))
+    now_bogota = datetime.now(bogota_tz)
+    day_names_es = {0: "Lunes", 1: "Martes", 2: "Miércoles", 3: "Jueves", 4: "Viernes", 5: "Sábado", 6: "Domingo"}
+    current_dt_str = (
+        f"{day_names_es[now_bogota.weekday()]} {now_bogota.strftime('%d/%m/%Y')} — "
+        f"{now_bogota.strftime('%I:%M %p')} (hora Colombia)"
+    )
+
     system_prompt = KAIROS_SYSTEM_PROMPT.format(
         user_context_formatted=formatted_ctx,
+        current_datetime=current_dt_str,
     )
 
     messages = [SystemMessage(content=system_prompt)] + list(state.get("messages", []))

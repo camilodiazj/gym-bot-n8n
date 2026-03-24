@@ -15,6 +15,7 @@ Endpoints:
 import asyncio
 import logging
 import os
+import time as _time
 import traceback
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -83,8 +84,85 @@ def _get_user_lock(phone_number: str) -> asyncio.Lock:
     return _user_locks[phone_number]
 
 
+_FALLBACK_RESPONSE = "Lo siento, tuve un problema procesando tu mensaje. Intenta de nuevo en un momento."
+
+
+async def _invoke_graph_safe(
+    phone_number: str,
+    message: str | list,
+    display_name: str = "",
+    *,
+    source: str = "api",
+    max_retries: int = 2,
+) -> dict:
+    """Thread-safe graph invocation with per-user locking, retries, and logging.
+
+    Guarantees a non-empty 'response' field on failure (returns fallback).
+    All entry points (API, webhook, future) MUST use this function.
+    """
+    lock = _get_user_lock(phone_number)
+    t_start = _time.monotonic()
+    tag = source.upper()
+
+    async with lock:
+        lock_ms = int((_time.monotonic() - t_start) * 1000)
+        if lock_ms > 100:
+            logger.info(f"[{tag}] {phone_number} lock_wait={lock_ms}ms")
+
+        thread_id = f"case6_{phone_number}"
+        config = {"configurable": {"thread_id": thread_id}}
+        graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                t_invoke = _time.monotonic()
+                result = await graph.ainvoke(
+                    {
+                        "messages": [HumanMessage(content=message)],
+                        "phone_number": phone_number,
+                        "display_name": display_name,
+                    },
+                    config,
+                )
+                invoke_ms = int((_time.monotonic() - t_invoke) * 1000)
+                logger.info(f"[{tag}] {phone_number} graph_invoke={invoke_ms}ms")
+
+                # Guardrail: warn on empty response
+                if not result.get("response"):
+                    logger.warning(f"[{tag}] {phone_number} graph returned empty response")
+
+                return result
+
+            except Exception as e:
+                last_error = e
+                logger.error(
+                    f"[{tag}] {phone_number} attempt {attempt + 1}/{max_retries}: "
+                    f"{type(e).__name__}: {e}\n{traceback.format_exc()}"
+                )
+                if attempt < max_retries - 1:
+                    await asyncio.sleep(1)
+
+        # All retries exhausted — return fallback (never raise)
+        logger.error(f"[{tag}] {phone_number} ALL RETRIES FAILED: {last_error}")
+        return {"response": _FALLBACK_RESPONSE, "messages": [], "user_context": {}}
+
+
+def _on_background_task_done(task: asyncio.Task):
+    """Log unhandled exceptions in fire-and-forget background tasks."""
+    _background_tasks.discard(task)
+    if task.cancelled():
+        return
+    exc = task.exception()
+    if exc:
+        logger.error(
+            f"[BG-TASK] Unhandled exception: {type(exc).__name__}: {exc}\n"
+            f"{''.join(traceback.format_exception(type(exc), exc, exc.__traceback__))}"
+        )
+
+
 async def _nudge_checker():
-    """Background task: check for stale KYC sessions and log nudge."""
+    """Background task: check for stale KYC sessions and send WhatsApp nudge."""
     while True:
         await asyncio.sleep(NUDGE_CHECK_INTERVAL)
         now = datetime.now(timezone.utc)
@@ -95,7 +173,20 @@ async def _nudge_checker():
                 last_dt = datetime.fromisoformat(session["last_interaction_at"])
                 gap = (now - last_dt).total_seconds()
                 if gap > NUDGE_DELAY_SECONDS:
-                    print(f"[NUDGE] Session {thread_id} inactive for {gap/60:.0f} min — sending nudge")
+                    phone = session.get("phone", "")
+                    phone_number_id = session.get("phone_number_id", "")
+                    if phone and phone_number_id:
+                        nudge_text = (
+                            "¡Hola! Vi que estábamos armando tu rutina. "
+                            "¿Quieres que sigamos? Solo escríbeme y retomamos donde quedamos. 💪"
+                        )
+                        try:
+                            await _send_whatsapp_message(phone_number_id, phone, nudge_text)
+                            logger.info(f"[NUDGE] Sent nudge to {phone} (thread {thread_id})")
+                        except Exception as e:
+                            logger.error(f"[NUDGE] Failed to send to {phone}: {e}")
+                    else:
+                        logger.warning(f"[NUDGE] Session {thread_id} missing phone or phone_number_id")
                     session["nudge_sent"] = True
             except (ValueError, KeyError):
                 pass
@@ -152,34 +243,10 @@ async def chat(req: ChatRequest):
     if not req.message or not req.message.strip():
         return {"response": "", "thread_id": f"case6_{req.phone_number}", "filtered": True}
 
-    thread_id = f"case6_{req.phone_number}"
-    config = {"configurable": {"thread_id": thread_id}}
+    result = await _invoke_graph_safe(
+        req.phone_number, req.message, req.display_name, source="api",
+    )
 
-    graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
-
-    result = None
-    for attempt in range(2):
-        try:
-            result = await graph.ainvoke(
-                {
-                    "messages": [HumanMessage(content=req.message)],
-                    "phone_number": req.phone_number,
-                    "display_name": req.display_name,
-                },
-                config,
-            )
-            break
-        except Exception as e:
-            logger.error(
-                f"[API] Agent error for {req.phone_number} (attempt {attempt + 1}/2): "
-                f"{type(e).__name__}: {e}\n{traceback.format_exc()}"
-            )
-            if attempt == 0:
-                await asyncio.sleep(1)
-            else:
-                raise HTTPException(status_code=502, detail="Agent invocation failed after retries")
-
-    ctx = result.get("user_context", {})
     response_text = result.get("response", "")
 
     # Optionally send response via WhatsApp
@@ -187,9 +254,10 @@ async def chat(req: ChatRequest):
         phone_number_id = os.getenv("WA_PHONE_NUMBER_ID", WHATSAPP_PHONE_NUMBER_ID)
         await _send_whatsapp_message(phone_number_id, req.phone_number, response_text)
 
+    ctx = result.get("user_context", {})
     return {
         "response": response_text,
-        "thread_id": thread_id,
+        "thread_id": f"case6_{req.phone_number}",
         "is_new_user": ctx.get("is_new_user", False),
         "kyc_complete": ctx.get("kyc_complete", False),
     }
@@ -427,62 +495,41 @@ async def _process_message_background(
     msg_id: str,
 ):
     """Process a WhatsApp message in the background (after 200 already returned)."""
-    import time as _time
-
     t_start = _time.monotonic()
-    lock = _get_user_lock(phone_from)
 
-    t_lock_wait = _time.monotonic()
-    async with lock:
-        t_lock_acquired = _time.monotonic()
-        lock_wait_ms = int((t_lock_acquired - t_lock_wait) * 1000)
-        if lock_wait_ms > 100:
-            print(f"[TIMING] {phone_from} lock_wait={lock_wait_ms}ms", flush=True)
+    result = await _invoke_graph_safe(
+        phone_from, message_body, display_name, source="webhook",
+    )
 
-        thread_id = f"case6_{phone_from}"
-        config = {"configurable": {"thread_id": thread_id}}
-        graph = case6_live_graph if os.getenv("SUPABASE_URL") else case6_graph
+    # Track KYC sessions for nudge checker
+    ctx = result.get("user_context", {})
+    is_new = ctx.get("is_new_user", False)
+    kyc_done = ctx.get("kyc_complete", False)
+    has_plan = bool(ctx.get("plan"))
+    thread_id = f"case6_{phone_from}"
+    if is_new or (kyc_done and not has_plan):
+        _kyc_sessions[thread_id] = {
+            "last_interaction_at": datetime.now(timezone.utc).isoformat(),
+            "nudge_sent": False,
+            "phone": phone_from,
+            "phone_number_id": phone_number_id,
+        }
+    elif thread_id in _kyc_sessions and has_plan:
+        # User completed KYC + got plan — remove from nudge tracking
+        _kyc_sessions.pop(thread_id, None)
+    elif thread_id in _kyc_sessions:
+        # Update last interaction time
+        _kyc_sessions[thread_id]["last_interaction_at"] = datetime.now(timezone.utc).isoformat()
 
-        response_text = ""
-        last_error = None
-        for attempt in range(2):
-            try:
-                t_invoke = _time.monotonic()
-                result = await graph.ainvoke(
-                    {
-                        "messages": [HumanMessage(content=message_body)],
-                        "phone_number": phone_from,
-                        "display_name": display_name,
-                    },
-                    config,
-                )
-                t_invoke_done = _time.monotonic()
-                invoke_ms = int((t_invoke_done - t_invoke) * 1000)
-                print(f"[TIMING] {phone_from} graph_invoke={invoke_ms}ms", flush=True)
+    response_text = result.get("response", "")
+    if response_text:
+        t_send = _time.monotonic()
+        await _send_whatsapp_message(phone_number_id, phone_from, response_text)
+        send_ms = int((_time.monotonic() - t_send) * 1000)
+        logger.info(f"[WEBHOOK] {phone_from} wa_send={send_ms}ms")
 
-                response_text = result.get("response", "")
-                last_error = None
-                break
-            except Exception as e:
-                last_error = e
-                logger.error(
-                    f"[WA-BG] Agent error for {phone_from} (attempt {attempt + 1}/2): "
-                    f"{type(e).__name__}: {e}\n{traceback.format_exc()}"
-                )
-                if attempt == 0:
-                    await asyncio.sleep(1)
-
-        if last_error is not None:
-            response_text = "Lo siento, tuve un problema procesando tu mensaje. Intenta de nuevo en un momento."
-
-        if response_text:
-            t_send = _time.monotonic()
-            await _send_whatsapp_message(phone_number_id, phone_from, response_text)
-            send_ms = int((_time.monotonic() - t_send) * 1000)
-            print(f"[TIMING] {phone_from} wa_send={send_ms}ms", flush=True)
-
-        total_ms = int((_time.monotonic() - t_start) * 1000)
-        print(f"[TIMING] {phone_from} TOTAL={total_ms}ms msg_id={msg_id}", flush=True)
+    total_ms = int((_time.monotonic() - t_start) * 1000)
+    logger.info(f"[WEBHOOK] {phone_from} TOTAL={total_ms}ms msg_id={msg_id}")
 
 
 @app.post("/webhook", tags=["WhatsApp Webhook"])
@@ -519,7 +566,7 @@ async def whatsapp_webhook(request: Request):
         )
     )
     _background_tasks.add(task)
-    task.add_done_callback(_background_tasks.discard)
+    task.add_done_callback(_on_background_task_done)
 
     return {"status": "ok"}
 

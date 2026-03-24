@@ -837,12 +837,13 @@ async def test_save_workout_plan_dedup_same_day():
                 {"exercise_id": "ex_barbell_squat", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 1, "tempo": "2-0-1"},
                 {"exercise_id": "ex_barbell_squat", "sets": 3, "reps": "12-15", "rir": "1-2", "rest_seconds": 90, "exercise_order": 2, "tempo": "2-0-1"},
                 {"exercise_id": "ex_bench_press", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 3, "tempo": "2-0-1"},
+                {"exercise_id": "ex_barbell_row", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 4, "tempo": "2-0-1"},
             ],
         }],
     }
 
     # Mock supabase_query to validate exercise IDs
-    valid_ids = [{"exercise_id": "ex_barbell_squat"}, {"exercise_id": "ex_bench_press"}]
+    valid_ids = [{"exercise_id": "ex_barbell_squat"}, {"exercise_id": "ex_bench_press"}, {"exercise_id": "ex_barbell_row"}]
 
     async def capture_bulk_insert(table, rows, **kwargs):
         return rows
@@ -855,8 +856,8 @@ async def test_save_workout_plan_dedup_same_day():
         parsed = json.loads(result)
 
         assert parsed["success"] is True
-        # 2 unique exercises × 4 weeks = 8 (not 3 × 4 = 12)
-        assert parsed["workouts_created"] == 8
+        # 3 unique exercises × 4 weeks = 12 (not 4 × 4 = 16, due to squat dedup)
+        assert parsed["workouts_created"] == 12
 
 
 @pytest.mark.asyncio
@@ -872,14 +873,18 @@ async def test_save_workout_plan_same_exercise_different_days():
         "days": [
             {"day_number": 1, "title": "Full Body A", "exercises": [
                 {"exercise_id": "ex_barbell_squat", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 1, "tempo": "2-0-1"},
+                {"exercise_id": "ex_bench_press", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 2, "tempo": "2-0-1"},
+                {"exercise_id": "ex_barbell_row", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 3, "tempo": "2-0-1"},
             ]},
             {"day_number": 2, "title": "Full Body B", "exercises": [
                 {"exercise_id": "ex_barbell_squat", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 1, "tempo": "2-0-1"},
+                {"exercise_id": "ex_overhead_press", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 2, "tempo": "2-0-1"},
+                {"exercise_id": "ex_pulldown", "sets": 3, "reps": "10-12", "rir": "1-2", "rest_seconds": 120, "exercise_order": 3, "tempo": "2-0-1"},
             ]},
         ],
     }
 
-    valid_ids = [{"exercise_id": "ex_barbell_squat"}]
+    valid_ids = [{"exercise_id": "ex_barbell_squat"}, {"exercise_id": "ex_bench_press"}, {"exercise_id": "ex_barbell_row"}, {"exercise_id": "ex_overhead_press"}, {"exercise_id": "ex_pulldown"}]
 
     with patch("cases.case6_unified_agent.tools.supabase_insert", new_callable=AsyncMock, return_value=[]), \
          patch("cases.case6_unified_agent.tools.supabase_bulk_insert", new_callable=AsyncMock, return_value=[]) as mock_bulk, \
@@ -889,8 +894,8 @@ async def test_save_workout_plan_same_exercise_different_days():
         parsed = json.loads(result)
 
         assert parsed["success"] is True
-        # 1 exercise × 2 days × 4 weeks = 8 (both kept — different days)
-        assert parsed["workouts_created"] == 8
+        # 3 exercises × 2 days × 4 weeks = 24 (squat on both days is kept — different days)
+        assert parsed["workouts_created"] == 24
 
 
 # ═══════════════ EMAIL TESTS ═══════════════
@@ -1039,3 +1044,237 @@ class TestSanitizeResponse:
         text = "¡Excelente, Santiago! Tu rutina de 4 días está lista. 💪"
         result = self._sanitize_response(text)
         assert result == text
+
+
+# ═══════════════ FIX-01: confirm_workout_completion planned_day_utc ═══════════════
+
+
+class TestConfirmWorkoutCompletionUtc:
+    """Tests for FIX-01: confirm_workout_completion uses planned_day_utc."""
+
+    @pytest.mark.asyncio
+    async def test_bogota_date_to_utc_range(self):
+        """Bogota date converts correctly to UTC range (UTC-5)."""
+        from cases.case6_unified_agent.tools import _bogota_date_to_utc_range
+
+        start, end = _bogota_date_to_utc_range("2026-03-24")
+        assert start == "2026-03-24T05:00:00+00:00"
+        assert end == "2026-03-25T05:00:00+00:00"
+
+    @pytest.mark.asyncio
+    async def test_confirm_completion_via_planned_day_utc(self):
+        """Sessions with DD/MM planned_day are found via planned_day_utc."""
+        from cases.case6_unified_agent.tools import confirm_workout_completion
+        import json
+
+        session_data = [{
+            "day_routine_id": "uuid-1",
+            "session_name": "Upper A",
+            "week": 1,
+            "planned_day_utc": "2026-03-24T05:00:00+00:00",
+        }]
+
+        async def mock_query(table, select="*", filters=None, limit=None, **kw):
+            if table == "user_weekly_schedule":
+                return session_data
+            return []
+
+        with patch("cases.case6_unified_agent.tools.supabase_query", new_callable=AsyncMock, side_effect=mock_query), \
+             patch("cases.case6_unified_agent.tools.supabase_update", new_callable=AsyncMock), \
+             patch("cases.case6_unified_agent.tools._today_bogota", return_value="2026-03-24"):
+            result = json.loads(await confirm_workout_completion.ainvoke({"user_id": "test-uuid"}))
+            assert result["success"] is True
+            assert result["session_name"] == "Upper A"
+
+    @pytest.mark.asyncio
+    async def test_confirm_completion_grace_period_yesterday(self):
+        """If no session today, finds yesterday's session (grace period)."""
+        from cases.case6_unified_agent.tools import confirm_workout_completion
+        import json
+
+        yesterday_session = [{
+            "day_routine_id": "uuid-2",
+            "session_name": "Lower A",
+            "week": 1,
+            "planned_day_utc": "2026-03-23T05:00:00+00:00",
+        }]
+
+        call_count = 0
+
+        async def mock_query(table, select="*", filters=None, limit=None, **kw):
+            nonlocal call_count
+            if table == "user_weekly_schedule":
+                call_count += 1
+                # First call (today) returns empty, second (yesterday) returns session
+                if call_count == 1:
+                    return []
+                return yesterday_session
+            return []
+
+        with patch("cases.case6_unified_agent.tools.supabase_query", new_callable=AsyncMock, side_effect=mock_query), \
+             patch("cases.case6_unified_agent.tools.supabase_update", new_callable=AsyncMock), \
+             patch("cases.case6_unified_agent.tools._today_bogota", return_value="2026-03-24"), \
+             patch("cases.case6_unified_agent.tools._yesterday_bogota", return_value="2026-03-23"):
+            result = json.loads(await confirm_workout_completion.ainvoke({"user_id": "test-uuid"}))
+            assert result["success"] is True
+            assert result["date"] == "2026-03-23"
+
+    @pytest.mark.asyncio
+    async def test_confirm_completion_filters_by_utc_end(self):
+        """Sessions outside the target day are excluded even if gte matches."""
+        from cases.case6_unified_agent.tools import confirm_workout_completion
+        import json
+
+        # Session is for tomorrow (March 25), not today (March 24)
+        tomorrow_session = [{
+            "day_routine_id": "uuid-3",
+            "session_name": "Upper B",
+            "week": 1,
+            "planned_day_utc": "2026-03-25T05:00:00+00:00",
+        }]
+
+        async def mock_query(table, select="*", filters=None, limit=None, **kw):
+            if table == "user_weekly_schedule":
+                return tomorrow_session
+            return []
+
+        with patch("cases.case6_unified_agent.tools.supabase_query", new_callable=AsyncMock, side_effect=mock_query), \
+             patch("cases.case6_unified_agent.tools._today_bogota", return_value="2026-03-24"), \
+             patch("cases.case6_unified_agent.tools._yesterday_bogota", return_value="2026-03-23"):
+            result = json.loads(await confirm_workout_completion.ainvoke({"user_id": "test-uuid"}))
+            assert result["success"] is False
+
+
+# ═══════════════ FIX-02: get_todays_routine defensive sort ═══════════════
+
+
+@pytest.mark.asyncio
+async def test_get_todays_routine_sorts_by_exercise_order():
+    """Exercises returned in exercise_order even if DB returns unsorted."""
+    from cases.case6_unified_agent.tools import get_todays_routine
+    import json
+
+    unsorted_rows = [
+        {"exercise_id": "ex_curl", "sets": "3", "reps": "12", "rir": "1", "rest-seconds": 90, "tempo": "2-0-1", "exercise_order": 7, "notes": ""},
+        {"exercise_id": "ex_bench", "sets": "3", "reps": "8", "rir": "2", "rest-seconds": 150, "tempo": "2-0-1", "exercise_order": 1, "notes": ""},
+        {"exercise_id": "ex_row", "sets": "3", "reps": "10", "rir": "1", "rest-seconds": 120, "tempo": "2-0-1", "exercise_order": 3, "notes": ""},
+    ]
+    exercises = [
+        {"exercise_id": "ex_bench", "spanish_name": "Press de Banca", "main_muscle": "Pectorales", "link": ""},
+        {"exercise_id": "ex_row", "spanish_name": "Remo con Barra", "main_muscle": "Espalda", "link": ""},
+        {"exercise_id": "ex_curl", "spanish_name": "Curl Bíceps", "main_muscle": "Bíceps", "link": ""},
+    ]
+
+    async def mock_query(table, **kw):
+        if table == "workouts":
+            return unsorted_rows
+        return exercises
+
+    with patch("cases.case6_unified_agent.tools.supabase_query", new_callable=AsyncMock, side_effect=mock_query):
+        result = json.loads(await get_todays_routine.ainvoke({"user_id": "u1", "session_name": "Upper A", "week": 1}))
+        orders = [e["order"] for e in result["exercises"]]
+        assert orders == [1, 3, 7]
+
+
+# ═══════════════ FIX-03: save_workout_plan min exercises validation ═══════════════
+
+
+@pytest.mark.asyncio
+async def test_save_workout_plan_rejects_incomplete_days():
+    """Plan with fewer than 3 exercises per day is rejected."""
+    from cases.case6_unified_agent.tools import save_workout_plan
+    import json
+
+    draft = {
+        "week_schedule": "fb_3",
+        "goal": "Ganar masa muscular",
+        "level": "Intermedio",
+        "days": [{
+            "day_number": 1,
+            "title": "Full Body A",
+            "exercises": [
+                {"exercise_id": "ex_squat", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 1, "tempo": "2-0-1"},
+                {"exercise_id": "ex_bench", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 2, "tempo": "2-0-1"},
+            ]  # Only 2 — should fail
+        }]
+    }
+
+    async def mock_resolve(d):
+        return {(0, 0): "ex_squat", (0, 1): "ex_bench"}, []
+
+    with patch("cases.case6_unified_agent.tools._resolve_exercise_ids", new_callable=AsyncMock, side_effect=mock_resolve), \
+         patch("cases.case6_unified_agent.tools.supabase_insert", new_callable=AsyncMock):
+        result = json.loads(await save_workout_plan.ainvoke({"user_id": "u1", "draft_json": json.dumps(draft)}))
+        assert result["success"] is False
+        assert "insuficientes" in result["error"]
+
+
+@pytest.mark.asyncio
+async def test_save_workout_plan_warns_unresolved():
+    """Plan with unresolved exercises includes explicit warning."""
+    from cases.case6_unified_agent.tools import save_workout_plan
+    import json
+
+    draft = {
+        "week_schedule": "fb_3",
+        "goal": "Ganar masa muscular",
+        "level": "Intermedio",
+        "days": [{
+            "day_number": 1,
+            "title": "Full Body A",
+            "exercises": [
+                {"exercise_id": "ex_squat", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 1, "tempo": "2-0-1"},
+                {"exercise_id": "ex_bench", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 2, "tempo": "2-0-1"},
+                {"exercise_id": "ex_row", "sets": 3, "reps": "8-10", "rir": "1-2", "rest_seconds": 150, "exercise_order": 3, "tempo": "2-0-1"},
+                {"exercise_id": "UNKNOWN_EXERCISE", "sets": 3, "reps": "12", "rir": "1", "rest_seconds": 90, "exercise_order": 4, "tempo": "2-0-1"},
+            ]
+        }]
+    }
+
+    async def mock_resolve(d):
+        resolved = {(0, 0): "ex_squat", (0, 1): "ex_bench", (0, 2): "ex_row"}
+        unresolved = [{"day_idx": 0, "ex_idx": 3, "name": "UNKNOWN_EXERCISE"}]
+        return resolved, unresolved
+
+    with patch("cases.case6_unified_agent.tools._resolve_exercise_ids", new_callable=AsyncMock, side_effect=mock_resolve), \
+         patch("cases.case6_unified_agent.tools.supabase_insert", new_callable=AsyncMock), \
+         patch("cases.case6_unified_agent.tools.supabase_bulk_insert", new_callable=AsyncMock):
+        result = json.loads(await save_workout_plan.ainvoke({"user_id": "u1", "draft_json": json.dumps(draft)}))
+        assert result["success"] is True
+        assert "warning" in result
+        assert "1 ejercicio" in result["warning"]
+
+
+# ═══════════════ FIX-04/05/06: Prompt content tests ═══════════════
+
+
+class TestPromptFixes:
+    """Verify prompt contains required directives after fixes."""
+
+    def test_prompt_contains_draft_preview_prohibition(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "PROHIBIDO enviar la lista completa de ejercicios por WhatsApp" in KAIROS_SYSTEM_PROMPT
+
+    def test_prompt_contains_current_datetime_placeholder(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "{current_datetime}" in KAIROS_SYSTEM_PROMPT
+        assert "FECHA Y HORA ACTUAL" in KAIROS_SYSTEM_PROMPT
+
+    def test_prompt_has_resistance_parameters(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "Mejorar resistencia" in KAIROS_SYSTEM_PROMPT
+        assert "15-20" in KAIROS_SYSTEM_PROMPT  # Higher reps for endurance
+
+    def test_prompt_has_magic_link_post_save(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "create_magic_link" in KAIROS_SYSTEM_PROMPT
+        assert "Workout Tracker" in KAIROS_SYSTEM_PROMPT
+
+    def test_prompt_has_draft_approval_idempotency(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "me gusta" in KAIROS_SYSTEM_PROMPT
+        assert "APROBACIÓN" in KAIROS_SYSTEM_PROMPT
+
+    def test_prompt_has_no_proactive_routine_post_save(self):
+        from cases.case6_unified_agent.prompts import KAIROS_SYSTEM_PROMPT
+        assert "NO menciones qué día es hoy ni ofrezcas mostrar la rutina del día" in KAIROS_SYSTEM_PROMPT
