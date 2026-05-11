@@ -753,6 +753,29 @@ async def _resolve_exercise_ids(draft: dict) -> tuple[dict[tuple[int, int], str]
     return resolved, unresolved
 
 
+# ═══════════════ Loading Parameters (set_profiles) ═══════════════
+
+
+async def _fetch_loading_params(
+    goal: str, level: str,
+) -> dict[tuple[int, str], dict]:
+    """Fetch sets/reps/rir/rest_sec/tempo from set_profiles indexed by (week, role).
+
+    Centralizes loading prescription so save_workout_plan applies periodized
+    parameters from the curated table instead of trusting the LLM.
+
+    Returns:
+        Dict keyed by (week:int, role:str) → {sets, reps, rir, rest_sec, tempo}.
+        Empty dict if the (goal, level) combination has no rows.
+    """
+    rows = await supabase_query(
+        "set_profiles",
+        select="week,role,sets,reps,rir,rest_sec,tempo",
+        filters={"goal": f"eq.{goal}", "level": f"eq.{level}"},
+    )
+    return {(r["week"], r["role"]): r for r in rows}
+
+
 # ═══════════════ Save Workout Plan ═══════════════
 
 
@@ -1122,6 +1145,36 @@ async def get_mesocycle_status(user_id: str) -> str:
     }, ensure_ascii=False)
 
 
+async def _validate_mesocycle_complete(user_id: str) -> str | None:
+    """Guard for renew_* tools: ensure W4 is fully completed before destructive renewal.
+
+    Returns:
+        None if mesocycle is complete (caller may proceed).
+        JSON error string (MESOCYCLE_NOT_COMPLETE) if not — caller should return it directly.
+    """
+    w4 = await supabase_query(
+        "user_weekly_schedule",
+        select='day_routine_id,"Completed"',
+        filters={"user_id": f"eq.{user_id}", "week": "eq.4"},
+    )
+    w4_total = len(w4)
+    w4_completed = sum(1 for s in w4 if s.get("Completed", False))
+    if w4_total == 0 or w4_completed < w4_total:
+        return json.dumps({
+            "success": False,
+            "error": "MESOCYCLE_NOT_COMPLETE",
+            "week4_completed": w4_completed,
+            "week4_total": w4_total,
+            "message": (
+                f"Aún no terminas el mesociclo actual "
+                f"(semana 4: {w4_completed}/{w4_total} sesiones completadas). "
+                f"Termínalo primero, o si solo quieres cambiar QUÉ días específicos "
+                f"entrenas (no cuántos), usa schedule_sessions sin renovar."
+            ),
+        }, ensure_ascii=False)
+    return None
+
+
 @tool
 async def renew_maintain(user_id: str) -> str:
     """Renueva el mesociclo MANTENIENDO la rutina actual.
@@ -1129,12 +1182,19 @@ async def renew_maintain(user_id: str) -> str:
     Conserva todos los ejercicios. Limpia el schedule e incrementa el mesociclo.
     Después de usar esta herramienta, el usuario debe agendar semana 1.
 
+    REQUIERE: mesociclo actual COMPLETO (W4 con todas las sesiones marcadas Completed=true).
+
     Args:
         user_id: UUID del usuario
 
     Returns:
-        Confirmación con nuevo número de mesociclo
+        Confirmación con nuevo número de mesociclo, o error MESOCYCLE_NOT_COMPLETE
     """
+    # GUARD: mesociclo debe estar completo antes de renovar
+    guard_err = await _validate_mesocycle_complete(user_id)
+    if guard_err is not None:
+        return guard_err
+
     plans = await supabase_query(
         "users_plans",
         select="plan_id,mesocycle_number,week_schedule",
@@ -1177,14 +1237,21 @@ async def renew_rotate_exercises(user_id: str, health_status: str = "A") -> str:
     Mantiene la estructura (días, sets, reps) pero cambia ejercicios por alternativas.
     Después de usar esta herramienta, el usuario debe agendar semana 1.
 
+    REQUIERE: mesociclo actual COMPLETO (W4 con todas las sesiones marcadas Completed=true).
+
     Args:
         user_id: UUID del usuario
         health_status: Código de salud del usuario (A, B, C, D, E). Default A
 
     Returns:
-        Resumen de ejercicios rotados y conservados
+        Resumen de ejercicios rotados y conservados, o error MESOCYCLE_NOT_COMPLETE
     """
     import random
+
+    # GUARD: mesociclo debe estar completo antes de renovar
+    guard_err = await _validate_mesocycle_complete(user_id)
+    if guard_err is not None:
+        return guard_err
 
     plans = await supabase_query(
         "users_plans",
@@ -1298,18 +1365,25 @@ async def renew_rotate_exercises(user_id: str, health_status: str = "A") -> str:
 
 @tool
 async def renew_change_days(user_id: str, new_days_per_week: int) -> str:
-    """Renueva el mesociclo CAMBIANDO la frecuencia de entrenamiento.
+    """Renueva el mesociclo CAMBIANDO la frecuencia (cantidad de días por semana).
+
+    Solo para cuando el usuario quiere entrenar MÁS o MENOS días que en el mesociclo actual.
+    NO usar cuando el usuario solo quiere cambiar QUÉ días específicos entrena (usa schedule_sessions).
 
     Elimina ejercicios y schedule actuales, actualiza el plan con nuevo schedule.
     Después de usar esta herramienta, DEBES crear una nueva rutina usando:
     get_day_requirements → get_exercises_for_draft → save_workout_plan (con "is_renewal": true en el JSON)
 
+    REQUIERE:
+    - Mesociclo actual COMPLETO (W4 con todas las sesiones marcadas Completed=true)
+    - new_days_per_week debe ser DIFERENTE al actual
+
     Args:
         user_id: UUID del usuario
-        new_days_per_week: Nuevo número de días por semana (2-6)
+        new_days_per_week: Nuevo número de días por semana (2-6). DEBE ser distinto al actual.
 
     Returns:
-        Confirmación y nuevo week_schedule para usar en la creación de rutina
+        Confirmación y nuevo week_schedule, o error SAME_DAYS_PER_WEEK / MESOCYCLE_NOT_COMPLETE
     """
     if new_days_per_week < 2 or new_days_per_week > 6:
         return json.dumps({
@@ -1322,7 +1396,7 @@ async def renew_change_days(user_id: str, new_days_per_week: int) -> str:
 
     plans = await supabase_query(
         "users_plans",
-        select="plan_id,mesocycle_number,goal,level",
+        select="plan_id,mesocycle_number,goal,level,week_schedule",
         filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
         limit=1,
     )
@@ -1330,6 +1404,29 @@ async def renew_change_days(user_id: str, new_days_per_week: int) -> str:
         return json.dumps({"success": False, "error": "No se encontró plan activo"})
 
     plan = plans[0]
+
+    # GUARD 1: nueva cantidad debe ser distinta a la actual
+    ws_to_days = {"fb_2": 2, "fb_3": 3, "ul_4": 4, "ppl_5": 5, "ppl_6": 6}
+    current_days = ws_to_days.get(plan.get("week_schedule", ""), 0)
+    if new_days_per_week == current_days:
+        return json.dumps({
+            "success": False,
+            "error": "SAME_DAYS_PER_WEEK",
+            "current_days_per_week": current_days,
+            "message": (
+                f"Ya entrenas {current_days} días por semana. "
+                f"Si quieres cambiar QUÉ días específicos entrenas (no cuántos), "
+                f"usa schedule_sessions con los días nuevos. "
+                f"Si quieres mantener los mismos ejercicios para el siguiente mesociclo, "
+                f"usa renew_maintain."
+            ),
+        }, ensure_ascii=False)
+
+    # GUARD 2: mesociclo debe estar completo
+    guard_err = await _validate_mesocycle_complete(user_id)
+    if guard_err is not None:
+        return guard_err
+
     new_meso = plan["mesocycle_number"] + 1
 
     # Delete old workouts and schedule
