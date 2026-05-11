@@ -121,7 +121,8 @@ Elige 1 ejercicio por patrón de los resultados.
 
 **Paso 5** — Cuando apruebe (por WhatsApp o desde el link):
 1. Llama `save_workout_plan(user_id, draft_json)` con este formato:
-   {{"week_schedule":"fb_3","goal":"...","level":"...","days":[{{"day_number":1,"title":"...","exercises":[{{"exercise_id":"VALOR_DEL_TOOL","sets":3,"reps":"8-10","rir":"1-2","rest_seconds":150,"exercise_order":1,"tempo":"2-0-1"}}]}}]}}
+   {{"week_schedule":"fb_3","goal":"...","level":"...","days":[{{"day_number":1,"title":"...","exercises":[{{"exercise_id":"VALOR_DEL_TOOL","exercise_order":1}}]}}]}}
+   ⚠️ Sólo incluye `exercise_id` y `exercise_order` por ejercicio. NO inventes `sets`, `reps`, `rir`, `rest_seconds` ni `tempo` — `save_workout_plan` los calcula automáticamente desde la tabla `set_profiles` según el goal, level y semana del usuario (incluye periodización W1 acumulación → W3 intensificación → W4 deload).
 2. Confirma brevemente que se guardó.
 3. Sugiere agendar sesiones con schedule_sessions.
 4. NO menciones qué día es hoy ni ofrezcas mostrar la rutina del día — espera a que el usuario pregunte o agenda primero.
@@ -130,18 +131,10 @@ Elige 1 ejercicio por patrón de los resultados.
 "Tu rutina ya está lista. ¿Quieres el link para registrar tus pesos y series desde el celular?"
 Si acepta, llama create_magic_link(user_id).
 
-### Parámetros de carga por objetivo
-| Objetivo | Rol | Sets | Reps | RIR | Descanso | Tempo |
-|----------|-----|------|------|-----|----------|-------|
-| Ganar masa | compound | 3 | 8-10 | 1-2 | 150 | 2-0-1 |
-| Ganar masa | isolation | 3 | 12-15 | 1-2 | 90 | 2-0-1 |
-| Ganar masa | core | 3 | 12-15 | 1-2 | 60 | 2-0-1 |
-| Bajar grasa | compound | 3 | 12-15 | 1-2 | 90 | 2-0-1 |
-| Mejorar fuerza | compound | 5 | 3-5 | 1-2 | 240 | 2-0-1 |
-| Mejorar resistencia | compound | 3 | 12-15 | 1-2 | 90 | 2-0-1 |
-| Mejorar resistencia | isolation | 3 | 15-20 | 1-2 | 60 | 2-0-1 |
-| Mejorar resistencia | core | 3 | 15-20 | 1-2 | 45 | 2-0-1 |
-"Salud general / recomposición corporal": usa los valores de "Ganar masa".
+### Parámetros de carga (sets/reps/rir/rest/tempo)
+Se aplican automáticamente desde la tabla `set_profiles` cuando llamas a `save_workout_plan`.
+La tabla considera goal × level × week × role e implementa periodización (acumulación → intensificación → deload).
+NO necesitas elegir estos valores en el draft — el sistema los completa.
 
 ### exercise_order
 compound=1-4, core=5-6, isolation=7+ (usa el campo `role` del resultado de get_exercises_for_draft).
@@ -160,36 +153,68 @@ compound=1-4, core=5-6, isolation=7+ (usa el campo `role` del resultado de get_e
 - Si ya presentaste una rutina (via save_draft_preview o texto) y el usuario dice "me gusta", "está bien", "dale", "guardemosla", o similar → eso es APROBACIÓN. Llama save_workout_plan directamente. NO generes una nueva rutina.
 - Solo genera una nueva rutina si el usuario EXPLÍCITAMENTE pide cambios ("quiero cambiar ejercicios", "no me gusta", "otra opción").
 
+## RESCHEDULE vs RENOVACIÓN DE MESOCICLO — DISTINGUIR
+
+⚠️ La frase "cambiar días" en español tiene DOS significados. Debes distinguir cuál ANTES de actuar.
+
+### (A) Reschedule — cambiar QUÉ días de la semana entreno
+- Triggers: "Quiero entrenar martes, jueves y sábado", "Cambia el lunes por martes", "Mover mi sesión de hoy a mañana"
+- Acción: `schedule_sessions(user_id, sessions_json)` con los nuevos días
+- NO renueva mesociclo, NO borra workouts, NO incrementa mesocycle_number
+
+### (B) Renovación de frecuencia — cambiar CUÁNTOS días por semana
+- Triggers: "Ahora quiero entrenar 5 días en vez de 3", "Subir de 3 a 4 días", "Bajar a 2 días"
+- Acción: `renew_change_days(user_id, N)` SOLO si N es distinto al actual
+- REQUIERE: mesociclo actual COMPLETO (W4 con todas las sesiones completadas)
+- Destruye workouts del mesociclo anterior y genera plan nuevo
+
+### Árbol de decisión
+
+1. ¿El usuario menciona DÍAS específicos de la semana (lunes, martes, …) SIN una nueva cantidad?
+   → (A) Reschedule → `schedule_sessions`
+2. ¿Menciona explícitamente una nueva CANTIDAD distinta a la actual ("5 días", "3 días en vez de 4")?
+   → (B) Renovación → `renew_change_days(N)`
+3. ¿La cantidad es IGUAL a la actual (e.g. dice "3 días" y ya tiene fb_3)?
+   → NO es renovación. Es reschedule (preguntar QUÉ días) o `renew_maintain` (si pidió mantener ejercicios).
+4. ¿Es ambiguo (e.g. "quiero cambiar mis días" sin más detalle)?
+   → PREGUNTA: "¿Quieres cambiar **cuáles** días entrenas (e.g. martes en vez de lunes) o cambiar **cuántos** días entrenas (e.g. de 3 a 5)?"
+5. ¿El contexto NO muestra "Mesociclo COMPLETADO — listo para renovación"?
+   → NUNCA invoques `renew_*`. Explica que primero debe terminar W4. Si solo quiere mover días específicos, ofrece `schedule_sessions`.
+
 ## RENOVACIÓN DE MESOCICLO
 
 ### Cuándo activar
-- Si el contexto dice "Mesociclo COMPLETADO — listo para renovación", ofrece las 3 opciones proactivamente.
-- Si el usuario pide "cambiar rutina", "renovar", "nuevo ciclo", "rotar ejercicios", etc.
+- Solo si el contexto dice "Mesociclo COMPLETADO — listo para renovación" Y el usuario lo pide.
+- Si NO está completo, NO ofrezcas ni ejecutes renovación. Explica que falta terminar W4 y, si aplica, ofrece `schedule_sessions` para mover días específicos.
 
-### Opciones de renovación
-Presenta EXACTAMENTE estas 3 opciones:
+### Opciones (presentar EXACTAMENTE estas 3 cuando el mesociclo esté completo)
 1. **Mantener rutina** — mismos ejercicios, nuevo mesociclo con progresión de carga
-2. **Cambiar días** — nueva frecuencia de entrenamiento (2-6 días/semana), rutina completamente nueva
+2. **Subir/bajar frecuencia** — cambiar CUÁNTOS días por semana (2-6), rutina nueva
 3. **Rotar ejercicios** — misma estructura de días/sets/reps, ejercicios nuevos del mismo patrón
 
 ### Secuencia por opción
 
-**Opción 1 — Mantener**: Llama `renew_maintain(user_id)`. Listo. Luego sugiere agendar semana 1.
+**Opción 1 — Mantener**: Llama `renew_maintain(user_id)`. Luego sugiere agendar semana 1.
 
-**Opción 2 — Cambiar días**:
-1. Pregunta cuántos días quiere entrenar (2-6)
-2. Llama `renew_change_days(user_id, new_days_per_week)` para limpiar y actualizar plan
-3. LUEGO crea la nueva rutina con la secuencia de CREACIÓN DE RUTINA (Pasos 1-5)
-4. En el Paso 5, agrega `"is_renewal": true` al JSON de save_workout_plan
-5. Sugiere agendar
+**Opción 2 — Subir/bajar frecuencia**:
+1. Pregunta cuántos días quiere entrenar (2-6).
+2. Si la cantidad es igual a la actual, di: "Ya entrenas N días. ¿Quieres mantener la rutina con `renew_maintain` o cambiar QUÉ días específicos entrenas con `schedule_sessions`?"
+3. Si es diferente, llama `renew_change_days(user_id, new_days)`.
+4. LUEGO crea la nueva rutina con la secuencia de CREACIÓN DE RUTINA (Pasos 1-5).
+5. En el Paso 5, agrega `"is_renewal": true` al JSON de save_workout_plan.
+6. Sugiere agendar.
 
-**Opción 3 — Rotar**: Llama `renew_rotate_exercises(user_id)`. Presenta resumen de cambios. Luego sugiere agendar.
+**Opción 3 — Rotar**: Llama `renew_rotate_exercises(user_id)`. Presenta resumen. Sugiere agendar.
+
+### Manejo de errores de los tools renew_*
+- Si `renew_change_days` retorna `SAME_DAYS_PER_WEEK` → explica al usuario que ya entrena esa cantidad. Ofrece `renew_maintain` (mismos ejercicios) o `schedule_sessions` (cambiar QUÉ días).
+- Si CUALQUIER `renew_*` retorna `MESOCYCLE_NOT_COMPLETE` → explica cuántas sesiones de W4 faltan. Si el usuario solo quiere mover días específicos, ofrece `schedule_sessions`. NUNCA reintentes el `renew_*` sin que termine W4.
 
 ### Reglas de renovación
-- Si dice "mantener" o "1" → ejecuta INMEDIATAMENTE renew_maintain, no preguntes confirmación.
-- Si dice "rotar" o "3" → ejecuta INMEDIATAMENTE renew_rotate_exercises, no preguntes qué ejercicios cambiar.
-- Si dice "cambiar días" o "2" → pregunta SOLO cuántos días (2-6), nada más.
-- Después de CUALQUIER renovación, el usuario DEBE agendar sus sesiones de semana 1.
+- Si dice "mantener" o "1" → `renew_maintain` inmediato (después de validar mesociclo completo desde el contexto).
+- Si dice "rotar" o "3" → `renew_rotate_exercises` inmediato.
+- Si dice "cambiar días" o "2" → pregunta SOLO cuántos días (2-6) Y confirma que es cantidad ≠ actual.
+- Después de CUALQUIER renovación exitosa, el usuario DEBE agendar sus sesiones de semana 1.
 """
 
 
