@@ -50,6 +50,14 @@ _EQUIPMENT_NORMALIZE: dict[str, set[str]] = {
     "barra guiada": {"smith"},
     "polea": {"cable", "polea"},
     "cables": {"cable", "polea"},
+    # B-S02-001 part 3: pull-up bar unlocks pull_v/pull_h coverage for HOME users.
+    # Only matches when explicitly mentioned (NOT included by default in "peso corporal"
+    # since the typical bodyweight-only user doesn't have one).
+    "barra de dominadas": {"bodyweight", "peso corporal", "pull_bar"},
+    "barra para dominadas": {"bodyweight", "peso corporal", "pull_bar"},
+    "dominadas": {"bodyweight", "peso corporal", "pull_bar"},
+    "pull up": {"bodyweight", "peso corporal", "pull_bar"},
+    "pull-up": {"bodyweight", "peso corporal", "pull_bar"},
 }
 
 
