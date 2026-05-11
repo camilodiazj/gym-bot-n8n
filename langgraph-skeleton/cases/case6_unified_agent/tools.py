@@ -898,6 +898,51 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
     # Resolve exercise IDs (handles names → real IDs)
     resolved, unresolved = await _resolve_exercise_ids(draft)
 
+    # Equipment validation (B-S02-001 fix): fail-fast if any resolved exercise
+    # uses equipment the user doesn't have. The LLM may "hallucinate" exercises
+    # outside the curated list (e.g. invent "Press de banca con barra" which
+    # _resolve_exercise_ids will ILIKE-match to a real barbell exercise even
+    # for a bodyweight user). This is the final safety net.
+    allowed_equip = await _user_allowed_equipment(user_id)
+    if allowed_equip and resolved:
+        resolved_ids = sorted(set(resolved.values()))
+        eq_rows = await supabase_query(
+            "exercises",
+            select="exercise_id,equipment,spanish_name",
+            filters={"exercise_id": f"in.({','.join(resolved_ids)})"},
+        )
+        equip_by_id = {r["exercise_id"]: r for r in eq_rows}
+
+        violations = []
+        for ex_id in resolved_ids:
+            row = equip_by_id.get(ex_id)
+            if not row:
+                continue
+            if row.get("equipment", "").lower() not in allowed_equip:
+                violations.append({
+                    "exercise_id": ex_id,
+                    "name": row.get("spanish_name", ex_id),
+                    "equipment": row.get("equipment", ""),
+                })
+
+        if violations:
+            logger.warning(
+                f"[EQUIPMENT] save_workout_plan rejected for user_id={user_id}: "
+                f"{len(violations)} exercise(s) violate allowed_equip={sorted(allowed_equip)}"
+            )
+            return json.dumps({
+                "success": False,
+                "error": "EQUIPMENT_MISMATCH",
+                "violations": violations,
+                "user_allowed_equipment": sorted(allowed_equip),
+                "hint": (
+                    "El usuario solo tiene este equipamiento. Vuelve al Paso 2 y llama "
+                    "get_exercises_for_draft con user_id correcto para que el filtro de "
+                    "equipamiento se aplique. Elige solo ejercicios devueltos por el tool. "
+                    "NO reintentes guardar con los mismos ejercicios."
+                ),
+            }, ensure_ascii=False)
+
     # Create plan (skip if renewal — plan already updated by renew_change_days)
     if not is_renewal:
         await supabase_insert(
