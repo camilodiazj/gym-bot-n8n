@@ -776,6 +776,42 @@ async def _fetch_loading_params(
     return {(r["week"], r["role"]): r for r in rows}
 
 
+# Conservative fallback if set_profiles has no row for (goal, level, week, role).
+# Coverage check (2026-05-11): 5 goals × 3 levels × 4 weeks × 4 roles = 240 rows
+# all populated, so this should rarely fire. Logged when used.
+DEFAULT_LOADING_PARAMS = {
+    "sets": "3",
+    "reps": "8-12",
+    "rir": "1-2",
+    "rest_sec": 120,
+    "tempo": "2-0-1",
+}
+
+
+async def _fetch_exercise_roles(exercise_ids: list[str]) -> dict[str, str]:
+    """Fetch role for each exercise_id (compound, isolation, core, cardio).
+
+    Used by save_workout_plan to know which loading profile to apply per
+    exercise. Batches a single Postgres query.
+
+    Args:
+        exercise_ids: List of resolved exercise IDs (e.g. ["ex_squat", "ex_bench"]).
+
+    Returns:
+        Dict {exercise_id: role}. Missing IDs are simply absent from the dict;
+        callers should fall back to "compound" or DEFAULT_LOADING_PARAMS.
+    """
+    if not exercise_ids:
+        return {}
+    unique_ids = list(set(exercise_ids))
+    rows = await supabase_query(
+        "exercises",
+        select="exercise_id,role",
+        filters={"exercise_id": f"in.({','.join(unique_ids)})"},
+    )
+    return {r["exercise_id"]: r["role"] for r in rows}
+
+
 # ═══════════════ Save Workout Plan ═══════════════
 
 
@@ -848,6 +884,20 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
             on_conflict="user_id",
         )
 
+    # Prefetch loading parameters (set_profiles) and exercise roles in 2 queries.
+    # This is the source of truth for sets/reps/rir/rest/tempo — the LLM no longer
+    # decides these. Values are periodized per week (W1 accumulation → W3 intensification
+    # → W4 deload) and differ by role (compound vs isolation vs core vs cardio).
+    user_level = draft.get("level", "Intermedio")
+    profile_index = await _fetch_loading_params(goal, user_level)
+    exercise_roles = await _fetch_exercise_roles(list(resolved.values()))
+
+    if not profile_index:
+        logger.warning(
+            f"[LOADING] No set_profiles rows for goal={goal} level={user_level}. "
+            f"All exercises will use DEFAULT_LOADING_PARAMS."
+        )
+
     # Build workout rows for 4 weeks (only resolved exercises)
     workout_rows = []
     for week in range(1, 5):
@@ -858,17 +908,28 @@ async def save_workout_plan(user_id: str, draft_json: str) -> str:
                 if not ex_id:
                     continue  # Skip unresolved
 
+                # Lookup loading params by (week, role). Role defaults to "compound"
+                # if the exercise isn't in exercise_roles (shouldn't happen, but defensive).
+                role = exercise_roles.get(ex_id, "compound")
+                params = profile_index.get((week, role))
+                if params is None:
+                    logger.warning(
+                        f"[LOADING] No set_profile for goal={goal} level={user_level} "
+                        f"week={week} role={role} ex_id={ex_id} — using DEFAULT_LOADING_PARAMS."
+                    )
+                    params = DEFAULT_LOADING_PARAMS
+
                 workout_rows.append({
                     "id": str(uuid.uuid4()),
                     "user_id": user_id,
                     "week": week,
                     "day_name": day_title,
                     "exercise_id": ex_id,
-                    "sets": str(ex.get("sets", 3)),
-                    "reps": ex.get("reps", "8-12"),
-                    "rir": ex.get("rir", "1-2"),
-                    "rest-seconds": ex.get("rest_seconds", ex.get("rest", 120)),
-                    "tempo": ex.get("tempo", "2-0-1"),
+                    "sets": str(params["sets"]),
+                    "reps": params["reps"],
+                    "rir": params["rir"],
+                    "rest-seconds": params["rest_sec"],
+                    "tempo": params["tempo"],
                     "created_at": now.isoformat(),
                     "notes": "",
                     "exercise_order": ex.get("exercise_order", ex.get("order", e_idx + 1)),
