@@ -464,6 +464,27 @@ async def _lookup_user_profile(user_id: str | None) -> dict:
     return default
 
 
+async def _user_allowed_equipment(user_id: str | None) -> set[str] | None:
+    """Return the set of allowed equipment values for a user, or None if no restriction.
+
+    Returns None for GYM users (or when user_id is missing / profile lookup fails) —
+    they can use any equipment. Returns a normalized set of allowed equipment values
+    for HOME users based on their declared home_equipment.
+
+    Single source of truth used by:
+    - get_exercises_for_draft (filter exercise candidates)
+    - find_exercise_alternatives (filter alternatives during swaps)
+    - save_workout_plan (final validation before bulk insert)
+    """
+    if not user_id:
+        return None
+    profile = await _lookup_user_profile(user_id)
+    if not profile or profile.get("training_environment") != "HOME":
+        return None  # GYM users: no restriction
+    raw = profile.get("home_equipment") or "peso corporal"
+    return _normalize_equipment(raw)
+
+
 @tool
 async def get_exercises_for_draft(
     pattern: str,
@@ -517,20 +538,24 @@ async def get_exercises_for_draft(
     # Auto-lookup profile if user_id provided (for equipment + health)
     profile = await _lookup_user_profile(user_id) if user_id else None
 
-    # Filter by equipment (auto-detect HOME users)
-    effective_equipment = equipment
-    if not effective_equipment and profile and profile["training_environment"] == "HOME":
-        home_eq = profile.get("home_equipment", "")
-        effective_equipment = home_eq if home_eq else "peso corporal"
+    # Equipment filter (B-S02-001 fix): hard filter — never fall back to unfiltered.
+    # Prefer explicit equipment arg, then derive from HOME profile, then None (no restriction).
+    if equipment:
+        allowed_equip = _normalize_equipment(equipment)
+    else:
+        allowed_equip = await _user_allowed_equipment(user_id)
 
-    if effective_equipment:
-        allowed_equip = _normalize_equipment(effective_equipment)
-        equip_filtered = [
+    if allowed_equip is not None:
+        before = len(filtered)
+        filtered = [
             r for r in filtered
             if r.get("equipment", "").lower() in allowed_equip
         ]
-        if equip_filtered:
-            filtered = equip_filtered
+        if not filtered:
+            logger.warning(
+                f"[EQUIPMENT] No exercises for pattern={pattern} match equipment={sorted(allowed_equip)}. "
+                f"({before} candidates dropped). Pattern will be omitted from draft."
+            )
 
     # Apply health restrictions (auto-lookup from profile if not explicitly provided)
     if health_status and health_status != "A":
@@ -594,17 +619,20 @@ async def find_exercise_alternatives(
     # Auto-lookup profile if user_id provided
     profile = await _lookup_user_profile(user_id) if user_id else None
 
-    # Filter by equipment (auto-detect HOME users)
-    effective_equipment = equipment
-    if not effective_equipment and profile and profile["training_environment"] == "HOME":
-        home_eq = profile.get("home_equipment", "")
-        effective_equipment = home_eq if home_eq else "peso corporal"
+    # Equipment filter (B-S02-001 fix): hard filter, no fallback to unfiltered.
+    if equipment:
+        allowed_equip = _normalize_equipment(equipment)
+    else:
+        allowed_equip = await _user_allowed_equipment(user_id)
 
-    if effective_equipment:
-        allowed_equip = _normalize_equipment(effective_equipment)
-        equip_filtered = [r for r in filtered if r.get("equipment", "").lower() in allowed_equip]
-        if equip_filtered:
-            filtered = equip_filtered
+    if allowed_equip is not None:
+        before = len(filtered)
+        filtered = [r for r in filtered if r.get("equipment", "").lower() in allowed_equip]
+        if not filtered:
+            logger.warning(
+                f"[EQUIPMENT] No alternatives for pattern={pattern} match equipment={sorted(allowed_equip)}. "
+                f"({before} candidates dropped)."
+            )
 
     # Apply health restrictions (auto-lookup from profile if not explicitly provided)
     if health_status and health_status != "A":
