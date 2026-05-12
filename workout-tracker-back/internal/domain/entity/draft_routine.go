@@ -1,13 +1,79 @@
 package entity
 
-import "time"
+import (
+	"bytes"
+	"encoding/json"
+	"strconv"
+	"time"
+)
 
-// DraftAlternative represents an alternative exercise option in a draft routine
+// FlexString is a string that tolerates JSON inputs of any scalar type
+// (number, bool, null) and always marshals back as a JSON string.
+// It exists because draft_data is produced by an LLM and historical rows
+// in Supabase contain numeric `rir` values. Postel's law at the boundary.
+type FlexString string
+
+func (f *FlexString) UnmarshalJSON(b []byte) error {
+	b = bytes.TrimSpace(b)
+	if len(b) == 0 || bytes.Equal(b, []byte("null")) {
+		*f = ""
+		return nil
+	}
+	if b[0] == '"' {
+		var s string
+		if err := json.Unmarshal(b, &s); err != nil {
+			return err
+		}
+		*f = FlexString(s)
+		return nil
+	}
+	if bytes.Equal(b, []byte("true")) || bytes.Equal(b, []byte("false")) {
+		*f = FlexString(b)
+		return nil
+	}
+	// number: keep the raw lexical form (preserves "1.5" and "2" identically)
+	if _, err := strconv.ParseFloat(string(b), 64); err == nil {
+		*f = FlexString(b)
+		return nil
+	}
+	// Fall back to treating the bytes as a raw string.
+	*f = FlexString(b)
+	return nil
+}
+
+func (f FlexString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(string(f))
+}
+
+// DraftAlternative represents an alternative exercise option in a draft routine.
+// UnmarshalJSON accepts both the canonical `video_link` and the legacy `link`
+// key so older rows in Supabase still expose their video URL.
 type DraftAlternative struct {
 	ExerciseID  string `json:"exercise_id"`
 	SpanishName string `json:"spanish_name"`
 	MainMuscle  string `json:"main_muscle,omitempty"`
 	VideoLink   string `json:"video_link,omitempty"`
+}
+
+func (a *DraftAlternative) UnmarshalJSON(b []byte) error {
+	var raw struct {
+		ExerciseID  string `json:"exercise_id"`
+		SpanishName string `json:"spanish_name"`
+		MainMuscle  string `json:"main_muscle"`
+		VideoLink   string `json:"video_link"`
+		Link        string `json:"link"`
+	}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	a.ExerciseID = raw.ExerciseID
+	a.SpanishName = raw.SpanishName
+	a.MainMuscle = raw.MainMuscle
+	a.VideoLink = raw.VideoLink
+	if a.VideoLink == "" {
+		a.VideoLink = raw.Link
+	}
+	return nil
 }
 
 // DraftExercise represents a single exercise in a draft routine day
@@ -19,8 +85,8 @@ type DraftExercise struct {
 	MainMuscle    string             `json:"main_muscle,omitempty"`
 	VideoLink     string             `json:"video_link,omitempty"`
 	Sets          int                `json:"sets"`
-	Reps          string             `json:"reps"`
-	RIR           string             `json:"rir"`
+	Reps          FlexString         `json:"reps"`
+	RIR           FlexString         `json:"rir"`
 	RestSeconds   int                `json:"rest_seconds"`
 	ExerciseOrder int                `json:"exercise_order"`
 	Alternatives  []DraftAlternative `json:"alternatives"`
