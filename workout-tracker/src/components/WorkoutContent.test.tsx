@@ -105,14 +105,26 @@ describe('WorkoutContent', () => {
       )
       expect(videoLink).toBeInTheDocument()
     })
+
+    it('should render Spanish copy (no English literals leak through)', () => {
+      // Regression guard for BUG-5 — the exercise badge and the instructions
+      // section header used to read "Exercise" and "Workout Instructions" in
+      // an otherwise-Spanish UI. The literals now live in components/copy.ts.
+      render(<WorkoutContent exercises={mockExercises} />)
+
+      expect(screen.queryByText('Exercise')).toBeNull()
+      expect(screen.queryByText('Workout Instructions')).toBeNull()
+      expect(screen.getAllByText('Ejercicio').length).toBeGreaterThan(0)
+      expect(screen.getByText('Instrucciones')).toBeInTheDocument()
+    })
   })
 
   describe('Expand/Collapse', () => {
     it('should toggle exercise instructions on chevron click', async () => {
       render(<WorkoutContent exercises={mockExercises} />)
 
-      // Find the chevron buttons
-      const exerciseCards = screen.getAllByText('Exercise')
+      // Find the chevron buttons. Each card renders the Spanish badge "Ejercicio".
+      const exerciseCards = screen.getAllByText('Ejercicio')
       const firstCard = exerciseCards[0].closest('div[class*="bg-"]')
 
       // Initially expanded - should show RIR info

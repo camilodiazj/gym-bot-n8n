@@ -87,6 +87,7 @@ func (uc *ApproveDraftUseCase) Execute(ctx context.Context, code string) (*dto.A
 		PlanID:          result.PlanID,
 		WorkoutsCreated: result.WorkoutsCreated,
 		AlreadyApproved: result.AlreadyExisted,
+		MagicLinkCode:   result.MagicLinkCode,
 	}, nil
 }
 
