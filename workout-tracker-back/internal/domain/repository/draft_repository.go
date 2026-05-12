@@ -10,6 +10,10 @@ import (
 type DraftReader interface {
 	// GetByCode retrieves a pending, non-expired draft by its short code
 	GetByCode(ctx context.Context, code string) (*entity.DraftRoutine, error)
+	// GetByCodeAnyStatus retrieves a draft regardless of status or expiry. Used
+	// by the approve flow to distinguish "draft never existed" (404) from
+	// "draft already approved" (409 Conflict, idempotent retry).
+	GetByCodeAnyStatus(ctx context.Context, code string) (*entity.DraftRoutine, error)
 	// GetPhoneByUserID retrieves the user's full phone number for Kairos API callback
 	GetPhoneByUserID(ctx context.Context, userID string) (string, error)
 }
