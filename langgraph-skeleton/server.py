@@ -571,6 +571,88 @@ async def whatsapp_webhook(request: Request):
     return {"status": "ok"}
 
 
+# ═══════════════ API v1 — Drafts ═══════════════
+#
+# Direct draft finalization: bypasses the LLM so what the user approved in the
+# preview UI (after any swaps) is exactly what gets persisted to workouts.
+# Idempotent: if the user already has an active plan, returns the existing
+# plan_id with workouts_created=0.
+
+import json as _json
+import uuid as _uuid
+
+from cases.case6_unified_agent.tools import save_workout_plan as _save_workout_plan_tool
+from src.shared.supabase_client import supabase_query as _supabase_query
+
+
+@app.post("/api/v1/drafts/{code}/finalize", tags=["Drafts"])
+async def finalize_draft(code: str):
+    """Materialize a draft into users_plans + workouts.
+
+    Contract:
+      - 200: success or idempotent no-op (workouts_created=0)
+      - 404: draft not found / expired
+      - 422: draft content rejected by save_workout_plan validation
+      - 5xx: upstream error
+    """
+    # 1. Load draft by code (any status — approve flow may flip it before we run)
+    rows = await _supabase_query(
+        "draft_routines",
+        select="user_id,draft_data,status",
+        filters={"code": f"eq.{code}"},
+        limit=1,
+    )
+    if not rows:
+        raise HTTPException(status_code=404, detail={"success": False, "error": "draft not found"})
+
+    user_id = rows[0]["user_id"]
+    draft_data = rows[0]["draft_data"]
+
+    # 2. Idempotency: if this user already has an active plan, short-circuit.
+    existing_plans = await _supabase_query(
+        "users_plans",
+        select="plan_id",
+        filters={"user_id": f"eq.{user_id}", "status": "eq.active"},
+        limit=1,
+    )
+    if existing_plans:
+        return {
+            "success": True,
+            "plan_id": existing_plans[0]["plan_id"],
+            "workouts_created": 0,
+            "user_id": user_id,
+        }
+
+    # 3. Materialize via the existing tool. We use .ainvoke so the tool's
+    #    @tool wrapper doesn't trip on missing config; the tool returns a JSON
+    #    string with success/plan_id/created_workouts/etc.
+    try:
+        raw_result = await _save_workout_plan_tool.ainvoke({
+            "user_id": user_id,
+            "draft_json": _json.dumps(draft_data),
+        })
+    except Exception as e:
+        logger.exception(f"[finalize] save_workout_plan failed for code={code}")
+        raise HTTPException(status_code=500, detail={"success": False, "error": str(e)})
+
+    try:
+        parsed = _json.loads(raw_result)
+    except Exception:
+        raise HTTPException(status_code=500, detail={"success": False, "error": "invalid tool response"})
+
+    if not parsed.get("success", False):
+        # Validation failure surfaced by save_workout_plan (e.g., insufficient
+        # exercises per day). Treat as 422 so the Go backend doesn't retry blindly.
+        raise HTTPException(status_code=422, detail={"success": False, "error": parsed.get("error", "validation failed")})
+
+    return {
+        "success": True,
+        "plan_id": parsed.get("plan_id"),
+        "workouts_created": parsed.get("created_workouts", parsed.get("workouts_created", 0)),
+        "user_id": user_id,
+    }
+
+
 # ═══════════════ HEALTH CHECK ═══════════════
 
 @app.get("/", tags=["Health"])
