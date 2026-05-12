@@ -536,7 +536,13 @@ e2e/
 | `570000000082` | Test_GracePeriod_BothDays | TC_GRACE_002 (both today+yesterday uncompleted) |
 | `570000000083` | Test_GracePeriod_RestDay | TC_GRACE_003 (yesterday completed, no today) |
 
-> **Important**: Phone numbers `57000000000X`, `5700000002XX`, `5700000005XX`, `5700000007X`, and `5700000008X` are reserved for testing. Do not use for real users.
+**E2E Contract Users** (`5700000009X`) - Created dynamically by Dev D's E2E contract tests:
+
+| Phone | User | Purpose |
+|-------|------|---------|
+| `570000000099` | Test_E2E_DevD | Swap → approve regression guard (`tests/test_draft_e2e_contract.py`, BUG-1) |
+
+> **Important**: Phone numbers `57000000000X`, `5700000002XX`, `5700000005XX`, `5700000007X`, `5700000008X`, and `5700000009X` are reserved for testing. Do not use for real users.
 
 ### Teardown (Critical)
 
@@ -557,6 +563,7 @@ The `test_data_setup.sql` script includes a **teardown section** that deletes AL
 -- MESOCYCLE: 570000000051, 570000000052, 570000000053
 -- WSP: 570000000071, 570000000072, 570000000073
 -- GRACE PERIOD: 570000000081, 570000000082, 570000000083
+-- E2E CONTRACT: 570000000099
 ```
 
 ### Creating Test Users Manually (SQL Template)

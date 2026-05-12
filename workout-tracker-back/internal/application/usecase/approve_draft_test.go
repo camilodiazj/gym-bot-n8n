@@ -81,7 +81,11 @@ func TestApproveDraft_Success_FreshApproval(t *testing.T) {
 	}
 	kairos := &mockKairosClient{
 		FinalizeDraftFunc: func(ctx context.Context, code string) (*port.FinalizeDraftResult, error) {
-			return &port.FinalizeDraftResult{PlanID: "plan-uuid", WorkoutsCreated: 28}, nil
+			return &port.FinalizeDraftResult{
+				PlanID:          "plan-uuid",
+				WorkoutsCreated: 28,
+				MagicLinkCode:   "abc123",
+			}, nil
 		},
 	}
 
@@ -98,6 +102,9 @@ func TestApproveDraft_Success_FreshApproval(t *testing.T) {
 	}
 	if resp.AlreadyApproved {
 		t.Errorf("AlreadyApproved: want false, got true")
+	}
+	if resp.MagicLinkCode != "abc123" {
+		t.Errorf("MagicLinkCode: want abc123, got %q", resp.MagicLinkCode)
 	}
 	if resp.PhoneNumber != "573500000000" {
 		t.Errorf("PhoneNumber: want 573500000000, got %q", resp.PhoneNumber)
@@ -123,6 +130,11 @@ func TestApproveDraft_Success_AlreadyApproved_FromIdempotentRetry(t *testing.T) 
 	}
 	if !resp.AlreadyApproved {
 		t.Errorf("AlreadyApproved: want true, got false")
+	}
+	// Graceful degradation: when Kairos didn't mint a new magic link (idempotent
+	// retry), the response just omits the field — never a hard error.
+	if resp.MagicLinkCode != "" {
+		t.Errorf("MagicLinkCode: want empty string on idempotent retry, got %q", resp.MagicLinkCode)
 	}
 }
 

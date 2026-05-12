@@ -18,6 +18,13 @@ type FinalizeDraftResult struct {
 	// AlreadyExisted reports whether Kairos short-circuited because the user
 	// already had an active plan. Useful for idempotent retries.
 	AlreadyExisted bool
+	// MagicLinkCode is a freshly-issued short code (as in magic_links.code) the
+	// frontend can use to open the workout tracker right after approval, without
+	// the user having to bounce through WhatsApp. Empty if Kairos didn't issue
+	// one (older deploy, idempotent retry that reused an existing plan, etc.) —
+	// callers MUST treat absence as "render the CTA-less variant" instead of a
+	// hard failure.
+	MagicLinkCode string
 }
 
 // KairosClient is the outbound port used by the application to drive

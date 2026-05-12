@@ -1,6 +1,8 @@
 package http
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gymbot/workout-tracker-back/internal/adapter/http/handler"
 	"github.com/gymbot/workout-tracker-back/internal/adapter/http/middleware"
@@ -60,8 +62,11 @@ func (r *Router) Setup(ginMode string) *gin.Engine {
 			drafts.POST("/:code/approve", r.draftHandler.ApproveDraft)
 		}
 
-		// Auth middleware (supports ?c= and ?user_id= for development)
-		authMiddleware := middleware.ValidateAuth(r.codeResolver)
+		// Auth middleware. ?c= (magic_link short code) is always supported.
+		// ?user_id=<uuid> is a DEV-ONLY fallback that is closed by default;
+		// set ALLOW_DEV_USER_ID_AUTH=true to enable it locally / in tests.
+		allowDevUserIDAuth := os.Getenv("ALLOW_DEV_USER_ID_AUTH") == "true"
+		authMiddleware := middleware.ValidateAuth(r.codeResolver, allowDevUserIDAuth)
 
 		// Workout routes (protected)
 		workouts := v1.Group("/workouts")

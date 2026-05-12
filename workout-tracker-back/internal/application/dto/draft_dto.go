@@ -60,9 +60,16 @@ type SwapExerciseResponse struct {
 // for example, render a deep link to the workout tracker without having to
 // poll. AlreadyApproved=true marks an idempotent retry that hit a previously
 // finalized draft.
+//
+// MagicLinkCode is the short code Kairos issued for the freshly approved user;
+// the frontend builds the tracker URL locally as `/w?c={magic_link_code}`.
+// omitempty so older Kairos deploys (or idempotent retries that didn't mint a
+// new link) round-trip cleanly — the frontend renders the "Ver mi rutina" CTA
+// only when the field is non-empty (graceful degradation).
 type ApproveDraftResponse struct {
 	PhoneNumber     string `json:"phone_number"`
 	PlanID          string `json:"plan_id,omitempty"`
 	WorkoutsCreated int    `json:"workouts_created,omitempty"`
 	AlreadyApproved bool   `json:"already_approved,omitempty"`
+	MagicLinkCode   string `json:"magic_link_code,omitempty"`
 }

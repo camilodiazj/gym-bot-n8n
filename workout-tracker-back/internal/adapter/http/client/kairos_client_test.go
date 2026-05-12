@@ -28,7 +28,7 @@ func TestHTTPKairosClient_Success(t *testing.T) {
 			t.Errorf("unexpected path: %s", r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{"success":true,"plan_id":"plan-uuid","workouts_created":28,"user_id":"user-uuid"}`))
+		_, _ = w.Write([]byte(`{"success":true,"plan_id":"plan-uuid","workouts_created":28,"user_id":"user-uuid","magic_link_code":"abc123"}`))
 	})
 	defer srv.Close()
 
@@ -44,6 +44,27 @@ func TestHTTPKairosClient_Success(t *testing.T) {
 	}
 	if res.AlreadyExisted {
 		t.Error("AlreadyExisted should be false when workouts_created>0")
+	}
+	if res.MagicLinkCode != "abc123" {
+		t.Errorf("MagicLinkCode: want abc123, got %q", res.MagicLinkCode)
+	}
+}
+
+func TestHTTPKairosClient_Success_MagicLinkCodeOmitted_GracefulDegradation(t *testing.T) {
+	// Older Kairos deploys don't emit magic_link_code. Adapter must not error;
+	// MagicLinkCode just stays empty so the caller can degrade gracefully.
+	srv, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"success":true,"plan_id":"plan-uuid","workouts_created":28,"user_id":"user-uuid"}`))
+	})
+	defer srv.Close()
+
+	res, err := client.FinalizeDraft(context.Background(), "abc123")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if res.MagicLinkCode != "" {
+		t.Errorf("MagicLinkCode: want empty string when field absent, got %q", res.MagicLinkCode)
 	}
 }
 

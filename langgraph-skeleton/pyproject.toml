@@ -28,3 +28,6 @@ include = ["src*", "cases*"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+markers = [
+    "e2e: end-to-end tests that exercise live Kairos + workout-api + Supabase. Skipped from the default run; select with `pytest -m e2e`.",
+]

@@ -3,6 +3,7 @@ import { Check, ChevronDown, ChevronUp, Play, CheckCircle, Circle, ExternalLink,
 import { updateSetWeight } from '../services/api';
 import { useRestTimer } from '../hooks/useRestTimer';
 import { RestTimerOverlay } from './RestTimerOverlay';
+import { copy } from './copy';
 
 // Types
 interface SetData {
@@ -551,7 +552,7 @@ const ExerciseCard: React.FC<{
           )}
           {/* Exercise Info */}
           <div className="flex flex-col gap-0.5">
-            <span className="text-[#9CA3AF] text-xs font-medium font-['DM_Sans']">Exercise</span>
+            <span className="text-[#9CA3AF] text-xs font-medium font-['DM_Sans']">{copy.workoutContent.exerciseBadge}</span>
             <span className="text-[#1A1A1A] text-lg font-bold font-['Bricolage_Grotesque']">
               {exercise.name}
             </span>
@@ -589,7 +590,7 @@ const ExerciseCard: React.FC<{
       {exercise.instructionsExpanded && (
         <div className="flex flex-col gap-3 w-full">
           <span className="text-[#FF6B6B] text-sm font-semibold font-['DM_Sans']">
-            Workout Instructions
+            {copy.workoutContent.instructionsHeading}
           </span>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 bg-[#FEF3C7] rounded-lg px-3 py-2">

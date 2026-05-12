@@ -45,7 +45,11 @@ type kairosFinalizeResponse struct {
 	PlanID          string `json:"plan_id"`
 	WorkoutsCreated int    `json:"workouts_created"`
 	UserID          string `json:"user_id"`
-	Error           string `json:"error,omitempty"`
+	// MagicLinkCode is optional. Kairos populates it when it has just minted a
+	// fresh magic_link for the user as part of finalize. Treat empty as "no
+	// link issued this turn" (graceful degradation, not an error).
+	MagicLinkCode string `json:"magic_link_code,omitempty"`
+	Error         string `json:"error,omitempty"`
 }
 
 // FinalizeDraft POSTs to Kairos's /finalize endpoint and translates HTTP
@@ -84,6 +88,7 @@ func (c *HTTPKairosClient) FinalizeDraft(ctx context.Context, code string) (*por
 			PlanID:          parsed.PlanID,
 			WorkoutsCreated: parsed.WorkoutsCreated,
 			AlreadyExisted:  parsed.WorkoutsCreated == 0,
+			MagicLinkCode:   parsed.MagicLinkCode,
 		}, nil
 
 	case resp.StatusCode == http.StatusNotFound:
