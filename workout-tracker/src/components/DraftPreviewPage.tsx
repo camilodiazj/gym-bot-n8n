@@ -21,6 +21,7 @@ import {
   type DraftExercise,
   type DraftAlternative,
   type DraftResponse,
+  type ApproveDraftResponse,
 } from '../services/api';
 
 // ---------------------------------------------------------------------------
@@ -120,9 +121,23 @@ function SpecRow({
   );
 }
 
-function InstructionBanners({ rir, restSeconds }: { rir: string; restSeconds: number }) {
+function InstructionBanners({
+  sets,
+  reps,
+  rir,
+  restSeconds,
+}: {
+  sets: number;
+  reps: string;
+  rir: string;
+  restSeconds: number;
+}) {
   return (
     <div className="flex flex-col" style={{ gap: '8px' }}>
+      <div className="flex items-center bg-[#F3F4F6] rounded-lg" style={{ gap: '8px', padding: '8px 12px' }}>
+        <span className="text-[#374151] text-sm font-semibold font-['DM_Sans']">Volumen:</span>
+        <span className="text-[#374151] text-sm font-normal font-['DM_Sans']">{sets} series &times; {reps} reps</span>
+      </div>
       <div className="flex items-center bg-[#FEF3C7] rounded-lg" style={{ gap: '8px', padding: '8px 12px' }}>
         <span className="text-[#92400E] text-sm font-semibold font-['DM_Sans']">Esfuerzo:</span>
         <span className="text-[#92400E] text-sm font-normal font-['DM_Sans']">RIR {rir} (Deja {rir} reps en reserva)</span>
@@ -182,6 +197,7 @@ function PrimaryExerciseCard({
           className="cursor-pointer bg-transparent border-none rounded-lg shrink-0 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1] focus-visible:ring-offset-2"
           style={{ padding: '12px' }}
           onClick={onToggleInstructions}
+          aria-label="Toggle instructions"
         >
           {uiState.instructionsExpanded ? (
             <ChevronUp className="w-5 h-5 text-[#6B7280]" />
@@ -191,18 +207,22 @@ function PrimaryExerciseCard({
         </button>
       </div>
 
-      {/* Collapsible instructions */}
-      {uiState.instructionsExpanded && (
-        <InstructionBanners rir={exercise.rir} restSeconds={exercise.restSeconds} />
+      {/* Expanded view (banners) XOR collapsed view (chip) — single source of truth */}
+      {uiState.instructionsExpanded ? (
+        <InstructionBanners
+          sets={exercise.sets}
+          reps={exercise.reps}
+          rir={exercise.rir}
+          restSeconds={exercise.restSeconds}
+        />
+      ) : (
+        <SpecRow
+          sets={exercise.sets}
+          reps={exercise.reps}
+          rir={exercise.rir}
+          restSeconds={exercise.restSeconds}
+        />
       )}
-
-      {/* Spec row */}
-      <SpecRow
-        sets={exercise.sets}
-        reps={exercise.reps}
-        rir={exercise.rir}
-        restSeconds={exercise.restSeconds}
-      />
     </div>
   );
 }
@@ -233,9 +253,14 @@ function AlternativeExerciseCard({
 }) {
   return (
     <div className="rounded-[20px] bg-[#E8EDF3] border-l-4 border-[#6366F1] flex flex-col" style={{ padding: '24px', gap: '16px' }}>
-      {/* Alt label */}
-      <div className="text-xs text-[#6366F1] font-medium font-['DM_Sans']">
-        Alternativa {altIndex + 1} de {totalAlts}
+      {/* Alt label + context: which exercise is being replaced */}
+      <div className="flex flex-col" style={{ gap: '2px' }}>
+        <div className="text-xs text-[#6366F1] font-medium font-['DM_Sans']">
+          Alternativa {altIndex + 1} de {totalAlts}
+        </div>
+        <div className="text-xs text-[#6B7280] font-['DM_Sans']">
+          Reemplazaría a: <span className="text-[#374151] font-semibold">{exercise.name}</span>
+        </div>
       </div>
 
       {/* Header row */}
@@ -311,7 +336,13 @@ function AlternativeExerciseCard({
 // Success bottom sheet
 // ---------------------------------------------------------------------------
 
-function SuccessOverlay({ onDismiss }: { onDismiss: () => void }) {
+export function SuccessOverlay({
+  magicLinkUrl,
+  onDismiss,
+}: {
+  magicLinkUrl?: string;
+  onDismiss: () => void;
+}) {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-end justify-center">
       <div className="max-w-[400px] w-full bg-white rounded-t-3xl" style={{ paddingTop: '24px', paddingLeft: '24px', paddingRight: '24px', paddingBottom: 'max(env(safe-area-inset-bottom, 24px), 24px)' }}>
@@ -346,14 +377,33 @@ function SuccessOverlay({ onDismiss }: { onDismiss: () => void }) {
           </div>
         </div>
 
-        {/* Dismiss */}
-        <button
-          className="w-full bg-[#22C55E] text-white border-none rounded-xl text-base font-semibold font-['DM_Sans'] cursor-pointer transition-all duration-150 hover:bg-[#16A34A] active:scale-[0.97]"
-          style={{ padding: '14px', marginTop: '20px' }}
-          onClick={onDismiss}
-        >
-          Entendido
-        </button>
+        {/* CTAs — magic link (when available) + dismiss; otherwise single dismiss */}
+        {magicLinkUrl ? (
+          <>
+            <a
+              href={magicLinkUrl}
+              className="block w-full bg-[#22C55E] text-white text-center no-underline rounded-xl text-base font-semibold font-['DM_Sans'] transition-all duration-150 hover:bg-[#16A34A] active:scale-[0.97]"
+              style={{ padding: '14px', marginTop: '20px' }}
+            >
+              Ver mi rutina de hoy
+            </a>
+            <button
+              className="w-full bg-transparent text-[#6B7280] border-none text-sm font-medium font-['DM_Sans'] cursor-pointer transition-all duration-150 hover:text-[#374151]"
+              style={{ padding: '10px', marginTop: '8px' }}
+              onClick={onDismiss}
+            >
+              Entendido
+            </button>
+          </>
+        ) : (
+          <button
+            className="w-full bg-[#22C55E] text-white border-none rounded-xl text-base font-semibold font-['DM_Sans'] cursor-pointer transition-all duration-150 hover:bg-[#16A34A] active:scale-[0.97]"
+            style={{ padding: '14px', marginTop: '20px' }}
+            onClick={onDismiss}
+          >
+            Entendido
+          </button>
+        )}
       </div>
     </div>
   );
@@ -452,6 +502,7 @@ export function DraftPreviewPage() {
   const [isApproving, setIsApproving] = useState(false);
   const [approved, setApproved] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [approveResponse, setApproveResponse] = useState<ApproveDraftResponse | null>(null);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -602,7 +653,8 @@ export function DraftPreviewPage() {
     setIsApproving(true);
     try {
       if (!isDemo) {
-        await approveDraft(code);
+        const resp = await approveDraft(code);
+        setApproveResponse(resp);
       } else {
         // Simulate API delay in demo mode
         await new Promise(r => setTimeout(r, 800));
@@ -725,13 +777,10 @@ export function DraftPreviewPage() {
             )}
           </div>
 
-          {/* Title */}
+          {/* Title — status already communicated by the pill above */}
           <h1 className="font-['Bricolage_Grotesque'] text-2xl font-bold text-[#1A1A1A]">
             Tu Rutina
           </h1>
-          <span className="font-['Bricolage_Grotesque'] text-2xl font-bold text-[#9CA3AF]">
-            {approved ? 'Aprobada' : 'Borrador'}
-          </span>
 
           {/* Pills */}
           <div className="flex gap-2 mt-3">
@@ -894,7 +943,12 @@ export function DraftPreviewPage() {
         </div>
 
         {/* ---------- Success Overlay ---------- */}
-        {showSuccess && <SuccessOverlay onDismiss={handleDismissSuccess} />}
+        {showSuccess && (
+          <SuccessOverlay
+            magicLinkUrl={approveResponse?.magicLinkUrl}
+            onDismiss={handleDismissSuccess}
+          />
+        )}
       </div>
     </div>
   );
