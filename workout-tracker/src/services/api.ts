@@ -248,10 +248,21 @@ export async function swapDraftExercise(
 }
 
 /**
+ * Response from POST /drafts/:code/approve.
+ * `magicLinkUrl` is populated once backend BUG-6b ships; until then it's undefined
+ * and the UI degrades gracefully to a single "Entendido" CTA.
+ */
+export interface ApproveDraftResponse {
+  phoneNumber: string;
+  /** Magic-link URL to the workout tracker. Populated by backend BUG-6b. */
+  magicLinkUrl?: string;
+}
+
+/**
  * Approves a draft routine, triggering workout creation on the backend.
  * @param code - The draft access code
  */
-export async function approveDraft(code: string): Promise<void> {
+export async function approveDraft(code: string): Promise<ApproveDraftResponse> {
   const response = await fetch(`${API_BASE_URL}/drafts/${encodeURIComponent(code)}/approve`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -261,4 +272,10 @@ export async function approveDraft(code: string): Promise<void> {
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.message || `Failed to approve draft: ${response.statusText}`);
   }
+
+  const body = await response.json().catch(() => ({}));
+  return {
+    phoneNumber: body?.data?.phone_number ?? '',
+    magicLinkUrl: body?.data?.magic_link_url, // undefined until backend BUG-6b ships
+  };
 }
