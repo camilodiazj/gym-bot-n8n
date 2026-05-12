@@ -26,6 +26,8 @@ from src.shared.supabase_client import (
     supabase_delete,
 )
 
+from cases.case6_unified_agent.draft_schema import normalize_draft_data
+
 
 BOGOTA_UTC_OFFSET = timedelta(hours=-5)
 
@@ -2156,11 +2158,15 @@ async def save_draft_preview(user_id: str, draft_json: str) -> str:
     except Exception:
         pass  # OK if no previous drafts
 
+    # Validate and normalize against canonical contract before persisting.
+    # Coerces rir/reps to str, renames alternative.link -> video_link, drops extras.
+    normalized = normalize_draft_data(draft)
+
     # Insert draft
     await supabase_insert("draft_routines", {
         "user_id": user_id,
         "code": code,
-        "draft_data": draft,
+        "draft_data": normalized,
         "status": "pending",
         "created_at": now.isoformat(),
         "expires_at": (now + timedelta(hours=24)).isoformat(),
@@ -2175,7 +2181,7 @@ async def save_draft_preview(user_id: str, draft_json: str) -> str:
         "code": code,
         "exercises_enriched": sum(
             len(ex.get("alternatives", []))
-            for day in draft.get("days", [])
+            for day in normalized.get("days", [])
             for ex in day.get("exercises", [])
         ),
     }, ensure_ascii=False)

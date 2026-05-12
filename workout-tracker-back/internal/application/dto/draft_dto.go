@@ -53,7 +53,16 @@ type SwapExerciseResponse struct {
 	Exercise DraftExerciseDTO `json:"exercise"`
 }
 
-// ApproveDraftResponse is the response for POST /api/v1/drafts/:code/approve
+// ApproveDraftResponse is the response for POST /api/v1/drafts/:code/approve.
+//
+// PhoneNumber lets the frontend know which WhatsApp number Kairos will message.
+// PlanID and WorkoutsCreated come from Kairos's finalize call so the UI can,
+// for example, render a deep link to the workout tracker without having to
+// poll. AlreadyApproved=true marks an idempotent retry that hit a previously
+// finalized draft.
 type ApproveDraftResponse struct {
-	PhoneNumber string `json:"phone_number"`
+	PhoneNumber     string `json:"phone_number"`
+	PlanID          string `json:"plan_id,omitempty"`
+	WorkoutsCreated int    `json:"workouts_created,omitempty"`
+	AlreadyApproved bool   `json:"already_approved,omitempty"`
 }

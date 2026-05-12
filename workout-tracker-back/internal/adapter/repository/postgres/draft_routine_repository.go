@@ -60,6 +60,41 @@ func (r *DraftRoutineRepository) GetByCode(ctx context.Context, code string) (*e
 	return &draft, nil
 }
 
+// GetByCodeAnyStatus retrieves a draft regardless of status or expiry.
+// Used by the approve flow to detect idempotent retries on an already-approved draft.
+func (r *DraftRoutineRepository) GetByCodeAnyStatus(ctx context.Context, code string) (*entity.DraftRoutine, error) {
+	query := `
+		SELECT draft_id, user_id, code, draft_data, status, created_at, expires_at
+		FROM draft_routines
+		WHERE code = $1
+	`
+
+	var draft entity.DraftRoutine
+	var draftDataJSON []byte
+
+	err := r.conn.DB.QueryRowContext(ctx, query, code).Scan(
+		&draft.DraftID,
+		&draft.UserID,
+		&draft.Code,
+		&draftDataJSON,
+		&draft.Status,
+		&draft.CreatedAt,
+		&draft.ExpiresAt,
+	)
+	if err == sql.ErrNoRows {
+		return nil, apperror.NewNotFoundError("draft not found")
+	}
+	if err != nil {
+		return nil, apperror.NewInternalError("failed to query draft routine", err)
+	}
+
+	if err := json.Unmarshal(draftDataJSON, &draft.DraftData); err != nil {
+		return nil, apperror.NewInternalError("failed to parse draft data", err)
+	}
+
+	return &draft, nil
+}
+
 // GetPhoneByUserID retrieves the user's full phone number
 func (r *DraftRoutineRepository) GetPhoneByUserID(ctx context.Context, userID string) (string, error) {
 	query := `SELECT full_phone_number FROM users WHERE user_id = $1`

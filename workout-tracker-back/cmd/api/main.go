@@ -6,8 +6,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/gymbot/workout-tracker-back/internal/adapter/http"
+	httpclient "github.com/gymbot/workout-tracker-back/internal/adapter/http/client"
 	"github.com/gymbot/workout-tracker-back/internal/adapter/http/handler"
 	"github.com/gymbot/workout-tracker-back/internal/adapter/repository/postgres"
 	"github.com/gymbot/workout-tracker-back/internal/application/usecase"
@@ -41,6 +43,9 @@ func main() {
 		return magicLinkRepo.GetUserID(context.Background(), code)
 	}
 
+	// Initialize outbound HTTP adapters (ports → adapters)
+	kairosClient := httpclient.NewKairosClient(cfg.Kairos.APIURL, 120*time.Second)
+
 	// Initialize use cases (Application Layer)
 	getTodayWorkoutUC := usecase.NewGetTodayWorkoutUseCase(workoutRepo)
 	completeWorkoutUC := usecase.NewCompleteWorkoutUseCase(workoutRepo, magicLinkRepo)
@@ -48,7 +53,7 @@ func main() {
 	updateSetUC := usecase.NewUpdateSetUseCase(setRepo)
 	getDraftUC := usecase.NewGetDraftUseCase(draftRepo)
 	swapExerciseUC := usecase.NewSwapExerciseUseCase(draftRepo)
-	approveDraftUC := usecase.NewApproveDraftUseCase(draftRepo, cfg.Kairos.APIURL)
+	approveDraftUC := usecase.NewApproveDraftUseCase(draftRepo, kairosClient)
 
 	// Initialize HTTP handlers (Primary Adapters)
 	healthHandler := handler.NewHealthHandler()
